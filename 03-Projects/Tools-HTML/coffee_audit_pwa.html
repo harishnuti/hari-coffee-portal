@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Hari Coffee Archive 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        :root { --amber: #c9a84c; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0d0d0d; color: #e5e5e5; }
+        .header-font { font-family: 'Playfair Display', Georgia, serif; }
+        .luxury-card { background: #111111; border: 1px solid #333; }
+        .amber { color: #c9a84c; }
+        .nav-active { color: #c9a84c; border-top: 3px solid #c9a84c; }
+        .process-badge { font-size: 10px; padding: 2px 10px; border-radius: 9999px; font-weight: 700; }
+        .entry-card { transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
+        .entry-card:hover { transform: translateY(-4px); }
+        .bottom-nav { background: #111111; border-top: 1px solid #333; }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .form-input { background: #1a1a1a; border: 1px solid #444; color: #eee; }
+        .form-input:focus { border-color: #c9a84c; box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+        .premium-btn { background: linear-gradient(135deg, #c9a84c, #a67c3d); color: #111; font-weight: 700; }
+        .modal { animation: fadeInScale 0.2s ease-out; }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .phase-btn { min-height: 48px; min-width: 48px; }
+        .tag { transition: all 0.1s ease; }
+        .tag.active { background: #c9a84c; color: #111; transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-[#e5e5e5] pb-20">
+    <!-- Top Header -->
+    <div class="sticky top-0 z-50 bg-[#0d0d0d] border-b border-[#222] px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-x-3">
+            <i class="fa-solid fa-mug-hot text-3xl amber"></i>
+            <div>
+                <span class="header-font text-2xl font-bold tracking-tighter">HARI</span>
+                <span class="text-xs text-[#888] block -mt-1">COFFEE ARCHIVE 2026</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-x-3">
+            <button onclick="showSettings()" class="w-10 h-10 flex items-center justify-center text-xl hover:bg-[#1a1a1a] rounded-full">
+                <i class="fa-solid fa-cog"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- SCREEN 1: FIELD ENTRY -->
+    <div id="screen-entry" class="screen active p-4">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="header-font text-3xl font-bold">New Audit</h2>
+            <div class="flex items-center gap-x-2">
+                <span class="text-xs text-[#888]">QUICK MODE</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="quick-mode-toggle" class="sr-only peer" onchange="toggleQuickMode()">
+                    <div class="w-11 h-6 bg-[#333] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#c9a84c]"></div>
+                </label>
+            </div>
+        </div>
+
+        <form id="audit-form" onsubmit="submitAudit(event)">
+            <div class="space-y-5">
+                <!-- Quick Mode Fields (always visible) -->
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-[#888]">DATE</label>
+                    <input type="date" id="Date" value="2026-05-20" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">CAFE NAME</label>
+                        <input type="text" id="Cafe_Name" placeholder="e.g. Nylon Coffee Roasters" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" required>
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">COFFEE NAME</label>
+                        <input type="text" id="Coffee_Name" placeholder="e.g. Ecuador La Papaya" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" required>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-[#888]">PROCESS</label>
+                    <select id="Process" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                        <option value="">Select Process</option>
+                        <option value="Washed">Washed</option>
+                        <option value="Natural">Natural</option>
+                        <option value="Honey">Honey / Red Honey</option>
+                        <option value="Anaerobic">Anaerobic</option>
+                        <option value="Washed Co-Ferment">Washed Co-Ferment</option>
+                        <option value="Semi-Washed / Wet-Hulled">Semi-Washed / Wet-Hulled</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">RATIO</label>
+                        <input type="text" id="Ratio" value="1:15" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">DOSE (g)</label>
+                        <input type="number" id="Dose_g" value="15" step="0.1" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" oninput="autoCalculateRatio()">
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">YIELD (g)</label>
+                        <input type="number" id="Yield_g" value="225" step="0.1" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" oninput="autoCalculateRatio()">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-[#888]">YOUR VERDICT <span class="text-red-400">*</span></label>
+                    <textarea id="Your_Verdict" rows="4" placeholder="Describe the cup..." class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" required></textarea>
+                </div>
+                
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-[#888]">PRICE (LOCAL)</label>
+                    <input type="text" id="Price_Local" placeholder="e.g. 12.50" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                </div>
+
+                <!-- Full Mode Fields -->
+                <div id="full-mode-fields" class="hidden space-y-5 pt-4 border-t border-[#333]">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">CITY</label>
+                            <select id="City" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                                <option>Singapore</option>
+                                <option>Ubud, Bali</option>
+                                <option>Mumbai</option>
+                                <option>Johor Bahru</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">VARIETAL</label>
+                            <input type="text" id="Varietal" list="varietal-list" placeholder="e.g. Geisha" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                            <datalist id="varietal-list">
+                                <option value="Geisha"></option><option value="Wush Wush"></option><option value="Sudan Rume"></option>
+                                <option value="Heirloom"></option><option value="Typica Mejorado"></option><option value="Parainema"></option>
+                                <option value="Arara"></option><option value="Catucai 24/137"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">ROAST LEVEL</label>
+                        <select id="Roast_Level" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                            <option value="">Select</option>
+                            <option value="Light">Light</option>
+                            <option value="Light-Medium">Light-Medium</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Espresso Roast">Espresso Roast</option>
+                            <option value="Filter Roast">Filter Roast</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">BREW METHOD</label>
+                        <select id="Brew_Method" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                            <option value="">Select</option>
+                            <option value="V60">V60</option>
+                            <option value="Pour-over (Flat-Bottom)">Pour-over (Flat-Bottom)</option>
+                            <option value="xBloom (Flat-Bottom)">xBloom (Flat-Bottom)</option>
+                            <option value="Filter Hot - Flat Bottom (Hario Alpha)">Hario Alpha (Flat-Bottom)</option>
+                            <option value="Origami (Conical)">Origami (Conical)</option>
+                            <option value="Flat White">Flat White</option>
+                            <option value="Single Espresso">Single Espresso</option>
+                            <option value="Piccolo">Piccolo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">BLOOM</label>
+                            <input type="text" id="Bloom" placeholder="1:2.5 (30s)" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">GRINDER</label>
+                            <input type="text" id="Grinder" list="grinder-list" placeholder="e.g. Mahlkönig CORE" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1">
+                            <datalist id="grinder-list">
+                                <option value="Mahlkönig CORE (54mm Flat Burr)"></option>
+                                <option value="Timemore Sculptor 078 (SSP 78mm)"></option>
+                                <option value="Mahlkönig EK43"></option>
+                                <option value="Mahlkönig EK Omnia"></option>
+                                <option value="120mm Hybrid Burr"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">OFFICIAL NOTES</label>
+                        <textarea id="Official_Notes" rows="2" placeholder="e.g. Mandarin Candy; Jasmine; Apricot" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-[#888]">TECHNICAL ENRICHMENT</label>
+                        <textarea id="Technical_Enrichment" rows="3" placeholder="Your technical observations..." class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sensory Phase Timer -->
+                <div class="pt-4 border-t border-[#333]">
+                    <label class="text-xs uppercase tracking-widest text-[#888]">SENSORY PHASE LOGGER</label>
+                    <div class="flex gap-3 mt-2">
+                        <button type="button" onclick="logPhase('HOT')" class="flex-1 phase-btn bg-[#3a2a1a] hover:bg-[#4a3a2a] text-[#c9a84c] rounded-2xl flex flex-col items-center justify-center text-sm">
+                            <span>🔥</span><span class="text-xs">HOT</span>
+                        </button>
+                        <button type="button" onclick="logPhase('MID')" class="flex-1 phase-btn bg-[#2a3a2a] hover:bg-[#3a4a3a] text-[#7cc17c] rounded-2xl flex flex-col items-center justify-center text-sm">
+                            <span>🌡️</span><span class="text-xs">MID</span>
+                        </button>
+                        <button type="button" onclick="logPhase('COOL')" class="flex-1 phase-btn bg-[#1a2a3a] hover:bg-[#2a3a4a] text-[#60a5fa] rounded-2xl flex flex-col items-center justify-center text-sm">
+                            <span>❄️</span><span class="text-xs">COOL</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-2">
+                    <button type="button" onclick="saveDraft()" class="flex-1 py-4 rounded-2xl border border-[#444] text-sm font-medium flex items-center justify-center gap-x-2">
+                        <i class="fa-solid fa-save"></i> SAVE DRAFT
+                    </button>
+                    <button type="submit" class="premium-btn flex-1 py-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-x-2">
+                        <i class="fa-solid fa-download"></i> GENERATE CSV
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- CSV Output -->
+        <div id="csv-output" class="hidden mt-6 luxury-card rounded-3xl p-5">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-semibold">CSV LINE READY</span>
+                <button onclick="copyCSV()" class="px-4 py-1 text-xs bg-[#c9a84c] text-black rounded-full font-bold">COPY</button>
+            </div>
+            <pre id="csv-line" class="bg-black p-4 rounded-2xl text-xs font-mono overflow-x-auto text-[#c9a84c]"></pre>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: ARCHIVE BROWSER -->
+    <div id="screen-archive" class="screen p-4">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="header-font text-3xl font-bold">Archive <span id="archive-count" class="text-[#c9a84c]"></span></h2>
+            <button onclick="showSettings()" class="px-3 py-1 text-xs bg-[#1a1a1a] rounded-full flex items-center gap-x-1">
+                <i class="fa-solid fa-filter"></i> <span>Filters</span>
+            </button>
+        </div>
+        
+        <div class="sticky top-[60px] z-40 bg-[#0d0d0d] pb-3">
+            <div class="flex gap-2 overflow-x-auto pb-2">
+                <div onclick="filterArchiveByCity('All')" class="city-pill active px-4 py-1 text-xs bg-[#c9a84c] text-black rounded-full cursor-pointer whitespace-nowrap">All</div>
+                <div onclick="filterArchiveByCity('Singapore')" class="city-pill px-4 py-1 text-xs bg-[#1a1a1a] rounded-full cursor-pointer whitespace-nowrap">Singapore</div>
+                <div onclick="filterArchiveByCity('Ubud')" class="city-pill px-4 py-1 text-xs bg-[#1a1a1a] rounded-full cursor-pointer whitespace-nowrap">Ubud</div>
+                <div onclick="filterArchiveByCity('Mumbai')" class="city-pill px-4 py-1 text-xs bg-[#1a1a1a] rounded-full cursor-pointer whitespace-nowrap">Mumbai</div>
+            </div>
+            <input type="text" id="archive-search" placeholder="Search coffee or cafe..." class="form-input w-full px-4 py-3 rounded-2xl text-sm" onkeyup="filterArchive()">
+        </div>
+        
+        <div id="archive-grid" class="grid grid-cols-1 gap-4 pt-2"></div>
+    </div>
+
+    <!-- SCREEN 3: SENSORY TIMER -->
+    <div id="screen-timer" class="screen p-4">
+        <h2 class="header-font text-3xl font-bold mb-6">Brew Session Timer</h2>
+        
+        <div class="luxury-card rounded-3xl p-8 text-center">
+            <div id="timer-display" class="text-8xl font-mono font-bold text-[#c9a84c] tracking-tighter">10:00</div>
+            <div class="text-xs text-[#888] mt-1">MINUTES REMAINING</div>
+        </div>
+        
+        <div class="flex justify-center gap-4 mt-6">
+            <button onclick="startTimer()" class="px-8 py-3 bg-[#c9a84c] text-black rounded-2xl font-bold flex items-center gap-x-2"><i class="fa-solid fa-play"></i> START</button>
+            <button onclick="pauseTimer()" class="px-8 py-3 bg-[#333] rounded-2xl font-medium flex items-center gap-x-2"><i class="fa-solid fa-pause"></i> PAUSE</button>
+            <button onclick="resetTimer()" class="px-8 py-3 bg-[#333] rounded-2xl font-medium flex items-center gap-x-2"><i class="fa-solid fa-undo"></i> RESET</button>
+        </div>
+        
+        <div class="mt-8">
+            <div class="text-xs uppercase tracking-widest text-[#888] mb-3">QUICK LOG TAGS (tap to record with timestamp)</div>
+            <div class="flex flex-wrap gap-2" id="timer-tags">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <button onclick="exportTimerNotes()" class="w-full py-4 rounded-2xl border border-[#c9a84c] text-[#c9a84c] font-medium flex items-center justify-center gap-x-2">
+                <i class="fa-solid fa-file-export"></i> EXPORT NOTES TO VERDICT
+            </button>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: QUICK COMPARE -->
+    <div id="screen-compare" class="screen p-4">
+        <h2 class="header-font text-3xl font-bold mb-6">Quick Compare</h2>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="text-xs uppercase tracking-widest text-[#888]">ENTRY 1</label>
+                <select id="compare-select-1" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" onchange="updateCompare()"></select>
+            </div>
+            <div>
+                <label class="text-xs uppercase tracking-widest text-[#888]">ENTRY 2</label>
+                <select id="compare-select-2" class="form-input w-full px-4 py-3 rounded-2xl text-sm mt-1" onchange="updateCompare()"></select>
+            </div>
+        </div>
+        
+        <div id="compare-table-container" class="luxury-card rounded-3xl p-5 hidden">
+            <table class="w-full text-sm">
+                <thead><tr class="border-b border-[#333]"><th class="text-left py-2">Field</th><th class="text-left py-2">Entry 1</th><th class="text-left py-2">Entry 2</th></tr></thead>
+                <tbody id="compare-table-body" class="divide-y divide-[#222]"></tbody>
+            </table>
+        </div>
+        
+        <div id="compare-radar-container" class="luxury-card rounded-3xl p-6 mt-6 hidden">
+            <div class="text-sm font-semibold mb-4">Palate Radar Comparison</div>
+            <canvas id="compare-radar" width="300" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bottom-nav flex justify-around py-2 z-50">
+        <button onclick="showScreen('entry')" class="flex flex-col items-center py-2 px-4 text-xs">
+            <i class="fa-solid fa-edit text-xl mb-1"></i>
+            <span>Entry</span>
+        </button>
+        <button onclick="showScreen('archive')" class="flex flex-col items-center py-2 px-4 text-xs">
+            <i class="fa-solid fa-book text-xl mb-1"></i>
+            <span>Archive</span>
+        </button>
+        <button onclick="showScreen('timer')" class="flex flex-col items-center py-2 px-4 text-xs">
+            <i class="fa-solid fa-clock text-xl mb-1"></i>
+            <span>Timer</span>
+        </button>
+        <button onclick="showScreen('compare')" class="flex flex-col items-center py-2 px-4 text-xs">
+            <i class="fa-solid fa-balance-scale text-xl mb-1"></i>
+            <span>Compare</span>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div id="detail-modal" class="hidden fixed inset-0 bg-black/90 flex items-end md:items-center justify-center z-[100]">
+        <div class="luxury-card w-full md:w-[480px] rounded-t-3xl md:rounded-3xl p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-coffee-name" class="header-font text-2xl font-bold"></h3>
+                <button onclick="closeModal()" class="text-2xl">&times;</button>
+            </div>
+            <div id="modal-content" class="text-sm space-y-4"></div>
+            <div class="mt-6 flex gap-3">
+                <button onclick="favouriteCurrent()" class="flex-1 py-3 rounded-2xl border border-[#c9a84c] text-[#c9a84c]">★ Favourite</button>
+                <button onclick="closeModal()" class="flex-1 py-3 rounded-2xl bg-[#333]">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== EMBEDDED DATA ====================
+        const ARCHIVE_DATA = [{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Bali Karana Kintamanis","Varietal":"Unknown","Process":"Natural","Roast_Level":"Light","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Clean citrus; floral","Your_Verdict":"Excellent clarity for a natural process, bright and floral.","Technical_Enrichment":"Established foundational exposure to local Indonesian origins."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Sulawesi Toraja","Varietal":"Unknown","Process":"Semi-Washed / Wet-Hulled","Roast_Level":"Medium","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Cocoa; earthy structures","Your_Verdict":"Heavy body with rich cocoa notes.","Technical_Enrichment":"Demonstrated the structural density of the wet-hulled process."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"House Blend","Varietal":"Unknown","Process":"Unknown","Roast_Level":"Espresso Roast","Brew_Method":"Piccolo","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Balanced","Your_Verdict":"Great milk integration.","Technical_Enrichment":"Baseline for espresso and milk pairing."},{"Date":"2026-02-15","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Kiamugumo AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"120mm Hybrid Burr","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Excellent baseline for clarity.","Technical_Enrichment":"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry."},{"Date":"2026-02-28","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Ndiaini AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"High clarity.","Technical_Enrichment":"Further exploration of Kenyan terroir."},{"Date":"2026-03-01","City":"Mumbai","Cafe_Name":"Subko Coffee Roasters","Coffee_Name":"Project Pearl Ratnagiri","Varietal":"Unknown","Process":"Experimental Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Clean and balanced despite intense process.","Technical_Enrichment":"Analyzed advanced experimental processing in India."},{"Date":"2026-03-08","City":"Mumbai","Cafe_Name":"Grey Soul Coffee Roasters","Coffee_Name":"Raspberry in Loop","Varietal":"Unknown","Process":"Multi-stage Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Chocolate","Your_Verdict":"Heavy body, over-smoothed expression muted the brightness.","Technical_Enrichment":"Observed how heavy fermentation can mute terroir."},{"Date":"2026-03-15","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Colombia Wush Wush","Varietal":"Wush Wush","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Tea-like","Your_Verdict":"Incredible tea-like clarity.","Technical_Enrichment":"Mapped the delicate genetics of Wush Wush."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Nicaragua Matagalpa","Varietal":"Unknown","Process":"Washed","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Solid milk beverage.","Technical_Enrichment":"Audited Central American washed profile in milk."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Ethiopia Beloya","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"V60","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Classic natural profile.","Technical_Enrichment":"Baseline check for Ethiopian naturals."},{"Date":"2026-03-20","City":"Singapore","Cafe_Name":"Tiong Hoe","Coffee_Name":"Brazil Natural","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Rich, chocolate-forward","Your_Verdict":"Classic dense Brazilian profile.","Technical_Enrichment":"Audited traditional natural processing sweetness and body."},{"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Maxi Coffee Bar","Coffee_Name":"Colombia La Laja","Varietal":"Sudan Rume","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP 78mm)","Price_Local":"Unknown","Official_Notes":"Raspberry; Nectarine; Floral","Your_Verdict":"Successfully isolated the intended tasting notes.","Technical_Enrichment":"Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Castillo Watermelon (Jairo Arcila)","Varietal":"Castillo","Process":"Washed Co-Ferment","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Watermelon; Mint; Lime; Chocolate","Your_Verdict":"Distinct fruit-forward expression; sweetness layered rather than sharp","Technical_Enrichment":"Fermentation adds aromatic complexity; processing-driven identity rather than terroir."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Peru Gesha (Wilder Garcia)","Varietal":"Gesha","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Jasmine; Caramel; Lime; Cacao Nibs","Your_Verdict":"Clean, structured, high-clarity cup","Technical_Enrichment":"High transparency; minimal processing interference highlighting intrinsic genetic purity."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Lume Cafe","Coffee_Name":"Panama Corpachi Geisha","Varietal":"Geisha","Process":"Red Honey","Roast_Level":"Light","Brew_Method":"V60 Manual Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig EK43","Price_Local":"12.00","Official_Notes":"Mandarin Candy; Jasmine; Apricot","Your_Verdict":"Apricot detected clearly. Structured and elegant \u2014 sweet without being cloying. Body rounder than expected for a washed.","Technical_Enrichment":"Dual-temp strategy (90\u00b0C \u2192 70\u00b0C) on EK43 layered extraction \u2014 high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish. Red Honey process added roundness without ferment noise."},{"Date":"2026-04-18","City":"Johor Bahru","Cafe_Name":"Unknown","Coffee_Name":"Hacienda La Florida","Varietal":"Typica Mejorado","Process":"Anaerobic Washed","Roast_Level":"Unknown","Brew_Method":"Origami (Conical)","Dose_g":"18","Yield_g":"277","Ratio":"1:15.4","Bloom":"1:2.3 (42g for 30s)","Grinder":"Mahlk\u00f6nig EK Omnia","Price_Local":"35.00","Official_Notes":"Lemon verbena; red plum; citronella; hibiscus","Your_Verdict":"Excellent. Lime when hot, distinct plum as it cooled.","Technical_Enrichment":"EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition."},{"Date":"2026-04-24","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Brazil Santu\u00e1rio Sul","Varietal":"Unknown","Process":"Natural Fermentation","Roast_Level":"Light-Medium","Brew_Method":"V60","Dose_g":"16","Yield_g":"224","Ratio":"1:14","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig EK43","Price_Local":"Unknown","Official_Notes":"Blackcurrant; black cherry; dark chocolate","Your_Verdict":"Full body; prominent blackcurrant; clear chocolaty finish.","Technical_Enrichment":"Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil FAF Organic","Varietal":"Arara","Process":"Natural","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE","Price_Local":"7.50","Official_Notes":"Red Apple; Cherry; Raisin; Milk Chocolate","Your_Verdict":"Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.","Technical_Enrichment":"1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil Serra dos Ciganos","Varietal":"Catucai 24/137","Process":"Natural","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Sultana; Dried Apricot; Praline; Roasted Hazelnut","Your_Verdict":"Good cup with a very pleasant, lingering sweet aftertaste.","Technical_Enrichment":"Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Ethiopia Banko Gotiti","Varietal":"Heirloom","Process":"Washed","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE","Price_Local":"8.50","Official_Notes":"Lemonade; Raspberry; Peach; Bergamot","Your_Verdict":"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.","Technical_Enrichment":"1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Nicaragua Buena Vista","Varietal":"Parainema","Process":"Natural Anaerobic","Roast_Level":"Espresso Roast","Brew_Method":"Single Espresso","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"~1:2","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut","Your_Verdict":"Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.","Technical_Enrichment":"Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity."},{"Date":"2026-05-19","City":"Singapore","Cafe_Name":"Pocket by Flip (Flip Coffee Roasters)","Coffee_Name":"Ecuador La Papaya","Varietal":"Geisha","Process":"Washed","Roast_Level":"Light","Brew_Method":"Filter Hot - Flat Bottom (Hario Alpha)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE (54mm Flat Burr)","Price_Local":"18.00","Official_Notes":"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple","Your_Verdict":"Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat \u2014 lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine \u2014 distinct from Peru Geisha entries.","Technical_Enrichment":"Triple-temp cascade (92\u219275\u219292\u00b0C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha."}];
+        
+        let currentScreen = 'entry';
+        let timerInterval = null;
+        let timerSeconds = 600;
+        let isTimerRunning = false;
+        let timerLogs = [];
+        let currentModalEntry = null;
+        let compareChart = null;
+        
+        const processColors = {
+            'Washed': '#3b82f6',
+            'Natural': '#f59e0b',
+            'Honey': '#eab308',
+            'Anaerobic': '#ef4444',
+            'Washed Co-Ferment': '#8b5cf6',
+            'Semi-Washed / Wet-Hulled': '#22c55e',
+            'Unknown': '#6b7280'
+        };
+        
+        // ==================== PWA SETUP ====================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+                    self.addEventListener('install', e => {
+                        e.waitUntil(caches.open('hari-v1').then(cache => cache.addAll([
+                            '/', 'https://cdn.tailwindcss.com', 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
+                        ])));
+                    }));
+                    self.addEventListener('fetch', e => {
+                        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                    });
+                `), {scope: '/'});
+            });
+        }
+        
+        // Inline manifest
+        const manifest = {
+            name: "Hari Coffee Archive",
+            short_name: "Hari Archive",
+            start_url: "/",
+            display: "standalone",
+            background_color: "#0d0d0d",
+            theme_color: "#c9a84c",
+            icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E☕%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml" }]
+        };
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest));
+        document.head.appendChild(link);
+        
+        // ==================== UTILS ====================
+        function showScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + screen).classList.add('active');
+            currentScreen = screen;
+            
+            if (screen === 'archive') renderArchive();
+            if (screen === 'compare') initCompareSelects();
+        }
+        
+        function autoCalculateRatio() {
+            const dose = parseFloat(document.getElementById('Dose_g').value);
+            const yieldG = parseFloat(document.getElementById('Yield_g').value);
+            if (dose && yieldG) {
+                const ratio = (yieldG / dose).toFixed(1);
+                document.getElementById('Ratio').value = `1:${ratio}`;
+            }
+        }
+        
+        function toggleQuickMode() {
+            const fullFields = document.getElementById('full-mode-fields');
+            fullFields.classList.toggle('hidden', document.getElementById('quick-mode-toggle').checked);
+        }
+        
+        function logPhase(phase) {
+            const timestamp = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            const note = prompt(`Quick note for ${phase} phase (${timestamp}):`, '');
+            const tags = ['Acid', 'Sweet', 'Body', 'Finish', 'Floral', 'Fruit', 'Chocolate', 'Terpene', 'Citric', 'Malic', 'Clean'];
+            const selected = prompt('Select tags (comma separated):', tags.join(', '));
+            
+            const logEntry = `${timestamp} [${phase}] ${note || ''} ${selected ? '• ' + selected : ''}`;
+            const verdictField = document.getElementById('Your_Verdict');
+            verdictField.value = (verdictField.value ? verdictField.value + '\n' : '') + logEntry;
+            
+            // Haptic + audio
+            if (navigator.vibrate) navigator.vibrate(50);
+            playChime(phase === 'HOT' ? 800 : phase === 'MID' ? 600 : 400);
+        }
+        
+        function playChime(frequency) {
+            try {
+                const audio = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audio.createOscillator();
+                const gain = audio.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = frequency;
+                gain.gain.value = 0.2;
+                osc.connect(gain);
+                gain.connect(audio.destination);
+                osc.start();
+                setTimeout(() => { osc.stop(); }, 180);
+            } catch(e) {}
+        }
+        
+        // ==================== FIELD ENTRY ====================
+        function saveDraft() {
+            const form = document.getElementById('audit-form');
+            const data = {};
+            new FormData(form).forEach((v, k) => data[k] = v);
+            localStorage.setItem('hari_draft', JSON.stringify(data));
+            alert('Draft saved to localStorage');
+        }
+        
+        function loadDraft() {
+            const draft = localStorage.getItem('hari_draft');
+            if (!draft) return;
+            const data = JSON.parse(draft);
+            Object.keys(data).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) el.value = data[key];
+            });
+        }
+        
+        function submitAudit(e) {
+            e.preventDefault();
+            const form = document.getElementById('audit-form');
+            const data = {};
+            new FormData(form).forEach((v, k) => data[k] = v || 'Unknown');
+            
+            // Ensure all 17 fields
+            const allFields = ['Date','City','Cafe_Name','Coffee_Name','Varietal','Process','Roast_Level','Brew_Method','Dose_g','Yield_g','Ratio','Bloom','Grinder','Price_Local','Official_Notes','Your_Verdict','Technical_Enrichment'];
+            allFields.forEach(f => { if (!data[f]) data[f] = 'Unknown'; });
+            
+            // Generate CSV
+            const csvValues = allFields.map(f => {
+                let val = data[f] || 'Unknown';
+                if (val.includes(',') || val.includes('"')) val = `"${val.replace(/"/g, '""')}"` ;
+                return val;
+            });
+            const csvLine = csvValues.join(',');
+            
+            const output = document.getElementById('csv-output');
+            document.getElementById('csv-line').textContent = csvLine;
+            output.classList.remove('hidden');
+            
+            // Save new entry locally
+            const newEntry = {...data, id: Date.now()};
+            let localEntries = JSON.parse(localStorage.getItem('hari_local_entries') || '[]');
+            localEntries.unshift(newEntry);
+            localStorage.setItem('hari_local_entries', JSON.stringify(localEntries));
+            
+            alert('Entry saved locally! CSV copied to clipboard ready.');
+            navigator.clipboard.writeText(csvLine);
+        }
+        
+        function copyCSV() {
+            const text = document.getElementById('csv-line').textContent;
+            navigator.clipboard.writeText(text).then(() => alert('Copied!'));
+        }
+        
+        // ==================== ARCHIVE ====================
+        function renderArchive(filtered = null) {
+            const grid = document.getElementById('archive-grid');
+            grid.innerHTML = '';
+            const data = filtered || [...ARCHIVE_DATA, ...JSON.parse(localStorage.getItem('hari_local_entries') || '[]')];
+            document.getElementById('archive-count').textContent = `(${data.length})`;
+            
+            data.forEach((entry, idx) => {
+                const proc = entry.Process || 'Unknown';
+                const color = processColors[proc] || '#6b7280';
+                const card = document.createElement('div');
+                card.className = 'entry-card luxury-card rounded-3xl p-5 cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="header-font text-xl font-bold leading-tight">${entry.Coffee_Name}</div>
+                            <div class="text-xs text-[#888] mt-1">${entry.Cafe_Name} • ${entry.City} • ${entry.Date}</div>
+                        </div>
+                        <div class="process-badge text-white" style="background: ${color}20; color: ${color}">${proc}</div>
+                    </div>
+                    <div class="mt-3 text-xs line-clamp-2 text-[#ddd]">${entry.Your_Verdict || ''}</div>
+                    <div class="flex items-center justify-between mt-4 text-xs">
+                        <div class="flex items-center gap-x-1">
+                            <span class="px-2 py-px bg-[#222] rounded">${entry.Ratio || '—'}</span>
+                        </div>
+                        <div onclick="event.stopImmediatePropagation(); toggleFavourite(${idx}, this)" class="text-lg cursor-pointer">☆</div>
+                    </div>
+                `;
+                card.onclick = () => showDetailModal(entry, idx);
+                grid.appendChild(card);
+            });
+        }
+        
+        function filterArchive() {
+            const term = document.getElementById('archive-search').value.toLowerCase();
+            const data = [...ARCHIVE_DATA, ...JSON.parse(localStorage.getItem('hari_local_entries') || '[]')];
+            const filtered = data.filter(e => 
+                (e.Coffee_Name && e.Coffee_Name.toLowerCase().includes(term)) || 
+                (e.Cafe_Name && e.Cafe_Name.toLowerCase().includes(term))
+            );
+            renderArchive(filtered);
+        }
+        
+        function filterArchiveByCity(city) {
+            document.querySelectorAll('.city-pill').forEach(el => el.classList.remove('active', 'bg-[#c9a84c]', 'text-black'));
+            event.target.classList.add('active', 'bg-[#c9a84c]', 'text-black');
+            
+            const data = [...ARCHIVE_DATA, ...JSON.parse(localStorage.getItem('hari_local_entries') || '[]')];
+            let filtered = data;
+            if (city !== 'All') {
+                filtered = data.filter(e => e.City && e.City.includes(city));
+            }
+            renderArchive(filtered);
+        }
+        
+        function showDetailModal(entry, idx) {
+            currentModalEntry = {entry, idx};
+            document.getElementById('modal-coffee-name').textContent = entry.Coffee_Name;
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div><span class="text-[#888]">Date</span><br><span class="font-medium">${entry.Date}</span></div>
+                    <div><span class="text-[#888]">City</span><br><span class="font-medium">${entry.City}</span></div>
+                    <div><span class="text-[#888]">Cafe</span><br><span class="font-medium">${entry.Cafe_Name}</span></div>
+                    <div><span class="text-[#888]">Process</span><br><span class="font-medium">${entry.Process}</span></div>
+                    <div><span class="text-[#888]">Varietal</span><br><span class="font-medium">${entry.Varietal}</span></div>
+                    <div><span class="text-[#888]">Roast</span><br><span class="font-medium">${entry.Roast_Level}</span></div>
+                    <div><span class="text-[#888]">Brew</span><br><span class="font-medium">${entry.Brew_Method}</span></div>
+                    <div><span class="text-[#888]">Ratio</span><br><span class="font-medium">${entry.Ratio}</span></div>
+                    <div><span class="text-[#888]">Grinder</span><br><span class="font-medium">${entry.Grinder}</span></div>
+                    <div><span class="text-[#888]">Price</span><br><span class="font-medium">${entry.Price_Local}</span></div>
+                </div>
+                <div class="mt-4"><span class="text-[#888]">Verdict</span><br><div class="bg-[#1a1a1a] p-3 rounded-2xl mt-1">${entry.Your_Verdict}</div></div>
+                <div class="mt-4"><span class="text-[#888]">Technical</span><br><div class="bg-[#1a1a1a] p-3 rounded-2xl mt-1">${entry.Technical_Enrichment || '—'}</div></div>
+            `;
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+        
+        function toggleFavourite(idx, el) {
+            el.textContent = el.textContent === '☆' ? '★' : '☆';
+            el.style.color = el.textContent === '★' ? '#c9a84c' : '';
+        }
+        
+        // ==================== SENSORY TIMER ====================
+        function initTimerTags() {
+            const container = document.getElementById('timer-tags');
+            const tags = ['Acid','Sweet','Body','Finish','Floral','Fruit','Chocolate','Terpene','Citric','Malic','Clean','Jasmine','Apricot','Berry','Caramel'];
+            tags.forEach(tag => {
+                const btn = document.createElement('button');
+                btn.className = 'tag px-3 py-1 text-xs bg-[#1a1a1a] rounded-full';
+                btn.textContent = tag;
+                btn.onclick = () => {
+                    btn.classList.toggle('active');
+                    timerLogs.push({tag, time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})});
+                };
+                container.appendChild(btn);
+            });
+        }
+        
+        let timerStartTime = 0;
+        
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            timerStartTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - timerStartTime) / 1000);
+            const remaining = Math.max(0, timerSeconds - elapsed);
+            const min = Math.floor(remaining / 60);
+            const sec = remaining % 60;
+            document.getElementById('timer-display').textContent = `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+            
+            // Auto phase chimes
+            if (remaining === 480) { // 8 min left (mid)
+                playChime(600);
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            }
+            if (remaining === 300) { // 5 min left (cool)
+                playChime(400);
+                if (navigator.vibrate) navigator.vibrate(200);
+            }
+            
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                alert('Brew complete! Export your notes.');
+            }
+        }
+        
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+        }
+        
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerSeconds = 600;
+            document.getElementById('timer-display').textContent = '10:00';
+            timerLogs = [];
+            document.querySelectorAll('#timer-tags .tag').forEach(t => t.classList.remove('active'));
+        }
+        
+        function exportTimerNotes() {
+            let text = 'Brew session notes:\n';
+            timerLogs.forEach(log => text += `${log.time} — ${log.tag}\n`);
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Notes copied! Paste into Field Entry Verdict field.');
+                showScreen('entry');
+            });
+        }
+        
+        // ==================== COMPARE ====================
+        function initCompareSelects() {
+            const sel1 = document.getElementById('compare-select-1');
+            const sel2 = document.getElementById('compare-select-2');
+            sel1.innerHTML = '<option value="">Select entry...</option>';
+            sel2.innerHTML = '<option value="">Select entry...</option>';
+            
+            const data = [...ARCHIVE_DATA, ...JSON.parse(localStorage.getItem('hari_local_entries') || '[]')];
+            data.forEach((entry, i) => {
+                const opt1 = document.createElement('option');
+                opt1.value = i;
+                opt1.textContent = `${entry.Coffee_Name} (${entry.Date})`;
+                sel1.appendChild(opt1);
+                
+                const opt2 = opt1.cloneNode(true);
+                sel2.appendChild(opt2);
+            });
+        }
+        
+        function updateCompare() {
+            const i1 = document.getElementById('compare-select-1').value;
+            const i2 = document.getElementById('compare-select-2').value;
+            if (!i1 || !i2) return;
+            
+            const data = [...ARCHIVE_DATA, ...JSON.parse(localStorage.getItem('hari_local_entries') || '[]')];
+            const e1 = data[i1];
+            const e2 = data[i2];
+            
+            // Table
+            const tbody = document.getElementById('compare-table-body');
+            tbody.innerHTML = '';
+            const fields = ['Date','City','Cafe_Name','Process','Varietal','Roast_Level','Brew_Method','Ratio','Grinder','Price_Local'];
+            fields.forEach(f => {
+                const row = document.createElement('tr');
+                const v1 = e1[f] || '—';
+                const v2 = e2[f] || '—';
+                const diff = v1 !== v2 ? 'text-[#c9a84c] font-semibold' : '';
+                row.innerHTML = `
+                    <td class="py-2 text-[#888]">${f}</td>
+                    <td class="py-2 ${diff}">${v1}</td>
+                    <td class="py-2 ${diff}">${v2}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            document.getElementById('compare-table-container').classList.remove('hidden');
+            
+            // Radar
+            if (compareChart) compareChart.destroy();
+            const ctx = document.getElementById('compare-radar');
+            const scores1 = calculatePalateScores(e1.Your_Verdict || '');
+            const scores2 = calculatePalateScores(e2.Your_Verdict || '');
+            
+            compareChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Acid', 'Sweetness', 'Body', 'Clarity', 'Complexity'],
+                    datasets: [
+                        { label: e1.Coffee_Name, data: scores1, borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.2)' },
+                        { label: e2.Coffee_Name, data: scores2, borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.2)' }
+                    ]
+                },
+                options: { responsive: true, scales: { r: { suggestedMin: 0, suggestedMax: 10 } } }
+            });
+            document.getElementById('compare-radar-container').classList.remove('hidden');
+        }
+        
+        function calculatePalateScores(text) {
+            text = text.toLowerCase();
+            return [
+                (text.match(/acid|citric|lemon|lime|bright/g) || []).length * 1.5 + 4,
+                (text.match(/sweet|chocolate|caramel|praline|apricot/g) || []).length * 1.2 + 4,
+                (text.match(/body|heavy|full|dense/g) || []).length * 1.5 + 4,
+                (text.match(/clean|clarity|transparent|clear|tea-like/g) || []).length * 2 + 3,
+                (text.match(/complex|layered|structured|terpene|jasmine/g) || []).length * 1.8 + 3
+            ].map(s => Math.min(10, Math.max(1, Math.round(s))));
+        }
+        
+        // ==================== SETTINGS ====================
+        function showSettings() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-[100]';
+            modal.innerHTML = `
+                <div class="luxury-card w-full max-w-md mx-4 rounded-3xl p-6">
+                    <h3 class="header-font text-2xl font-bold mb-6">Settings</h3>
+                    
+                    <div class="space-y-5 text-sm">
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">DEFAULT DOSE (g)</label>
+                            <input type="number" id="set-dose" value="15" class="form-input w-full px-4 py-3 rounded-2xl mt-1">
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">DEFAULT YIELD (g)</label>
+                            <input type="number" id="set-yield" value="225" class="form-input w-full px-4 py-3 rounded-2xl mt-1">
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-[#888]">HOME CITY</label>
+                            <select id="set-city" class="form-input w-full px-4 py-3 rounded-2xl mt-1">
+                                <option>Singapore</option><option>Ubud, Bali</option><option>Mumbai</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4 mt-8">
+                        <button onclick="this.closest('.fixed').remove()" class="flex-1 py-4 rounded-2xl border border-[#444]">Cancel</button>
+                        <button onclick="saveSettings(this)" class="flex-1 py-4 rounded-2xl premium-btn">Save</button>
+                    </div>
+                    
+                    <button onclick="clearAllData(this)" class="mt-4 w-full py-3 text-xs text-red-400">Clear All Local Data</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function saveSettings(btn) {
+            localStorage.setItem('hari_settings', JSON.stringify({
+                defaultDose: document.getElementById('set-dose').value,
+                defaultYield: document.getElementById('set-yield').value,
+                homeCity: document.getElementById('set-city').value
+            }));
+            btn.closest('.fixed').remove();
+            alert('Settings saved');
+        }
+        
+        function clearAllData(btn) {
+            if (confirm('Clear all local entries and drafts?')) {
+                localStorage.removeItem('hari_local_entries');
+                localStorage.removeItem('hari_draft');
+                localStorage.removeItem('hari_settings');
+                btn.closest('.fixed').remove();
+                location.reload();
+            }
+        }
+        
+        // ==================== INIT ====================
+        function initPWA() {
+            // Tailwind script
+            document.documentElement.style.setProperty('--accent', '#c9a84c');
+            
+            // Load draft if exists
+            if (localStorage.getItem('hari_draft')) {
+                setTimeout(() => {
+                    if (confirm('Load previous draft?')) loadDraft();
+                }, 800);
+            }
+            
+            // Init timer tags
+            initTimerTags();
+            
+            // Render archive on load
+            setTimeout(() => {
+                if (document.getElementById('screen-archive').classList.contains('active')) renderArchive();
+            }, 100);
+            
+            // Auto ratio calc
+            ['Dose_g', 'Yield_g'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', autoCalculateRatio);
+            });
+            
+            // Keyboard shortcut
+            document.addEventListener('keydown', e => {
+                if (e.metaKey && e.key === 'Enter' && currentScreen === 'entry') {
+                    e.preventDefault();
+                    document.getElementById('audit-form').dispatchEvent(new Event('submit'));
+                }
+            });
+            
+            // Show entry screen by default
+            showScreen('entry');
+            
+            // Welcome
+            console.log('%c[Hari PWA] Fully initialized. All features ready.', 'color:#666');
+        }
+        
+        window.onload = initPWA;
+    </script>
+</body>
+</html>

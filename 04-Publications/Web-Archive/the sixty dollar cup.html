@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sixty Dollar Cup — A Journey in Reverse | Hari Coffee Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --espresso: #14100c;
+    --espresso-warm: #1d1712;
+    --parchment: #f2e9da;
+    --parchment-dim: #cbbfa8;
+    --gold: #d4a24e;
+    --gold-bright: #e8bc6a;
+    --amber: #c96f2e;
+    --amber-deep: #9c4a1a;
+    --honey: #d9a441;
+    --jade: #8fd6a3;
+    --jade-bright: #a8e8b8;
+    --ink-soft: rgba(242, 233, 218, 0.72);
+    --ink-faint: rgba(242, 233, 218, 0.45);
+    --hairline: rgba(212, 162, 78, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--espresso);
+    color: var(--parchment);
+    font-family: 'Newsreader', serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--gold); color: var(--espresso); }
+
+  /* ---------- THERMAL PROGRESS LINE ---------- */
+  .thermal-line {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100vh;
+    background: rgba(255,255,255,0.04);
+    z-index: 100;
+  }
+  .thermal-fill {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--amber) 0%, var(--honey) 45%, var(--gold) 65%, var(--jade) 100%);
+    transition: height 0.1s linear;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  section { position: relative; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% 30%, rgba(201, 111, 46, 0.16), transparent 65%),
+      radial-gradient(ellipse 600px 350px at 50% 42%, rgba(216, 164, 65, 0.10), transparent 60%),
+      var(--espresso);
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: rise 1.2s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-size: clamp(56px, 11vw, 128px);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--parchment);
+    opacity: 0;
+    animation: rise 1.4s ease 0.5s forwards;
+  }
+  .hero h1 .dollar {
+    font-style: italic;
+    font-weight: 600;
+    background: linear-gradient(115deg, var(--gold-bright), var(--amber), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 40px;
+    max-width: 460px;
+    font-size: 21px;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: 0;
+    animation: rise 1.4s ease 0.9s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 56px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    opacity: 0;
+    animation: rise 1.4s ease 1.3s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    opacity: 0;
+    animation: rise 1.4s ease 1.8s forwards;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 14px auto 0;
+    animation: drip 2.2s ease-in-out infinite;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes drip {
+    0%, 100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  }
+
+  /* ---------- PHASE MARKERS ---------- */
+  .phase-marker {
+    padding: 110px 0 70px;
+    text-align: center;
+  }
+  .phase-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .phase-label::before, .phase-label::after {
+    content: '';
+    width: 64px;
+    height: 1px;
+  }
+  .phase-hot { color: var(--amber); }
+  .phase-hot::before, .phase-hot::after { background: linear-gradient(90deg, transparent, var(--amber)); }
+  .phase-hot::after { background: linear-gradient(90deg, var(--amber), transparent); }
+  .phase-mid { color: var(--honey); }
+  .phase-mid::before, .phase-mid::after { background: linear-gradient(90deg, transparent, var(--honey)); }
+  .phase-mid::after { background: linear-gradient(90deg, var(--honey), transparent); }
+  .phase-cool { color: var(--jade); }
+  .phase-cool::before, .phase-cool::after { background: linear-gradient(90deg, transparent, var(--jade)); }
+  .phase-cool::after { background: linear-gradient(90deg, var(--jade), transparent); }
+
+  .phase-temp {
+    display: block;
+    margin-top: 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- PROSE ---------- */
+  .prose { padding: 20px 0 60px; }
+
+  .prose h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(34px, 5.4vw, 52px);
+    font-weight: 300;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 0 0 44px;
+    color: var(--parchment);
+  }
+  .prose h2 em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  .prose p {
+    margin-bottom: 32px;
+    color: var(--ink-soft);
+  }
+  .prose p.lead {
+    font-size: 24px;
+    line-height: 1.6;
+    color: var(--parchment);
+  }
+  .prose p strong { font-weight: 500; color: var(--parchment); }
+  .prose p em { color: var(--parchment); }
+
+  .drop::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 76px;
+    line-height: 0.8;
+    float: left;
+    margin: 8px 14px 0 0;
+    color: var(--gold);
+  }
+
+  /* ---------- PULL QUOTES ---------- */
+  .pull {
+    margin: 70px 0;
+    padding: 0 8px;
+    text-align: center;
+  }
+  .pull blockquote {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(26px, 4.4vw, 38px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--parchment);
+  }
+  .pull blockquote .hl { color: var(--gold-bright); }
+  .pull blockquote .hl-jade { color: var(--jade-bright); }
+  .pull cite {
+    display: block;
+    margin-top: 26px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- ARCHIVE CARDS ---------- */
+  .archive-card {
+    margin: 64px 0;
+    border: 1px solid var(--hairline);
+    background: linear-gradient(160deg, rgba(212,162,78,0.05), rgba(212,162,78,0.015));
+    padding: 36px 38px 32px;
+    position: relative;
+  }
+  .archive-card::before {
+    content: attr(data-tag);
+    position: absolute;
+    top: -11px;
+    left: 30px;
+    background: var(--espresso);
+    padding: 0 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .archive-card .ac-title {
+    font-family: 'Fraunces', serif;
+    font-size: 25px;
+    font-weight: 400;
+    color: var(--parchment);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+  .archive-card .ac-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .archive-card .ac-body {
+    font-size: 17.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .archive-card .ac-body em { color: var(--parchment); }
+
+  /* ---------- STAT STRIP ---------- */
+  .stats {
+    margin: 80px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+  }
+  .stat {
+    background: var(--espresso);
+    padding: 30px 12px 26px;
+    text-align: center;
+  }
+  .stat .n {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(34px, 5vw, 48px);
+    font-weight: 300;
+    color: var(--gold-bright);
+    line-height: 1;
+    display: block;
+  }
+  .stat .l {
+    display: block;
+    margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- TIMELINE ---------- */
+  .rewind {
+    padding: 100px 0;
+    text-align: center;
+  }
+  .rewind-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .rewind-arrow {
+    font-family: 'Fraunces', serif;
+    font-size: 58px;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin: 20px 0 8px;
+    transform: rotate(180deg);
+  }
+
+  /* ---------- SPECTRUM BAND ---------- */
+  .spectrum {
+    height: 8px;
+    margin: 90px 0;
+    background: linear-gradient(90deg, var(--amber-deep), var(--amber), var(--honey), var(--gold), #b8c98a, var(--jade));
+    border-radius: 4px;
+    position: relative;
+  }
+  .spectrum::before {
+    content: 'HOT';
+    position: absolute; left: 0; top: -26px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; color: var(--amber);
+  }
+  .spectrum::after {
+    content: 'COOL';
+    position: absolute; right: 0; top: -26px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; color: var(--jade);
+  }
+
+  /* ---------- COOL PHASE STYLING ---------- */
+  .cool-zone .prose h2 em { color: var(--jade-bright); }
+  .cool-zone .drop::first-letter { color: var(--jade); }
+  .cool-zone .archive-card { border-color: rgba(143, 214, 163, 0.28); background: linear-gradient(160deg, rgba(143,214,163,0.06), rgba(143,214,163,0.015)); }
+  .cool-zone .archive-card::before { color: var(--jade); }
+  .cool-zone .archive-card .ac-sub { color: var(--jade); }
+
+  /* ---------- REVIEW BLOCK ---------- */
+  .field-note {
+    margin: 64px 0;
+    padding: 40px 42px;
+    background: rgba(242, 233, 218, 0.035);
+    border-left: 3px solid var(--jade);
+    font-size: 17.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .field-note .fn-head {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--jade);
+    margin-bottom: 22px;
+  }
+  .field-note p { margin-bottom: 20px; }
+  .field-note p:last-child { margin-bottom: 0; }
+
+  /* ---------- FINISH ---------- */
+  .finish {
+    padding: 120px 0 90px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 700px 400px at 50% 100%, rgba(143, 214, 163, 0.07), transparent 65%),
+      var(--espresso);
+  }
+  .finish .f-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--jade);
+    margin-bottom: 40px;
+  }
+  .finish h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5.6vw, 54px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.25;
+    max-width: 640px;
+    margin: 0 auto 48px;
+  }
+  .finish p {
+    max-width: 540px;
+    margin: 0 auto 28px;
+    color: var(--ink-soft);
+  }
+  .finish .sig {
+    margin-top: 70px;
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold);
+  }
+  .finish .sig-sub {
+    margin-top: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- REVEAL ON SCROLL ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .hero-eyebrow, .hero h1, .hero-sub, .hero-meta, .hero-scroll { opacity: 1; }
+  }
+
+  @media (max-width: 640px) {
+    body { font-size: 18px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .archive-card { padding: 30px 24px 26px; }
+    .field-note { padding: 30px 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="thermal-line"><div class="thermal-fill" id="thermalFill"></div></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-eyebrow">Hari Coffee Archive · A Personal Record</div>
+  <h1>The <span class="dollar">Sixty Dollar</span><br>Cup</h1>
+  <p class="hero-sub">A journey told in reverse — the way a great cup reveals itself. Hot first. Then clearer. Then, at the very end, the beginning.</p>
+  <div class="hero-meta">193 days · 64 cups · 34 cafés · 4 cities · one archive</div>
+  <div class="hero-scroll">Begin the tasting</div>
+</section>
+
+<!-- ============ HOT PHASE ============ -->
+<div class="phase-marker reveal">
+  <span class="phase-label phase-hot">Hot Phase</span>
+  <span class="phase-temp">where we are now — 14 July 2026</span>
+</div>
+
+<section class="wrap prose">
+  <div class="reveal">
+    <h2>All flavours <em>hit at once</em></h2>
+    <p class="lead drop">Today I paid sixty dollars for a single cup of filter coffee, and I want to write down — while the lime is still on my tongue — that it was worth every cent, and that the price is the least interesting thing about it.</p>
+  </div>
+
+  <div class="reveal">
+    <p>It happened at Pour.traits in Outram Park, at a pop-up I nearly didn't know about. Three days ago I was here for a ten-dollar Thai Geisha, and the barista, Elaine, mentioned almost in passing that someone special was coming on Tuesday. Come at ten, she said, it will sell out. I came at ten.</p>
+    <p>The someone special turned out to be <strong>Inthat Ueasakaree</strong> — TaoTao — Thailand's Brewers Cup Champion, seventh place at the World Brewers Cup in Brussels, standing behind the counter brewing his actual competition coffee with his actual competition recipe. Not a tribute. Not a recreation. The beans that stood on a world stage days ago, in a dripper designed by a Taiwanese champion, ground on the same EK43 flat burrs that have quietly powered half the best cups in my archive.</p>
+  </div>
+
+  <div class="archive-card reveal" data-tag="Archive Entry · 14 Jul 2026">
+    <div class="ac-title">Finca Sophia Torcaza — Grand Reserve Washed Geisha</div>
+    <div class="ac-sub">Panama · Livid Coffee Roasters · 12.5g / 190g · 1:15.2 · 91→91→82°C</div>
+    <div class="ac-body">Hot: bright orange and lemon arriving together, honey underneath, everything at once — <em>supreme clarity</em>. Mid-cool: the clarity doesn't fade, it builds. Cool: orange and bergamot settle, and a lime whisper appears — fine, precise, lingering long after the last sip. The new number one. Nothing else in the archive comes close.</div>
+  </div>
+
+  <div class="pull reveal">
+    <blockquote>Fine and sophisticated.<br>Not because of the $60.<br><span class="hl">Because of what was in the cup.</span></blockquote>
+    <cite>Field note · written at the table · 14 July 2026</cite>
+  </div>
+
+  <div class="reveal">
+    <p>Here is what I keep turning over. Six months ago I could not have tasted this cup. I mean that literally — the liquid would have entered my mouth and I would have registered "good coffee" and moved on. The lime whisper at the cool phase, the way tartaric acid outlasts every other compound and leaves that single clean note at the end — I would have missed all of it. The sixty dollars didn't buy the coffee. It bought the proof that I can now hear what the cup is saying.</p>
+    <p>That's what this entry really records. Not a price. A capability I built one cup at a time, without ever quite deciding to.</p>
+  </div>
+</section>
+
+<!-- ============ REWIND ============ -->
+<div class="rewind reveal">
+  <span class="rewind-mark">Rewind</span>
+  <span class="rewind-arrow">⌄</span>
+  <span class="rewind-mark" style="letter-spacing:0.2em; text-transform:none; font-size:14px; color: var(--ink-soft); font-family:'Fraunces',serif; font-style:italic;">but how does a person get here?</span>
+</div>
+
+<!-- ============ MID-COOL PHASE ============ -->
+<div class="phase-marker reveal">
+  <span class="phase-label phase-mid">Mid-Cool Phase</span>
+  <span class="phase-temp">the middle months — where clarity built</span>
+</div>
+
+<section class="wrap prose">
+  <div class="reveal">
+    <h2>The archive became <em>a parallel life</em></h2>
+    <p class="lead drop">Somewhere in the spring, without announcing itself, the spreadsheet stopped being a spreadsheet.</p>
+  </div>
+
+  <div class="reveal">
+    <p>It started as a list. Date, café, coffee, a few notes. Then the columns multiplied — varietal, process, dose, yield, ratio, water temperature, grinder, burr geometry. Then came the rules: the barista is the source of truth, never assume, never infer, flag every discrepancy. Then the three-phase tasting — every cup assessed hot, mid-cool, and cool, because a coffee that only performs at one temperature is hiding something.</p>
+    <p>At some point I realised I was no longer keeping records of a hobby. I was living a second life alongside my first one, and the archive was its territory. My real life has meetings and deadlines and a daughter growing up faster than I can document. The parallel one has entry numbers, purple-filled Gesha rows, and a running argument with conical drippers. Both lives are mine. One of them fits in a spreadsheet, which makes it the only life I can actually read back.</p>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><span class="n">64</span><span class="l">entries</span></div>
+    <div class="stat"><span class="n">34</span><span class="l">cafés</span></div>
+    <div class="stat"><span class="n">14</span><span class="l">gesha cups</span></div>
+    <div class="stat"><span class="n">4</span><span class="l">cities</span></div>
+  </div>
+
+  <div class="reveal">
+    <p>The middle months taught me my own palate, which turned out to be a real thing with edges and preferences that existed before I could name them. Malic acid — stone fruit, nectarine, the lift in a good mandarin. Florals built on linalool — jasmine, orange blossom. Washed process over fermented funk, almost every time. Flat burrs, flat-bottom brewers. I wrote it down as a phrase and it became the archive's motto: <strong>clarity over complexity</strong>. I wasn't choosing a preference. I was discovering one that had been waiting.</p>
+  </div>
+
+  <div class="archive-card reveal" data-tag="The Long Reign">
+    <div class="ac-title">El Obraje — Washed Colombia Gesha</div>
+    <div class="ac-sub">Fluid Collective · Entry #016 · archive #1 for six months</div>
+    <div class="ac-body">For half a year, this was the summit. Mango, nectarine, orange blossom — the cup every new entry was measured against and every new entry lost to. When it was finally displaced, it took a world championship recipe to do it. A six-month reign is not a defeat. It's a <em>standard</em>.</div>
+  </div>
+
+  <div class="archive-card reveal" data-tag="Three Days Before the Crown">
+    <div class="ac-title">Thailand Sirinya Geisha Amarone — Anaerobic Natural</div>
+    <div class="ac-sub">Pour.traits · 11 July 2026 · SGD $10</div>
+    <div class="ac-body">The ten-dollar cup that led to the sixty-dollar one. First Thailand origin in the archive, brewed on a four-pour alternating temperature protocol by a barista who then leaned in and shared the tip that changed the week: <em>come back Tuesday</em>. The archive's cheapest great cup opened the door to its most expensive one. The spreadsheet has a sense of humour.</div>
+  </div>
+
+  <div class="pull reveal">
+    <blockquote>I stopped logging coffees.<br>I started logging <span class="hl">what I noticed</span> —<br>and noticed more because I logged it.</blockquote>
+    <cite>On entry #031, when the archive changed its own rules</cite>
+  </div>
+
+  <div class="reveal">
+    <p>Around entry thirty-one the archive rewrote itself. Exact brewing parameters became optional; what I felt became mandatory. Because the numbers were never the point — they were scaffolding for attention. The real record is sensory: what arrived hot, what emerged as it cooled, what lingered. A cup of coffee is a fifteen-minute story, and the archive exists because I got tired of forgetting the endings.</p>
+    <p>The obsession travelled. Mumbai, Johor Bahru, back to Bali. It vetted cafés through a web app I built for the purpose, because of course I built an app. It made friends — Aqil at Zerah, Glenda at Abseil, Elaine at Pour.traits — the baristas who stopped being service staff and became fellow researchers the moment they realised I actually wanted the answer to "what's the ratio on this?"</p>
+  </div>
+</section>
+
+<div class="wrap"><div class="spectrum reveal"></div></div>
+
+<!-- ============ COOL PHASE ============ -->
+<div class="cool-zone">
+<div class="phase-marker reveal">
+  <span class="phase-label phase-cool">Cool Phase</span>
+  <span class="phase-temp">the origin — January 2026, Ubud, Bali</span>
+</div>
+
+<section class="wrap prose">
+  <div class="reveal">
+    <h2>Twenty years of travel,<br>and then <em>one morning in Ubud</em></h2>
+    <p class="lead drop">Here is the part I still can't fully explain. For twenty years I travelled the world — Brazil, Australia, Japan, Taiwan, the United States, Hawaii, half of Europe — and the thought of filter coffee never once crossed my mind.</p>
+  </div>
+
+  <div class="reveal">
+    <p>Two decades of lattes in interval. Flat whites. The occasional espresso when a place looked serious. I passed through some of the greatest coffee cities and coffee-growing countries on the planet — I stood in <em>Brazil</em> — and ordered milk drinks the entire time. Filter coffee wasn't something I had rejected. It simply didn't exist in my world. There was no shelf in my mind for it to sit on.</p>
+    <p>Then, new year 2026, Bali. I searched for good cafés the way I always do in a new place, and ended up at Seniman Coffee Studio in Ubud, early morning, right as they opened. And for a reason I genuinely cannot reconstruct, I ordered a manual brew instead of a flat white. Then a second one, to compare. Then I came back the next morning and did it again.</p>
+  </div>
+
+  <div class="archive-card reveal" data-tag="Where It Began">
+    <div class="ac-title">Seniman Coffee Studio — Ubud, Bali</div>
+    <div class="ac-sub">January 2026 · two mornings · two brews, side by side</div>
+    <div class="ac-body">Bali Kintamani (Karana) against Sulawesi Toraja. The Kintamani bright and clean with a citrus lift; the Toraja heavier, grounded, earthy, cocoa-deep. Same category of drink, two completely different stories — and for the first time, <em>I could hear the difference</em>. No harshness, no over-roasting. Just honest expression of the beans, and a barista who took the time to explain why each tasted the way it did.</div>
+  </div>
+
+  <div class="field-note reveal">
+    <div class="fn-head">The review I left — my first field note, before I knew what field notes were</div>
+    <p>"Tried two manual brews back to back to understand the range — Bali Kintamani (Karana) and Sulawesi Toraja — and the difference between the two was very clear. The Kintamani was bright and clean with a nice citrus lift, while the Toraja was heavier, more grounded and earthy, with deeper cocoa-like notes."</p>
+    <p>"What I liked most is that they actually take the time to understand what you're drinking and why it tastes the way it does. Good recommendations, solid knowledge of origin and processing, and no unnecessary hype."</p>
+  </div>
+
+  <div class="reveal">
+    <p>Reading that review now is strange. Everything is already there in embryo — tasting side by side to understand range, caring about origin and processing, valuing the barista's knowledge over hype, the instinct to write it down. I thought I was leaving a Google review. I was actually writing entry zero of an archive I didn't know I was about to build.</p>
+    <p>Two mornings in Ubud. That's all it took to open a door that twenty years of world travel had walked straight past. Within a week of coming home I was seeking out filter in Singapore. Within a month there was a spreadsheet. Within six months there was a palate DNA, a Gesha hall of fame, a gatekeeper app, and a man from Thailand pouring me a world-championship recipe while I stood there understanding — actually understanding — what he had built.</p>
+  </div>
+
+  <div class="pull reveal">
+    <blockquote>The lime whisper at the end of the sixty dollar cup<br>and the citrus lift in that first Kintamani —<br><span class="hl-jade">they are the same note.</span><br>It just took me 193 days to learn its name.</blockquote>
+    <cite>The cool phase of the whole journey</cite>
+  </div>
+</section>
+</div>
+
+<!-- ============ FINISH ============ -->
+<section class="finish">
+  <div class="f-mark reveal">The Finish · What Lingers</div>
+  <h2 class="reveal">A cup cools in fifteen minutes.<br>A palate takes a lifetime.<br>I'm 193 days in.</h2>
+  <div class="reveal">
+    <p>The archive keeps going. There's an Ecuadorian Gesha waiting at Fahrenheit, an Ethiopian at Keryi with orange blossom in its notes, a Panama anaerobic at Abseil I've been circling. In December there's a trip planned to Coorg and Chikmagalur — to finally stand where coffee grows, bean to cup, and add an origin chapter to a story that so far has only been told in cafés.</p>
+    <p>Somewhere out there is also a cup that will displace the crown entry. I know this the way I know the Kintamani led to the Toraja led to everything. The archive's only permanent rule is that number one is temporary.</p>
+    <p>Until then — this is the record. Written for no one. Written for me.</p>
+  </div>
+  <div class="sig reveal">Clarity over complexity.</div>
+  <div class="sig-sub reveal">Hari Coffee Archive · est. Ubud, January 2026</div>
+</section>
+
+<script>
+  // Thermal progress line
+  const fill = document.getElementById('thermalFill');
+  function updateThermal() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    fill.style.height = pct + '%';
+  }
+  document.addEventListener('scroll', updateThermal, { passive: true });
+  updateThermal();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

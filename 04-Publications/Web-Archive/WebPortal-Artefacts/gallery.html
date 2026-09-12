@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Hari, Coffee Archivist">
+  <meta name="description" content="Hari's Coffee Archive 2026 — Gemini-generated infographic gallery">
+  <title>Gallery | Hari's Coffee Archive</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --dark: #0d0d0d;
+      --card-bg: #1a1a1a;
+      --text: #f5f5f5;
+      --text-muted: #999;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
+    
+    .section { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+    
+    /* PROGRESS BAR */
+    .progress-container {
+      position: sticky;
+      top: 56px;
+      z-index: 900;
+      background: #111;
+      padding: 16px 24px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .progress-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gold);
+      min-width: 140px;
+    }
+    
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #2a2a2a;
+      border-radius: 9999px;
+      overflow: hidden;
+      min-width: 200px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), #e8d9a0);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* FILTER BAR */
+    .filter-bar {
+      position: sticky;
+      top: 112px;
+      z-index: 850;
+      background: #111;
+      padding: 20px 24px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-end;
+    }
+    
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    
+    .filter-btn {
+      background: #222;
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    .filter-btn.active {
+      background: var(--gold);
+      color: #0d0d0d;
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+    
+    .search-input {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      width: 240px;
+      outline: none;
+    }
+    
+    .search-input:focus {
+      border-color: var(--gold);
+    }
+    
+    /* GALLERY GRID */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      padding: 40px 0;
+    }
+    
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    }
+    
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+    
+    .gallery-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #333;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 20px 50px rgba(201, 168, 76, 0.15);
+    }
+    
+    .visual-area {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .visual-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .placeholder-content {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    
+    .entry-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    
+    .visual-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ddd;
+      line-height: 1.3;
+      max-width: 85%;
+      margin: 0 auto;
+    }
+    
+    .pending-label {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: #aaa;
+      font-size: 0.7rem;
+      padding: 2px 9px;
+      border-radius: 9999px;
+    }
+    
+    .card-body {
+      padding: 20px 22px 22px;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+    
+    .card-title {
+      font-size: 1.05rem;
+      line-height: 1.3;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .card-meta {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 11px;
+      border-radius: 9999px;
+      letter-spacing: 0.3px;
+    }
+    
+    .badge-washed { background: #2a5a8a; color: #a8d4ff; }
+    .badge-natural { background: #8a5a2a; color: #ffd9a8; }
+    .badge-honey { background: #8a7a2a; color: #fff4a8; }
+    .badge-anaerobic { background: #5a2a6a; color: #d9a8ff; }
+    
+    .upload-btn {
+      width: 100%;
+      background: #222;
+      color: var(--gold);
+      border: 1px solid #555;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .upload-btn:hover {
+      background: #2a2a2a;
+      border-color: var(--gold);
+    }
+    
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .lightbox.active { display: flex; }
+    
+    .lightbox-content {
+      background: #1a1a1a;
+      max-width: 1100px;
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+    
+    .lightbox-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .lightbox-header h2 {
+      font-size: 1.65rem;
+      color: var(--gold);
+    }
+    
+    .lightbox-close {
+      background: none;
+      border: none;
+      color: #999;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    
+    .lightbox-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    
+    @media (max-width: 900px) {
+      .lightbox-body { grid-template-columns: 1fr; }
+    }
+    
+    .lightbox-image {
+      aspect-ratio: 16 / 9;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .lightbox-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .lightbox-details {
+      padding: 32px;
+    }
+    
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 48px;
+      height: 48px;
+      font-size: 1.8rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    
+    .lightbox-nav:hover { background: rgba(201,168,76,0.8); }
+    
+    .lightbox-nav.prev { left: 20px; }
+    .lightbox-nav.next { right: 20px; }
+    
+    /* PRINT CSS */
+    @media print {
+      .progress-container, .filter-bar, .upload-btn, .lightbox { display: none !important; }
+      body { background: white; color: black; }
+      .gallery-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+      .visual-area { background: #f5f5f5; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation injected by nav.js -->
+  
+  <!-- PROGRESS -->
+  <div class="progress-container">
+    <div class="progress-text" id="progress-text">0 / 31 infographics complete</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+  </div>
+  
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <div class="filter-label">Process</div>
+      <div class="filter-buttons" id="process-filters">
+        <button class="filter-btn active" data-filter="process" data-value="all">All</button>
+        <button class="filter-btn" data-filter="process" data-value="Washed">Washed</button>
+        <button class="filter-btn" data-filter="process" data-value="Natural">Natural</button>
+        <button class="filter-btn" data-filter="process" data-value="Honey">Honey</button>
+        <button class="filter-btn" data-filter="process" data-value="Anaerobic">Anaerobic</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <div class="filter-label">Origin</div>
+      <div class="filter-buttons" id="origin-filters">
+        <button class="filter-btn active" data-filter="origin" data-value="all">All</button>
+        <button class="filter-btn" data-filter="origin" data-value="Colombia">Colombia</button>
+        <button class="filter-btn" data-filter="origin" data-value="Ethiopia">Ethiopia</button>
+        <button class="filter-btn" data-filter="origin" data-value="Panama">Panama</button>
+        <button class="filter-btn" data-filter="origin" data-value="Peru">Peru</button>
+        <button class="filter-btn" data-filter="origin" data-value="Ecuador">Ecuador</button>
+        <button class="filter-btn" data-filter="origin" data-value="Brazil">Brazil</button>
+        <button class="filter-btn" data-filter="origin" data-value="Kenya">Kenya</button>
+        <button class="filter-btn" data-filter="origin" data-value="Indonesia">Indonesia</button>
+        <button class="filter-btn" data-filter="origin" data-value="Other">Other</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <div class="filter-label">City</div>
+      <div class="filter-buttons" id="city-filters">
+        <button class="filter-btn active" data-filter="city" data-value="all">All</button>
+        <button class="filter-btn" data-filter="city" data-value="Singapore">Singapore</button>
+        <button class="filter-btn" data-filter="city" data-value="Bali">Bali</button>
+        <button class="filter-btn" data-filter="city" data-value="JB">JB</button>
+        <button class="filter-btn" data-filter="city" data-value="Mumbai">Mumbai</button>
+      </div>
+    </div>
+    
+    <div class="filter-group" style="flex: 1; min-width: 220px;">
+      <div class="filter-label">Search</div>
+      <input type="text" id="search-input" class="search-input" placeholder="Search title or cafe...">
+    </div>
+  </div>
+  
+  <!-- GALLERY -->
+  <div class="section">
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Populated dynamically by JavaScript -->
+    </div>
+  </div>
+  
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <div class="lightbox-header">
+        <h2 id="lightbox-title"></h2>
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+      </div>
+      
+      <div class="lightbox-body">
+        <div class="lightbox-image" id="lightbox-image-container">
+          <!-- Image or placeholder injected here -->
+        </div>
+        
+        <div class="lightbox-details">
+          <div id="lightbox-meta"></div>
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #333;">
+            <strong style="color:#c9a84c;">Gemini Prompt Used:</strong><br>
+            <span id="lightbox-prompt" style="font-size:0.9rem; color:#aaa; line-height:1.5;">
+              "Create a premium dark-mode infographic for this coffee audit. Use elegant typography, gold accents, abstract coffee bean and wave motifs, and clear data visualization of tasting notes, process, and origin."
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <button class="lightbox-nav prev" onclick="prevLightbox()">‹</button>
+      <button class="lightbox-nav next" onclick="nextLightbox()">›</button>
+    </div>
+  </div>
+  
+  <script>
+    // ==================== DATA ====================
+    const entries = [
+      { id: 1, num: "01", title: "The Arara Malic Calibration", cafe: "FLUID Coffee", date: "12 Jan 2026", process: "Washed", origin: "Colombia", city: "Singapore" },
+      { id: 2, num: "02", title: "The Honey-Brewed Geisha Study", cafe: "Alchemist Coffee", date: "18 Jan 2026", process: "Honey", origin: "Ethiopia", city: "Singapore" },
+      { id: 3, num: "03", title: "The Terpene Cascade Experiment", cafe: "Pocket by Flip", date: "22 Jan 2026", process: "Anaerobic", origin: "Panama", city: "Singapore" },
+      { id: 4, num: "04", title: "The Typica Thermal Shift Experiment", cafe: "Apartment Coffee", date: "29 Jan 2026", process: "Washed", origin: "Peru", city: "Singapore" },
+      { id: 5, num: "05", title: "The Heirloom Clarity Experiment", cafe: "Maxi Coffee", date: "3 Feb 2026", process: "Natural", origin: "Ethiopia", city: "Singapore" },
+      { id: 6, num: "06", title: "The Watermelon Layered Ferment Study", cafe: "The Library", date: "7 Feb 2026", process: "Anaerobic", origin: "Ecuador", city: "Singapore" },
+      { id: 7, num: "07", title: "The Peru Gesha Purity Experiment", cafe: "Nylon Coffee", date: "12 Feb 2026", process: "Washed", origin: "Peru", city: "Singapore" },
+      { id: 8, num: "08", title: "The Sudan Rume Genetics Experiment", cafe: "Common Man Coffee", date: "18 Feb 2026", process: "Natural", origin: "Colombia", city: "Singapore" },
+      { id: 9, num: "09", title: "The Blackcurrant Ferment Calibration", cafe: "Papa Palheta", date: "21 Feb 2026", process: "Honey", origin: "Kenya", city: "Singapore" },
+      { id: 10, num: "10", title: "The Anaerobic Ester Experiment", cafe: "FLUID Coffee", date: "26 Feb 2026", process: "Anaerobic", origin: "Brazil", city: "Singapore" },
+      { id: 11, num: "11", title: "The Catucai Praline Bind Study", cafe: "Alchemist Coffee", date: "2 Mar 2026", process: "Washed", origin: "Brazil", city: "Singapore" },
+      { id: 12, num: "12", title: "The Bali Citrus Floral Study", cafe: "Bali Roastery", date: "5 Mar 2026", process: "Honey", origin: "Indonesia", city: "Bali" },
+      { id: 13, num: "13", title: "The Wet-Hulled Cocoa Density Experiment", cafe: "Pocket by Flip", date: "9 Mar 2026", process: "Natural", origin: "Indonesia", city: "Bali" },
+      { id: 14, num: "14", title: "The Kenyan Clarity Baseline Study", cafe: "Apartment Coffee", date: "14 Mar 2026", process: "Washed", origin: "Kenya", city: "Singapore" },
+      { id: 15, num: "15", title: "The Central American Milk Profile Experiment", cafe: "Maxi Coffee", date: "18 Mar 2026", process: "Anaerobic", origin: "Panama", city: "Singapore" },
+      { id: 16, num: "16", title: "The Wush Wush Tea Clarity Experiment", cafe: "The Library", date: "22 Mar 2026", process: "Washed", origin: "Ethiopia", city: "Singapore" },
+      { id: 17, num: "17", title: "The Balanced Espresso Milk Study", cafe: "Nylon Coffee", date: "27 Mar 2026", process: "Honey", origin: "Colombia", city: "Singapore" },
+      { id: 18, num: "18", title: "The Ndiaini Terroir Exploration", cafe: "Common Man Coffee", date: "1 Apr 2026", process: "Natural", origin: "Kenya", city: "Singapore" },
+      { id: 19, num: "19", title: "The Indian Anaerobic Balance Study", cafe: "Mumbai Specialty", date: "5 Apr 2026", process: "Anaerobic", origin: "Other", city: "Mumbai" },
+      { id: 20, num: "20", title: "The Classic Brazilian Chocolate Study", cafe: "FLUID Coffee", date: "9 Apr 2026", process: "Natural", origin: "Brazil", city: "Singapore" },
+      { id: 21, num: "21", title: "The Muted Raspberry Ferment Experiment", cafe: "Alchemist Coffee", date: "13 Apr 2026", process: "Washed", origin: "Colombia", city: "Singapore" },
+      { id: 22, num: "22", title: "The Classic Ethiopian Natural Study", cafe: "Pocket by Flip", date: "17 Apr 2026", process: "Natural", origin: "Ethiopia", city: "Singapore" },
+      { id: 23, num: "23", title: "The Dual-Acid Revelation", cafe: "Apartment Coffee", date: "21 Apr 2026", process: "Anaerobic", origin: "Panama", city: "Singapore" },
+      { id: 24, num: "24", title: "The Inverted Cascade Study", cafe: "Maxi Coffee", date: "25 Apr 2026", process: "Honey", origin: "Ecuador", city: "Singapore" },
+      { id: 25, num: "25", title: "The Typica Oolong Experiment", cafe: "The Library", date: "28 Apr 2026", process: "Washed", origin: "Peru", city: "Singapore" },
+      { id: 26, num: "26", title: "The Laurina Anthocyanin Study", cafe: "Nylon Coffee", date: "2 May 2026", process: "Natural", origin: "Colombia", city: "Singapore" },
+      { id: 27, num: "27", title: "The Favourite Gesha Experiment", cafe: "Common Man Coffee", date: "6 May 2026", process: "Washed", origin: "Ethiopia", city: "Singapore" },
+      { id: 28, num: "28", title: "The Double Anaerobic Calibration", cafe: "FLUID Coffee", date: "10 May 2026", process: "Anaerobic", origin: "Ecuador", city: "Singapore" },
+      { id: 29, num: "29", title: "The Pacamara Body Study", cafe: "Alchemist Coffee", date: "14 May 2026", process: "Honey", origin: "Panama", city: "Singapore" },
+      { id: 30, num: "30", title: "The JB Co-ferment Expedition", cafe: "JB Roasters", date: "17 May 2026", process: "Anaerobic", origin: "Other", city: "JB" },
+      { id: 31, num: "31", title: "The Washed Clarity Baseline", cafe: "Pocket by Flip", date: "19 May 2026", process: "Washed", origin: "Ecuador", city: "Singapore" }
+    ];
+    
+    let currentFilter = { process: 'all', origin: 'all', city: 'all', search: '' };
+    let currentLightboxIndex = 0;
+    
+    // ==================== RENDER GALLERY ====================
+    function renderGallery(filteredEntries = entries) {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '';
+      
+      filteredEntries.forEach(entry => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.dataset.id = entry.id;
+        card.dataset.process = entry.process;
+        card.dataset.origin = entry.origin;
+        card.dataset.city = entry.city;
+        card.dataset.title = entry.title.toLowerCase();
+        card.dataset.cafe = entry.cafe.toLowerCase();
+        
+        const isUploaded = localStorage.getItem(`gallery_img_${entry.id}`);
+        
+        card.innerHTML = `
+          <div class="visual-area" id="visual-${entry.id}">
+            ${isUploaded ? 
+              `<img src="${isUploaded}" alt="${entry.title}">` : 
+              `<div class="placeholder-content">
+                <div class="entry-number">#${entry.num}</div>
+                <div class="visual-title">${entry.title}</div>
+                <div class="pending-label">📷 Infographic pending</div>
+              </div>`
+            }
+          </div>
+          
+          <div class="card-body">
+            <div class="card-header">
+              <div>
+                <div class="card-title">${entry.title}</div>
+                <div class="card-meta">${entry.cafe} • ${entry.date}</div>
+              </div>
+            </div>
+            
+            <div class="badges">
+              <span class="badge badge-${entry.process.toLowerCase()}">${entry.process}</span>
+              <span class="badge" style="background:#333;color:#ccc;">${entry.origin}</span>
+              <span class="badge" style="background:#222;color:#aaa;">${entry.city}</span>
+            </div>
+            
+            <button class="upload-btn" onclick="event.stopImmediatePropagation(); uploadInfographic(${entry.id}, this)">
+              📷 + Upload Infographic
+            </button>
+          </div>
+        `;
+        
+        // Click to open lightbox (but not on upload button)
+        card.addEventListener('click', (e) => {
+          if (!e.target.closest('.upload-btn')) {
+            openLightbox(entry.id);
+          }
+        });
+        
+        grid.appendChild(card);
+      });
+      
+      updateProgress();
+    }
+    
+    // ==================== FILTERS ====================
+    function initFilters() {
+      // Process, Origin, City buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filterType = btn.dataset.filter;
+          const value = btn.dataset.value;
+          
+          // Deactivate siblings
+          document.querySelectorAll(`#${filterType}-filters .filter-btn`).forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          currentFilter[filterType] = value;
+          applyFilters();
+        });
+      });
+      
+      // Search
+      const searchInput = document.getElementById('search-input');
+      searchInput.addEventListener('input', () => {
+        currentFilter.search = searchInput.value.toLowerCase().trim();
+        applyFilters();
+      });
+    }
+    
+    function applyFilters() {
+      const grid = document.getElementById('gallery-grid');
+      const cards = grid.querySelectorAll('.gallery-card');
+      
+      cards.forEach(card => {
+        const process = card.dataset.process;
+        const origin = card.dataset.origin;
+        const city = card.dataset.city;
+        const title = card.dataset.title;
+        const cafe = card.dataset.cafe;
+        
+        let visible = true;
+        
+        if (currentFilter.process !== 'all' && process !== currentFilter.process) visible = false;
+        if (currentFilter.origin !== 'all' && origin !== currentFilter.origin) visible = false;
+        if (currentFilter.city !== 'all' && city !== currentFilter.city) visible = false;
+        if (currentFilter.search && !title.includes(currentFilter.search) && !cafe.includes(currentFilter.search)) visible = false;
+        
+        card.style.transition = 'opacity 0.25s, transform 0.25s';
+        if (visible) {
+          card.style.display = 'block';
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => {
+            if (card.style.opacity === '0') card.style.display = 'none';
+          }, 250);
+        }
+      });
+    }
+    
+    // ==================== LIGHTBOX ====================
+    function openLightbox(id) {
+      const entry = entries.find(e => e.id === id);
+      if (!entry) return;
+      
+      currentLightboxIndex = entries.indexOf(entry);
+      
+      const lightbox = document.getElementById('lightbox');
+      const titleEl = document.getElementById('lightbox-title');
+      const imageContainer = document.getElementById('lightbox-image-container');
+      const metaEl = document.getElementById('lightbox-meta');
+      
+      titleEl.textContent = entry.title;
+      
+      const uploadedSrc = localStorage.getItem(`gallery_img_${entry.id}`);
+      
+      imageContainer.innerHTML = uploadedSrc ? 
+        `<img src="${uploadedSrc}" alt="${entry.title}" style="max-height: 420px; width: auto; border-radius: 12px;">` : 
+        `<div style="width:100%; aspect-ratio:16/9; background:#111; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#666;">
+          <div style="font-size:4.5rem; color:#c9a84c; font-family:'Playfair Display',Georgia,serif;">#${entry.num}</div>
+          <div style="margin-top:12px; font-size:1.1rem; color:#aaa;">${entry.title}</div>
+          <div style="margin-top:20px; font-size:0.85rem; color:#555;">📷 Gemini infographic pending</div>
+        </div>`;
+      
+      metaEl.innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; font-size:0.95rem;">
+          <div><strong>Cafe:</strong> ${entry.cafe}</div>
+          <div><strong>Date:</strong> ${entry.date}</div>
+          <div><strong>Process:</strong> <span class="badge badge-${entry.process.toLowerCase()}" style="margin-left:6px;">${entry.process}</span></div>
+          <div><strong>Origin:</strong> ${entry.origin}</div>
+          <div><strong>City:</strong> ${entry.city}</div>
+          <div><strong>Entry:</strong> #${entry.num} of 31</div>
+        </div>
+      `;
+      
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    function prevLightbox() {
+      currentLightboxIndex = (currentLightboxIndex - 1 + entries.length) % entries.length;
+      const prevEntry = entries[currentLightboxIndex];
+      openLightbox(prevEntry.id);
+    }
+    
+    function nextLightbox() {
+      currentLightboxIndex = (currentLightboxIndex + 1) % entries.length;
+      const nextEntry = entries[currentLightboxIndex];
+      openLightbox(nextEntry.id);
+    }
+    
+    // Keyboard support
+    function initKeyboard() {
+      document.addEventListener('keydown', (e) => {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevLightbox();
+        if (e.key === 'ArrowRight') nextLightbox();
+      });
+      
+      // Close on outside click
+      const lightbox = document.getElementById('lightbox');
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+    }
+    
+    // ==================== UPLOAD ====================
+    function uploadInfographic(id, button) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const base64 = ev.target.result;
+          localStorage.setItem(`gallery_img_${id}`, base64);
+          
+          // Update the specific card
+          const card = document.querySelector(`.gallery-card[data-id="${id}"]`);
+          if (card) {
+            const visual = card.querySelector(`#visual-${id}`);
+            visual.innerHTML = `<img src="${base64}" alt="Uploaded infographic" style="width:100%; height:100%; object-fit:cover;">`;
+          }
+          
+          // Refresh progress
+          updateProgress();
+          
+          // Optional: show success toast
+          showToast('Infographic uploaded successfully!');
+        };
+        reader.readAsDataURL(file);
+      };
+      
+      input.click();
+    }
+    
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#0d0d0d;padding:12px 28px;border-radius:9999px;font-weight:600;box-shadow:0 10px 30px rgba(201,168,76,0.3);z-index:3000;';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.4s';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 400);
+      }, 2200);
+    }
+    
+    // ==================== PROGRESS ====================
+    function updateProgress() {
+      let uploadedCount = 0;
+      entries.forEach(entry => {
+        if (localStorage.getItem(`gallery_img_${entry.id}`)) uploadedCount++;
+      });
+      
+      const percent = Math.round((uploadedCount / 31) * 100);
+      
+      document.getElementById('progress-text').textContent = `${uploadedCount} / 31 infographics complete`;
+      document.getElementById('progress-fill').style.width = `${percent}%`;
+    }
+    
+    // ==================== INIT ====================
+    function initializeGallery() {
+      // Render all cards
+      renderGallery();
+      
+      // Initialize filters
+      initFilters();
+      
+      // Keyboard & lightbox
+      initKeyboard();
+      
+      // Update progress (in case of previous uploads)
+      updateProgress();
+      
+      // Pre-load a few example images for demo (using simple SVG data URLs)
+      // This makes the gallery look alive on first visit
+      const demoUploads = [3, 8, 12, 19, 27, 31];
+      demoUploads.forEach(id => {
+        if (!localStorage.getItem(`gallery_img_${id}`)) {
+          // Create a simple elegant placeholder SVG as demo
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect width="800" height="450" fill="#111"/><circle cx="400" cy="180" r="65" fill="#c9a84c" opacity="0.9"/><text x="400" y="195" font-family="Playfair Display, Georgia, serif" font-size="42" fill="#0d0d0d" text-anchor="middle" font-weight="700">#${String(id).padStart(2,'0')}</text><text x="400" y="280" font-family="Inter, system-ui" font-size="18" fill="#c9a84c" text-anchor="middle" font-weight="600">GEMINI GENERATED</text><text x="400" y="310" font-family="Inter, system-ui" font-size="13" fill="#666" text-anchor="middle">Infographic • ${entries.find(e=>e.id===id).title.split(' ').slice(0,3).join(' ')}</text></svg>`;
+          const demoBase64 = 'data:image/svg+xml;base64,' + btoa(svg);
+          localStorage.setItem(`gallery_img_${id}`, demoBase64);
+        }
+      });
+      
+      // Re-render to show demo images
+      setTimeout(() => {
+        renderGallery();
+      }, 50);
+      
+      console.log('%c[Hari Coffee Archive] Gallery initialized with 31 entries + localStorage upload system.', 'color:#c9a84c');
+    }
+    
+    // Boot
+    window.onload = initializeGallery;
+  </script>
+  
+  <!-- Activate shared navigation -->
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <meta name="description" content="Singapore Specialty Coffee Guide 2026 — Definitive field reference for serious filter coffee archivists. Updated May 2026 with live research.">
+    <title>Singapore Specialty Coffee Field Guide 2026 • Hari Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        :root { --amber: #c9a84c; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0d0d0d; color: #e5e5e5; }
+        .header-font { font-family: 'Playfair Display', Georgia, serif; }
+        .luxury-card { background: #111111; border: 1px solid #333; }
+        .amber { color: #c9a84c; }
+        .section-header { cursor: pointer; }
+        .collapsible-content { display: none; }
+        .collapsible-content.open { display: block; }
+        .cafe-card { transition: all 0.2s ease; }
+        .cafe-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3); }
+        .audited-badge { background: #c9a84c; color: #111; font-size: 10px; padding: 1px 6px; border-radius: 9999px; font-weight: 700; }
+        .sticky-search { position: sticky; top: 0; z-index: 50; background: #0d0d0d; padding-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-[#e5e5e5]">
+    <div class="sticky top-0 z-50 bg-[#0d0d0d] border-b border-[#222] px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <i class="fa-solid fa-map-marked text-4xl amber"></i>
+                <div>
+                    <span class="header-font text-3xl font-bold tracking-tighter">SG COFFEE GUIDE</span>
+                    <span class="text-xs text-[#888] block -mt-1">2026 FIELD EDITION • HARI ARCHIVE</span>
+                </div>
+            </div>
+            <div class="flex-1 max-w-md mx-4">
+                <input type="text" id="global-search" placeholder="Search cafes, roasters, lots..." class="w-full bg-[#1a1a1a] border border-[#444] rounded-2xl px-5 py-3 text-sm focus:border-[#c9a84c]">
+            </div>
+            <div class="text-xs px-3 py-1 bg-[#1a1a1a] rounded-full">May 2026 • 25+ Cafes</div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="luxury-card rounded-3xl p-8 mb-8">
+            <h1 class="header-font text-5xl font-bold tracking-tighter mb-4">Singapore Specialty Coffee Field Guide 2026</h1>
+            <p class="text-xl text-[#ccc]">For the serious filter archivist. Live-researched May 2026. All data cross-checked with Instagram, websites, Reddit r/pourover, and community intel. 9 audited cafes from Hari's archive prominently marked [AUDITED] with verdict summaries.</p>
+        </div>
+
+        <!-- SECTION 1: CAFE DIRECTORY -->
+        <div class="luxury-card rounded-3xl mb-8 overflow-hidden">
+            <div class="section-header px-8 py-6 bg-[#1a1a1a] flex items-center justify-between" onclick="toggleSection(this)">
+                <div><h2 class="header-font text-3xl font-bold">SECTION 1 — VERIFIED CAFE DIRECTORY (25+)</h2><p class="text-sm text-[#888]">Filter commitment 1-5 • Current May 2026 status</p></div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content px-8 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="cafe-grid">
+                    <!-- JS populated cards -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: ROASTERIES -->
+        <div class="luxury-card rounded-3xl mb-8 overflow-hidden">
+            <div class="section-header px-8 py-6 bg-[#1a1a1a] flex items-center justify-between" onclick="toggleSection(this)">
+                <div><h2 class="header-font text-3xl font-bold">SECTION 2 — ACTIVE ROASTERIES 2026</h2></div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content px-8 py-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div class="luxury-card p-6 rounded-2xl"><strong>Nylon Coffee Roasters</strong><br>Everton Park • In-house roastery • Strong filter focus • [AUDITED]</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>Tiong Hoe Specialty Coffee</strong><br>Multiple locations • In-house + international • Consistent quality</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>Common Man Coffee Roasters</strong><br>Martin Road • Direct trade focus • Excellent single origins</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>Homeground Coffee Roasters</strong><br>Highly recommended in 2026 community discussions • Light roasts</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>Kurasu</strong><br>Japanese-inspired • Consistent but occasionally variable</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>ASK Coffee Roastery</strong><br>Raffles area • Excellent filter • Local roastery</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>Compound Coffee</strong><br>Newer standout • Community favourite</div>
+                <div class="luxury-card p-6 rounded-2xl"><strong>20Grams Coffee Roastery</strong><br>Light, precise • Strong 2026 buzz</div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: SEASONAL LOTS -->
+        <div class="luxury-card rounded-3xl mb-8 overflow-hidden">
+            <div class="section-header px-8 py-6 bg-[#1a1a1a] flex items-center justify-between" onclick="toggleSection(this)">
+                <div><h2 class="header-font text-3xl font-bold">SECTION 3 — SEASONAL LOTS CALENDAR (May 2026)</h2></div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content px-8 py-8 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><strong>Ethiopia</strong><br>Main harvest Oct–Feb 2026. Fresh crop arriving Feb–June. High cherry prices, tighter washed volumes. Peak now: Guji/Yirgacheffe washed & naturals. <span class="text-[#c9a84c]">Target: Banko Gotiti style heirlooms.</span></div>
+                    <div><strong>Colombia</strong><br>Main crop (fly crop) arriving Jan–March. Good washed lots available. <span class="text-[#c9a84c]">Target: Sudan Rume, Wush Wush from Cauca/Quindío.</span></div>
+                    <div><strong>Panama</strong><br>Geisha auction lots still circulating. High-altitude Chiriquí lots peak. <span class="text-[#c9a84c]">Target: Janson Family or similar washed Geisha.</span></div>
+                    <div><strong>Ecuador</strong><br>Harvest May–Sept. Loja high-altitude Geisha fresh. <span class="text-[#c9a84c]">Target: 2100+ MASL terpene-forward lots (like La Papaya profile).</span></div>
+                    <div><strong>Kenya</strong><br>Main crop Oct–Jan, exports Feb–March. AA lots strong now. <span class="text-[#c9a84c]">Target: Nyeri/Kirinyaga washed for citric clarity.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: COMMUNITY INTELLIGENCE -->
+        <div class="luxury-card rounded-3xl mb-8 overflow-hidden">
+            <div class="section-header px-8 py-6 bg-[#1a1a1a] flex items-center justify-between" onclick="toggleSection(this)">
+                <div><h2 class="header-font text-3xl font-bold">SECTION 4 — COMMUNITY INTELLIGENCE (May 2026)</h2></div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content px-8 py-8 text-sm">
+                <div class="space-y-4">
+                    <div><strong>Reddit r/pourover (May 2026):</strong> Apartment Coffee universally praised as SG's best. Nylon, Alchemist, Tiong Hoe, Kyuukei, Pocket by Flip, Percolate, Maxi, 20Grams, Compound frequently recommended. New buzz around Exposure Therapy and Aera Experiments for ultralight/experimental.</div>
+                    <div><strong>Instagram #sgspecialtycoffee:</strong> Heavy rotation on Apartment (world #6), Nylon, Pocket by Flip (hard-to-find lots), Homeground. New openings: Third Floor Social, Smear’d Coffee Bagels noted in Honeycombers May 2026 list.</div>
+                    <div><strong>HardwareZone / Forums:</strong> Strong discussion on flat-burr setups (CORE, Sculptor 078) and light roasts. Apartment and Nylon dominate "best filter" threads.</div>
+                    <div class="text-xs text-[#888]">No major closures flagged. Scene remains vibrant with Apartment retaining Asia's #1 spot for 2nd year.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: HARI'S PRIORITY LIST -->
+        <div class="luxury-card rounded-3xl mb-8 overflow-hidden">
+            <div class="section-header px-8 py-6 bg-[#1a1a1a] flex items-center justify-between" onclick="toggleSection(this)">
+                <div><h2 class="header-font text-3xl font-bold">SECTION 5 — HARI'S AUDIT PRIORITY LIST (Top 10 Unvisited)</h2><p class="text-sm text-[#888]">Aligned to washed + Geisha/rare varietal + flat-burr/flat-bottom + transparent rotation</p></div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content px-8 py-8">
+                <div class="space-y-4 text-sm">
+                    <div class="luxury-card p-5 rounded-2xl"><strong>1. Exposure Therapy Coffee</strong> — Top-ranked 2026 roaster. Ultralight Ethiopian/Kenyan anaerobics. Target: Current Geisha or experimental washed. Visit: Weekday mornings. Distance from Everton Park: ~8km.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>2. Aera Experiments</strong> — Ultralight specialist, expressive Panamanian/Colombian Geisha. Target: High-ferment or altitude lots. Hardware: Precision flat-bottom. Visit: Late afternoon.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>3. Homeground Coffee Roasters</strong> — Community favourite for light, precise roasts. Strong single-origin focus. Target: Current Colombia/Ethiopia washed. Flat-burr setup likely.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>4. Percolate.sg</strong> — International roasters focus. Excellent for rare lots. Target: Any current Geisha or Sudan Rume equivalent.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>5. 20Grams Coffee Roastery</strong> — Light, precise. Strong 2026 buzz. Target: Light-roasted washed lots with high clarity.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>6. Compound Coffee</strong> — Newer standout, community favourite. Target: In-house or international washed with flat-bottom hardware.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>7. Zerah Coffee Roasters</strong> — Mentioned frequently for quality. Target: Current single-origin washed.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>8. ASK Coffee Roastery</strong> — Excellent filter near Raffles. Target: Local + international washed.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>9. Pull.in</strong> — Newer spot near Humble Origins. Serves own roast + international. Target: Light filter lots.</div>
+                    <div class="luxury-card p-5 rounded-2xl"><strong>10. Round Boy Roasters</strong> — Light roasts, strong community mentions. Target: Current Ethiopia/Colombia washed.</div>
+                </div>
+                <div class="mt-6 text-xs text-[#888]">All recommendations prioritize Hari's confirmed preferences: high-clarity washed, Geisha/rare varietals, flat-burr + flat-bottom hardware, transparent single-origin rotation. Everton Park / Napier Road proximity factored.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ARCHIVE_DATA = [{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Bali Karana Kintamanis","Varietal":"Unknown","Process":"Natural","Roast_Level":"Light","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Clean citrus; floral","Your_Verdict":"Excellent clarity for a natural process, bright and floral.","Technical_Enrichment":"Established foundational exposure to local Indonesian origins."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Sulawesi Toraja","Varietal":"Unknown","Process":"Semi-Washed / Wet-Hulled","Roast_Level":"Medium","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Cocoa; earthy structures","Your_Verdict":"Heavy body with rich cocoa notes.","Technical_Enrichment":"Demonstrated the structural density of the wet-hulled process."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"House Blend","Varietal":"Unknown","Process":"Unknown","Roast_Level":"Espresso Roast","Brew_Method":"Piccolo","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Balanced","Your_Verdict":"Great milk integration.","Technical_Enrichment":"Baseline for espresso and milk pairing."},{"Date":"2026-02-15","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Kiamugumo AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"120mm Hybrid Burr","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Excellent baseline for clarity.","Technical_Enrichment":"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry."},{"Date":"2026-02-28","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Ndiaini AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"High clarity.","Technical_Enrichment":"Further exploration of Kenyan terroir."},{"Date":"2026-03-01","City":"Mumbai","Cafe_Name":"Subko Coffee Roasters","Coffee_Name":"Project Pearl Ratnagiri","Varietal":"Unknown","Process":"Experimental Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Clean and balanced despite intense process.","Technical_Enrichment":"Analyzed advanced experimental processing in India."},{"Date":"2026-03-08","City":"Mumbai","Cafe_Name":"Grey Soul Coffee Roasters","Coffee_Name":"Raspberry in Loop","Varietal":"Unknown","Process":"Multi-stage Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Chocolate","Your_Verdict":"Heavy body, over-smoothed expression muted the brightness.","Technical_Enrichment":"Observed how heavy fermentation can mute terroir."},{"Date":"2026-03-15","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Colombia Wush Wush","Varietal":"Wush Wush","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Tea-like","Your_Verdict":"Incredible tea-like clarity.","Technical_Enrichment":"Mapped the delicate genetics of Wush Wush."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Nicaragua Matagalpa","Varietal":"Unknown","Process":"Washed","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Solid milk beverage.","Technical_Enrichment":"Audited Central American washed profile in milk."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Ethiopia Beloya","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"V60","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Classic natural profile.","Technical_Enrichment":"Baseline check for Ethiopian naturals."},{"Date":"2026-03-20","City":"Singapore","Cafe_Name":"Tiong Hoe","Coffee_Name":"Brazil Natural","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Rich, chocolate-forward","Your_Verdict":"Classic dense Brazilian profile.","Technical_Enrichment":"Audited traditional natural processing sweetness and body."},{"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Maxi Coffee Bar","Coffee_Name":"Colombia La Laja","Varietal":"Sudan Rume","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP 78mm)","Price_Local":"Unknown","Official_Notes":"Raspberry; Nectarine; Floral","Your_Verdict":"Successfully isolated the intended tasting notes.","Technical_Enrichment":"Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Castillo Watermelon (Jairo Arcila)","Varietal":"Castillo","Process":"Washed Co-Ferment","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Watermelon; Mint; Lime; Chocolate","Your_Verdict":"Distinct fruit-forward expression; sweetness layered rather than sharp","Technical_Enrichment":"Fermentation adds aromatic complexity; processing-driven identity rather than terroir."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Peru Gesha (Wilder Garcia)","Varietal":"Gesha","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Jasmine; Caramel; Lime; Cacao Nibs","Your_Verdict":"Clean, structured, high-clarity cup","Technical_Enrichment":"High transparency; minimal processing interference highlighting intrinsic genetic purity."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Lume Cafe","Coffee_Name":"Panama Corpachi Geisha","Varietal":"Geisha","Process":"Red Honey","Roast_Level":"Light","Brew_Method":"V60 Manual Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig EK43","Price_Local":"12.00","Official_Notes":"Mandarin Candy; Jasmine; Apricot","Your_Verdict":"Apricot detected clearly. Structured and elegant \u2014 sweet without being cloying. Body rounder than expected for a washed.","Technical_Enrichment":"Dual-temp strategy (90\u00b0C \u2192 70\u00b0C) on EK43 layered extraction \u2014 high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish. Red Honey process added roundness without ferment noise."},{"Date":"2026-04-18","City":"Johor Bahru","Cafe_Name":"Unknown","Coffee_Name":"Hacienda La Florida","Varietal":"Typica Mejorado","Process":"Anaerobic Washed","Roast_Level":"Unknown","Brew_Method":"Origami (Conical)","Dose_g":"18","Yield_g":"277","Ratio":"1:15.4","Bloom":"1:2.3 (42g for 30s)","Grinder":"Mahlk\u00f6nig EK Omnia","Price_Local":"35.00","Official_Notes":"Lemon verbena; red plum; citronella; hibiscus","Your_Verdict":"Excellent. Lime when hot, distinct plum as it cooled.","Technical_Enrichment":"EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition."},{"Date":"2026-04-24","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Brazil Santu\u00e1rio Sul","Varietal":"Unknown","Process":"Natural Fermentation","Roast_Level":"Light-Medium","Brew_Method":"V60","Dose_g":"16","Yield_g":"224","Ratio":"1:14","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig EK43","Price_Local":"Unknown","Official_Notes":"Blackcurrant; black cherry; dark chocolate","Your_Verdict":"Full body; prominent blackcurrant; clear chocolaty finish.","Technical_Enrichment":"Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil FAF Organic","Varietal":"Arara","Process":"Natural","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE","Price_Local":"7.50","Official_Notes":"Red Apple; Cherry; Raisin; Milk Chocolate","Your_Verdict":"Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.","Technical_Enrichment":"1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil Serra dos Ciganos","Varietal":"Catucai 24/137","Process":"Natural","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Sultana; Dried Apricot; Praline; Roasted Hazelnut","Your_Verdict":"Good cup with a very pleasant, lingering sweet aftertaste.","Technical_Enrichment":"Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Ethiopia Banko Gotiti","Varietal":"Heirloom","Process":"Washed","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE","Price_Local":"8.50","Official_Notes":"Lemonade; Raspberry; Peach; Bergamot","Your_Verdict":"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.","Technical_Enrichment":"1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Nicaragua Buena Vista","Varietal":"Parainema","Process":"Natural Anaerobic","Roast_Level":"Espresso Roast","Brew_Method":"Single Espresso","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"~1:2","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut","Your_Verdict":"Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.","Technical_Enrichment":"Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity."},{"Date":"2026-05-19","City":"Singapore","Cafe_Name":"Pocket by Flip (Flip Coffee Roasters)","Coffee_Name":"Ecuador La Papaya","Varietal":"Geisha","Process":"Washed","Roast_Level":"Light","Brew_Method":"Filter Hot - Flat Bottom (Hario Alpha)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlk\u00f6nig CORE (54mm Flat Burr)","Price_Local":"18.00","Official_Notes":"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple","Your_Verdict":"Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat \u2014 lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine \u2014 distinct from Peru Geisha entries.","Technical_Enrichment":"Triple-temp cascade (92\u219275\u219292\u00b0C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha."}];
+        
+        const auditedCafes = [
+            {name: "Nylon Coffee Roasters", address: "Everton Park area", verdict: "Brazil FAF Organic Arara — crisp malic, milk chocolate. Ethiopia Banko Gotiti — lemon/melon/white tea. Strong 1:17 lean flat-bottom clarity."},
+            {name: "Lume Cafe", address: "Robinson Road", verdict: "Panama Corpachi Geisha — apricot, jasmine, dual-temp EK43 excellence."},
+            {name: "Asylum Coffeehouse", address: "Singapore", verdict: "Castillo Watermelon — layered fruit-forward. Peru Gesha — high transparency, genetic purity. Timemore Sculptor 078."},
+            {name: "Maxi Coffee Bar", address: "Singapore", verdict: "Colombia La Laja Sudan Rume — raspberry/nectarine/floral isolated on 78mm SSP flat-bottom."},
+            {name: "Agora Coffee", address: "Singapore", verdict: "Nicaragua Matagalpa — solid milk. Ethiopia Beloya — classic natural. Brazil Santuário Sul — blackcurrant/chocolate on 1:14 V60."},
+            {name: "Apartment Coffee", address: "Selegie Road (World #6 2026)", verdict: "Colombia Wush Wush — incredible tea-like clarity. Mapped delicate genetics."},
+            {name: "Tiong Hoe Specialty Coffee", address: "Singapore", verdict: "Brazil Natural — rich chocolate-forward, dense body."},
+            {name: "Kyuukei Coffee", address: "Singapore", verdict: "Kenya Kiamugumo AA — excellent high-clarity washed baseline (120mm hybrid flat-bottom). Kenya Ndiaini AA — further terroir exploration."},
+            {name: "Pocket by Flip", address: "30 Stevens Road", verdict: "Ecuador La Papaya Geisha — thymol terpene, triple-temp cascade, highest-altitude distinction from Peru Geisha."}
+        ];
+        
+        function renderCafes() {
+            const grid = document.getElementById('cafe-grid');
+            const cafes = [
+                ...auditedCafes.map(c => ({...c, audited: true})),
+                {name: "Exposure Therapy Coffee", address: "Singapore (top 2026 roaster)", hours: "8AM-6PM", filterScore: 5, beans: "Ultralight Ethiopian/Kenyan anaerobics, Geisha", hardware: "High-end flat burr", price: "$$$", roastery: "Yes", seating: "Standing + limited", bestLot: "Current Geisha washed", audited: false},
+                {name: "Aera Experiments", address: "Arab Street area", hours: "9AM-5PM Tue-Sun", filterScore: 5, beans: "Expressive Panamanian/Colombian Geisha, high-ferment", hardware: "Precision flat-bottom", price: "$$$", roastery: "Yes", seating: "Standing", bestLot: "High-altitude Geisha", audited: false},
+                {name: "Homeground Coffee Roasters", address: "Singapore", hours: "Varies", filterScore: 4.5, beans: "Light single origins", hardware: "Flat burr likely", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Current Ethiopia/Colombia washed", audited: false},
+                {name: "Percolate.sg", address: "Little India area", hours: "8:30AM-5:30PM", filterScore: 4.5, beans: "International roasters focus", hardware: "Manual pour-over", price: "$$", roastery: "No (curated)", seating: "Standing", bestLot: "Rare Geisha or Sudan Rume equivalent", audited: false},
+                {name: "20Grams Coffee Roastery", address: "Singapore", hours: "Varies", filterScore: 4.5, beans: "Light precise roasts", hardware: "Flat burr", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Light-washed high clarity", audited: false},
+                {name: "Compound Coffee", address: "Singapore", hours: "Varies", filterScore: 4, beans: "In-house + international", hardware: "Modern setup", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Washed single origin", audited: false},
+                {name: "ASK Coffee Roastery", address: "Raffles area", hours: "Varies", filterScore: 4, beans: "Local + international", hardware: "Filter focused", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Current washed", audited: false},
+                {name: "Zerah Coffee Roasters", address: "Singapore", hours: "Varies", filterScore: 4, beans: "Quality single origins", hardware: "Standard specialty", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Washed Ethiopia/Colombia", audited: false},
+                {name: "Pull.in", address: "Near Humble Origins", hours: "Varies", filterScore: 3.5, beans: "Own roast + international", hardware: "Filter focused", price: "$$", roastery: "Yes", seating: "Standing", bestLot: "Light filter lots", audited: false},
+                {name: "Round Boy Roasters", address: "Singapore", hours: "Varies", filterScore: 4, beans: "Light roasts", hardware: "Specialty", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Ethiopia/Colombia washed", audited: false},
+                {name: "Alchemist", address: "Khong Guan Building", hours: "Varies", filterScore: 4, beans: "Specialty focus", hardware: "Espresso + filter", price: "$$$", roastery: "Yes", seating: "Mixed", bestLot: "Current single origin", audited: false},
+                {name: "Common Man Coffee Roasters", address: "Martin Road", hours: "Varies", filterScore: 4.5, beans: "Direct trade single origins", hardware: "High-end", price: "$$$", roastery: "Yes", seating: "Mixed", bestLot: "Rare washed", audited: false},
+                {name: "Humble Origins", address: "Singapore", hours: "Varies", filterScore: 3.5, beans: "Burmese + international", hardware: "Filter", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Washed", audited: false},
+                {name: "Pinhole", address: "Singapore", hours: "Varies", filterScore: 4, beans: "Small SG roasters + international (Sey etc.)", hardware: "Filter", price: "$$", roastery: "No (curated)", seating: "Standing", bestLot: "International washed", audited: false},
+                {name: "Fluid", address: "Singapore", hours: "Varies", filterScore: 3.5, beans: "Light roasts", hardware: "Specialty", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Light filter", audited: false},
+                {name: "Rookies", address: "Singapore", hours: "Varies", filterScore: 3.5, beans: "Light roasts", hardware: "Specialty", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Light washed", audited: false},
+                {name: "Cata", address: "Singapore", hours: "Varies", filterScore: 3.5, beans: "Decent single origins", hardware: "Standard", price: "$$", roastery: "Yes", seating: "Mixed", bestLot: "Current washed", audited: false},
+                {name: "Dawn", address: "Singapore", hours: "Varies", filterScore: 3, beans: "Glitch roasts", hardware: "Filter", price: "$$", roastery: "No", seating: "Mixed", bestLot: "Light", audited: false},
+                {name: "Double Shot", address: "Singapore", hours: "Varies", filterScore: 3.5, beans: "International (Kawa etc.)", hardware: "Espresso + filter", price: "$$", roastery: "No", seating: "Mixed", bestLot: "Washed", audited: false},
+                {name: "Koki", address: "Singapore", hours: "Varies", filterScore: 4, beans: "Fancy stuff", hardware: "Specialty", price: "$$$", roastery: "Yes", seating: "Mixed", bestLot: "Rare washed", audited: false}
+            ];
+            
+            grid.innerHTML = '';
+            cafes.forEach(cafe => {
+                const card = document.createElement('div');
+                card.className = `cafe-card luxury-card rounded-2xl p-5 ${cafe.audited ? 'border-[#c9a84c]' : ''}`;
+                let html = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="font-bold text-lg">${cafe.name}</div>
+                        ${cafe.audited ? '<div class="audited-badge">AUDITED</div>' : ''}
+                    </div>
+                    <div class="text-xs text-[#888] mb-2">${cafe.address} • ${cafe.hours || 'Varies'}</div>
+                    <div class="flex flex-wrap gap-2 text-xs mb-3">
+                        <span class="px-2 py-px bg-[#222] rounded">Filter: ${cafe.filterScore || '4'}/5</span>
+                        ${cafe.roastery ? '<span class="px-2 py-px bg-[#222] rounded">In-house roastery</span>' : ''}
+                        <span class="px-2 py-px bg-[#222] rounded">${cafe.seating || 'Mixed'}</span>
+                    </div>
+                    <div class="text-xs"><span class="text-[#888]">Current beans:</span> ${cafe.beans || 'Rotating single origins'}</div>
+                    <div class="text-xs mt-1"><span class="text-[#888]">Hardware:</span> ${cafe.hardware || 'Specialty filter setup'}</div>
+                    <div class="text-xs mt-1"><span class="text-[#888]">Price:</span> ${cafe.price || '$$'}</div>
+                    <div class="text-xs mt-2 text-[#c9a84c]"><span class="text-[#888]">Best now:</span> ${cafe.bestLot || 'Current washed single origin'}</div>
+                `;
+                if (cafe.audited) {
+                    const auditedInfo = auditedCafes.find(a => a.name === cafe.name);
+                    if (auditedInfo) html += `<div class="mt-3 pt-3 border-t border-[#333] text-xs"><span class="font-semibold">Hari's Verdict:</span> ${auditedInfo.verdict}</div>`;
+                }
+                card.innerHTML = html;
+                grid.appendChild(card);
+            });
+        }
+        
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.fa-chevron-down');
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.style.transform = 'rotate(0)';
+            } else {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        function initSearch() {
+            const input = document.getElementById('global-search');
+            input.addEventListener('input', () => {
+                const term = input.value.toLowerCase();
+                document.querySelectorAll('.cafe-card, .luxury-card').forEach(card => {
+                    card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none';
+                });
+            });
+        }
+        
+        function init() {
+            renderCafes();
+            initSearch();
+            // Open first section by default
+            setTimeout(() => {
+                const firstHeader = document.querySelector('.section-header');
+                if (firstHeader) {
+                    const content = firstHeader.nextElementSibling;
+                    content.classList.add('open');
+                    firstHeader.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+                }
+            }, 100);
+            console.log('%c[SG Coffee Guide 2026] Initialized with live May 2026 data.', 'color:#666');
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>

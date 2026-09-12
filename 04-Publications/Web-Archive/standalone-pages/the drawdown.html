@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Drawdown — Hari's Year in Forty-Eight Cups</title>
+<meta name="description" content="A specialty coffee memoir. One year, forty-eight cups, told as a single cup cooling from 93° to room temperature.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════ THE DRAWDOWN ═══════════════
+   One year told as one cup cooling.
+   Acts shift the accent: ember → honey → dusk.
+════════════════════════════════════════════ */
+:root{
+  --bg:#0e0a06;--bg2:#140e08;--card:#1c140b;--card2:#241a0e;
+  --line:#332613;--line2:#4a3a1e;
+  --cream:#f2e8d5;--tan:#b39a76;--faint:#70573a;
+  /* thermal accent — JS interpolates --acc across acts */
+  --acc:#d98d3a;--acc-soft:rgba(217,141,58,.13);--acc-line:rgba(217,141,58,.4);
+  --ember:#d98d3a;--honey:#ce9d4e;--dusk:#b08768;
+  --serif:'Cormorant Garamond',serif;--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+  --measure:700px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);font-size:16.5px;line-height:1.78;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");pointer-events:none;z-index:9990}
+::selection{background:var(--acc-soft);color:var(--acc)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--line2)}
+h1,h2,h3{font-family:var(--serif);font-weight:300}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ─── THERMAL RAIL ─── */
+#rail{position:fixed;left:0;top:0;bottom:0;width:74px;z-index:900;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:1.4rem 0;border-right:1px solid var(--line);background:linear-gradient(to right,rgba(14,10,6,.75),transparent)}
+#rail .rail-top,#rail .rail-bot{font-family:var(--mono);font-size:.55rem;color:var(--faint);letter-spacing:.15em;writing-mode:vertical-rl;text-orientation:mixed}
+#rail .rail-track{flex:1;width:1px;background:var(--line);margin:1rem 0;position:relative}
+#rail .rail-fill{position:absolute;top:0;left:0;width:1px;height:0%;background:linear-gradient(to bottom,var(--ember),var(--honey),var(--dusk))}
+#rail .rail-drop{position:absolute;left:50%;transform:translate(-50%,-50%);top:0%;width:9px;height:9px;border-radius:50% 50% 50% 0;rotate:45deg;background:var(--acc);box-shadow:0 0 12px var(--acc-line);transition:background .6s}
+#temp-read{position:fixed;left:0;bottom:1.4rem;width:74px;text-align:center;z-index:901;font-family:var(--mono);font-size:.85rem;color:var(--acc);transition:color .6s}
+#temp-read small{display:block;font-size:.5rem;color:var(--faint);letter-spacing:.2em;margin-top:2px}
+#phase-read{position:fixed;left:0;top:1.4rem;width:74px;text-align:center;z-index:901;font-family:var(--mono);font-size:.52rem;letter-spacing:.22em;color:var(--faint);writing-mode:vertical-rl}
+main{margin-left:74px}
+@media(max-width:760px){
+  #rail{top:0;bottom:auto;left:0;right:0;width:100%;height:46px;flex-direction:row;padding:0 1rem;border-right:none;border-bottom:1px solid var(--line);background:rgba(14,10,6,.92);backdrop-filter:blur(10px)}
+  #rail .rail-top,#rail .rail-bot{writing-mode:horizontal-tb}
+  #rail .rail-track{height:1px;width:auto;flex:1;margin:0 1rem}
+  #rail .rail-fill{height:1px;width:0%;background:linear-gradient(to right,var(--ember),var(--honey),var(--dusk))}
+  #rail .rail-drop{top:50%;left:0%}
+  #temp-read{position:fixed;top:6px;bottom:auto;right:8px;left:auto;width:auto;font-size:.7rem}
+  #temp-read small{display:inline;margin-left:3px}
+  #phase-read{display:none}
+  main{margin-left:0;padding-top:46px}
+}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:5rem 2rem;position:relative;overflow:hidden}
+#hero .steam{position:absolute;top:14%;left:50%;transform:translateX(-50%);width:2px;height:110px;opacity:.5;pointer-events:none}
+#hero .steam span{position:absolute;bottom:0;left:0;width:2px;height:36px;border-radius:2px;background:linear-gradient(to top,transparent,var(--acc-line),transparent);animation:steam 4.5s ease-in-out infinite}
+#hero .steam span:nth-child(2){left:-9px;animation-delay:1.4s;height:30px}
+#hero .steam span:nth-child(3){left:9px;animation-delay:2.6s;height:42px}
+@keyframes steam{0%{transform:translateY(0) scaleY(.6);opacity:0}25%{opacity:.75}100%{transform:translateY(-72px) scaleY(1.25);opacity:0}}
+.h-eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--acc);margin-bottom:2.2rem;opacity:0;animation:rise .8s ease .2s forwards}
+.h-title{font-family:var(--serif);font-size:clamp(3.2rem,9.5vw,7.6rem);line-height:1.02;font-weight:300;max-width:15ch;opacity:0;animation:rise .9s ease .45s forwards}
+.h-title em{font-style:italic;color:var(--acc)}
+.h-sub{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,2.4vw,1.5rem);color:var(--tan);margin-top:1.8rem;max-width:44ch;font-weight:300;opacity:0;animation:rise .8s ease .7s forwards}
+.h-meta{margin-top:3rem;display:flex;gap:2.4rem;flex-wrap:wrap;justify-content:center;opacity:0;animation:rise .8s ease .95s forwards}
+.h-m{text-align:center}
+.h-m b{display:block;font-family:var(--mono);font-weight:400;font-size:1.5rem;color:var(--cream)}
+.h-m span{font-family:var(--mono);font-size:.52rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+.h-hint{position:absolute;bottom:2.2rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase;animation:hintPulse 3s ease infinite}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes hintPulse{0%,100%{opacity:.65}50%{opacity:.2}}
+
+/* ─── PROSE + STRUCTURE ─── */
+.act{padding:9rem 2rem 3rem;text-align:center;position:relative}
+.act-phase{font-family:var(--mono);font-size:.6rem;letter-spacing:.4em;color:var(--acc);text-transform:uppercase;margin-bottom:1.2rem;transition:color .6s}
+.act-temp{font-family:var(--mono);font-size:.7rem;color:var(--faint);letter-spacing:.14em;margin-bottom:2rem}
+.act-title{font-family:var(--serif);font-size:clamp(2.6rem,7vw,5.4rem);font-style:italic;font-weight:300;line-height:1.05}
+.act-title .roman{display:block;font-style:normal;font-size:.32em;letter-spacing:.5em;color:var(--faint);font-family:var(--mono);margin-bottom:1.2rem}
+.act-lede{max-width:52ch;margin:2rem auto 0;color:var(--tan);font-family:var(--serif);font-size:1.15rem;font-style:italic;line-height:1.7}
+.chapter{max-width:var(--measure);margin:0 auto;padding:5rem 2rem 2rem}
+.ch-kicker{font-family:var(--mono);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--acc);margin-bottom:.9rem;transition:color .6s}
+.ch-title{font-family:var(--serif);font-size:clamp(1.9rem,4.6vw,3rem);font-weight:300;line-height:1.15;margin-bottom:.6rem}
+.ch-date{font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.18em;margin-bottom:2.2rem}
+.chapter p{color:#d9cbb0;margin-bottom:1.35rem;font-weight:300}
+.chapter p b{color:var(--cream);font-weight:500}
+.chapter p .flavor{color:var(--acc);font-style:italic;transition:color .6s}
+.dropcap::first-letter{font-family:var(--serif);float:left;font-size:4.6em;line-height:.78;padding-right:.09em;margin-top:.05em;color:var(--acc);font-style:italic;transition:color .6s}
+.pull{max-width:820px;margin:5rem auto;padding:0 2rem;text-align:center}
+.pull blockquote{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(1.7rem,4.4vw,3rem);line-height:1.25;color:var(--cream)}
+.pull blockquote::before{content:'“';color:var(--acc);transition:color .6s}
+.pull blockquote::after{content:'”';color:var(--acc);transition:color .6s}
+.pull cite{display:block;margin-top:1.4rem;font-family:var(--mono);font-style:normal;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+
+/* ─── CUP CARDS ─── */
+.cups{max-width:1080px;margin:2.5rem auto 0;padding:0 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.cup{background:var(--card);border:1px solid var(--line);padding:1.35rem 1.35rem 1.1rem;position:relative;cursor:pointer;transition:border-color .25s,transform .25s;display:flex;flex-direction:column;gap:.55rem}
+.cup:hover{border-color:var(--acc-line);transform:translateY(-2px)}
+.cup.hof{border-color:var(--acc-line);background:linear-gradient(160deg,var(--card2),var(--card))}
+.cup.hof::before{content:'★';position:absolute;top:.7rem;right:.85rem;color:var(--acc);font-size:.8rem;transition:color .6s}
+.cup-no{font-family:var(--mono);font-size:.52rem;color:var(--faint);letter-spacing:.16em}
+.cup-name{font-family:var(--serif);font-size:1.28rem;font-weight:400;line-height:1.18;color:var(--cream)}
+.cup-cafe{font-family:var(--mono);font-size:.56rem;color:var(--tan);letter-spacing:.1em}
+.cup-notes{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--acc);line-height:1.4;transition:color .6s}
+.cup-verdict{font-size:.8rem;color:var(--tan);line-height:1.6}
+.cup-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:.6rem;border-top:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--faint);letter-spacing:.08em}
+.cup-more{color:var(--acc);opacity:0;transition:opacity .2s}
+.cup:hover .cup-more{opacity:1}
+
+/* ─── HALL OF FAME ─── */
+#fame{padding:7rem 2rem;max-width:1180px;margin:0 auto}
+.fame-head{text-align:center;margin-bottom:4rem}
+.fame-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:1.1rem}
+.fame-card{border:1px solid var(--line2);background:linear-gradient(165deg,var(--card2),var(--card));padding:2rem;display:flex;flex-direction:column;gap:.8rem;position:relative}
+.fame-card.champion{grid-row:span 2;border-color:var(--acc-line);justify-content:center}
+.fame-tag{font-family:var(--mono);font-size:.53rem;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);transition:color .6s}
+.fame-name{font-family:var(--serif);font-size:1.7rem;font-weight:300;line-height:1.15}
+.fame-card.champion .fame-name{font-size:2.5rem;font-style:italic}
+.fame-quote{font-family:var(--serif);font-style:italic;color:var(--tan);font-size:1.02rem;line-height:1.55}
+.fame-meta{font-family:var(--mono);font-size:.55rem;color:var(--faint);letter-spacing:.12em;margin-top:auto;padding-top:1rem}
+@media(max-width:860px){.fame-grid{grid-template-columns:1fr}.fame-card.champion{grid-row:auto}}
+
+/* ─── FIRSTS TICKER ─── */
+#firsts{padding:6rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
+.firsts-head{text-align:center;margin-bottom:3.4rem;padding:0 2rem}
+.firsts-track{display:flex;gap:1px;background:var(--line);overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.first{min-width:230px;scroll-snap-align:start;background:var(--bg2);padding:1.7rem 1.4rem;flex:1}
+.first-date{font-family:var(--mono);font-size:.55rem;color:var(--acc);letter-spacing:.2em;margin-bottom:.7rem;transition:color .6s}
+.first-what{font-family:var(--serif);font-size:1.22rem;font-weight:400;line-height:1.25;margin-bottom:.5rem}
+.first-note{font-size:.76rem;color:var(--tan);line-height:1.55}
+
+/* ─── PALATE DNA ─── */
+#dna{max-width:var(--measure);margin:0 auto;padding:7rem 2rem}
+.dna-rows{margin-top:2.8rem;display:flex;flex-direction:column;gap:1.6rem}
+.dna-row{display:grid;grid-template-columns:190px 1fr;gap:1.4rem;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:1.5rem}
+.dna-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);transition:color .6s}
+.dna-v{color:#d9cbb0;font-size:.95rem;line-height:1.7}
+.dna-v em{color:var(--cream);font-family:var(--serif);font-style:italic;font-size:1.08em}
+@media(max-width:640px){.dna-row{grid-template-columns:1fr;gap:.4rem}}
+
+/* ─── LEDGER ─── */
+#ledger{padding:7rem 2rem 6rem;max-width:1080px;margin:0 auto}
+.ledger-head{text-align:center;margin-bottom:3rem}
+.ledger-search{display:block;margin:0 auto 2.4rem;width:min(420px,100%);background:var(--card);border:1px solid var(--line);color:var(--cream);font-family:var(--mono);font-size:.72rem;padding:.75rem 1.1rem;outline:none;transition:border-color .2s;text-align:center;letter-spacing:.06em}
+.ledger-search:focus{border-color:var(--acc-line)}
+.ledger-search::placeholder{color:var(--faint)}
+.lrow{border-bottom:1px solid var(--line);cursor:pointer}
+.lrow:first-of-type{border-top:1px solid var(--line)}
+.lrow-main{display:grid;grid-template-columns:52px 92px 1fr 1fr 84px;gap:1rem;align-items:baseline;padding:.95rem .4rem;transition:background .2s}
+.lrow:hover .lrow-main{background:var(--card)}
+.l-no{font-family:var(--mono);font-size:.58rem;color:var(--faint)}
+.l-date{font-family:var(--mono);font-size:.58rem;color:var(--faint)}
+.l-coffee{font-family:var(--serif);font-size:1.06rem;color:var(--cream);line-height:1.25}
+.l-coffee .l-star{color:var(--acc);font-size:.8em;transition:color .6s}
+.l-cafe{font-family:var(--mono);font-size:.58rem;color:var(--tan);letter-spacing:.06em;line-height:1.5}
+.l-price{font-family:var(--mono);font-size:.6rem;color:var(--faint);text-align:right}
+.lrow-detail{display:none;padding:.4rem .4rem 1.5rem;color:var(--tan)}
+.lrow.open .lrow-detail{display:block}
+.lrow-detail .ld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.9rem 1.4rem;margin-bottom:1rem;padding:1.1rem;background:var(--card);border:1px solid var(--line)}
+.ld-k{font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.ld-v{font-size:.8rem;color:var(--cream);line-height:1.45}
+.ld-verdict{font-size:.86rem;line-height:1.7;color:#d9cbb0;border-left:2px solid var(--acc-line);padding-left:1rem}
+.ledger-empty{display:none;text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--faint);letter-spacing:.2em;padding:3rem 0}
+@media(max-width:760px){.lrow-main{grid-template-columns:40px 1fr 70px;gap:.6rem}.l-date,.l-cafe{display:none}}
+
+/* ─── COLOPHON ─── */
+#colophon{border-top:1px solid var(--line);text-align:center;padding:6rem 2rem 5rem;background:var(--bg2)}
+.colo-sig{font-family:var(--serif);font-style:italic;font-size:3.4rem;color:var(--acc);font-weight:300;transition:color .6s}
+.colo-title{font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);margin:1rem 0 2rem}
+.colo-line{max-width:44ch;margin:0 auto 2.6rem;font-family:var(--serif);font-style:italic;font-size:1.12rem;color:var(--tan);line-height:1.7}
+.colo-stats{font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.16em;line-height:2.3}
+
+/* ─── REVEAL ─── */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .85s ease,transform .85s ease}
+.rv.on{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- THERMAL RAIL -->
+<div id="rail" aria-hidden="true">
+  <span class="rail-top">93.0°C — SERVED</span>
+  <div class="rail-track"><div class="rail-fill" id="rail-fill"></div><div class="rail-drop" id="rail-drop"></div></div>
+  <span class="rail-bot">24.0°C — FINISHED</span>
+</div>
+<div id="phase-read">HOT PHASE</div>
+<div id="temp-read">93.0°<small>THE CUP COOLS AS YOU READ</small></div>
+
+<main>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero">
+  <div class="steam"><span></span><span></span><span></span></div>
+  <div class="h-eyebrow">A Specialty Coffee Memoir · January — July 2026</div>
+  <h1 class="h-title">One year.<br><em>Forty-eight cups.</em></h1>
+  <p class="h-sub">This page is a single pourover. It is served at 93 degrees, and it will cool as you read — the way every one of these cups was tasted: hot, mid-cool, and at the finish.</p>
+  <div class="h-meta">
+    <div class="h-m"><b>48</b><span>Cups Audited</span></div>
+    <div class="h-m"><b>27</b><span>Cafés</span></div>
+    <div class="h-m"><b>4</b><span>Cities</span></div>
+    <div class="h-m"><b>14</b><span>Origin Countries</span></div>
+    <div class="h-m"><b>3</b><span>Thermal Phases</span></div>
+  </div>
+  <div class="h-hint">Scroll — the drawdown begins</div>
+</section>
+
+<!-- ═══════════ ACT I ═══════════ -->
+<section class="act" data-act="1">
+  <div class="act-phase rv">Phase I — Served Hot</div>
+  <div class="act-temp rv">93° → 71° · January — March</div>
+  <h2 class="act-title rv"><span class="roman">ACT ONE</span>Everything bright<br>arrives first.</h2>
+  <p class="act-lede rv">In a fresh cup, the volatile compounds hit before anything else — citrus, florals, the loud and the obvious. The first months of the year were like that: everything new, everything vivid, nothing yet in proportion.</p>
+</section>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter One — The Awakening</div>
+  <h3 class="ch-title">It began on a family holiday, with a cup that wasn't supposed to matter.</h3>
+  <div class="ch-date">Ubud, Bali · 3–4 January</div>
+  <p class="dropcap">Seniman Coffee Studio, Ubud. A family trip, a casual order, a natural-process Kintamani that arrived <span class="flavor">clean, citrus-bright, quietly floral</span> — and something clicked. Not the coffee itself, exactly, but the noticing of it. Why was this natural so clean when naturals are supposed to be wild? That one question became a notebook, the notebook became a method, and the method became this archive.</p>
+  <p>Two more cups that weekend set the baselines: a wet-hulled <b>Sulawesi Toraja</b> — all <span class="flavor">earth, cocoa and syrup</span>, the old Indonesia — and a house-blend piccolo to calibrate what milk does to everything. Three cups in, the vocabulary of the whole year was already forming: <b>process shapes the cup, and the cup changes as it cools.</b></p>
+</div>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Two — First Precision</div>
+  <h3 class="ch-title">One Kenyan cup taught the method.</h3>
+  <div class="ch-date">Kyūkei Coffee, Singapore · 10 February</div>
+  <p class="dropcap">Kenya Kiamugumo AA. SL28 and SL34 genetics, washed clean, poured over a flat-bottom bed through 120mm hybrid burrs at 1:16. The cup was <span class="flavor">blackcurrant, lemon, citrus zest, a mineral finish</span> — and it was the first time the archive's full discipline appeared on one page: dose, yield, temperature, burr geometry, drawdown time, and the acid named precisely. Not "bright" — <b>phosphoric</b>. The Kenyan signature, confirmed across every thermal phase.</p>
+  <p>This is the entry the rest of the archive is measured against. Precision wasn't the goal; it was the reward.</p>
+</div>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Three — The Subcontinent Lesson</div>
+  <h3 class="ch-title">Mumbai taught what roast can silence.</h3>
+  <div class="ch-date">Subko · Grey Soul, Mumbai · March</div>
+  <p class="dropcap">Two Indian anaerobics, two disappointments — and one of the year's most useful lessons. Subko's Project Pearl was roasted so light (Agtron 89) that the fermentation esters never woke up. Grey Soul's "Raspberry in Loop" was developed so far the terroir went quiet under chocolate. Between them, a principle: <b>process promises nothing; the roast decides what survives.</b> The archive stopped trusting labels that month and started trusting the cup.</p>
+</div>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Four — The Immersion</div>
+  <h3 class="ch-title">Then March in Singapore, when it became a life.</h3>
+  <div class="ch-date">Eleven cups · Eight cafés · 18–29 March</div>
+  <p class="dropcap">Eleven cups in eleven days. The pace of that fortnight never repeated, and never needed to — it was the month the palate built its map. Wush Wush at Apartment showed what <span class="flavor">tea-like clarity</span> really means at 1:17. Kenya Ndiaini stacked <span class="flavor">redcurrant and elderflower</span> on the Kiamugumo baseline. Beloya strawberries, Tiong Hoe's chocolate comfort, ASK's lychee-brandy co-ferment.</p>
+  <p>And woven through it, the entries that matter beyond the cup: <b>18 March, Narrative Coffee Stand — Aanya's first specialty filter.</b> A natural Pacamara, <span class="flavor">stewed apples and pu'er tea</span>, chosen deliberately gentle. Some audits log extraction physics; this one logged a beginning.</p>
+  <p>The month closed with a threshold: <b>29 March, the first Gesha</b> — Wilder Garcia's Peru, flash-chilled at Asylum, <span class="flavor">jasmine held in ice</span>. The apex varietal had entered the archive. It would not leave.</p>
+</div>
+
+<div class="pull rv">
+  <blockquote>Not "bright." Phosphoric. The difference between those two words is the difference between drinking coffee and reading it.</blockquote>
+  <cite>On the Kenyan entries — February 2026</cite>
+</div>
+
+<div class="cups rv" data-cups="1"></div>
+
+<!-- ═══════════ ACT II ═══════════ -->
+<section class="act" data-act="2">
+  <div class="act-phase rv">Phase II — Mid-Cool</div>
+  <div class="act-temp rv">71° → 48° · April — May</div>
+  <h2 class="act-title rv"><span class="roman">ACT TWO</span>Sweetness emerges<br>as things settle.</h2>
+  <p class="act-lede rv">As a cup cools past the volatiles, the sugars step forward and the structure shows. April and May were the archive's mid-cool: the milestones, the discoveries, and — one Saturday in May — the cup of the year.</p>
+</section>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Five — The Milestone Month</div>
+  <h3 class="ch-title">April: rare genetics and a revelation across the border.</h3>
+  <div class="ch-date">April · Singapore & Johor Bahru</div>
+  <p class="dropcap">On the first of April, two landmark cups in one lunch hour: <b>La Laja</b>, a washed Sudan Rume at Maxi Coffee Bar — <span class="flavor">raspberry and nectarine, extremely clear</span>, a technical milestone through 120mm flat burrs — and the first <b>Panama Geisha</b>, red honey, at Lume. Four days later, back at Asylum with Aanya: a watermelon co-ferment and a dual-temperature Gesha, the 90-then-70 pour engineering the aromatics apart.</p>
+  <p>But the month's revelation happened across the causeway. <b>18 April, Johor Bahru: Hacienda La Florida</b>, a Typica Mejorado through an Origami conical. <span class="flavor">Lime while hot. Distinct red plum as it cooled.</span> A textbook citric-to-malic thermal transition, isolated so cleanly it read like a demonstration. The three-phase method wasn't a habit anymore. It was the entire point.</p>
+</div>
+
+<div class="pull rv">
+  <blockquote>Lime when hot. Plum as it cooled. One cup, two coffees — you just have to wait.</blockquote>
+  <cite>Hacienda La Florida · Johor Bahru · 18 April</cite>
+</div>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Six — The Golden Run</div>
+  <h3 class="ch-title">May: eleven cups, and the one that beat them all.</h3>
+  <div class="ch-date">May · Ten cafés across Singapore</div>
+  <p class="dropcap">May was the archive's richest vein. Nylon's quartet in two days — Banko Gotiti's stunning arc from <span class="flavor">lemon to melon to white tea</span>. El Morito at Alchemist, the citric-malic overlap so integrated the verdict simply reads: <b>"Confirmed: I love this bean."</b> Ijen Laurina's textbook hibiscus-to-honey progression. La Papaya at 2,100 metres — the highest-grown Geisha of the year, terpene-forward, nothing like its Peruvian cousins.</p>
+  <p>Then, 16 May, FLUID. <b>El Obraje</b> — a washed Huila Gesha on a flatbed dripper. <span class="flavor">Mango, orange blossom, nectarine, honey.</span> The notes in the audit abandon all pretense of detachment. It was, and remains, the cup of the year.</p>
+  <p>Ten days later the pendulum swung to the opposite pole: Zerah's <b>"Ester Bomb"</b> — a yeast-anaerobic Caturra Chiroso that detonated <span class="flavor">passionfruit</span> on arrival, turned funky mid-cup, and finished on quiet mango sugars. Three completely different cups in one glass. The archive had found both of its poles in a single month: transcendent clarity, and controlled chaos.</p>
+</div>
+
+<div class="pull rv">
+  <blockquote>Damn, the taste is so nice — the orange nectarine finishing with that honey is terrific. So far, my favourite.</blockquote>
+  <cite>El Obraje · FLUID · 16 May — the cup of the year</cite>
+</div>
+
+<div class="cups rv" data-cups="2"></div>
+
+<!-- ═══════════ ACT III ═══════════ -->
+<section class="act" data-act="3">
+  <div class="act-phase rv">Phase III — The Cool Finish</div>
+  <div class="act-temp rv">48° → 24° · June — July</div>
+  <h2 class="act-title rv"><span class="roman">ACT THREE</span>What lingers<br>is what's true.</h2>
+  <p class="act-lede rv">The finish of a cup hides nothing — the sugars, the flaws, the aftertaste that stays. June brought the archive's maturity: rare firsts, honest misses, and a manifesto about what a pourover actually is.</p>
+</section>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Seven — The Frontier</div>
+  <h3 class="ch-title">June: six firsts in thirty days.</h3>
+  <div class="ch-date">June · Twelve cups · Nine cafés</div>
+  <p class="dropcap">By June the archive stopped collecting cups and started collecting <b>frontiers</b>. First non-Arabica: a Malaysian Liberica at a vinyl-record bar, <span class="flavor">root beer and rambutan</span>, logged as a genuine delight rather than a curiosity. First Chinese origin: a Yunnan Purple Leaf Caturra, double-washed, a <span class="flavor">pandan-threaded</span> surprise. First mosto fermentation. First Yellow Sudan Rume — a triple-milestone entry in a single cup. First Myanmar. First Pink Bourbon waiting just over the horizon in July.</p>
+  <p>June also sharpened the archive's honesty. Two V60 conical entries — Kurasu's Rwanda and PPP's Suke Quto — showed the same over-extraction fingerprint, and the audits say so plainly: <b>hardware execution miss; terroir likely unrealised.</b> A great archive isn't a highlight reel.</p>
+  <p>And on 30 June, at an automated tap-dispenser bar, the year's philosophical stand. The cup was technically clean. The verdict was a manifesto: <b>pourover exists because a human reads the bed and responds.</b> Remove the human, and even a flawless cup reads inert. Not worth a repeat — on principle.</p>
+</div>
+
+<div class="pull rv">
+  <blockquote>A pourover is a conversation between a person and a coffee bed. Automate the person out, and what's left is consistent — and mute.</blockquote>
+  <cite>2050 Coffee · The Automation Verdict · 30 June</cite>
+</div>
+
+<div class="chapter rv">
+  <div class="ch-kicker">Chapter Eight — The Freshest Pour</div>
+  <h3 class="ch-title">And the archive is still warm.</h3>
+  <div class="ch-date">Zerah Roasters · 3 July</div>
+  <p class="dropcap">The newest entry is three days old as this page is published: <b>Finca Villarazo Pink Bourbon</b>, washed, through 83mm flat burrs and an Orea V4. <span class="flavor">Pomegranate and mandarin arriving together</span>, sugars surfacing exactly where the mid-cool should deliver them. And a human highlight: Aqil — the warmest, most generous barista of all forty-eight visits, explaining bloom ratios unprompted. The archive's next chapters are already being poured.</p>
+</div>
+
+<div class="cups rv" data-cups="3"></div>
+
+<!-- ═══════════ HALL OF FAME ═══════════ -->
+<section id="fame">
+  <div class="fame-head rv">
+    <div class="ch-kicker">The Standouts</div>
+    <h2 class="ch-title" style="font-size:clamp(2rem,5vw,3.4rem)">Hall of Fame</h2>
+  </div>
+  <div class="fame-grid">
+    <div class="fame-card champion rv">
+      <div class="fame-tag">Cup of the Year</div>
+      <div class="fame-name">El Obraje</div>
+      <div class="fame-quote">Washed Gesha, Huila, Colombia — at FLUID, 16 May. Mango and orange blossom resolving into honey that lingers and shifts as it cools. The only entry where the method dissolves into pure delight.</div>
+      <div class="fame-meta">GESHA · WASHED · FLATBED · 1:15.3 · LAGOM P64</div>
+    </div>
+    <div class="fame-card rv">
+      <div class="fame-tag">The Revelation</div>
+      <div class="fame-name">Hacienda La Florida</div>
+      <div class="fame-quote">Lime hot, red plum cool — the cleanest thermal acid transition of the year, discovered across the border in Johor Bahru.</div>
+      <div class="fame-meta">TYPICA MEJORADO · ANAEROBIC WASHED · ORIGAMI</div>
+    </div>
+    <div class="fame-card rv">
+      <div class="fame-tag">The Wild One</div>
+      <div class="fame-name">El Diviso "Ester Bomb"</div>
+      <div class="fame-quote">Passionfruit detonation, a funk phase, then quiet mango sugars. Three cups in one — fermentation as theatre, held just under control.</div>
+      <div class="fame-meta">CATURRA CHIROSO · YEAST ANAEROBIC · ZERAH</div>
+    </div>
+    <div class="fame-card rv">
+      <div class="fame-tag">The Love Letter</div>
+      <div class="fame-name">El Morito</div>
+      <div class="fame-quote">"Confirmed: I love this bean." Citric and malic overlapping under cane sugar — the smoothest verdict in the archive.</div>
+      <div class="fame-meta">MARSHELL · WASHED · ALCHEMIST · V60</div>
+    </div>
+    <div class="fame-card rv">
+      <div class="fame-tag">The Perfect Arc</div>
+      <div class="fame-name">Ethiopia Banko Gotiti</div>
+      <div class="fame-quote">Lemon front, melon mid-cup, white-tea finish — the year's most elegant three-phase progression, at a lean 1:17.</div>
+      <div class="fame-meta">HEIRLOOM · WASHED · XBLOOM · EK OMNIA</div>
+    </div>
+    <div class="fame-card rv">
+      <div class="fame-tag">Triple Milestone</div>
+      <div class="fame-name">Yellow Sudan Rume</div>
+      <div class="fame-quote">First Yellow mutation, first EF2 process, first Jardines Del Eden — lemongrass geraniol reading as pure varietal truth.</div>
+      <div class="fame-meta">SUDAN RUME · EF2 NATURAL · APRIL BREWER</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FIRSTS ═══════════ -->
+<section id="firsts">
+  <div class="firsts-head rv">
+    <div class="ch-kicker">Milestones</div>
+    <h2 class="ch-title" style="font-size:clamp(2rem,5vw,3.4rem)">A Year of Firsts</h2>
+  </div>
+  <div class="firsts-track rv">
+    <div class="first"><div class="first-date">03 JAN</div><div class="first-what">First audit</div><div class="first-note">Seniman, Ubud — where noticing became a method.</div></div>
+    <div class="first"><div class="first-date">10 FEB</div><div class="first-what">First full-precision entry</div><div class="first-note">Kenya Kiamugumo — the archive's measuring stick.</div></div>
+    <div class="first"><div class="first-date">18 MAR</div><div class="first-what">Aanya's first filter</div><div class="first-note">A gentle natural Pacamara, chosen for a first palate.</div></div>
+    <div class="first"><div class="first-date">29 MAR</div><div class="first-what">First Gesha</div><div class="first-note">Flash-chilled Peru — the apex varietal arrives.</div></div>
+    <div class="first"><div class="first-date">01 APR</div><div class="first-what">First Sudan Rume & Panama Geisha</div><div class="first-note">Two rare-genetics landmarks in one lunch hour.</div></div>
+    <div class="first"><div class="first-date">18 APR</div><div class="first-what">The thermal revelation</div><div class="first-note">Lime → plum across the cooling curve, JB.</div></div>
+    <div class="first"><div class="first-date">16 MAY</div><div class="first-what">Cup of the year</div><div class="first-note">El Obraje at FLUID. The favourite, still unbeaten.</div></div>
+    <div class="first"><div class="first-date">19 JUN</div><div class="first-what">First non-Arabica</div><div class="first-note">Malaysian Liberica at a vinyl bar — a happy shock.</div></div>
+    <div class="first"><div class="first-date">27 JUN</div><div class="first-what">First Chinese origin</div><div class="first-note">Yunnan Purple Leaf Caturra, pandan-threaded.</div></div>
+    <div class="first"><div class="first-date">28 JUN</div><div class="first-what">First mosto & first EF2</div><div class="first-note">Two new process categories in one morning.</div></div>
+    <div class="first"><div class="first-date">30 JUN</div><div class="first-what">The automation verdict</div><div class="first-note">First Myanmar, first Catimor — and a manifesto.</div></div>
+    <div class="first"><div class="first-date">03 JUL</div><div class="first-what">First Pink Bourbon</div><div class="first-note">Pomegranate & mandarin. The archive stays warm.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ PALATE DNA ═══════════ -->
+<section id="dna">
+  <div class="rv">
+    <div class="ch-kicker">The Instrument</div>
+    <h2 class="ch-title" style="font-size:clamp(2rem,5vw,3.2rem)">Palate DNA</h2>
+    <p style="color:var(--tan);font-family:var(--serif);font-style:italic;font-size:1.1rem;margin-top:.6rem">Forty-eight cups reveal the taster as much as the coffee.</p>
+  </div>
+  <div class="dna-rows">
+    <div class="dna-row rv"><div class="dna-k">Signature acids</div><div class="dna-v"><em>Malic first, always</em> — the juicy, stone-fruit brightness that blooms mid-cool. Phosphoric respected in Kenyans; citric welcomed only in proportion; acetic tolerated as theatre, never as habit.</div></div>
+    <div class="dna-row rv"><div class="dna-k">Signature aromatics</div><div class="dna-v"><em>Linalool florals</em> — jasmine, honeysuckle, white blossom — with stone fruit and white grape. When a cup shows these, the verdict warms noticeably.</div></div>
+    <div class="dna-row rv"><div class="dna-k">Varietal apex</div><div class="dna-v"><em>Gesha, seven entries and counting</em> — with the rare-genetics court around it: Sudan Rume (both colours), Wush Wush, Pink Bourbon, Typica Mejorado, Purple Leaf Caturra.</div></div>
+    <div class="dna-row rv"><div class="dna-k">Process loyalty</div><div class="dna-v"><em>Washed clarity wins.</em> Naturals earn their place; fermentation-heavy processes are logged with curiosity and rated with honesty — the Ester Bomb thrilled, but clarity keeps the crown.</div></div>
+    <div class="dna-row rv"><div class="dna-k">Hardware conviction</div><div class="dna-v"><em>Flat burrs, flat-bottom beds.</em> Two V60 conical over-extractions in the archive versus a run of flat-bottom successes. The geometry argument is now data, not preference.</div></div>
+    <div class="dna-row rv"><div class="dna-k">The comfort band</div><div class="dna-v"><em>1:15 to 1:17</em> — where nearly every high-rated cup lives. Tighter for body, leaner for aromatic separation, and a firm belief that the barista's hand matters more than any number.</div></div>
+    <div class="dna-row rv"><div class="dna-k">The ritual</div><div class="dna-v"><em>Three reads per cup, no exceptions.</em> Hot for the volatiles, mid-cool for the sugars, cool for the truth. A cup that doesn't change is a cup that's hiding something — or has nothing to say.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ LEDGER ═══════════ -->
+<section id="ledger">
+  <div class="ledger-head rv">
+    <div class="ch-kicker">The Complete Record</div>
+    <h2 class="ch-title" style="font-size:clamp(2rem,5vw,3.4rem)">The Ledger</h2>
+    <p style="color:var(--tan);font-family:var(--serif);font-style:italic;margin-top:.5rem">All forty-eight, in order of pouring. Tap any row for the full audit.</p>
+  </div>
+  <input class="ledger-search rv" id="lsearch" type="text" placeholder="⌕  search coffee, café, varietal, process, flavour…" aria-label="Search the ledger">
+  <div id="lrows"></div>
+  <div class="ledger-empty" id="lempty">NO ENTRIES MATCH — TRY ANOTHER WORD</div>
+</section>
+
+<!-- ═══════════ COLOPHON ═══════════ -->
+<footer id="colophon">
+  <div class="colo-sig rv">Hari</div>
+  <div class="colo-title rv">Master Extraction Archivist</div>
+  <p class="colo-line rv">The cup you are holding has reached room temperature. Everything volatile has gone; what remains is what was true all along. Thank you for drinking it with me.</p>
+  <div class="colo-stats rv">
+    48 CUPS · 27 CAFÉS · 4 CITIES · 14 ORIGINS · 20+ VARIETALS · 15 PROCESSES<br>
+    UBUD — MUMBAI — SINGAPORE — JOHOR BAHRU · JANUARY–JULY 2026<br>
+    HOT · MID-COOL · COOL — EVERY CUP, THREE TIMES
+  </div>
+</footer>
+
+</main>
+
+<script>
+/* ════════ DATA — all 48 entries ════════ */
+const D=[
+{n:1,d:'03 Jan',dt:'2026-01-03',cafe:'Seniman Coffee Studio',city:'Ubud, Bali',coffee:'Bali Karana Kintamanis',org:'Kintamani, Bali',v:'—',p:'Natural',brew:'Filter',ratio:'—',price:'—',notes:'Clean citrus; floral',verdict:'Excellent clarity for a natural process; clean citrus and floral notes. The cup that started the archive.',act:1,star:0},
+{n:2,d:'04 Jan',dt:'2026-01-04',cafe:'Seniman Coffee Studio',city:'Ubud, Bali',coffee:'Sulawesi Toraja',org:'Sulawesi, Indonesia',v:'—',p:'Wet-Hulled',brew:'Pour-over',ratio:'—',price:'—',notes:'Cocoa; earthy structures',verdict:'Heavy body, rich cocoa, low acidity — the classic Giling Basah density, logged as the old-Indonesia baseline.',act:1,star:0},
+{n:3,d:'04 Jan',dt:'2026-01-04',cafe:'Seniman Coffee Studio',city:'Ubud, Bali',coffee:'House Blend (Piccolo)',org:'—',v:'—',p:'—',brew:'Piccolo',ratio:'—',price:'—',notes:'Balanced',verdict:'Milk-integration baseline: fats softening acidity, amplifying sweetness. Calibration, not romance.',act:1,star:0},
+{n:4,d:'10 Feb',dt:'2026-02-10',cafe:'Kyūkei Coffee',city:'Singapore',coffee:'Kenya Kiamugumo AA',org:"Murang'a County, Kenya",v:'SL28 / SL34',p:'Washed',brew:'Flat-bottom pourover',ratio:'1:16 · 93°',price:'S$8',notes:'Blackcurrant, lemon, citrus zest, mineral finish',verdict:'Extremely clean and structured — the phosphoric acid signature confirmed across all phases. The archive\u2019s measuring stick.',act:1,star:1},
+{n:5,d:'01 Mar',dt:'2026-03-01',cafe:'Subko Coffee Roasters',city:'Mumbai',coffee:'Project Pearl Ratnagiri',org:'India',v:'—',p:'Anaerobic Natural',brew:'Filter',ratio:'—',price:'—',notes:'Restrained anaerobic',verdict:'Clean but muted — Agtron 89 roast suppressed the ester development the process promised. Lesson learned: roast decides.',act:1,star:0},
+{n:6,d:'08 Mar',dt:'2026-03-08',cafe:'Grey Soul Coffee Roasters',city:'Mumbai',coffee:'Raspberry in Loop — Zoya Estate',org:'India',v:'—',p:'Multi-stage Anaerobic',brew:'Filter',ratio:'—',price:'—',notes:'Chocolate',verdict:'Heavy body, over-smoothed — development and fermentation together silenced the terroir.',act:1,star:0},
+{n:7,d:'18 Mar',dt:'2026-03-18',cafe:'Narrative Coffee Stand',city:'Singapore',coffee:'Finca La Siberia',org:'El Salvador',v:'Pacamara',p:'Natural',brew:'Pour-over',ratio:'—',price:'—',notes:"Stewed apples; apricot; pu'er tea",verdict:"Aanya's first specialty filter — a gentle natural Pacamara chosen for a first palate. The archive's most personal entry.",act:1,star:1},
+{n:8,d:'18 Mar',dt:'2026-03-18',cafe:'Narrative Coffee Stand',city:'Singapore',coffee:'El Puente',org:'Honduras',v:'Catuai',p:'Washed',brew:'Espresso',ratio:'—',price:'—',notes:'Black cherry; apricot; pecan',verdict:'The espresso counterpoint to the day — nutty sweetness balancing clean fruit acid.',act:1,star:0},
+{n:9,d:'18 Mar',dt:'2026-03-18',cafe:'ASK Coffee Roastery',city:'Singapore',coffee:'Honduras Masaguara S13',org:'Honduras',v:'Catuai / Caturra',p:'Washed Co-Ferment',brew:'Pour-over',ratio:'—',price:'S$15',notes:'Lychee; brandy; honeydew; milk chocolate',verdict:'Premium but memorable — co-fermentation delivering lychee lactones and brandy esters with real control.',act:1,star:0},
+{n:10,d:'18 Mar',dt:'2026-03-18',cafe:'ASK Coffee Roastery',city:'Singapore',coffee:'House Blend (Magic)',org:'—',v:'—',p:'—',brew:'Ristretto milk',ratio:'—',price:'—',notes:'Concentrated cocoa',verdict:'Ristretto-milk calibration: reduced water, elevated sweetness density.',act:1,star:0},
+{n:11,d:'22 Mar',dt:'2026-03-22',cafe:'Apartment (Selegie Rd)',city:'Singapore',coffee:'Colombia Don Gallego — Wush Wush',org:'Colombia',v:'Wush Wush',p:'Washed',brew:'Flat-bottom pourover',ratio:'1:17',price:'—',notes:'Tea-like clarity; delicate floral',verdict:'Transparent, floral, tea-like — the lean 1:17 ratio maximising aromatic separation. One of the year\u2019s most elegant cups.',act:1,star:1},
+{n:12,d:'24 Mar',dt:'2026-03-24',cafe:'Kyūkei Coffee',city:'Singapore',coffee:'Kenya Ndiaini AA',org:'Kenya',v:'SL28 / SL34 / Ruiru 11',p:'Washed',brew:'Pour-over',ratio:'—',price:'S$9',notes:'Redcurrant; elderflower; lemon; apricot',verdict:'Acidic, interesting, balanced — Ruiru 11 adding structure to the SL brightness.',act:1,star:0},
+{n:13,d:'25 Mar',dt:'2026-03-25',cafe:'Agora Coffee',city:'Singapore',coffee:'Nicaragua Matagalpa — Finca La Virgen',org:'Nicaragua',v:'—',p:'Fully Washed',brew:'Flat White',ratio:'—',price:'—',notes:'Caramel; chocolate; red apple',verdict:'Clean malic apple acidity surviving milk integration — a solid calibration cup.',act:1,star:0},
+{n:14,d:'27 Mar',dt:'2026-03-27',cafe:'Agora Coffee',city:'Singapore',coffee:'Ethiopia Yirgacheffe Beloya',org:'Yirgacheffe, Ethiopia',v:'Heirloom',p:'Natural',brew:'V60',ratio:'1:14.6',price:'—',notes:'Blackcurrant; strawberry; white floral',verdict:'Bright, floral, distinctly strawberry — EK43 uniformity keeping a natural process clean.',act:1,star:0},
+{n:15,d:'28 Mar',dt:'2026-03-28',cafe:'Tiong Hoe Specialty',city:'Singapore',coffee:'Brazil Mogiana',org:'Mogiana, Brazil',v:'—',p:'Natural',brew:'Pour-over',ratio:'1:15',price:'S$8',notes:'Red dates; chocolate; honey',verdict:'Chocolate-heavy comfort — the tighter ratio building body and Maillard sweetness.',act:1,star:0},
+{n:16,d:'28 Mar',dt:'2026-03-28',cafe:'Tiong Hoe Specialty',city:'Singapore',coffee:'Smoky Quartz Blend',org:'Brazil + India',v:'—',p:'—',brew:'Piccolo latte',ratio:'—',price:'S$5.10',notes:'Dark chocolate; hazelnut; smoky',verdict:'Low milk volume concentrating cocoa — the strong end of the milk spectrum, logged.',act:1,star:0},
+{n:17,d:'29 Mar',dt:'2026-03-29',cafe:'Asylum Coffeehouse',city:'Singapore',coffee:'Peru Cajamarca Gesha (Iced)',org:'Cajamarca, Peru',v:'Gesha',p:'Washed',brew:'Iced pourover',ratio:'1:16 · 92.5°',price:'S$11',notes:'Jasmine; caramel; lime; cacao nibs',verdict:'The first Gesha — flash-chilled, jasmine held in ice, linalool preserved by the cold. A threshold crossed.',act:1,star:1},
+{n:18,d:'01 Apr',dt:'2026-04-01',cafe:'Maxi Coffee Bar',city:'Singapore',coffee:'La Laja',org:'Cauca, Colombia',v:'Sudan Rume',p:'Washed',brew:'Flat-bottom pourover',ratio:'1:15.3 · 90–92°',price:'S$9',notes:'Raspberry; nectarine; floral',verdict:'Nectarine and raspberry extremely clear — rare genetics through 120mm flat burrs. A technical milestone.',act:2,star:1},
+{n:19,d:'01 Apr',dt:'2026-04-01',cafe:'Lume Café',city:'Singapore',coffee:'Corpachi Panama Geisha',org:'Boquerón, Chiriquí, Panama',v:'Geisha',p:'Red Honey',brew:'V60 · dual-temp',ratio:'1:15 · 90+70°',price:'S$12',notes:'Mandarin candy; jasmine; apricot',verdict:'The first Panama Geisha — apricot clearly perceived, honey-process sweetness structured, not sticky.',act:2,star:0},
+{n:20,d:'05 Apr',dt:'2026-04-05',cafe:'Asylum Coffeehouse',city:'Singapore',coffee:'Castillo Watermelon',org:'Quindío, Colombia',v:'Castillo',p:'Watermelon Co-Ferment',brew:'V60 · dual-temp',ratio:'1:15 · 90+70°',price:'S$12.50',notes:'Watermelon; mint; lime; chocolate',verdict:'Experimental but controlled — sweetness layered rather than sharp. A father-daughter session cup.',act:2,star:0},
+{n:21,d:'05 Apr',dt:'2026-04-05',cafe:'Asylum Coffeehouse',city:'Singapore',coffee:'Peru Gesha — Wilder Garcia',org:'Jaén, Peru',v:'Gesha',p:'Washed',brew:'V60 · dual-temp',ratio:'1:15 · 90+70°',price:'S$12.50',notes:'Jasmine; caramel; lime; cacao nibs',verdict:'Clean, structured, high clarity — the dual-temperature pour engineering aromatics and body apart.',act:2,star:0},
+{n:22,d:'08 Apr',dt:'2026-04-08',cafe:'Maxi Coffee Bar',city:'Singapore',coffee:'La Villa #1',org:'Huila, Colombia',v:'Papayo',p:'Natural',brew:'Flat-bottom pourover',ratio:'1:15',price:'S$9',notes:'Stewed forest berries; grape; black forest cake',verdict:'Dense fruit, rounded sweetness — the Papayo varietal\u2019s sugar amplified into cake territory.',act:2,star:0},
+{n:23,d:'18 Apr',dt:'2026-04-18',cafe:'JB Café (unnamed)',city:'Johor Bahru',coffee:'Hacienda La Florida',org:'—',v:'Typica Mejorado',p:'Anaerobic Washed',brew:'Origami conical',ratio:'1:15.4',price:'S$11.08',notes:'Lemon verbena; red plum; citronella; hibiscus',verdict:'Lime when hot, distinct plum as it cooled — the year\u2019s cleanest thermal acid transition. The revelation.',act:2,star:1},
+{n:24,d:'24 Apr',dt:'2026-04-24',cafe:'Agora Coffee',city:'Singapore',coffee:'Brazil Santuário Sul',org:'Carmo de Minas, Brazil',v:'—',p:'Natural Fermentation',brew:'V60',ratio:'1:14 · 95°',price:'—',notes:'Blackcurrant; black cherry; dark chocolate',verdict:'Full body, prominent blackcurrant, clean chocolate finish — maximum body engineered at 1:14.',act:2,star:0},
+{n:25,d:'06 May',dt:'2026-05-06',cafe:'Nylon Coffee Roasters',city:'Singapore',coffee:'Brazil FAF Organic',org:'Brazil',v:'Arara',p:'Natural',brew:'xBloom flat-bottom',ratio:'1:17',price:'S$7.50',notes:'Red apple; cherry; raisin; milk chocolate',verdict:'Crisp malic front resolving into milk chocolate — an unusually clean natural at a lean ratio.',act:2,star:0},
+{n:26,d:'06 May',dt:'2026-05-06',cafe:'Nylon Coffee Roasters',city:'Singapore',coffee:'Brazil Serra dos Ciganos',org:'Brazil',v:'Catucai 24/137',p:'Natural',brew:'Flat White',ratio:'—',price:'—',notes:'Sultana; dried apricot; praline; hazelnut',verdict:'Milk fats binding perfectly with the natural espresso — a long, comforting finish.',act:2,star:0},
+{n:27,d:'07 May',dt:'2026-05-07',cafe:'Nylon Coffee Roasters',city:'Singapore',coffee:'Ethiopia Banko Gotiti',org:'Ethiopia',v:'Heirloom',p:'Washed',brew:'xBloom flat-bottom',ratio:'1:17',price:'S$8.50',notes:'Lemonade; raspberry; peach; bergamot',verdict:'Lemon front, melon mid-cup, white-tea finish — the year\u2019s most elegant three-phase arc.',act:2,star:1},
+{n:28,d:'07 May',dt:'2026-05-07',cafe:'Nylon Coffee Roasters',city:'Singapore',coffee:'Nicaragua Buena Vista',org:'Nicaragua',v:'Parainema',p:'Natural Anaerobic',brew:'Single espresso',ratio:'~1:2',price:'—',notes:'Chiku; stewed cherry; dried apricot; brazil nut',verdict:'Thick, syrupy, savoury rather than sweet — fermentation esters under nine bars of pressure.',act:2,star:0},
+{n:29,d:'08 May',dt:'2026-05-08',cafe:'Alchemist (Raffles Place)',city:'Singapore',coffee:'El Morito',org:'Colombia',v:'Marshell',p:'Washed',brew:'V60',ratio:'1:16',price:'—',notes:'Yellow plum; orange; cane sugar',verdict:'Citric and malic overlapping under integrated cane sugar. The verdict on file: "Confirmed: I love this bean."',act:2,star:1},
+{n:30,d:'12 May',dt:'2026-05-12',cafe:'Kurasu',city:'Singapore',coffee:'Indonesia Frinsa Estate',org:'West Java, Indonesia',v:'Local varietals',p:'Extended Fermentation Honey',brew:'Hario Alpha flat-bottom',ratio:'1:16',price:'S$9.50',notes:'Stewed strawberries; grapefruit; brown sugar; black tea',verdict:'A sweet coating that sticks then fades cleanly — unusual clarity for the origin, honestly earned.',act:2,star:0},
+{n:31,d:'13 May',dt:'2026-05-13',cafe:'The Community (Hamilton)',city:'Singapore',coffee:'Jose Mancia Honduras',org:'Honduras',v:'Typica',p:'Natural',brew:'Hario Switch',ratio:'1:17',price:'S$9',notes:'Kiwi; oolong tea; chocolate truffle',verdict:'Kiwi and oolong, full-bodied, short chocolate finish — a clean, approachable natural.',act:2,star:0},
+{n:32,d:'15 May',dt:'2026-05-15',cafe:'Alchemist (Ocean Financial)',city:'Singapore',coffee:'Ijen Laurina',org:'East Java, Indonesia',v:'Hybrid Laurina',p:'Anaerobic Natural',brew:'V60',ratio:'1:16',price:'S$8.50',notes:'Hibiscus; red apple; hawthorn',verdict:'Hibiscus hot, apple paste mid, honeyed cool — a textbook progressive thermal arc.',act:2,star:0},
+{n:33,d:'16 May',dt:'2026-05-16',cafe:'FLUID',city:'Singapore',coffee:'El Obraje',org:'Huila, Colombia',v:'Gesha',p:'Washed',brew:'Flatbed dripper',ratio:'1:15.3',price:'S$14',notes:'Mango; orange blossom; nectarine; honey',verdict:'"Damn the taste so nice — the orange nectarine finishing with that honey is terrific." The cup of the year.',act:2,star:1},
+{n:34,d:'19 May',dt:'2026-05-19',cafe:'Pocket by Flip',city:'Singapore',coffee:'Ecuador La Papaya',org:'Loja, Ecuador · 2,100 MASL',v:'Geisha',p:'Washed',brew:'Hario Alpha flat-bottom',ratio:'1:15',price:'S$18',notes:'Fresh apricot; rooibos; lemon thyme; toffee apple',verdict:'Terpene-forward, no jasmine at all — the highest-grown Geisha of the year, nothing like its Peruvian cousins.',act:2,star:0},
+{n:35,d:'26 May',dt:'2026-05-26',cafe:'Zerah Roasters',city:'Singapore',coffee:'El Diviso — "Ester Bomb"',org:'Huila, Colombia',v:'Caturra Chiroso',p:'Yeast Anaerobic Natural',brew:'Flat-bottom dripper',ratio:'1:16',price:'S$12',notes:'Passionfruit; plum wine; mango',verdict:'"Goddamn the smell is intense." Ester detonation hot, funk phase mid, mango sugars cool — three cups in one.',act:2,star:1},
+{n:36,d:'10 Jun',dt:'2026-06-10',cafe:'Nylon Coffee Roasters',city:'Singapore',coffee:'Colombia Juan Martin',org:'Colombia',v:'Red Striped Bourbon',p:'Washed',brew:'xBloom flat-bottom',ratio:'1:17',price:'S$7.50',notes:'Berry; red plum; nectarine; orange tea',verdict:'Orange-tea aromatics when hot, sugars emerging mid-cool — light, lean, and working.',act:3,star:0},
+{n:37,d:'13 Jun',dt:'2026-06-13',cafe:'Kurasu',city:'Singapore',coffee:'Rwanda Nkara Lot 1204',org:'Rwanda',v:'Red Bourbon',p:'Fully Washed',brew:'V60 conical',ratio:'—',price:'S$9.27',notes:'Mandarin; baked apple; grapefruit; brown sugar',verdict:'Baked apple dominating with a bitter tail — rated average, and the first data point in the V60 over-extraction pattern.',act:3,star:0},
+{n:38,d:'14 Jun',dt:'2026-06-14',cafe:'Keryi Coffee',city:'Singapore',coffee:'Colombia Finca La Esmaralda',org:'Colombia',v:'Gesha',p:'Honey',brew:'Hario Switch',ratio:'1:14',price:'S$15',notes:'Citrus; white florals; lychee; sugar-cane',verdict:'Fragile linalool surviving a tight 1:14 — a fine, relaxing Gesha in the upper tier.',act:3,star:0},
+{n:39,d:'19 Jun',dt:'2026-06-19',cafe:'Corner Corner',city:'Singapore',coffee:'Malaysia My Liberica',org:'Kulai, Johor, Malaysia',v:'Liberica',p:'JH Controlled Fermentation',brew:'Pour-over',ratio:'1:14.6',price:'S$13',notes:'Root beer; tropical punch; rambutan; longan',verdict:'The first non-Arabica — root beer and longan at a vinyl-record bar, landed as delight rather than novelty.',act:3,star:1},
+{n:40,d:'19 Jun',dt:'2026-06-19',cafe:'Equate',city:'Singapore',coffee:'Colombia Huila La Pradera',org:'Huila, Colombia',v:'Gesha',p:'Washed',brew:'Orea V4',ratio:'1:14',price:'S$13',notes:'Peach jam; orange; honey',verdict:'Strong isolated peach but underdeveloped sweetness — the audit suspects 1:15 would have balanced it. Rated average, honestly.',act:3,star:0},
+{n:41,d:'21 Jun',dt:'2026-06-21',cafe:'Apartment (Jalan Riang)',city:'Singapore',coffee:'Colombia Javier Quintero',org:'Inza, Cauca, Colombia',v:'Bourbon Aruzi',p:'Washed',brew:'Hand brew',ratio:'1:16.9',price:'S$9.50',notes:'White peach; blackberry; jasmine',verdict:'White peach dominant, beautifully balanced — a clean washed expression, very enjoyable.',act:3,star:0},
+{n:42,d:'25 Jun',dt:'2026-06-25',cafe:'PPP Coffee (Funan)',city:'Singapore',coffee:'Ethiopia Suke Quto',org:'Guji, Ethiopia',v:'Welicho & Kurume',p:'Fully Washed',brew:'V60 conical',ratio:'1:15',price:'S$9',notes:'Nectarine; white florals; citrus',verdict:'Sharp unripe orange across all phases, no floral lift — hardware execution miss, terroir likely unrealised. Below average, and the audit says so.',act:3,star:0},
+{n:43,d:'27 Jun',dt:'2026-06-27',cafe:'Apartment (Jalan Riang)',city:'Singapore',coffee:'China Yunnan Meng Hai',org:'Xishuangbanna, Yunnan, China',v:'Purple Leaf Caturra',p:'Double Washed',brew:'4-pour progressive',ratio:'1:16.5 · 95°',price:'S$9.50',notes:'Dried tangerine peel; red apple; pandan',verdict:'The first Chinese origin — crisp malic clarity with pandan as an aromatic binder. A genuinely pleasant surprise.',act:3,star:1},
+{n:44,d:'28 Jun',dt:'2026-06-28',cafe:'Keryi Coffee',city:'Singapore',coffee:'Ethiopia Urabeast G1',org:'Uraga, Guji, Ethiopia',v:'74110 / 74112',p:'Mosto Fermentation',brew:'Hario Switch',ratio:'1:14 · 88→70°',price:'S$13',notes:'Winey; raspberry; purple grapes',verdict:'The first mosto in the archive — raspberry esters clean and immediate, winey character emerging exactly on cue. Excellent.',act:3,star:0},
+{n:45,d:'28 Jun',dt:'2026-06-28',cafe:'Asylum Coffeehouse',city:'Singapore',coffee:'Yellow Sudan Rume',org:'Quindío, Colombia',v:'Sudan Rume (Yellow)',p:'EF2 Extended Fermentation',brew:'April flat-bottom',ratio:'1:16 · 90°',price:'S$14',notes:'Lemongrass; vanilla; red fruits; brown sugar',verdict:'Three milestones in one cup — first Yellow mutation, first EF2, new producer. Lemongrass geraniol as pure varietal truth.',act:3,star:1},
+{n:46,d:'30 Jun',dt:'2026-06-30',cafe:'2050 Coffee',city:'Singapore',coffee:'Myanmar Arakan Mountain',org:'Magway, Myanmar',v:'Catimor',p:'Washed & Honey',brew:'Automated tap dispenser',ratio:'N/A — batch',price:'S$6',notes:'Yellow pear; dried fruits; brown sugar; almond',verdict:'Technically clean, expressively inert — the automation manifesto. Pourover exists because a human reads the bed. Not worth a repeat, on principle.',act:3,star:0},
+{n:47,d:'01 Jul',dt:'2026-07-01',cafe:'Kyūkei Coffee',city:'Singapore',coffee:'Ethiopia Worka Chelchele',org:'Gedeb, Gedeo, Ethiopia',v:'Dega, Wolisho, Kurume',p:'Washed',brew:'Deep27 flat-bottom',ratio:'1:15 · 85→95°',price:'S$9',notes:'Lemon; peach; bergamot; apricot',verdict:'Floral hit, citric clarity, nectarine sugars on the cool — a 4/4 palate alignment, with a berry-jasmine tail traced to the Wolisho landrace.',act:3,star:1},
+{n:48,d:'03 Jul',dt:'2026-07-03',cafe:'Zerah Roasters',city:'Singapore',coffee:'Finca Villarazo — Pink Bourbon',org:'Colombia',v:'Pink Bourbon',p:'Washed',brew:'Orea V4 flat-bottom',ratio:'1:16 · 92°',price:'S$9',notes:'Pomegranate; mandarin; lingering florals',verdict:'Pomegranate and mandarin arriving together, sugars surfacing on schedule — and Aqil, the warmest barista of all forty-eight visits. The freshest pour.',act:3,star:1},
+];
+
+/* ════════ RENDER CUP CARDS PER ACT ════════ */
+document.querySelectorAll('[data-cups]').forEach(w=>{
+  const act=+w.dataset.cups;
+  D.filter(e=>e.act===act).forEach(e=>{
+    const c=document.createElement('div');
+    c.className='cup'+(e.star?' hof':'');
+    c.innerHTML=`<div class="cup-no">Nº ${String(e.n).padStart(2,'0')} — ${e.d}</div>
+      <div class="cup-name">${e.coffee}</div>
+      <div class="cup-cafe">${e.cafe} · ${e.city}</div>
+      <div class="cup-notes">${e.notes}</div>
+      <div class="cup-verdict">${e.verdict}</div>
+      <div class="cup-row"><span>${e.v} · ${e.p}</span><span class="cup-more">Read in ledger ↓</span></div>`;
+    c.onclick=()=>{ // jump to ledger row & open it
+      const row=document.querySelector(`.lrow[data-n="${e.n}"]`);
+      if(row){row.classList.add('open');row.scrollIntoView({behavior:'smooth',block:'center'});}
+    };
+    w.appendChild(c);
+  });
+});
+
+/* ════════ LEDGER ════════ */
+const lw=document.getElementById('lrows');
+D.forEach(e=>{
+  const r=document.createElement('div');
+  r.className='lrow';r.dataset.n=e.n;
+  r.dataset.q=`${e.coffee} ${e.cafe} ${e.city} ${e.org} ${e.v} ${e.p} ${e.notes} ${e.verdict}`.toLowerCase();
+  r.innerHTML=`<div class="lrow-main">
+      <span class="l-no">${String(e.n).padStart(2,'0')}</span>
+      <span class="l-date">${e.d}</span>
+      <span class="l-coffee">${e.star?'<span class="l-star">★</span> ':''}${e.coffee}</span>
+      <span class="l-cafe">${e.cafe}<br>${e.city}</span>
+      <span class="l-price">${e.price}</span>
+    </div>
+    <div class="lrow-detail">
+      <div class="ld-grid">
+        <div><div class="ld-k">Origin</div><div class="ld-v">${e.org}</div></div>
+        <div><div class="ld-k">Varietal</div><div class="ld-v">${e.v}</div></div>
+        <div><div class="ld-k">Process</div><div class="ld-v">${e.p}</div></div>
+        <div><div class="ld-k">Brew</div><div class="ld-v">${e.brew}</div></div>
+        <div><div class="ld-k">Ratio · Temp</div><div class="ld-v">${e.ratio}</div></div>
+        <div><div class="ld-k">Notes</div><div class="ld-v">${e.notes}</div></div>
+      </div>
+      <div class="ld-verdict">${e.verdict}</div>
+    </div>`;
+  r.querySelector('.lrow-main').onclick=()=>r.classList.toggle('open');
+  lw.appendChild(r);
+});
+document.getElementById('lsearch').addEventListener('input',ev=>{
+  const q=ev.target.value.toLowerCase().trim();let vis=0;
+  document.querySelectorAll('.lrow').forEach(r=>{
+    const show=!q||r.dataset.q.includes(q);
+    r.style.display=show?'':'none';if(show)vis++;
+  });
+  document.getElementById('lempty').style.display=vis?'none':'block';
+});
+
+/* ════════ THERMAL RAIL — the page cools as you read ════════ */
+const fill=document.getElementById('rail-fill'),drop=document.getElementById('rail-drop'),
+      tRead=document.getElementById('temp-read'),pRead=document.getElementById('phase-read');
+const isMobile=()=>matchMedia('(max-width:760px)').matches;
+// color interpolation ember→honey→dusk
+function lerp(a,b,t){return a+(b-a)*t}
+function hex2rgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+const C1=hex2rgb('#d98d3a'),C2=hex2rgb('#ce9d4e'),C3=hex2rgb('#b08768');
+function mix(t){ // 0..1 across the whole page
+  let a,b,k;
+  if(t<.5){a=C1;b=C2;k=t/.5}else{a=C2;b=C3;k=(t-.5)/.5}
+  const r=Math.round(lerp(a[0],b[0],k)),g=Math.round(lerp(a[1],b[1],k)),bl=Math.round(lerp(a[2],b[2],k));
+  return[r,g,bl];
+}
+let ticking=false;
+function onScroll(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(()=>{
+    const max=document.documentElement.scrollHeight-innerHeight;
+    const t=Math.min(1,Math.max(0,scrollY/max));
+    const temp=(93-(93-24)*t).toFixed(1);
+    tRead.firstChild.textContent=temp+'°';
+    if(isMobile()){fill.style.width=(t*100)+'%';drop.style.left=(t*100)+'%';}
+    else{fill.style.height=(t*100)+'%';drop.style.top=(t*100)+'%';}
+    pRead.textContent=t<.34?'HOT PHASE':t<.67?'MID-COOL':'COOL FINISH';
+    const[r,g,b]=mix(t);
+    const rs=document.documentElement.style;
+    rs.setProperty('--acc',`rgb(${r},${g},${b})`);
+    rs.setProperty('--acc-soft',`rgba(${r},${g},${b},.13)`);
+    rs.setProperty('--acc-line',`rgba(${r},${g},${b},.4)`);
+    ticking=false;
+  });
+}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* ════════ REVEALS ════════ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

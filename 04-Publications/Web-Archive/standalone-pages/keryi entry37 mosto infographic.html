@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entry #37 — Keryi Coffee | Ethiopia Urabeast G1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink: #1a1018;
+    --cream: #faf6f0;
+    --purple-deep: #2d1b4e;
+    --purple-mid: #6b3fa0;
+    --purple-light: #c9a8e8;
+    --purple-pale: #f0e8fb;
+    --raspberry: #d4275a;
+    --raspberry-pale: #fce8ef;
+    --gold: #c9922a;
+    --gold-pale: #fdf3e3;
+    --teal: #1a7a6e;
+    --teal-pale: #e2f4f1;
+    --wine: #8b1a3a;
+    --wine-pale: #fceef3;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+    --serif: 'Playfair Display', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    font-family: var(--sans);
+    color: var(--cream);
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, #1a0a2e 60%, #0e0818 100%);
+    border-radius: 20px;
+    padding: 40px 40px 32px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,232,0.2);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(107,63,160,0.4) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(212,39,90,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .entry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(201,168,232,0.15);
+    border: 1px solid rgba(201,168,232,0.35);
+    border-radius: 100px;
+    padding: 6px 16px 6px 6px;
+    margin-bottom: 20px;
+  }
+
+  .entry-num {
+    background: var(--purple-mid);
+    color: white;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+  }
+
+  .entry-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--purple-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #fff 30%, var(--purple-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: rgba(201,168,232,0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(250,246,240,0.8);
+  }
+
+  .meta-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .milestone-strip {
+    background: linear-gradient(90deg, var(--raspberry), var(--purple-mid), var(--teal));
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* ── GRID ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-full {
+    margin-bottom: 16px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: #211530;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* ── ORIGIN CARD ── */
+  .origin-card { background: #1c1028; }
+
+  .origin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .origin-field label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .origin-field span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+
+  .process-highlight {
+    background: linear-gradient(135deg, rgba(107,63,160,0.3), rgba(45,27,78,0.5));
+    border: 1px solid rgba(201,168,232,0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+
+  .process-highlight .ph-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 6px;
+  }
+
+  .process-highlight .ph-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--purple-light);
+    margin-bottom: 4px;
+  }
+
+  .process-highlight .ph-desc {
+    font-size: 11px;
+    color: rgba(250,246,240,0.6);
+    line-height: 1.5;
+  }
+
+  /* ── VARIETAL CARD ── */
+  .varietal-card { background: #160e24; }
+
+  .varietal-numbers {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .var-num {
+    flex: 1;
+    background: rgba(107,63,160,0.25);
+    border: 1px solid rgba(107,63,160,0.4);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .var-num .vn-code {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--purple-light);
+    display: block;
+  }
+
+  .var-num .vn-label {
+    font-size: 9px;
+    color: rgba(250,246,240,0.5);
+    margin-top: 2px;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+  }
+
+  .trait-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .trait-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(250,246,240,0.75);
+    line-height: 1.4;
+  }
+
+  .trait-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  /* ── BREW PARAMS ── */
+  .brew-card { background: #0f1820; }
+
+  .param-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .param-box {
+    background: rgba(26,122,110,0.15);
+    border: 1px solid rgba(26,122,110,0.3);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .param-val {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: #5ecfc0;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .param-lbl {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(94,207,192,0.6);
+  }
+
+  .temp-arc {
+    background: rgba(26,122,110,0.1);
+    border: 1px solid rgba(26,122,110,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+
+  .temp-arc-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(94,207,192,0.6);
+    margin-bottom: 10px;
+  }
+
+  .temp-visual {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .temp-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .temp-circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .temp-hot { background: rgba(212,39,90,0.2); border: 2px solid var(--raspberry); color: var(--raspberry); }
+  .temp-cool { background: rgba(26,122,110,0.2); border: 2px solid var(--teal); color: #5ecfc0; }
+
+  .temp-arrow {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--raspberry), #5ecfc0);
+    position: relative;
+    margin: 0 8px;
+    margin-bottom: 20px;
+  }
+
+  .temp-arrow::after {
+    content: '↓';
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: rgba(250,246,240,0.4);
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .temp-sublabel {
+    font-size: 9px;
+    color: rgba(250,246,240,0.4);
+    font-family: var(--mono);
+    letter-spacing: 0.06em;
+  }
+
+  .hardware-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .hw-box {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .hw-box .hw-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,246,240,0.35);
+    margin-bottom: 4px;
+  }
+
+  .hw-box .hw-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+
+  /* ── THERMAL ARC (3 phases) ── */
+  .thermal-card { background: #0e1a12; }
+
+  .phase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .phase {
+    border-radius: 10px;
+    padding: 16px 14px;
+    position: relative;
+  }
+
+  .phase-hot { background: rgba(212,39,90,0.12); border: 1px solid rgba(212,39,90,0.3); }
+  .phase-mid { background: rgba(201,146,42,0.12); border: 1px solid rgba(201,146,42,0.3); }
+  .phase-cool { background: rgba(26,122,110,0.12); border: 1px solid rgba(26,122,110,0.3); }
+
+  .phase-temp {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .phase-hot .phase-temp { color: var(--raspberry); }
+  .phase-mid .phase-temp { color: var(--gold); }
+  .phase-cool .phase-temp { color: #5ecfc0; }
+
+  .phase-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .phase-notes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .phase-notes li {
+    font-size: 11px;
+    color: rgba(250,246,240,0.75);
+    line-height: 1.4;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .phase-notes li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    opacity: 0.5;
+    font-size: 10px;
+  }
+
+  /* ── VERDICT ── */
+  .verdict-card {
+    background: linear-gradient(135deg, #1a0a2e, #0e1820);
+    border: 1px solid rgba(201,168,232,0.2);
+  }
+
+  .verdict-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .verdict-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .verdict-quote span {
+    color: var(--purple-light);
+  }
+
+  .rating-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .rating-word {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: 0.05em;
+  }
+
+  .rating-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .rdot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+  }
+
+  .rdot.empty { background: rgba(107,63,160,0.25); border: 1px solid rgba(107,63,160,0.4); }
+
+  .vs-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .vs-table th {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,246,240,0.4);
+    padding: 0 0 8px 0;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .vs-table td {
+    font-size: 12px;
+    color: rgba(250,246,240,0.8);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: top;
+    line-height: 1.3;
+  }
+
+  .vs-table td:first-child {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.4);
+    padding-right: 14px;
+    white-space: nowrap;
+  }
+
+  .check { color: #5ecfc0; font-size: 11px; }
+  .partial { color: var(--gold); font-size: 11px; }
+
+  /* ── ENRICHMENT ── */
+  .enrich-card { background: #110e1a; }
+
+  .enrich-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .enrich-block {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .eb-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .eb-body {
+    font-size: 11px;
+    color: rgba(250,246,240,0.65);
+    line-height: 1.6;
+  }
+
+  .eb-body strong {
+    color: rgba(250,246,240,0.9);
+    font-weight: 600;
+  }
+
+  /* ── MILESTONE ── */
+  .milestone-card {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0e1a12 100%);
+    border: 1px solid rgba(201,168,232,0.15);
+  }
+
+  .milestone-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .ms-block {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .ms-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .ms-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 6px;
+  }
+
+  .ms-desc {
+    font-size: 11px;
+    color: rgba(250,246,240,0.6);
+    line-height: 1.4;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    margin-top: 16px;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.35);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-right {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.35);
+    letter-spacing: 0.08em;
+  }
+
+  .locked-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(26,122,110,0.2);
+    border: 1px solid rgba(26,122,110,0.4);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #5ecfc0;
+    text-transform: uppercase;
+  }
+
+  /* ── FLAVOR WHEEL ── */
+  .flavor-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flavor-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .fb-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.55);
+    width: 70px;
+    flex-shrink: 0;
+    letter-spacing: 0.06em;
+  }
+
+  .fb-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .fb-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .fb-val {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.4);
+    width: 28px;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="entry-badge">
+      <span class="entry-num">#037</span>
+      <span class="entry-label">Hari Coffee Archive · 28 Jun 2026 · 10:30AM</span>
+    </div>
+    <h1>Ethiopia Urabeast G1</h1>
+    <div class="header-sub">Keryi Coffee · Farrer Park, Singapore · SGD 13</div>
+    <div class="header-meta">
+      <div class="meta-pill"><div class="meta-dot" style="background:#d4275a"></div>Uraga, Guji, Ethiopia</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:#6b3fa0"></div>Mosto Fermentation</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:#1a7a6e"></div>JARC 74110 + 74112</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:#c9922a"></div>Hario Switch · Ditting 98mm</div>
+    </div>
+    <div class="milestone-strip">🔬 FIRST MOSTO FERMENTATION ENTRY IN ARCHIVE — PROCESS CATEGORY UNLOCKED</div>
+  </div>
+
+  <!-- ROW 1: Origin + Varietal -->
+  <div class="grid-2">
+
+    <!-- ORIGIN -->
+    <div class="card origin-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #6b3fa0, #d4275a)"></div>
+      <div class="card-title">// 01 · Origin Intelligence</div>
+      <div class="origin-grid">
+        <div class="origin-field">
+          <label>Bean</label>
+          <span>Ethiopia Urabeast G1</span>
+        </div>
+        <div class="origin-field">
+          <label>Grade</label>
+          <span>G1 — Defect Free</span>
+        </div>
+        <div class="origin-field">
+          <label>Region</label>
+          <span>Uraga, Guji</span>
+        </div>
+        <div class="origin-field">
+          <label>Country</label>
+          <span>Ethiopia</span>
+        </div>
+        <div class="origin-field">
+          <label>Roasted by</label>
+          <span>Keryi Coffee</span>
+        </div>
+        <div class="origin-field">
+          <label>Roast Style</label>
+          <span>Filter Roast</span>
+        </div>
+      </div>
+      <div class="process-highlight">
+        <div class="ph-label">Process Classification</div>
+        <div class="ph-name">Mosto Fermentation</div>
+        <div class="ph-desc">Cherry pulp juice ("mosto") used as the anaerobic fermentation medium — controls sugar input and yeast population vs standard natural. Sits between natural (more complex) and washed (cleaner) on the process spectrum.</div>
+      </div>
+    </div>
+
+    <!-- VARIETAL -->
+    <div class="card varietal-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #c9922a, #6b3fa0)"></div>
+      <div class="card-title">// 02 · Varietal Intelligence</div>
+      <div class="varietal-numbers">
+        <div class="var-num">
+          <span class="vn-code">74110</span>
+          <span class="vn-label">JARC Line</span>
+          <span class="vn-label" style="margin-top:2px; color: rgba(250,246,240,0.4)">Fruit-forward</span>
+        </div>
+        <div class="var-num">
+          <span class="vn-code">74112</span>
+          <span class="vn-label">JARC Line</span>
+          <span class="vn-label" style="margin-top:2px; color: rgba(250,246,240,0.4)">Floral / Tea</span>
+        </div>
+      </div>
+      <ul class="trait-list">
+        <li><div class="trait-dot"></div>Jimma Agricultural Research Centre (JARC) released selections — Ethiopian government-bred from wild heirloom stock</li>
+        <li><div class="trait-dot"></div>74110 drives the raspberry ester dominance in hot phase — high isoamyl acetate expression</li>
+        <li><div class="trait-dot"></div>74112 contributes floral background + clean short finish — characteristic low-phenolic aftertaste</li>
+        <li><div class="trait-dot"></div>Dual-varietal blend produces layered complexity without sacrificing clarity</li>
+        <li><div class="trait-dot"></div>Guji terroir: high-altitude volcanic soil amplifies bright acid structure</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROW 2: Brew Params -->
+  <div class="grid-full">
+    <div class="card brew-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #1a7a6e, #6b3fa0)"></div>
+      <div class="card-title">// 03 · Extraction Physics</div>
+      <div class="param-row">
+        <div class="param-box">
+          <span class="param-val">15g</span>
+          <span class="param-lbl">Dose</span>
+        </div>
+        <div class="param-box">
+          <span class="param-val">210g</span>
+          <span class="param-lbl">Yield</span>
+        </div>
+        <div class="param-box">
+          <span class="param-val">1:14</span>
+          <span class="param-lbl">Ratio</span>
+        </div>
+        <div class="param-box">
+          <span class="param-val">~2min</span>
+          <span class="param-lbl">Brew Time</span>
+        </div>
+      </div>
+      <div class="temp-arc">
+        <div class="temp-arc-label">Temperature Descent Protocol</div>
+        <div class="temp-visual">
+          <div class="temp-block">
+            <div class="temp-circle temp-hot">88°C</div>
+            <div class="temp-sublabel">ENTRY</div>
+          </div>
+          <div class="temp-arrow" style="--label:'Controlled descent'"></div>
+          <div class="temp-block">
+            <div class="temp-circle temp-cool">70°C</div>
+            <div class="temp-sublabel">FINISH</div>
+          </div>
+        </div>
+        <div style="font-size:11px; color:rgba(250,246,240,0.5); margin-top:10px; line-height:1.5;">88°C entry suppresses acetic acid volatilisation → fruit esters express before winey compounds dominate. 70°C finish locks aromatic stability early, protecting purple fruit top notes.</div>
+      </div>
+      <div class="hardware-row">
+        <div class="hw-box">
+          <div class="hw-label">Brewer</div>
+          <div class="hw-val">Hario Switch<br><span style="font-size:10px; opacity:0.6">Immersion + Percolation Hybrid</span></div>
+        </div>
+        <div class="hw-box">
+          <div class="hw-label">Grinder</div>
+          <div class="hw-val">Ditting 98mm<br><span style="font-size:10px; opacity:0.6">Flat Burr · Unimodal Distribution</span></div>
+        </div>
+        <div class="hw-box">
+          <div class="hw-label">Vs. Entry #31</div>
+          <div class="hw-val" style="font-size:11px;">Same hardware · Coarser grind + lower temp for mosto character</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: Thermal Arc -->
+  <div class="grid-full">
+    <div class="card thermal-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #d4275a, #c9922a, #1a7a6e)"></div>
+      <div class="card-title">// 04 · Three-Phase Thermal Arc</div>
+      <div class="phase-grid">
+        <div class="phase phase-hot">
+          <div class="phase-temp">● HOT PHASE (&gt;65°C)</div>
+          <div class="phase-title">Raspberry &amp; Florals</div>
+          <ul class="phase-notes">
+            <li>Bright raspberry immediate on first sip</li>
+            <li>Floral lift from isoamyl acetate + ethyl butyrate esters</li>
+            <li>Light-to-medium body — 1:14 ratio + short brew time</li>
+            <li>No acetic sharpness — 88°C calibration confirmed correct</li>
+            <li>Fruity and bright — EF confirmed high ester retention</li>
+          </ul>
+        </div>
+        <div class="phase phase-mid">
+          <div class="phase-temp">◐ MID-COOL PHASE (45–65°C)</div>
+          <div class="phase-title">Winey Transition</div>
+          <ul class="phase-notes">
+            <li>Raspberry mellows as volatile esters dissipate</li>
+            <li>Winey character emerges — acetic compounds now perceptible</li>
+            <li>Purple grape ambiguous — raspberry dominant over grape</li>
+            <li>Textbook mosto thermal arc: ester → acetic progression</li>
+            <li>Still fruity overall, controlled ferment expression</li>
+          </ul>
+        </div>
+        <div class="phase phase-cool">
+          <div class="phase-temp">○ COOL PHASE (&lt;45°C)</div>
+          <div class="phase-title">Vinous Resolution</div>
+          <ul class="phase-notes">
+            <li>Raspberry resolves into clean vinous finish</li>
+            <li>Short aftertaste — JARC 74112 varietal signature</li>
+            <li>No lingering bitterness or ferment astringency</li>
+            <li>Finish clean and dry — process-honest resolution</li>
+            <li>Rated: Excellent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 4: Verdict + Flavour profile -->
+  <div class="grid-2">
+
+    <!-- VERDICT -->
+    <div class="card verdict-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #6b3fa0, #d4275a)"></div>
+      <div class="card-title">// 05 · Hari's Verdict</div>
+      <div class="verdict-quote">
+        "Fruity and <span>controlled</span>. Raspberry dominates hot, <span>winey on cooling</span> — a process-honest mosto arc with clean finish."
+      </div>
+      <div class="rating-display">
+        <span class="rating-word">EXCELLENT</span>
+        <div class="rating-dots">
+          <div class="rdot"></div><div class="rdot"></div><div class="rdot"></div>
+          <div class="rdot"></div><div class="rdot empty"></div>
+        </div>
+      </div>
+      <div class="flavor-row">
+        <div class="flavor-bar-row">
+          <span class="fb-label">Raspberry</span>
+          <div class="fb-track"><div class="fb-fill" style="width:90%; background: linear-gradient(90deg, #d4275a, #8b1a3a)"></div></div>
+          <span class="fb-val">9/10</span>
+        </div>
+        <div class="flavor-bar-row">
+          <span class="fb-label">Winey</span>
+          <div class="fb-track"><div class="fb-fill" style="width:65%; background: linear-gradient(90deg, #6b3fa0, #2d1b4e)"></div></div>
+          <span class="fb-val">6.5/10</span>
+        </div>
+        <div class="flavor-bar-row">
+          <span class="fb-label">Florals</span>
+          <div class="fb-track"><div class="fb-fill" style="width:55%; background: linear-gradient(90deg, #c9a8e8, #6b3fa0)"></div></div>
+          <span class="fb-val">5.5/10</span>
+        </div>
+        <div class="flavor-bar-row">
+          <span class="fb-label">Pur. Grape</span>
+          <div class="fb-track"><div class="fb-fill" style="width:30%; background: linear-gradient(90deg, #8b1a3a, #2d1b4e)"></div></div>
+          <span class="fb-val">3/10</span>
+        </div>
+        <div class="flavor-bar-row">
+          <span class="fb-label">Body</span>
+          <div class="fb-track"><div class="fb-fill" style="width:45%; background: linear-gradient(90deg, #1a7a6e, #0e4a44)"></div></div>
+          <span class="fb-val">Lt-Med</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFFICIAL vs HARI -->
+    <div class="card" style="background:#160e24">
+      <div class="card-accent" style="background: linear-gradient(90deg, #c9922a, #1a7a6e)"></div>
+      <div class="card-title">// 06 · Official Notes vs Palate</div>
+      <table class="vs-table">
+        <tr>
+          <th>NOTE</th>
+          <th>OFFICIAL</th>
+          <th>HARI</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>Raspberry</td>
+          <td style="color:rgba(250,246,240,0.7)">Raspberry</td>
+          <td style="color:rgba(250,246,240,0.7)">Dominant — hot phase</td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Winey</td>
+          <td style="color:rgba(250,246,240,0.7)">Winey</td>
+          <td style="color:rgba(250,246,240,0.7)">Mid-cool emergence</td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Purple Grape</td>
+          <td style="color:rgba(250,246,240,0.7)">Purple Grapes</td>
+          <td style="color:rgba(250,246,240,0.7)">Ambiguous — raspberry dominant</td>
+          <td><span class="partial">~</span></td>
+        </tr>
+        <tr>
+          <td>Florals</td>
+          <td style="color:rgba(250,246,240,0.7)">Implied</td>
+          <td style="color:rgba(250,246,240,0.7)">Present hot phase</td>
+          <td><span class="check">✓</span></td>
+        </tr>
+      </table>
+      <div style="margin-top: 16px; background: rgba(107,63,160,0.15); border: 1px solid rgba(107,63,160,0.3); border-radius: 8px; padding: 12px;">
+        <div style="font-family: var(--mono); font-size:9px; letter-spacing:0.1em; color: var(--purple-light); margin-bottom:6px; text-transform:uppercase;">Palate Alignment Note</div>
+        <div style="font-size:11px; color:rgba(250,246,240,0.65); line-height:1.5;">Purple grape ambiguity is chemically coherent — both raspberry and grape perception derive from the same anthocyanin ester family. Palate resolved ethyl anthranilate (raspberry) dominant over methyl anthranilate (grape).</div>
+      </div>
+      <div style="margin-top:12px; background: rgba(26,122,110,0.15); border: 1px solid rgba(26,122,110,0.3); border-radius:8px; padding:12px;">
+        <div style="font-family: var(--mono); font-size:9px; letter-spacing:0.1em; color:#5ecfc0; margin-bottom:6px; text-transform:uppercase;">Palate DNA Fit</div>
+        <div style="font-size:11px; color:rgba(250,246,240,0.65); line-height:1.5;">Below standard washed-clarity preference but high archive value. Mosto restraint made this accessible — rated Excellent for process category, logged as reference mosto baseline.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 5: Technical Enrichment -->
+  <div class="grid-full">
+    <div class="card enrich-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #1a7a6e, #c9922a, #6b3fa0)"></div>
+      <div class="card-title">// 07 · Technical Enrichment</div>
+      <div class="enrich-grid">
+        <div class="enrich-block">
+          <div class="eb-title" style="color:#5ecfc0">Mosto Process Chemistry</div>
+          <div class="eb-body">Mosto fermentation introduces <strong>cherry pulp juice as the fermentation medium</strong> in an anaerobic environment. The pulp's natural sugars and wild yeasts drive controlled fermentation — more precise than a full natural, more complex than washed. Output: restrained acetic acid, elevated fruit ester production (isoamyl acetate = raspberry), vinous character from ethyl acetate accumulation.</div>
+        </div>
+        <div class="enrich-block">
+          <div class="eb-title" style="color:#c9a8e8">Thermal Calibration Logic</div>
+          <div class="eb-body"><strong>88°C entry temp</strong> (vs 91°C on Entry #31 Gesha) deliberately suppresses acetic acid volatilisation at first contact — allows isoamyl acetate fruit esters to dominate the hot phase. The <strong>drop to 70°C</strong> for the finish arrests extraction before chlorogenic acid bitterness develops, locking aromatic stability and keeping the winey character integrated rather than sharp.</div>
+        </div>
+        <div class="enrich-block">
+          <div class="eb-title" style="color:#d4275a">Hardware Analysis</div>
+          <div class="eb-body"><strong>Ditting 98mm flat burrs</strong> produce a tight unimodal particle distribution — minimal fines fraction. This is the key variable that licensed a <strong>tight 1:14 ratio</strong> without astringency; coarser adjusted grind vs Entry #31 to compensate for mosto bean's higher soluble density. <strong>Hario Switch immersion phase</strong> built body and sweetness evenly before the valve-open percolation drain added definition to the finish.</div>
+        </div>
+        <div class="enrich-block">
+          <div class="eb-title" style="color:#c9922a">Archive Context</div>
+          <div class="eb-body"><strong>Entry #37 is the first mosto fermentation entry in the archive.</strong> Prior fermentation entries: Entry #28 Nicaragua Buena Vista (Anaerobic Natural, espresso) and multiple co-ferment entries. Mosto sits in its own sub-category — distinct from all prior process types. Compare thermal arc to Entry #37 Asylum mosto note for future cross-reference.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 6: Milestones -->
+  <div class="grid-full">
+    <div class="card milestone-card">
+      <div class="card-accent" style="background: linear-gradient(90deg, #d4275a, #6b3fa0, #1a7a6e)"></div>
+      <div class="card-title">// 08 · Archive Milestones</div>
+      <div class="milestone-grid">
+        <div class="ms-block">
+          <div class="ms-icon">🧪</div>
+          <div class="ms-title">Process Unlocked</div>
+          <div class="ms-desc">First Mosto Fermentation entry in archive. New process sub-category — distinct from Natural, Anaerobic, Honey, and Co-Ferment.</div>
+        </div>
+        <div class="ms-block">
+          <div class="ms-icon">🔬</div>
+          <div class="ms-title">Varietal Intelligence</div>
+          <div class="ms-desc">First dual JARC 74110/74112 blend entry. Confirms JARC varietal genetics: clean short finish, bright ester-dominant hot phase.</div>
+        </div>
+        <div class="ms-block">
+          <div class="ms-icon">📍</div>
+          <div class="ms-title">Keryi Return Visit</div>
+          <div class="ms-desc">Entry #31 (Colombia Gesha Honey) was prior Keryi benchmark. Entry #37 establishes Keryi's Ditting + Hario Switch as a reliable precision extraction platform.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">HARI COFFEE ARCHIVE 2026 · ENTRY #037 OF 38 · 28 JUN 2026</div>
+    <div class="locked-badge">⬤ ENTRY LOCKED &amp; VERIFIED</div>
+    <div class="footer-right">KERYI COFFEE · FARRER PARK, SINGAPORE · SGD 13.00</div>
+  </div>
+
+</div>
+</body>
+</html>

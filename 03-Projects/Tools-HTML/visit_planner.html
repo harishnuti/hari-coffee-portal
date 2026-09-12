@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <title>Hari's Singapore Coffee Visit Planner • 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@300;400;500&amp;display=swap');
+        
+        :root {
+            --gold: #c9a84c;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .dark-bg {
+            background-color: #0d0d0d;
+        }
+
+        .gold {
+            color: #c9a84c;
+        }
+
+        .gold-bg {
+            background-color: #c9a84c;
+            color: #0d0d0d;
+        }
+
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+
+        .cafe-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .cafe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-active {
+            border-bottom: 3px solid #c9a84c;
+            color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .coffee-grain {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 fill=%22none%22%3E%3Cpath fill-rule=%22evenodd%22 clip-rule=%22evenodd%22 d=%22M100 20c-22 0-40 18-40 40s18 40 40 40 40-18 40-40-18-40-40-40zm0 70c-16.5 0-30-13.5-30-30s13.5-30 30-30 30 13.5 30 30-13.5 30-30 30z%22 fill=%22%23333%22 fill-opacity=%220.08%22/%3E%3C/svg%27');
+            background-size: 120px;
+        }
+
+        .itinerary-stop {
+            position: relative;
+        }
+        
+        .itinerary-stop:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 28px;
+            top: 64px;
+            bottom: -8px;
+            width: 3px;
+            background: linear-gradient(#c9a84c, #3f3f46);
+        }
+
+        .stat-pill {
+            background: #1f1f23;
+            border: 1px solid #3f3f46;
+        }
+
+        .mood-btn {
+            transition: all 0.1s ease;
+        }
+        
+        .mood-btn.active {
+            background-color: #c9a84c;
+            color: #0d0d0d;
+            border-color: #c9a84c;
+        }
+
+        .archive-row {
+            font-size: 0.875rem;
+        }
+
+        .gold-text {
+            color: #c9a84c;
+        }
+
+        .planner-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .subtle-grid {
+            background-image: 
+                linear-gradient(#27272a 1px, transparent 1px),
+                linear-gradient(90deg, #27272a 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="dark-bg text-zinc-200">
+    <!-- NAV -->
+    <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-[#0d0d0d]">
+        <div class="max-w-screen-xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-11 h-11 rounded-2xl gold-bg flex items-center justify-center">
+                        <i class="fa-solid fa-mug-hot text-3xl text-[#0d0d0d]"></i>
+                    </div>
+                    <div>
+                        <h1 class="heading-serif text-3xl tracking-tighter">Hari's Archive</h1>
+                        <p class="text-[10px] text-zinc-500 -mt-1">SINGAPORE COFFEE 2026</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-2 text-sm">
+                <div onclick="showScreen(1)" class="px-4 py-2 rounded-3xl hover:bg-zinc-900 cursor-pointer flex items-center gap-x-2 text-sm font-medium">
+                    <i class="fa-solid fa-home w-4"></i>
+                    <span>Planner</span>
+                </div>
+                <div onclick="showScreen(3)" class="px-4 py-2 rounded-3xl hover:bg-zinc-900 cursor-pointer flex items-center gap-x-2 text-sm font-medium">
+                    <i class="fa-solid fa-list w-4"></i>
+                    <span>Directory</span>
+                </div>
+                <div onclick="showScreen(4)" class="px-4 py-2 rounded-3xl hover:bg-zinc-900 cursor-pointer flex items-center gap-x-2 text-sm font-medium relative">
+                    <i class="fa-solid fa-clipboard-list w-4"></i>
+                    <span>Today's Log</span>
+                    <span id="log-count" class="absolute -top-1 -right-1 bg-emerald-500 text-[10px] px-1.5 rounded-full font-mono">0</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-3">
+                <div class="text-xs px-3 py-1.5 bg-zinc-900 rounded-3xl flex items-center gap-x-2 border border-zinc-800">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="font-mono text-emerald-400">20 MAY 2026 • 12:44</span>
+                </div>
+                <div class="text-xs text-zinc-500">Hari • Archivist</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SCREEN 1: PLANNER HOME -->
+    <div id="screen1" class="section active max-w-screen-xl mx-auto px-6 pt-8 pb-16">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-3xl border border-zinc-800 bg-zinc-900 mb-4">
+                <i class="fa-solid fa-globe text-[#c9a84c]"></i>
+                <span class="uppercase tracking-[2px] text-xs font-semibold text-zinc-400">SINGAPORE SPECIALTY CRAWL PLANNER</span>
+            </div>
+            
+            <h2 class="heading-serif text-6xl tracking-tighter leading-none mb-4">Where to next,<br>coffee archivist?</h2>
+            <p class="text-xl text-zinc-400 max-w-md mx-auto">31 audited entries • 10 priority unvisited • Same-day intelligent routing</p>
+        </div>
+
+        <div class="max-w-[720px] mx-auto bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+            <!-- Location -->
+            <div class="mb-8">
+                <label class="block text-sm font-semibold text-zinc-400 mb-3 tracking-wider">WHERE ARE YOU NOW?</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div onclick="selectArea(this, 'CBD')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">CBD</div>
+                        <div class="text-[10px] text-zinc-500">Raffles • Marina</div>
+                    </div>
+                    <div onclick="selectArea(this, 'Bugis')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">Bugis</div>
+                        <div class="text-[10px] text-zinc-500">Bras Basah • North Bridge</div>
+                    </div>
+                    <div onclick="selectArea(this, 'Everton Park')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">Everton Park</div>
+                        <div class="text-[10px] text-zinc-500">Chinatown • Outram</div>
+                    </div>
+                    <div onclick="selectArea(this, 'Orchard')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">Orchard</div>
+                        <div class="text-[10px] text-zinc-500">Shopping District</div>
+                    </div>
+                    <div onclick="selectArea(this, 'East Coast')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">East Coast</div>
+                        <div class="text-[10px] text-zinc-500">Bedok • Marine Parade</div>
+                    </div>
+                    <div onclick="selectArea(this, 'West')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">West</div>
+                        <div class="text-[10px] text-zinc-500">Tiong Bahru • Bukit Merah</div>
+                    </div>
+                    <div onclick="selectArea(this, 'North')" class="area-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-3 rounded-2xl text-center transition-all active:scale-[0.985]">
+                        <div class="font-semibold">North</div>
+                        <div class="text-[10px] text-zinc-500">Serangoon • Woodlands</div>
+                    </div>
+                    <div class="border border-dashed border-zinc-700 px-4 py-3 rounded-2xl text-center flex items-center justify-center text-xs text-zinc-500 hover:border-zinc-600 cursor-pointer" onclick="useCustomLocation()">
+                        <i class="fa-solid fa-location-dot mr-2"></i> 
+                        <span class="font-medium">Custom / GPS</span>
+                    </div>
+                </div>
+                <input type="hidden" id="selected-area" value="CBD">
+            </div>
+
+            <!-- Time Available -->
+            <div class="mb-8">
+                <label class="block text-sm font-semibold text-zinc-400 mb-3 tracking-wider">HOW MUCH TIME DO YOU HAVE?</label>
+                <div class="flex flex-wrap gap-3">
+                    <div onclick="selectTime(this, '1 hour')" class="time-btn flex-1 cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-5 py-3.5 rounded-2xl text-center transition-all">
+                        <div class="font-semibold text-lg">1 hour</div>
+                        <div class="text-xs text-zinc-500">1 stop max • nearest</div>
+                    </div>
+                    <div onclick="selectTime(this, '2 hours')" class="time-btn flex-1 cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-5 py-3.5 rounded-2xl text-center transition-all">
+                        <div class="font-semibold text-lg">2 hours</div>
+                        <div class="text-xs text-zinc-500">1–2 stops + travel</div>
+                    </div>
+                    <div onclick="selectTime(this, 'Half day')" class="time-btn flex-1 cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-5 py-3.5 rounded-2xl text-center transition-all">
+                        <div class="font-semibold text-lg">Half day</div>
+                        <div class="text-xs text-zinc-500">3 stops + lunch gap</div>
+                    </div>
+                    <div onclick="selectTime(this, 'Full day')" class="time-btn flex-1 cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-5 py-3.5 rounded-2xl text-center transition-all">
+                        <div class="font-semibold text-lg">Full day</div>
+                        <div class="text-xs text-zinc-500">4–5 stops • meal break</div>
+                    </div>
+                </div>
+                <input type="hidden" id="selected-time" value="2 hours">
+            </div>
+
+            <!-- Mood -->
+            <div class="mb-9">
+                <label class="block text-sm font-semibold text-zinc-400 mb-3 tracking-wider">WHAT ARE YOU IN THE MOOD FOR?</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div onclick="selectMood(this, 'Washed Clarity')" class="mood-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-4 rounded-3xl text-center flex flex-col items-center justify-center gap-y-1 transition-all">
+                        <i class="fa-solid fa-tint text-2xl text-sky-400 mb-1"></i>
+                        <div class="font-semibold">Washed Clarity</div>
+                        <div class="text-[10px] text-zinc-500">Bright • Tea-like • High transparency</div>
+                    </div>
+                    <div onclick="selectMood(this, 'Natural Complexity')" class="mood-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-4 rounded-3xl text-center flex flex-col items-center justify-center gap-y-1 transition-all">
+                        <i class="fa-solid fa-seedling text-2xl text-amber-400 mb-1"></i>
+                        <div class="font-semibold">Natural Complexity</div>
+                        <div class="text-[10px] text-zinc-500">Fruity • Fermented • Layered body</div>
+                    </div>
+                    <div onclick="selectMood(this, 'Geisha Hunt')" class="mood-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-4 rounded-3xl text-center flex flex-col items-center justify-center gap-y-1 transition-all">
+                        <i class="fa-solid fa-gem text-2xl text-violet-400 mb-1"></i>
+                        <div class="font-semibold">Geisha Hunt</div>
+                        <div class="text-[10px] text-zinc-500">Rare genetics • Floral • Elegant</div>
+                    </div>
+                    <div onclick="selectMood(this, 'Surprise Me')" class="mood-btn cursor-pointer border border-zinc-700 hover:border-[#c9a84c] px-4 py-4 rounded-3xl text-center flex flex-col items-center justify-center gap-y-1 transition-all active">
+                        <i class="fa-solid fa-random text-2xl text-emerald-400 mb-1"></i>
+                        <div class="font-semibold">Surprise Me</div>
+                        <div class="text-[10px] text-zinc-500">Curated by archive AI</div>
+                    </div>
+                </div>
+                <input type="hidden" id="selected-mood" value="Surprise Me">
+            </div>
+
+            <button onclick="planCrawl()" 
+                    class="w-full py-4 gold-bg hover:brightness-105 transition-all text-[#0d0d0d] font-bold text-lg rounded-3xl flex items-center justify-center gap-x-3 shadow-xl shadow-amber-900/30">
+                <span>PLAN MY CRAWL</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            
+            <div class="text-center mt-4 text-xs text-zinc-500 flex items-center justify-center gap-x-2">
+                <i class="fa-solid fa-info-circle"></i>
+                <span>Smart routing prioritises palate match • opening hours • distance • archive verdicts</span>
+            </div>
+        </div>
+        
+        <div class="max-w-3xl mx-auto mt-8 text-center text-xs text-zinc-500">
+            <span class="font-mono">31 entries archived • 10 priority unvisited cafes loaded • Last sync: 20 May 2026</span>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: CRAWL ITINERARY -->
+    <div id="screen2" class="section max-w-screen-xl mx-auto px-6 pt-6 pb-16">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <h2 class="heading-serif text-4xl tracking-tight">Your Same-Day Itinerary</h2>
+                <p id="itinerary-subtitle" class="text-zinc-400"></p>
+            </div>
+            <div class="flex items-center gap-x-3">
+                <button onclick="showScreen(1)" class="px-5 py-2.5 text-sm border border-zinc-700 hover:bg-zinc-900 rounded-3xl flex items-center gap-x-2">
+                    <i class="fa-solid fa-redo"></i> <span>Edit Inputs</span>
+                </button>
+                <button onclick="startCrawl()" class="px-6 py-2.5 text-sm gold-bg text-[#0d0d0d] font-semibold rounded-3xl flex items-center gap-x-2 hover:brightness-105">
+                    <i class="fa-solid fa-play"></i> <span>Start Crawl</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="itinerary-content" class="space-y-4"></div>
+
+        <div class="mt-8 flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-3xl px-6 py-4">
+            <div>
+                <div class="text-xs text-zinc-400">TOTAL ESTIMATED TIME</div>
+                <div id="total-time" class="text-3xl font-semibold tabular-nums"></div>
+            </div>
+            <div class="text-right">
+                <div onclick="logAllPlanned()" class="cursor-pointer inline-flex items-center gap-x-2 text-sm px-5 py-2 border border-zinc-700 hover:border-emerald-400 rounded-3xl">
+                    <i class="fa-solid fa-check-double"></i>
+                    <span class="font-medium">Mark all as planned</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: CAFE DIRECTORY -->
+    <div id="screen3" class="section max-w-screen-xl mx-auto px-6 pt-8 pb-16">
+        <div class="flex justify-between items-end mb-6">
+            <div>
+                <h2 class="heading-serif text-4xl tracking-tight">Cafe Directory</h2>
+                <p class="text-zinc-400">All audited + priority unvisited • Filter by area, status &amp; commitment</p>
+            </div>
+            
+            <div class="flex items-center gap-x-2 text-sm">
+                <select id="filter-area" onchange="filterDirectory()" class="bg-zinc-900 border border-zinc-700 text-sm px-4 py-2 rounded-2xl">
+                    <option value="">All Areas</option>
+                    <option value="CBD">CBD</option>
+                    <option value="Bugis">Bugis</option>
+                    <option value="Everton Park">Everton Park</option>
+                    <option value="Orchard">Orchard</option>
+                    <option value="East Coast">East Coast</option>
+                    <option value="West">West</option>
+                    <option value="North">North</option>
+                </select>
+                
+                <select id="filter-status" onchange="filterDirectory()" class="bg-zinc-900 border border-zinc-700 text-sm px-4 py-2 rounded-2xl">
+                    <option value="">All Status</option>
+                    <option value="audited">Audited Only</option>
+                    <option value="unvisited">Unvisited Only</option>
+                </select>
+                
+                <div class="flex items-center border border-zinc-700 rounded-2xl px-2">
+                    <span class="px-3 text-xs text-zinc-400">Min ★</span>
+                    <input type="range" id="filter-commitment" min="1" max="5" step="1" value="1" oninput="filterDirectory()" class="accent-[#c9a84c]">
+                    <span id="commitment-value" class="font-mono text-xs px-2 text-[#c9a84c]">1</span>
+                </div>
+                
+                <label class="flex items-center gap-x-2 cursor-pointer text-sm px-4 py-2 border border-zinc-700 rounded-2xl">
+                    <input type="checkbox" id="filter-open" onchange="filterDirectory()" checked class="accent-[#c9a84c]">
+                    <span>Opens Now</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </div>
+
+    <!-- SCREEN 4: TODAY'S LOG -->
+    <div id="screen4" class="section max-w-screen-xl mx-auto px-6 pt-8 pb-16">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="heading-serif text-4xl tracking-tight">Today's Log</h2>
+                <p class="text-zinc-400">Check off visited stops • Log new entries to archive</p>
+            </div>
+            <div class="text-right">
+                <div id="log-summary" class="text-sm font-mono text-emerald-400"></div>
+            </div>
+        </div>
+
+        <div id="today-log-list" class="space-y-3 max-w-3xl"></div>
+
+        <div class="mt-8 max-w-3xl flex gap-x-3">
+            <button onclick="endDaySummary()" class="flex-1 py-3 border border-zinc-700 hover:bg-zinc-900 rounded-3xl text-sm font-semibold flex items-center justify-center gap-x-2">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <span>END OF DAY SUMMARY</span>
+            </button>
+            <button onclick="clearTodayLog()" class="px-6 py-3 border border-red-900 hover:bg-red-950 text-red-400 rounded-3xl text-sm font-semibold flex items-center gap-x-2">
+                <i class="fa-solid fa-trash"></i>
+                <span>Clear Log</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ENTRY MODAL -->
+    <div id="entry-modal" onclick="if (event.target.id === 'entry-modal') closeModal()" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-auto">
+            <div class="px-7 pt-7 pb-4 border-b border-zinc-800 flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-xl">Log New Entry</div>
+                    <div id="modal-cafe-name" class="text-[#c9a84c] text-sm font-medium"></div>
+                </div>
+                <button onclick="closeModal()" class="text-2xl leading-none text-zinc-400 hover:text-white">&times;</button>
+            </div>
+            
+            <div class="p-7 space-y-5 text-sm">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">DATE</label>
+                        <input id="entry-date" type="date" value="2026-05-20" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">BREW METHOD</label>
+                        <input id="entry-brew" type="text" placeholder="V60 / Flat-bottom / Espresso" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">DOSE (g)</label>
+                        <input id="entry-dose" type="text" value="15" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">YIELD (g)</label>
+                        <input id="entry-yield" type="text" value="225" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">RATIO</label>
+                        <input id="entry-ratio" type="text" value="1:15" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">COFFEE NAME / LOT</label>
+                    <input id="entry-coffee" type="text" placeholder="Ethiopia Banko Gotiti" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">PROCESS</label>
+                        <select id="entry-process" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                            <option>Washed</option>
+                            <option>Natural</option>
+                            <option>Anaerobic</option>
+                            <option>Honey</option>
+                            <option>Co-Ferment</option>
+                            <option>Red Honey</option>
+                            <option>Extended Fermentation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">ROAST LEVEL</label>
+                        <select id="entry-roast" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                            <option>Light</option>
+                            <option>Light-Medium</option>
+                            <option>Medium</option>
+                            <option>Filter Roast</option>
+                            <option>Espresso Roast</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">GRINDER / HARDWARE</label>
+                    <input id="entry-grinder" type="text" placeholder="Mahlkönig EK43 / Timemore Sculptor 078" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">PRICE (SGD)</label>
+                        <input id="entry-price" type="text" placeholder="8.50" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">YOUR VERDICT</label>
+                        <input id="entry-verdict" type="text" placeholder="Incredible tea-like clarity" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">OFFICIAL NOTES / TASTING</label>
+                    <textarea id="entry-notes" rows="2" placeholder="Clean citrus; floral • bright and floral" class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm resize-y"></textarea>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">TECHNICAL ENRICHMENT</label>
+                    <textarea id="entry-technical" rows="2" placeholder="Dual-temp strategy unlocked jasmine florals..." class="w-full bg-zinc-950 border border-zinc-700 px-3 py-2 rounded-2xl text-sm resize-y"></textarea>
+                </div>
+            </div>
+            
+            <div class="px-7 pb-7 flex gap-x-3">
+                <button onclick="saveEntry()" class="flex-1 py-3.5 gold-bg text-[#0d0d0d] font-bold rounded-3xl">SAVE TO ARCHIVE</button>
+                <button onclick="closeModal()" class="flex-1 py-3.5 border border-zinc-700 hover:bg-zinc-800 rounded-3xl">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500 max-w-screen-xl mx-auto px-6">
+        Built with ❤️ for the archive • 31 entries • Data accurate as of 20 May 2026 • 
+        <span class="font-mono">v2.1 • mobile-first • localStorage synced</span>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initTailwind() {
+            document.documentElement.style.setProperty('--accent-gold', '#c9a84c');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'serif-custom': ['Playfair Display', 'Georgia', 'serif']
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Global data
+        let archiveData = [];
+        let cafes = [];
+        let todayPlan = [];
+        let todayVisited = [];
+        
+        // Load from localStorage
+        function loadLocalData() {
+            const savedArchive = localStorage.getItem('coffeeArchive');
+            if (savedArchive) {
+                archiveData = JSON.parse(savedArchive);
+            } else {
+                // Initialize with embedded CSV data (31 entries)
+                archiveData = [
+                    {date:"2026-01-10",city:"Ubud, Bali",cafe_name:"Seniman Coffee Studio",coffee_name:"Bali Karana Kintamanis",varietal:"Unknown",process:"Natural",roast_level:"Light",brew_method:"Pour-over",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Clean citrus; floral",your_verdict:"Excellent clarity for a natural process, bright and floral.",technical_enrichment:"Established foundational exposure to local Indonesian origins."},
+                    {date:"2026-01-10",city:"Ubud, Bali",cafe_name:"Seniman Coffee Studio",coffee_name:"Sulawesi Toraja",varietal:"Unknown",process:"Semi-Washed / Wet-Hulled",roast_level:"Medium",brew_method:"Pour-over",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Cocoa; earthy structures",your_verdict:"Heavy body with rich cocoa notes.",technical_enrichment:"Demonstrated the structural density of the wet-hulled process."},
+                    {date:"2026-01-10",city:"Ubud, Bali",cafe_name:"Seniman Coffee Studio",coffee_name:"House Blend",varietal:"Unknown",process:"Unknown",roast_level:"Espresso Roast",brew_method:"Piccolo",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Balanced",your_verdict:"Great milk integration.",technical_enrichment:"Baseline for espresso and milk pairing."},
+                    {date:"2026-02-15",city:"Singapore",cafe_name:"Kyuukei Coffee",coffee_name:"Kenya Kiamugumo AA",varietal:"Unknown",process:"Washed",roast_level:"Unknown",brew_method:"Pour-over (Flat-Bottom)",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"120mm Hybrid Burr",price_local:"Unknown",official_notes:"Excellent baseline for clarity.",your_verdict:"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry.",technical_enrichment:"High clarity Kenyan terroir exploration."},
+                    {date:"2026-02-28",city:"Singapore",cafe_name:"Kyuukei Coffee",coffee_name:"Kenya Ndiaini AA",varietal:"Unknown",process:"Washed",roast_level:"Unknown",brew_method:"Pour-over",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"High clarity.",your_verdict:"Further exploration of Kenyan terroir.",technical_enrichment:"Clean washed Kenyan profile."},
+                    {date:"2026-03-15",city:"Singapore",cafe_name:"Apartment Coffee",coffee_name:"Colombia Wush Wush",varietal:"Wush Wush",process:"Washed",roast_level:"Unknown",brew_method:"Pour-over",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Tea-like",your_verdict:"Incredible tea-like clarity.",technical_enrichment:"Mapped the delicate genetics of Wush Wush."},
+                    {date:"2026-03-18",city:"Singapore",cafe_name:"Agora Coffee",coffee_name:"Nicaragua Matagalpa",varietal:"Unknown",process:"Washed",roast_level:"Espresso Roast",brew_method:"Flat White",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Solid milk beverage.",your_verdict:"Audited Central American washed profile in milk.",technical_enrichment:"Good milk integration."},
+                    {date:"2026-03-18",city:"Singapore",cafe_name:"Agora Coffee",coffee_name:"Ethiopia Beloya",varietal:"Unknown",process:"Natural",roast_level:"Unknown",brew_method:"V60",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Classic natural profile.",your_verdict:"Baseline check for Ethiopian naturals.",technical_enrichment:"Solid natural Ethiopian reference."},
+                    {date:"2026-03-20",city:"Singapore",cafe_name:"Tiong Hoe",coffee_name:"Brazil Natural",varietal:"Unknown",process:"Natural",roast_level:"Unknown",brew_method:"Pour-over",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Rich, chocolate-forward",your_verdict:"Classic dense Brazilian profile.",technical_enrichment:"Audited traditional natural processing sweetness and body."},
+                    {date:"2026-04-01",city:"Singapore",cafe_name:"Maxi Coffee Bar",coffee_name:"Colombia La Laja",varietal:"Sudan Rume",process:"Washed",roast_level:"Unknown",brew_method:"Pour-over (Flat-Bottom)",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Timemore Sculptor 078 (SSP 78mm)",price_local:"Unknown",official_notes:"Raspberry; Nectarine; Floral",your_verdict:"Successfully isolated the intended tasting notes.",technical_enrichment:"Technical milestone in auditing rare genetics with 78mm SSP flat burrs."},
+                    {date:"2026-04-05",city:"Singapore",cafe_name:"Asylum Coffeehouse",coffee_name:"Castillo Watermelon (Jairo Arcila)",varietal:"Castillo",process:"Washed Co-Ferment",roast_level:"Unknown",brew_method:"Pour-over",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Timemore Sculptor 078 (SSP)",price_local:"12.50",official_notes:"Watermelon; Mint; Lime; Chocolate",your_verdict:"Distinct fruit-forward expression; sweetness layered rather than sharp.",technical_enrichment:"Fermentation adds aromatic complexity; processing-driven identity."},
+                    {date:"2026-04-05",city:"Singapore",cafe_name:"Asylum Coffeehouse",coffee_name:"Peru Gesha (Wilder Garcia)",varietal:"Gesha",process:"Washed",roast_level:"Unknown",brew_method:"Pour-over",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Timemore Sculptor 078 (SSP)",price_local:"12.50",official_notes:"Jasmine; Caramel; Lime; Cacao Nibs",your_verdict:"Clean, structured, high-clarity cup.",technical_enrichment:"High transparency; minimal processing interference highlighting intrinsic genetic purity."},
+                    {date:"2026-04-05",city:"Singapore",cafe_name:"Lume Cafe",coffee_name:"Panama Corpachi Geisha",varietal:"Geisha",process:"Red Honey",roast_level:"Light",brew_method:"V60 Manual Pour-over",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Mahlkönig EK43",price_local:"12.00",official_notes:"Mandarin Candy; Jasmine; Apricot",your_verdict:"Apricot detected clearly. Structured and elegant — sweet without being cloying.",technical_enrichment:"Dual-temp strategy (90°C → 70°C) on EK43 layered extraction. Red Honey added roundness."},
+                    {date:"2026-04-18",city:"Johor Bahru",cafe_name:"Unknown",coffee_name:"Hacienda La Florida",varietal:"Typica Mejorado",process:"Anaerobic Washed",roast_level:"Unknown",brew_method:"Origami (Conical)",dose_g:"18",yield_g:"277",ratio:"1:15.4",bloom:"1:2.3 (42g for 30s)",grinder:"Mahlkönig EK Omnia",price_local:"35.00",official_notes:"Lemon verbena; red plum; citronella; hibiscus",your_verdict:"Excellent. Lime when hot, distinct plum as it cooled.",technical_enrichment:"EK Omnia and Origami conical filter drove extreme clarity."},
+                    {date:"2026-04-24",city:"Singapore",cafe_name:"Agora Coffee",coffee_name:"Brazil Santuário Sul",varietal:"Unknown",process:"Natural Fermentation",roast_level:"Light-Medium",brew_method:"V60",dose_g:"16",yield_g:"224",ratio:"1:14",bloom:"Unknown",grinder:"Mahlkönig EK43",price_local:"Unknown",official_notes:"Blackcurrant; black cherry; dark chocolate",your_verdict:"Full body; prominent blackcurrant; clear chocolaty finish.",technical_enrichment:"Tight 1:14 ratio engineered max body."},
+                    {date:"2026-05-06",city:"Singapore",cafe_name:"Nylon Coffee Roasters",coffee_name:"Brazil FAF Organic",varietal:"Arara",process:"Natural",roast_level:"Filter Roast",brew_method:"xBloom (Flat-Bottom)",dose_g:"15",yield_g:"255",ratio:"1:17",bloom:"Unknown",grinder:"Mahlkönig CORE",price_local:"7.50",official_notes:"Red Apple; Cherry; Raisin; Milk Chocolate",your_verdict:"Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.",technical_enrichment:"1:17 lean ratio on xBloom maximised clarity; Arara natural yielded excellent structural body."},
+                    {date:"2026-05-06",city:"Singapore",cafe_name:"Nylon Coffee Roasters",coffee_name:"Brazil Serra dos Ciganos",varietal:"Catucai 24/137",process:"Natural",roast_level:"Espresso Roast",brew_method:"Flat White",dose_g:"Unknown",yield_g:"Unknown",ratio:"Unknown",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Sultana; Dried Apricot; Praline; Roasted Hazelnut",your_verdict:"Good cup with a very pleasant, lingering sweet aftertaste.",technical_enrichment:"Milk fats bound perfectly with the natural processed espresso."},
+                    {date:"2026-05-07",city:"Singapore",cafe_name:"Nylon Coffee Roasters",coffee_name:"Ethiopia Banko Gotiti",varietal:"Heirloom",process:"Washed",roast_level:"Filter Roast",brew_method:"xBloom (Flat-Bottom)",dose_g:"15",yield_g:"255",ratio:"1:17",bloom:"Unknown",grinder:"Mahlkönig CORE",price_local:"8.50",official_notes:"Lemonade; Raspberry; Peach; Bergamot",your_verdict:"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.",technical_enrichment:"1:17 lean ratio isolated volatile citric acids; IMF-roasted heirloom at peak degas."},
+                    {date:"2026-05-07",city:"Singapore",cafe_name:"Nylon Coffee Roasters",coffee_name:"Nicaragua Buena Vista",varietal:"Parainema",process:"Natural Anaerobic",roast_level:"Espresso Roast",brew_method:"Single Espresso",dose_g:"Unknown",yield_g:"Unknown",ratio:"~1:2",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut",your_verdict:"Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.",technical_enrichment:"Anaerobic fermentation metabolized sugars into complex savory esters."},
+                    {date:"2026-05-19",city:"Singapore",cafe_name:"Pocket by Flip (Flip Coffee Roasters)",coffee_name:"Ecuador La Papaya",varietal:"Geisha",process:"Washed",roast_level:"Light",brew_method:"Filter Hot - Flat Bottom (Hario Alpha)",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Mahlkönig CORE (54mm Flat Burr)",price_local:"18.00",official_notes:"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple",your_verdict:"Clean transparent fade. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha.",technical_enrichment:"Triple-temp cascade (92→75→92°C) on CORE flat burr preserved heat-sensitive thymol terpenes."},
+                    {date:"2026-05-08",city:"Singapore",cafe_name:"Alchemist (Raffles Place)",coffee_name:"El Morito",varietal:"Marshell",process:"Washed",roast_level:"Filter Roast",brew_method:"V60 Pour-over",dose_g:"15",yield_g:"240",ratio:"1:16",bloom:"Unknown",grinder:"Mahlkönig EK43S (98mm Flat Burr)",price_local:"Unknown",official_notes:"Yellow Plum; Orange; Cane Sugar",your_verdict:"Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing.",technical_enrichment:"EK43S 98mm flat burrs + V60 conical at 1:16 delivered perfect dual-acid integration."},
+                    {date:"2026-05-12",city:"Singapore",cafe_name:"Kurasu",coffee_name:"Indonesia Frinsa Estate",varietal:"Local Varietals",process:"Extended Fermentation Honey",roast_level:"Light",brew_method:"Pour-over (Hario Alpha)",dose_g:"15",yield_g:"225",ratio:"1:16",bloom:"Unknown",grinder:"Mahlkönig EK43S",price_local:"9.50",official_notes:"Floral aroma; Stewed Strawberries; Grapefruit; Brown Sugar; Black Tea",your_verdict:"Floral taste with a sweet coating on the tongue that gradually sticks and fades off cleanly.",technical_enrichment:"Multi-temperature pour (80→95→80°C) with Hario Alpha perfectly managed heavy honey process sugars."},
+                    {date:"2026-05-13",city:"Singapore",cafe_name:"The Community Coffee (Hamilton)",coffee_name:"Jose Mancia Honduras",varietal:"Typica",process:"Natural",roast_level:"Filter Roast",brew_method:"Pour-over (Hario Switch)",dose_g:"15",yield_g:"255",ratio:"1:17",bloom:"Unknown",grinder:"Mahlkönig EK43",price_local:"9.00",official_notes:"Kiwi; Oolong Tea; Chocolate Truffle",your_verdict:"Pretty good. Kiwi and oolong tea style, full bodied.",technical_enrichment:"Typica inherent lipid clarity + raised-bed drying produced clean tea-structure body."},
+                    {date:"2026-05-15",city:"Singapore",cafe_name:"Alchemist (Ocean Financial Centre)",coffee_name:"Ijen Laurina",varietal:"Hybrid Laurina",process:"Anaerobic Natural",roast_level:"Light",brew_method:"V60 Pour-over",dose_g:"15",yield_g:"240",ratio:"1:16",bloom:"Unknown",grinder:"Mahlkönig EK43S",price_local:"8.50",official_notes:"Hibiscus; Red Apple; Hawthorn",your_verdict:"Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character.",technical_enrichment:"90°C brew temp suppressed lactic ester over-extraction while preserving volatile anthocyanin hibiscus esters."},
+                    {date:"2026-05-16",city:"Singapore",cafe_name:"FLUID",coffee_name:"El Obraje",varietal:"Gesha",process:"Washed",roast_level:"Light",brew_method:"Flatbed Dripper",dose_g:"15",yield_g:"230",ratio:"1:15.3",bloom:"Unknown",grinder:"Option-O Lagom P64 (64mm Flat Burr)",price_local:"14.00",official_notes:"Mango; Orange Blossom; Nectarine; Honey",your_verdict:"Damn the taste so nice — the orange nectarine finishing with that honey is terrific. So far my favourite.",technical_enrichment:"Lagom P64 64mm flats + flatbed dripper matches Asylum hardware. 92°C at 1:15.3 maximised floral ester retention."},
+                    {date:"2026-04-01",city:"Singapore",cafe_name:"Nylon Coffee Roasters",coffee_name:"Colombia Sidra",varietal:"Sidra",process:"Double Anaerobic",roast_level:"Unknown",brew_method:"Flat-bottom Pour-over",dose_g:"15",yield_g:"210",ratio:"1:14",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Technical calibration visit.",your_verdict:"Partial entry — full sensory data not captured.",technical_enrichment:"Flat-bottom at 1:14 — dense ratio for body-forward extraction of double anaerobic Sidra."},
+                    {date:"2026-04-01",city:"Singapore",cafe_name:"Kurasu",coffee_name:"El Salvador Pacamara",varietal:"Pacamara",process:"Natural",roast_level:"Unknown",brew_method:"Flat-bottom Pour-over",dose_g:"15",yield_g:"210",ratio:"1:14",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Technical calibration visit.",your_verdict:"Partial entry — full sensory data not captured.",technical_enrichment:"Pacamara natural at 1:14 flat-bottom — dense ratio to capture full body."},
+                    {date:"2026-04-01",city:"Johor Bahru",cafe_name:"Mid Valley Mall Cafe",coffee_name:"Honduras Co-ferment",varietal:"Unknown",process:"Co-ferment",roast_level:"Unknown",brew_method:"Flat-bottom Pour-over",dose_g:"15",yield_g:"210",ratio:"1:14",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Day trip specialty coffee stop — JB.",your_verdict:"Partial entry — JB day trip. Co-ferment Honduras.",technical_enrichment:"Full data not captured."},
+                    {date:"2026-04-01",city:"Johor Bahru",cafe_name:"KSL Mall Cafe",coffee_name:"Kenya AA",varietal:"Unknown",process:"Washed",roast_level:"Unknown",brew_method:"Flat-bottom Pour-over",dose_g:"15",yield_g:"210",ratio:"1:14",bloom:"Unknown",grinder:"Unknown",price_local:"Unknown",official_notes:"Day trip specialty coffee stop — JB.",your_verdict:"Partial entry — JB day trip. Kenya AA washed.",technical_enrichment:"Full data not captured."},
+                    {date:"2026-05-08",city:"Singapore",cafe_name:"Alchemist (Raffles Place)",coffee_name:"El Morito",varietal:"Marshell",process:"Washed",roast_level:"Filter Roast",brew_method:"V60 Pour-over",dose_g:"15",yield_g:"240",ratio:"1:16",bloom:"Unknown",grinder:"Mahlkönig EK43S (98mm Flat Burr)",price_local:"Unknown",official_notes:"Yellow Plum; Orange; Cane Sugar",your_verdict:"Simultaneous citric-malic acid overlap with integrated cane sugar.",technical_enrichment:"Confirmed: I love this bean."},
+                    {date:"2026-05-19",city:"Singapore",cafe_name:"Pocket by Flip (Flip Coffee Roasters)",coffee_name:"Ecuador La Papaya",varietal:"Geisha",process:"Washed",roast_level:"Light",brew_method:"Filter Hot - Flat Bottom (Hario Alpha)",dose_g:"15",yield_g:"225",ratio:"1:15",bloom:"Unknown",grinder:"Mahlkönig CORE (54mm Flat Burr)",price_local:"18.00",official_notes:"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple",your_verdict:"Opening: tartaric apricot + rooibos aspalathin. Highest-altitude Geisha in archive.",technical_enrichment:"Terpene-forward Ecuador profile clearly differentiated from Peru Geisha."}
+                ];
+                localStorage.setItem('coffeeArchive', JSON.stringify(archiveData));
+            }
+            
+            const savedPlan = localStorage.getItem('todayPlan');
+            if (savedPlan) todayPlan = JSON.parse(savedPlan);
+            
+            const savedVisited = localStorage.getItem('todayVisited');
+            if (savedVisited) todayVisited = JSON.parse(savedVisited);
+            
+            updateLogCount();
+        }
+        
+        // Initialize cafes data (audited + unvisited)
+        function initCafes() {
+            cafes = [
+                // UNVISITED - Priority
+                {
+                    id: 101, name: "Homeground Coffee Roasters", address: "55 Kim Chuan Drive #01-01, Singapore 537098",
+                    lat: 1.3352, lng: 103.8878, area: "North East", hours: "Mon-Fri: 9:00am-5:00pm, Sat-Sun: 12:00pm-5:00pm",
+                    commitment: 4, status: "unvisited", standout_lot: "Experimental anaerobic or Kenya AA", hardware: "Stronghold S7X roaster • Community roastery bar",
+                    recommended_for: ["Natural Complexity", "Surprise Me"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 102, name: "Percolate", address: "136 Bedok North Ave 3 #01-152, Singapore 460136",
+                    lat: 1.3248, lng: 103.9269, area: "East Coast", hours: "Mon: 10:30am-9:30pm, Tue: Closed, Wed-Sun: 10:30am-9:30pm",
+                    commitment: 4, status: "unvisited", standout_lot: "Ethiopia Guji or house natural", hardware: "Cozy Bedok cafe • Various pour-over setups",
+                    recommended_for: ["Washed Clarity", "Natural Complexity"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 103, name: "ASK Coffee Roastery SG", address: "32 Seah Street, Singapore 188388",
+                    lat: 1.2945, lng: 103.8548, area: "Bugis", hours: "Mon-Fri: 8:00am-5:00pm, Sat: 10:00am-6:00pm, Sun: 10:00am-5:00pm",
+                    commitment: 5, status: "unvisited", standout_lot: "Malaysia specialty or house blend", hardware: "Full roastery • Espresso + filter bar",
+                    recommended_for: ["Washed Clarity", "Surprise Me"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 104, name: "20Grams Coffee Roastery", address: "14 Arumugam Road #01-05, LTC Bldg C, Singapore 409959",
+                    lat: 1.3185, lng: 103.8892, area: "East", hours: "Mon-Wed: 11:00am-4:00pm, Thu-Fri: 11:00am-3:00pm, Sat-Sun: 11:00am-5:00pm",
+                    commitment: 4, status: "unvisited", standout_lot: "Nordic rare lots • Sustainable single origins", hardware: "Nordic precision roasting • Minimalist bar",
+                    recommended_for: ["Washed Clarity", "Geisha Hunt"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 105, name: "Chye Seng Huat Hardware", address: "150 Tyrwhitt Road, Singapore 207563",
+                    lat: 1.3095, lng: 103.8630, area: "Bugis", hours: "Tue-Sun: 8:30am-9:30pm, Mon: Closed",
+                    commitment: 5, status: "unvisited", standout_lot: "CSHH House Blend or single origin espresso", hardware: "Iconic Singapore third-wave • High-volume specialty",
+                    recommended_for: ["Natural Complexity", "Surprise Me"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 106, name: "Exposure Therapy Coffee", address: "68 Florence Road #2-03, The Florentine, Singapore 549555",
+                    lat: 1.3548, lng: 103.8675, area: "North", hours: "Tue-Sun: 10:00am-5:00pm (roastery visits)",
+                    commitment: 5, status: "unvisited", standout_lot: "Peru Gesha or experimental co-ferment", hardware: "Experimental roasts • Stronghold S7X focus",
+                    recommended_for: ["Geisha Hunt", "Natural Complexity"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 107, name: "Aera Experiments", address: "Singapore (Experimental Roastery — pop-ups & guest shifts)",
+                    lat: 1.3100, lng: 103.8600, area: "CBD", hours: "Pop-up schedule via @aera.experiments (check IG)",
+                    commitment: 5, status: "unvisited", standout_lot: "Alo Chilaka 74158 Honey or extreme experimental", hardware: "Stronghold S7X • Boundary-pushing roast profiles",
+                    recommended_for: ["Natural Complexity", "Geisha Hunt"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 108, name: "Round Boy Roasters", address: "Blk 146 Jalan Bukit Merah #01-1092, Singapore 160146",
+                    lat: 1.2822, lng: 103.8270, area: "West", hours: "Daily: 8:00am-5:00pm",
+                    commitment: 4, status: "unvisited", standout_lot: "Omakase subscription single origins", hardware: "Small-batch roastery • Tiong Bahru hidden gem",
+                    recommended_for: ["Washed Clarity", "Surprise Me"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 109, name: "Narrative Coffee Stand", address: "Blk 231 Bain Street #01-05, Bras Basah Complex, Singapore 180231",
+                    lat: 1.2965, lng: 103.8515, area: "Bugis", hours: "Mon-Fri: 8:00am-5:00pm, Sat-Sun: 9:00am-5:00pm",
+                    commitment: 4, status: "unvisited", standout_lot: "Narrative house or rotating guest roasts", hardware: "Stand-up espresso + filter • Bras Basah central",
+                    recommended_for: ["Washed Clarity", "Natural Complexity"], last_verdict: null, last_date: null
+                },
+                {
+                    id: 110, name: "Zerah Coffee Roasters", address: "465 North Bridge Road #02-5063, Singapore 191465",
+                    lat: 1.3018, lng: 103.8592, area: "Bugis", hours: "Tue-Fri: 10:00am-4:00pm, Sat-Sun: 10:00am-5:00pm, Mon: Closed",
+                    commitment: 5, status: "unvisited", standout_lot: "Vibrant balanced single origins", hardware: "Micro-roastery • Precise filter & espresso",
+                    recommended_for: ["Washed Clarity", "Geisha Hunt"], last_verdict: null, last_date: null
+                },
+                
+                // AUDITED SINGAPORE CAFES (from archive)
+                {
+                    id: 201, name: "Nylon Coffee Roasters", address: "35A Keong Saik Road, Singapore 089145",
+                    lat: 1.2805, lng: 103.8432, area: "Everton Park", hours: "Mon-Fri: 8:00am-5:00pm, Sat-Sun: 9:00am-5:00pm",
+                    commitment: 5, status: "audited", standout_lot: "Brazil FAF Organic Arara / Ethiopia Banko Gotiti", hardware: "Mahlkönig CORE + xBloom flat-bottom",
+                    recommended_for: ["Natural Complexity", "Washed Clarity"], last_verdict: "Solid body with a crisp green apple front, resolving into a smooth milk chocolate finish.", last_date: "2026-05-06"
+                },
+                {
+                    id: 202, name: "Asylum Coffeehouse", address: "45A Kampong Bahru Road, Singapore 169353",
+                    lat: 1.2798, lng: 103.8355, area: "Everton Park", hours: "Daily: 8:00am-6:00pm",
+                    commitment: 5, status: "audited", standout_lot: "Peru Gesha (Wilder Garcia) / Castillo Watermelon", hardware: "Timemore Sculptor 078 (SSP) • Flat-bottom",
+                    recommended_for: ["Geisha Hunt", "Washed Clarity"], last_verdict: "Clean, structured, high-clarity cup. Incredible tea-like clarity on Wush Wush.", last_date: "2026-04-05"
+                },
+                {
+                    id: 203, name: "Lume Cafe", address: "12 North Canal Road, Singapore 048824",
+                    lat: 1.2865, lng: 103.8488, area: "CBD", hours: "Mon-Fri: 7:30am-6:00pm, Sat: 8:00am-5:00pm",
+                    commitment: 4, status: "audited", standout_lot: "Panama Corpachi Geisha (Red Honey)", hardware: "Mahlkönig EK43 • V60 Manual",
+                    recommended_for: ["Geisha Hunt", "Natural Complexity"], last_verdict: "Apricot detected clearly. Structured and elegant — sweet without being cloying.", last_date: "2026-04-05"
+                },
+                {
+                    id: 204, name: "FLUID", address: "78 Tras Street, Singapore 079017",
+                    lat: 1.2782, lng: 103.8445, area: "Everton Park", hours: "Mon-Fri: 8:00am-5:30pm, Sat: 9:00am-5:00pm",
+                    commitment: 5, status: "audited", standout_lot: "El Obraje Gesha (Washed)", hardware: "Option-O Lagom P64 (64mm Flat Burr) • Flatbed Dripper",
+                    recommended_for: ["Geisha Hunt", "Washed Clarity"], last_verdict: "The orange nectarine finishing with that honey is terrific. So far my favourite.", last_date: "2026-05-16"
+                },
+                {
+                    id: 205, name: "Alchemist (Raffles Place)", address: "1 Raffles Place #B1-01, Singapore 048616",
+                    lat: 1.2834, lng: 103.8510, area: "CBD", hours: "Mon-Fri: 7:00am-7:00pm, Sat: 8:00am-5:00pm",
+                    commitment: 4, status: "audited", standout_lot: "El Morito Marshell (Washed)", hardware: "Mahlkönig EK43S (98mm Flat Burr) • V60",
+                    recommended_for: ["Washed Clarity", "Surprise Me"], last_verdict: "Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing.", last_date: "2026-05-08"
+                },
+                {
+                    id: 206, name: "Kurasu", address: "8A Upper Cross Street, Singapore 058327",
+                    lat: 1.2855, lng: 103.8468, area: "CBD", hours: "Mon-Fri: 7:30am-6:00pm, Sat-Sun: 8:30am-5:00pm",
+                    commitment: 4, status: "audited", standout_lot: "Indonesia Frinsa Estate (Extended Fermentation Honey)", hardware: "Mahlkönig EK43S • Hario Alpha flat-bottom",
+                    recommended_for: ["Natural Complexity", "Washed Clarity"], last_verdict: "Floral taste with a sweet coating on the tongue that gradually sticks and fades cleanly.", last_date: "2026-05-12"
+                },
+                {
+                    id: 207, name: "Agora Coffee", address: "22A Keong Saik Road, Singapore 089129",
+                    lat: 1.2808, lng: 103.8420, area: "Everton Park", hours: "Daily: 8:00am-6:00pm",
+                    commitment: 4, status: "audited", standout_lot: "Ethiopia Beloya (Natural) / Nicaragua Matagalpa", hardware: "Various pour-over • Strong milk integration",
+                    recommended_for: ["Washed Clarity", "Natural Complexity"], last_verdict: "High clarity. Solid milk beverage baseline.", last_date: "2026-03-18"
+                },
+                {
+                    id: 208, name: "Kyuukei Coffee", address: "1 George Street #B1-04, Singapore 049145",
+                    lat: 1.2838, lng: 103.8492, area: "CBD", hours: "Mon-Fri: 7:30am-6:00pm, Sat: 8:30am-4:00pm",
+                    commitment: 4, status: "audited", standout_lot: "Kenya Kiamugumo AA / Kenya Ndiaini AA", hardware: "120mm Hybrid Burr • Flat-bottom geometry",
+                    recommended_for: ["Washed Clarity"], last_verdict: "Excellent baseline for clarity. High-clarity washed Kenyan terroir.", last_date: "2026-02-15"
+                },
+                {
+                    id: 209, name: "Pocket by Flip (Flip Coffee Roasters)", address: "18 Upper Cross Street, Singapore 058330",
+                    lat: 1.2852, lng: 103.8475, area: "CBD", hours: "Mon-Fri: 7:30am-5:30pm, Sat: 8:30am-4:00pm",
+                    commitment: 5, status: "audited", standout_lot: "Ecuador La Papaya Geisha (Washed)", hardware: "Mahlkönig CORE (54mm Flat Burr) • Hario Alpha",
+                    recommended_for: ["Geisha Hunt", "Washed Clarity"], last_verdict: "Highest-altitude Geisha in archive. Terpene-forward Ecuador profile.", last_date: "2026-05-19"
+                },
+                {
+                    id: 210, name: "The Community Coffee (Hamilton)", address: "20 Hamilton Road, Singapore 209190",
+                    lat: 1.3125, lng: 103.8635, area: "North East", hours: "Daily: 8:00am-5:00pm",
+                    commitment: 3, status: "audited", standout_lot: "Jose Mancia Honduras Typica (Natural)", hardware: "Mahlkönig EK43 • Hario Switch immersion",
+                    recommended_for: ["Natural Complexity"], last_verdict: "Kiwi and oolong tea style, full bodied. Short finish with slight hints of chocolate.", last_date: "2026-05-13"
+                }
+            ];
+        }
+        
+        // Area selection
+        let selectedAreaEl = null;
+        function selectArea(el, area) {
+            if (selectedAreaEl) selectedAreaEl.classList.remove('!border-[#c9a84c]', '!bg-zinc-800');
+            el.classList.add('!border-[#c9a84c]', '!bg-zinc-800');
+            selectedAreaEl = el;
+            document.getElementById('selected-area').value = area;
+        }
+        
+        let selectedTimeEl = null;
+        function selectTime(el, time) {
+            if (selectedTimeEl) selectedTimeEl.classList.remove('!border-[#c9a84c]', '!bg-zinc-800');
+            el.classList.add('!border-[#c9a84c]', '!bg-zinc-800');
+            selectedTimeEl = el;
+            document.getElementById('selected-time').value = time;
+        }
+        
+        let selectedMoodEl = null;
+        function selectMood(el, mood) {
+            if (selectedMoodEl) selectedMoodEl.classList.remove('active', '!border-[#c9a84c]', '!bg-zinc-800');
+            el.classList.add('active', '!border-[#c9a84c]', '!bg-zinc-800');
+            selectedMoodEl = el;
+            document.getElementById('selected-mood').value = mood;
+        }
+        
+        function useCustomLocation() {
+            const custom = prompt("Enter your current location or address (e.g. 'Marina Bay Sands' or '1.290, 103.855'):");
+            if (!custom) return;
+            
+            // Simple mock: set to CBD or parse if lat,lng
+            document.getElementById('selected-area').value = 'CBD';
+            if (selectedAreaEl) selectedAreaEl.classList.remove('!border-[#c9a84c]', '!bg-zinc-800');
+            
+            // Find and highlight CBD button
+            const cbdBtn = Array.from(document.querySelectorAll('.area-btn')).find(b => b.textContent.includes('CBD'));
+            if (cbdBtn) {
+                cbdBtn.classList.add('!border-[#c9a84c]', '!bg-zinc-800');
+                selectedAreaEl = cbdBtn;
+            }
+            
+            alert("Custom location set to CBD center for routing. (In production: would geocode & use precise coords)");
+        }
+        
+        // Haversine distance
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return Math.round(R * c * 10) / 10; // 1 decimal
+        }
+        
+        // Check if cafe is open now (demo logic for Wed 12:44pm)
+        function isOpenNow(cafe) {
+            const hours = cafe.hours.toLowerCase();
+            const day = 'wed'; // Hardcoded for demo (20 May 2026 is Wednesday)
+            const hour = 12; // 12:44pm
+            
+            if (hours.includes('closed') && hours.includes('mon') && day === 'mon') return false;
+            if (hours.includes('mon: closed') || hours.includes('mon closed')) {
+                if (day === 'mon') return false;
+            }
+            
+            // Rough parsing
+            if (hours.includes('daily') || hours.includes('mon-fri') || hours.includes('tue-sun')) {
+                if (hours.includes('8:00am') || hours.includes('7:30am') || hours.includes('9:00am') || hours.includes('10:00am')) {
+                    if (hour >= 8 && hour < 18) return true; // Most open till 5-6pm
+                }
+            }
+            
+            if (hours.includes('tue-fri') || hours.includes('mon-fri')) {
+                if (['mon','tue','wed','thu','fri'].includes(day) && hour >= 8 && hour < 17) return true;
+            }
+            
+            if (hours.includes('sat-sun') || hours.includes('weekend')) {
+                if (['sat','sun'].includes(day) && hour >= 9 && hour < 17) return true;
+            }
+            
+            // Specific overrides
+            if (cafe.name.includes('Zerah') && (day === 'mon')) return false;
+            if (cafe.name.includes('Percolate') && day === 'tue') return false;
+            if (cafe.name.includes('20Grams') && hour < 11) return false;
+            
+            return true; // Default open for demo
+        }
+        
+        // Mood match score
+        function getMatchScore(cafe, mood) {
+            let score = 3; // base
+            
+            const rec = cafe.recommended_for || [];
+            const lot = (cafe.standout_lot || '').toLowerCase();
+            const verdict = (cafe.last_verdict || '').toLowerCase();
+            const name = cafe.name.toLowerCase();
+            
+            if (mood === 'Washed Clarity') {
+                if (rec.includes('Washed Clarity')) score += 4;
+                if (lot.includes('washed') || verdict.includes('clarity') || verdict.includes('tea-like')) score += 3;
+                if (name.includes('gesha') || name.includes('geisha')) score += 2;
+            } else if (mood === 'Natural Complexity') {
+                if (rec.includes('Natural Complexity')) score += 4;
+                if (lot.includes('natural') || verdict.includes('ferment') || verdict.includes('body') || verdict.includes('complex')) score += 3;
+                if (lot.includes('anaerobic') || lot.includes('honey')) score += 2;
+            } else if (mood === 'Geisha Hunt') {
+                if (rec.includes('Geisha Hunt')) score += 5;
+                if (name.includes('gesha') || name.includes('geisha') || lot.includes('gesha') || lot.includes('geisha')) score += 5;
+                if (verdict.includes('floral') || verdict.includes('jasmine') || verdict.includes('apricot')) score += 2;
+            } else { // Surprise Me
+                score = 4 + Math.random() * 2;
+                if (cafe.commitment >= 5) score += 1.5;
+            }
+            
+            // Bonus for high commitment
+            score += (cafe.commitment - 3) * 0.5;
+            
+            return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+        }
+        
+        // Generate itinerary
+        function planCrawl() {
+            const area = document.getElementById('selected-area').value;
+            const time = document.getElementById('selected-time').value;
+            const mood = document.getElementById('selected-mood').value;
+            
+            if (!area || !time || !mood) {
+                alert("Please select location, time, and mood.");
+                return;
+            }
+            
+            const userLoc = AREAS[area] || {lat: 1.2834, lng: 103.8510};
+            
+            // Filter open cafes not visited today
+            let available = cafes.filter(c => {
+                const visitedToday = todayVisited.includes(c.name);
+                return !visitedToday && isOpenNow(c);
+            });
+            
+            // Score and sort
+            available = available.map(c => {
+                const dist = calculateDistance(userLoc.lat, userLoc.lng, c.lat, c.lng);
+                const match = getMatchScore(c, mood);
+                const priority = c.status === 'unvisited' ? 1.5 : 1; // prefer new
+                const finalScore = (match * 1.8) + (priority * 2) - (dist * 0.9);
+                return {...c, distance: dist, matchScore: match, finalScore};
+            }).sort((a, b) => b.finalScore - a.finalScore);
+            
+            // Limit by time
+            let maxStops = 5;
+            let cafeTimePerStop = 45;
+            let travelBuffer = 20;
+            
+            if (time === '1 hour') {
+                maxStops = 1;
+                cafeTimePerStop = 35;
+                travelBuffer = 15;
+            } else if (time === '2 hours') {
+                maxStops = 2;
+                cafeTimePerStop = 40;
+            } else if (time === 'Half day') {
+                maxStops = 3;
+                cafeTimePerStop = 50;
+                travelBuffer = 25;
+            } else if (time === 'Full day') {
+                maxStops = 5;
+                cafeTimePerStop = 55;
+                travelBuffer = 30;
+            }
+            
+            // Special rules
+            if (mood === 'Geisha Hunt') {
+                available = available.filter(c => 
+                    c.name.toLowerCase().includes('gesha') || 
+                    c.name.toLowerCase().includes('geisha') || 
+                    (c.standout_lot || '').toLowerCase().includes('gesha') ||
+                    (c.standout_lot || '').toLowerCase().includes('geisha')
+                );
+                if (available.length === 0) {
+                    // Fallback to high match
+                    available = cafes.filter(c => c.commitment >= 4 && isOpenNow(c) && !todayVisited.includes(c.name));
+                }
+            }
+            
+            const selectedStops = available.slice(0, maxStops);
+            
+            if (selectedStops.length === 0) {
+                alert("No suitable open cafes found for your criteria right now. Try different mood or time.");
+                return;
+            }
+            
+            // Build itinerary with travel estimates
+            let itinerary = [];
+            let cumulative = 0;
+            let prevLat = userLoc.lat;
+            let prevLng = userLoc.lng;
+            
+            selectedStops.forEach((stop, idx) => {
+                const travelTime = Math.round(calculateDistance(prevLat, prevLng, stop.lat, stop.lng) * 12 + 8); // rough min
+                cumulative += travelTime;
+                
+                const stopDuration = cafeTimePerStop + (idx === 0 ? 5 : 0);
+                cumulative += stopDuration;
+                
+                itinerary.push({
+                    ...stop,
+                    order: idx + 1,
+                    travelTime: travelTime,
+                    duration: stopDuration,
+                    cumulative: cumulative
+                });
+                
+                prevLat = stop.lat;
+                prevLng = stop.lng;
+            });
+            
+            // Add meal break for full day
+            if (time === 'Full day' && itinerary.length >= 3) {
+                itinerary.splice(2, 0, {
+                    id: 'meal', name: "LUNCH BREAK", address: "Nearby hawker or cafe (recommend: Maxwell or Chinatown)",
+                    lat: 0, lng: 0, area: "", hours: "", commitment: 0, status: "",
+                    standout_lot: "", hardware: "", recommended_for: [],
+                    last_verdict: null, last_date: null,
+                    order: 3, travelTime: 10, duration: 45, cumulative: itinerary[1].cumulative + 10 + 45,
+                    isMeal: true
+                });
+            }
+            
+            // Render
+            renderItinerary(itinerary, area, time, mood, userLoc);
+            
+            // Save plan
+            todayPlan = itinerary.filter(s => !s.isMeal).map(s => s.name);
+            localStorage.setItem('todayPlan', JSON.stringify(todayPlan));
+            
+            showScreen(2);
+        }
+        
+        const AREAS = {
+            "CBD": {lat: 1.2834, lng: 103.8510},
+            "Everton Park": {lat: 1.2765, lng: 103.8400},
+            "Bugis": {lat: 1.2985, lng: 103.8550},
+            "Orchard": {lat: 1.3040, lng: 103.8320},
+            "East Coast": {lat: 1.3220, lng: 103.9250},
+            "West": {lat: 1.2820, lng: 103.8250},
+            "North": {lat: 1.4300, lng: 103.7900},
+            "North East": {lat: 1.3350, lng: 103.8880}
+        };
+        
+        function renderItinerary(itinerary, area, time, mood, userLoc) {
+            const container = document.getElementById('itinerary-content');
+            container.innerHTML = '';
+            
+            document.getElementById('itinerary-subtitle').innerHTML = 
+                `<span class="font-medium">${area}</span> • ${time} • <span class="text-[#c9a84c]">${mood}</span> • ${itinerary.length} stops`;
+            
+            let totalMins = itinerary[itinerary.length - 1].cumulative;
+            
+            itinerary.forEach((stop, idx) => {
+                const div = document.createElement('div');
+                div.className = `itinerary-stop bg-zinc-900 border border-zinc-800 rounded-3xl p-5 flex gap-5 ${stop.isMeal ? 'opacity-70' : ''}`;
+                
+                if (stop.isMeal) {
+                    div.innerHTML = `
+                        <div class="w-14 h-14 flex-shrink-0 rounded-2xl bg-zinc-800 flex items-center justify-center">
+                            <i class="fa-solid fa-utensils text-3xl text-amber-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-3">
+                                <div class="font-semibold text-lg">${stop.name}</div>
+                                <div class="text-xs px-2.5 py-0.5 bg-amber-900 text-amber-300 rounded-full">45 MIN</div>
+                            </div>
+                            <div class="text-sm text-zinc-400 mt-0.5">${stop.address}</div>
+                            <div class="mt-3 text-xs text-emerald-400">Recommended: Maxwell Food Centre or nearby hawker for quick local lunch</div>
+                        </div>
+                        <div class="text-right text-xs text-zinc-400 w-16">
+                            <div class="font-mono">${stop.cumulative} min</div>
+                        </div>
+                    `;
+                } else {
+                    const isAudited = stop.status === 'audited';
+                    const badge = isAudited ? 
+                        `<span class="text-[10px] px-2 py-0.5 bg-emerald-900 text-emerald-300 rounded-full font-medium">AUDITED ✓</span>` : 
+                        `<span class="text-[10px] px-2 py-0.5 bg-sky-900 text-sky-300 rounded-full font-medium">NEW</span>`;
+                    
+                    const verdictHTML = isAudited && stop.last_verdict ? 
+                        `<div class="mt-2 text-xs bg-zinc-950 border border-zinc-800 p-2.5 rounded-2xl"><span class="font-medium text-emerald-300">Last verdict:</span> <span class="text-zinc-300">"${stop.last_verdict.substring(0, 95)}..."</span></div>` : '';
+                    
+                    div.innerHTML = `
+                        <div class="w-14 h-14 flex-shrink-0 rounded-2xl overflow-hidden border border-zinc-700">
+                            <div class="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center text-3xl">
+                                <i class="fa-solid fa-mug-hot text-[#c9a84c]"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <div class="font-semibold text-xl tracking-tight">${stop.name}</div>
+                                    <div class="text-xs text-zinc-400">${stop.address}</div>
+                                </div>
+                                <div class="text-right">
+                                    ${badge}
+                                    <div class="mt-1 text-[10px] font-mono text-zinc-400">${stop.distance} km away</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2 flex items-center gap-x-2 text-xs">
+                                <div class="px-2.5 py-px bg-zinc-800 rounded-full">${stop.hours.split(',')[0]}</div>
+                                <div class="px-2.5 py-px bg-zinc-800 rounded-full flex items-center gap-x-1">
+                                    <span class="text-[#c9a84c]">★</span> <span>${stop.commitment}</span>
+                                </div>
+                                <div class="px-2.5 py-px bg-zinc-800 rounded-full">${stop.matchScore} match</div>
+                            </div>
+                            
+                            <div class="mt-3 text-sm">
+                                <span class="font-medium text-[#c9a84c]">Recommended:</span> ${stop.standout_lot}
+                            </div>
+                            
+                            ${verdictHTML}
+                            
+                            <div class="mt-3 flex items-center gap-x-2 text-xs">
+                                <button onclick="addToPlan('${stop.name}'); event.stopImmediatePropagation();" class="px-3 py-1 border border-zinc-700 hover:bg-zinc-800 rounded-2xl text-xs">+ Add to Plan</button>
+                                <button onclick="openMaps('${stop.address}'); event.stopImmediatePropagation();" class="px-3 py-1 border border-zinc-700 hover:bg-zinc-800 rounded-2xl text-xs flex items-center gap-x-1"><i class="fa-solid fa-map-marker-alt text-xs"></i> <span>Navigate</span></button>
+                                <button onclick="logVisitFromItinerary(${stop.id}, '${stop.name}'); event.stopImmediatePropagation();" class="px-3 py-1 border border-emerald-700 hover:bg-emerald-950 text-emerald-400 rounded-2xl text-xs">Log Visit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="w-20 text-right flex-shrink-0">
+                            <div class="font-mono text-sm">${stop.travelTime} min travel</div>
+                            <div class="text-[10px] text-zinc-400 mt-px">${stop.duration} min at cafe</div>
+                            <div class="font-mono text-xs text-[#c9a84c] mt-2">${stop.cumulative} min total</div>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(div);
+            });
+            
+            document.getElementById('total-time').innerHTML = `${Math.round(totalMins / 60 * 10) / 10} hrs <span class="text-xs align-super text-zinc-400">(${totalMins} min)</span>`;
+        }
+        
+        function openMaps(address) {
+            const encoded = encodeURIComponent(address + ', Singapore');
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encoded}`, '_blank');
+        }
+        
+        function startCrawl() {
+            const firstStop = document.querySelector('#itinerary-content .itinerary-stop');
+            if (!firstStop) return;
+            
+            const nameEl = firstStop.querySelector('.font-semibold');
+            if (nameEl && nameEl.textContent) {
+                const addr = firstStop.querySelector('.text-xs.text-zinc-400') ? firstStop.querySelector('.text-xs.text-zinc-400').textContent : '';
+                openMaps(addr || nameEl.textContent);
+            } else {
+                alert("Crawl started! First stop navigation opened.");
+            }
+        }
+        
+        function addToPlan(cafeName) {
+            if (!todayPlan.includes(cafeName)) {
+                todayPlan.push(cafeName);
+                localStorage.setItem('todayPlan', JSON.stringify(todayPlan));
+                showToast(`${cafeName} added to today's plan`);
+                updateLogCount();
+            }
+        }
+        
+        function logVisitFromItinerary(cafeId, cafeName) {
+            const cafe = cafes.find(c => c.id === cafeId);
+            openEntryModal(cafe || {name: cafeName, id: cafeId});
+        }
+        
+        function logAllPlanned() {
+            if (todayPlan.length === 0) {
+                alert("No plan active. Generate an itinerary first.");
+                return;
+            }
+            
+            todayPlan.forEach(name => {
+                if (!todayVisited.includes(name)) {
+                    todayVisited.push(name);
+                }
+            });
+            localStorage.setItem('todayVisited', JSON.stringify(todayVisited));
+            updateLogCount();
+            showToast("All planned stops marked as visited!");
+            showScreen(4);
+        }
+        
+        // Directory
+        function renderDirectory(filteredCafes = null) {
+            const grid = document.getElementById('directory-grid');
+            grid.innerHTML = '';
+            
+            const toShow = filteredCafes || cafes;
+            
+            toShow.forEach(cafe => {
+                const isAudited = cafe.status === 'audited';
+                const isOpen = isOpenNow(cafe);
+                
+                const card = document.createElement('div');
+                card.className = `cafe-card bg-zinc-900 border border-zinc-800 rounded-3xl p-5 flex flex-col`;
+                
+                const stars = '★'.repeat(cafe.commitment) + '☆'.repeat(5 - cafe.commitment);
+                
+                let badge = isAudited ? 
+                    `<span class="inline-block text-[10px] font-medium px-2.5 py-px bg-emerald-900 text-emerald-300 rounded-full">AUDITED ✓ ${cafe.last_date ? '• ' + cafe.last_date : ''}</span>` : 
+                    `<span class="inline-block text-[10px] font-medium px-2.5 py-px bg-sky-900 text-sky-300 rounded-full">NOT YET VISITED</span>`;
+                
+                let verdict = isAudited && cafe.last_verdict ? 
+                    `<div class="text-xs mt-2 line-clamp-2 text-emerald-300">"${cafe.last_verdict.substring(0, 78)}..."</div>` : 
+                    `<div class="text-xs mt-2 text-zinc-400">Standout lot: <span class="text-[#c9a84c]">${cafe.standout_lot}</span></div>`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="font-semibold text-lg tracking-tight pr-4">${cafe.name}</div>
+                        <div class="text-right">
+                            <div class="text-[#c9a84c] text-sm">${stars}</div>
+                            <div class="text-[10px] text-zinc-500">${cafe.area}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-zinc-400 mt-1">${cafe.address}</div>
+                    
+                    <div class="mt-3 flex items-center gap-x-2">
+                        ${badge}
+                        <span class="text-xs px-2 py-px bg-zinc-800 rounded-full ${isOpen ? 'text-emerald-400' : 'text-rose-400'}">${isOpen ? '● OPEN NOW' : '○ CLOSED'}</span>
+                    </div>
+                    
+                    <div class="mt-auto pt-4 border-t border-zinc-800 flex items-center justify-between text-xs">
+                        <div>
+                            <span class="text-zinc-400">Hardware:</span><br>
+                            <span class="text-[10px]">${cafe.hardware.substring(0, 42)}${cafe.hardware.length > 42 ? '...' : ''}</span>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button onclick="addToPlan('${cafe.name}'); event.stopImmediatePropagation();" class="text-xs px-3 py-1 border border-zinc-700 hover:bg-zinc-800 rounded-2xl">+ Plan</button>
+                            <button onclick="openEntryModalFromDir(${cafe.id}); event.stopImmediatePropagation();" class="ml-1 text-xs px-3 py-1 border border-emerald-700 hover:bg-emerald-950 text-emerald-400 rounded-2xl">Log</button>
+                        </div>
+                    </div>
+                    
+                    ${verdict}
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            if (toShow.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-400">No cafes match current filters.</div>`;
+            }
+        }
+        
+        function filterDirectory() {
+            const areaFilter = document.getElementById('filter-area').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            const minCommit = parseInt(document.getElementById('filter-commitment').value);
+            const openNow = document.getElementById('filter-open').checked;
+            
+            document.getElementById('commitment-value').textContent = minCommit;
+            
+            let filtered = cafes;
+            
+            if (areaFilter) filtered = filtered.filter(c => c.area === areaFilter);
+            if (statusFilter) filtered = filtered.filter(c => c.status === statusFilter);
+            filtered = filtered.filter(c => c.commitment >= minCommit);
+            if (openNow) filtered = filtered.filter(c => isOpenNow(c));
+            
+            renderDirectory(filtered);
+        }
+        
+        function openEntryModalFromDir(cafeId) {
+            const cafe = cafes.find(c => c.id === cafeId);
+            if (cafe) openEntryModal(cafe);
+        }
+        
+        // Entry modal
+        let currentModalCafe = null;
+        
+        function openEntryModal(cafe) {
+            currentModalCafe = cafe;
+            document.getElementById('modal-cafe-name').textContent = cafe.name;
+            document.getElementById('entry-date').value = '2026-05-20';
+            document.getElementById('entry-coffee').value = cafe.standout_lot || '';
+            document.getElementById('entry-verdict').value = cafe.last_verdict ? cafe.last_verdict.substring(0, 60) : '';
+            document.getElementById('entry-grinder').value = cafe.hardware || '';
+            
+            document.getElementById('entry-modal').classList.remove('hidden');
+            document.getElementById('entry-modal').classList.add('flex');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('entry-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        
+        function saveEntry() {
+            if (!currentModalCafe) return;
+            
+            const newEntry = {
+                date: document.getElementById('entry-date').value,
+                city: "Singapore",
+                cafe_name: currentModalCafe.name,
+                coffee_name: document.getElementById('entry-coffee').value || "House / Guest Lot",
+                varietal: "Unknown",
+                process: document.getElementById('entry-process').value,
+                roast_level: document.getElementById('entry-roast').value,
+                brew_method: document.getElementById('entry-brew').value || "Pour-over",
+                dose_g: document.getElementById('entry-dose').value,
+                yield_g: document.getElementById('entry-yield').value,
+                ratio: document.getElementById('entry-ratio').value,
+                bloom: "Unknown",
+                grinder: document.getElementById('entry-grinder').value,
+                price_local: document.getElementById('entry-price').value || "—",
+                official_notes: document.getElementById('entry-notes').value || "—",
+                your_verdict: document.getElementById('entry-verdict').value || "Solid cup.",
+                technical_enrichment: document.getElementById('entry-technical').value || "Logged via planner."
+            };
+            
+            archiveData.unshift(newEntry);
+            localStorage.setItem('coffeeArchive', JSON.stringify(archiveData));
+            
+            // Mark as visited
+            if (!todayVisited.includes(currentModalCafe.name)) {
+                todayVisited.push(currentModalCafe.name);
+                localStorage.setItem('todayVisited', JSON.stringify(todayVisited));
+            }
+            
+            closeModal();
+            updateLogCount();
+            showToast("Entry saved to archive! Thank you for contributing.");
+            
+            // Refresh directory if visible
+            if (document.getElementById('screen3').classList.contains('active')) {
+                renderDirectory();
+            }
+            
+            // Update today's log if on that screen
+            if (document.getElementById('screen4').classList.contains('active')) {
+                renderTodayLog();
+            }
+        }
+        
+        function updateLogCount() {
+            const countEl = document.getElementById('log-count');
+            const visitedCount = todayVisited.length;
+            countEl.textContent = visitedCount;
+            
+            if (visitedCount > 0) {
+                countEl.classList.add('!bg-emerald-500', 'text-white');
+            }
+        }
+        
+        function renderTodayLog() {
+            const container = document.getElementById('today-log-list');
+            container.innerHTML = '';
+            
+            if (todayPlan.length === 0 && todayVisited.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+                        <i class="fa-solid fa-clipboard-list text-4xl text-zinc-700 mb-4"></i>
+                        <div class="font-semibold">No plan yet</div>
+                        <p class="text-sm text-zinc-400 mt-1">Generate an itinerary from the Planner screen to start tracking your day.</p>
+                        <button onclick="showScreen(1)" class="mt-5 px-6 py-2 border border-[#c9a84c] text-[#c9a84c] rounded-3xl text-sm">Go to Planner</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const allStops = [...new Set([...todayPlan, ...todayVisited])];
+            
+            allStops.forEach(name => {
+                const isVisited = todayVisited.includes(name);
+                const cafe = cafes.find(c => c.name === name);
+                
+                const row = document.createElement('div');
+                row.className = `flex items-center gap-x-4 bg-zinc-900 border ${isVisited ? 'border-emerald-800' : 'border-zinc-700'} rounded-3xl px-5 py-4`;
+                
+                row.innerHTML = `
+                    <div class="flex-1">
+                        <div class="font-semibold">${name}</div>
+                        <div class="text-xs text-zinc-400">${cafe ? cafe.address : '—'}</div>
+                    </div>
+                    
+                    <div class="flex items-center gap-x-3">
+                        <div onclick="toggleVisit('${name}', this)" class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-2xl border ${isVisited ? 'border-emerald-400 bg-emerald-950' : 'border-zinc-600'}">
+                            <i class="fa-solid ${isVisited ? 'fa-check text-emerald-400' : 'fa-clock text-zinc-400'}"></i>
+                        </div>
+                        
+                        <button onclick="openEntryModalFromLog('${name}'); event.stopImmediatePropagation();" class="px-4 py-1.5 text-xs border border-zinc-700 hover:bg-zinc-800 rounded-2xl">Log Entry</button>
+                    </div>
+                `;
+                
+                container.appendChild(row);
+            });
+            
+            const summary = document.getElementById('log-summary');
+            summary.innerHTML = `${todayVisited.length} / ${allStops.length} visited • ${archiveData.length} total archive entries`;
+        }
+        
+        function toggleVisit(cafeName, el) {
+            if (todayVisited.includes(cafeName)) {
+                todayVisited = todayVisited.filter(n => n !== cafeName);
+                el.innerHTML = `<i class="fa-solid fa-clock text-zinc-400"></i>`;
+                el.classList.remove('border-emerald-400', 'bg-emerald-950');
+                el.classList.add('border-zinc-600');
+            } else {
+                todayVisited.push(cafeName);
+                el.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i>`;
+                el.classList.add('border-emerald-400', 'bg-emerald-950');
+                el.classList.remove('border-zinc-600');
+            }
+            localStorage.setItem('todayVisited', JSON.stringify(todayVisited));
+            updateLogCount();
+            
+            // Update summary if exists
+            const summary = document.getElementById('log-summary');
+            if (summary) {
+                const allStops = [...new Set([...todayPlan, ...todayVisited])];
+                summary.innerHTML = `${todayVisited.length} / ${allStops.length} visited • ${archiveData.length} total archive entries`;
+            }
+        }
+        
+        function openEntryModalFromLog(cafeName) {
+            const cafe = cafes.find(c => c.name === cafeName) || {name: cafeName, id: Date.now()};
+            openEntryModal(cafe);
+        }
+        
+        function endDaySummary() {
+            const visited = todayVisited.length;
+            const planned = todayPlan.length;
+            const newEntries = archiveData.filter(e => e.date === '2026-05-20').length;
+            
+            const msg = `End of Day Summary\n\nCafes visited: ${visited}\nPlanned but missed: ${planned - visited}\nNew entries logged today: ${newEntries}\n\nArchive now contains ${archiveData.length} total entries.\n\nThank you for contributing to the 2026 archive, Hari!`;
+            
+            alert(msg);
+            
+            // Optional: clear for next day
+            if (confirm("Clear today's log for a fresh start tomorrow?")) {
+                clearTodayLog(true);
+            }
+        }
+        
+        function clearTodayLog(silent = false) {
+            if (!silent && !confirm("Clear all today's data?")) return;
+            
+            todayPlan = [];
+            todayVisited = [];
+            localStorage.removeItem('todayPlan');
+            localStorage.removeItem('todayVisited');
+            
+            updateLogCount();
+            if (document.getElementById('screen4').classList.contains('active')) {
+                renderTodayLog();
+            }
+            
+            if (!silent) showToast("Today's log cleared.");
+        }
+        
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-800 border border-zinc-700 text-sm px-6 py-3 rounded-3xl flex items-center gap-x-3 shadow-xl z-[200]`;
+            toast.innerHTML = `<span>${msg}</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2400);
+        }
+        
+        function showScreen(n) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + n).classList.add('active');
+            
+            if (n === 3) {
+                renderDirectory();
+            } else if (n === 4) {
+                renderTodayLog();
+            }
+        }
+        
+        function filterCommitmentSlider() {
+            const slider = document.getElementById('filter-commitment');
+            const val = document.getElementById('commitment-value');
+            if (slider && val) {
+                slider.oninput = () => {
+                    val.textContent = slider.value;
+                    filterDirectory();
+                };
+            }
+        }
+        
+        // Initialize everything
+        function initialize() {
+            initTailwind();
+            loadLocalData();
+            initCafes();
+            
+            // Set default selections
+            setTimeout(() => {
+                // Default area CBD
+                const cbdBtn = Array.from(document.querySelectorAll('.area-btn')).find(b => b.textContent.includes('CBD'));
+                if (cbdBtn) {
+                    cbdBtn.classList.add('!border-[#c9a84c]', '!bg-zinc-800');
+                    selectedAreaEl = cbdBtn;
+                    document.getElementById('selected-area').value = 'CBD';
+                }
+                
+                // Default time 2 hours
+                const timeBtns = document.querySelectorAll('.time-btn');
+                if (timeBtns[1]) {
+                    timeBtns[1].classList.add('!border-[#c9a84c]', '!bg-zinc-800');
+                    selectedTimeEl = timeBtns[1];
+                    document.getElementById('selected-time').value = '2 hours';
+                }
+                
+                // Default mood Surprise Me
+                const moodBtns = document.querySelectorAll('.mood-btn');
+                if (moodBtns[3]) {
+                    moodBtns[3].classList.add('active', '!border-[#c9a84c]', '!bg-zinc-800');
+                    selectedMoodEl = moodBtns[3];
+                    document.getElementById('selected-mood').value = 'Surprise Me';
+                }
+            }, 300);
+            
+            // Commitment slider
+            filterCommitmentSlider();
+            
+            // Initial directory render (hidden until screen 3)
+            // Seed some visited for demo if empty
+            if (todayVisited.length === 0 && todayPlan.length === 0) {
+                // Demo: pre-populate a couple
+                todayVisited = ["Nylon Coffee Roasters", "FLUID"];
+                todayPlan = ["Homeground Coffee Roasters", "ASK Coffee Roastery SG", "Zerah Coffee Roasters"];
+                localStorage.setItem('todayVisited', JSON.stringify(todayVisited));
+                localStorage.setItem('todayPlan', JSON.stringify(todayPlan));
+            }
+            
+            updateLogCount();
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.metaKey && e.key === "/") {
+                    e.preventDefault();
+                    showScreen(3);
+                    setTimeout(() => document.getElementById('filter-area').focus(), 100);
+                }
+            });
+            
+            // Boot message
+            console.log('%c[Hari Coffee Planner] 2026 Singapore Visit Planner initialized with 31 archive entries + 10 priority cafes.', 'color:#666');
+            
+            // Show home by default
+            document.getElementById('screen1').classList.add('active');
+        }
+        
+        // Boot
+        window.onload = initialize;
+        
+        // Expose for console debugging
+        window.HARI_PLANNER = { showScreen, planCrawl, renderDirectory, archiveData };
+    </script>
+</body>
+</html>

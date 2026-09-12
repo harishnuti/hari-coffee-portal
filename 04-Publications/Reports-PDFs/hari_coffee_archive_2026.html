@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARI // COFFEE AUDIT ARCHIVE // 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #080810;
+  --surface: #0f0f1a;
+  --card: #14141f;
+  --card2: #1a1a28;
+  --border: #252535;
+  --border2: #303048;
+  --amber: #f59e0b;
+  --amber2: #fbbf24;
+  --amber-dim: rgba(245,158,11,0.12);
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45,212,191,0.1);
+  --coral: #f87171;
+  --coral-dim: rgba(248,113,113,0.1);
+  --violet: #a78bfa;
+  --violet-dim: rgba(167,139,250,0.1);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.1);
+  --text: #e8e8f0;
+  --text2: #9090b0;
+  --text3: #555570;
+  --mono: 'Space Mono', monospace;
+  --serif: 'Cormorant Garamond', serif;
+  --sans: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3 { font-family: var(--serif); font-weight: 300; letter-spacing: 0.02em; }
+code, .mono { font-family: var(--mono); font-size: 0.85em; }
+
+/* ── GRID SCAN LINES ── */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════
+   HERO SECTION
+══════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(245,158,11,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(45,212,191,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(167,139,250,0.04) 0%, transparent 60%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(245,158,11,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,158,11,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--amber);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.2s forwards;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.35s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--amber);
+}
+
+.hero-subtitle {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text2);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.5s forwards;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.65s forwards;
+}
+
+.hero-stat {
+  padding: 1.25rem 2rem;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-val {
+  font-family: var(--mono);
+  font-size: 1.8rem;
+  color: var(--amber);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.hero-stat-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 600px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.8s forwards;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  border-radius: 1px;
+}
+.tag.amber { border-color: rgba(245,158,11,0.4); color: var(--amber); background: var(--amber-dim); }
+.tag.teal { border-color: rgba(45,212,191,0.3); color: var(--teal); background: var(--teal-dim); }
+.tag.violet { border-color: rgba(167,139,250,0.3); color: var(--violet); background: var(--violet-dim); }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: pulse 2s ease infinite;
+}
+
+/* ══════════════════════════════════
+   SECTION LAYOUT
+══════════════════════════════════ */
+.section {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
+}
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text);
+  flex: 1;
+}
+
+.section-meta {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+/* ══════════════════════════════════
+   ANALYTICS SECTION
+══════════════════════════════════ */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.analytics-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.analytics-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.analytics-card.amber::before { background: var(--amber); }
+.analytics-card.teal::before { background: var(--teal); }
+.analytics-card.violet::before { background: var(--violet); }
+.analytics-card.coral::before { background: var(--coral); }
+.analytics-card.green::before { background: var(--green); }
+
+.analytics-title {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 220px;
+}
+
+.analytics-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.analytics-fullrow {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.5rem;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.analytics-fullrow::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber), var(--teal), var(--violet));
+}
+
+/* ══════════════════════════════════
+   WORLD MAP / ORIGIN SECTION
+══════════════════════════════════ */
+.origin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.origin-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.origin-card:hover { border-color: var(--border2); }
+.origin-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+}
+.origin-card[data-origin="brazil"]::after { background: var(--coral); }
+.origin-card[data-origin="ethiopia"]::after { background: var(--amber); }
+.origin-card[data-origin="kenya"]::after { background: var(--green); }
+.origin-card[data-origin="colombia"]::after { background: var(--violet); }
+.origin-card[data-origin="panama"]::after, .origin-card[data-origin="peru"]::after { background: var(--teal); }
+.origin-card[data-origin="nicaragua"]::after { background: #fb923c; }
+.origin-card[data-origin="india"]::after, .origin-card[data-origin="indonesia"]::after { background: #e879f9; }
+
+.origin-flag {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+.origin-country {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+.origin-region {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.origin-count {
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.origin-count.brazil { color: var(--coral); }
+.origin-count.ethiopia { color: var(--amber); }
+.origin-count.kenya { color: var(--green); }
+.origin-count.colombia { color: var(--violet); }
+.origin-count.panama, .origin-count.peru { color: var(--teal); }
+.origin-count.nicaragua { color: #fb923c; }
+.origin-count.india, .origin-count.indonesia { color: #e879f9; }
+
+.origin-coffees {
+  font-size: 0.8rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════
+   ENTRIES TIMELINE
+══════════════════════════════════ */
+.timeline-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: 1px;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--amber);
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
+.entries-list { display: flex; flex-direction: column; gap: 12px; }
+
+.entry-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.entry-card:hover {
+  border-color: var(--border2);
+  transform: translateX(3px);
+}
+.entry-card.hidden { display: none; }
+
+.entry-header {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  align-items: center;
+}
+
+.entry-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+}
+.entry-date {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text2);
+  margin-top: 3px;
+}
+
+.entry-main {}
+.entry-coffee-name {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.entry-cafe {
+  font-size: 0.78rem;
+  color: var(--text2);
+}
+.entry-cafe span {
+  color: var(--text3);
+  margin: 0 4px;
+}
+
+.entry-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.proc-badge {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 1px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.proc-washed { color: #93c5fd; border-color: rgba(147,197,253,0.3); background: rgba(147,197,253,0.08); }
+.proc-natural { color: var(--amber2); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+.proc-anaerobic { color: #f9a8d4; border-color: rgba(249,168,212,0.3); background: rgba(249,168,212,0.08); }
+.proc-honey { color: #86efac; border-color: rgba(134,239,172,0.3); background: rgba(134,239,172,0.08); }
+.proc-coferment { color: var(--violet); border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+.proc-semiwashed { color: #94a3b8; border-color: rgba(148,163,184,0.3); background: rgba(148,163,184,0.08); }
+.proc-new { color: var(--teal); border-color: rgba(45,212,191,0.4); background: rgba(45,212,191,0.1); }
+
+.entry-body {
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  display: none;
+}
+.entry-body.open { display: block; }
+
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.entry-field {}
+.entry-field-label {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.entry-field-val {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.entry-field-val.mono { font-family: var(--mono); font-size: 0.78rem; color: var(--amber); }
+
+.entry-verdict {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  color: var(--text2);
+  font-size: 0.88rem;
+}
+
+.entry-enrichment {
+  background: var(--teal-dim);
+  border: 1px solid rgba(45,212,191,0.2);
+  border-left: 3px solid var(--teal);
+  padding: 0.85rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.entry-enrichment-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 5px;
+}
+
+/* ══════════════════════════════════
+   HARDWARE REGISTRY
+══════════════════════════════════ */
+.hardware-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.hardware-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.hw-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.hw-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+.hw-spec {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.hw-desc {
+  font-size: 0.8rem;
+  color: var(--text2);
+  line-height: 1.55;
+  margin-bottom: 1rem;
+}
+.hw-entries {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-key { color: var(--text3); font-family: var(--mono); font-size: 0.65rem; }
+.spec-val { color: var(--text); }
+
+/* ══════════════════════════════════
+   MILESTONE SECTION
+══════════════════════════════════ */
+.milestone-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.milestone-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.75rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.milestone-card.achieved { border-color: rgba(74,222,128,0.3); }
+.milestone-card.achieved::after {
+  content: 'ACHIEVED';
+  position: absolute;
+  top: 12px; right: 12px;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  background: var(--green-dim);
+  padding: 2px 6px;
+}
+.milestone-card.pending { border-color: rgba(245,158,11,0.2); }
+.milestone-card.pending::after {
+  content: 'PENDING';
+  position: absolute;
+  top: 12px; right: 12px;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  background: var(--amber-dim);
+  padding: 2px 6px;
+}
+
+.milestone-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.milestone-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.milestone-desc {
+  font-size: 0.78rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════
+   VARIETAL SECTION
+══════════════════════════════════ */
+.varietal-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.varietal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+}
+.varietal-card:hover { border-color: var(--border2); }
+.varietal-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+.varietal-origin {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.varietal-notes {
+  font-size: 0.78rem;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.footer-sig {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+.footer-title {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.footer-line {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════
+   DIVIDER
+══════════════════════════════════ */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 2rem;
+}
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(8,8,16,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--amber);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.1rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text3);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  transition: color 0.15s;
+}
+.nav-link:hover { color: var(--amber); }
+
+.nav-badge {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text3);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  margin-left: auto;
+}
+
+/* ══════════════════════════════════
+   RATIO VISUALIZER
+══════════════════════════════════ */
+.ratio-visual {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.ratio-bar {
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.ratio-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--amber);
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-stats { flex-wrap: wrap; }
+  .analytics-grid { grid-template-columns: 1fr; }
+  .analytics-2col { grid-template-columns: 1fr; }
+  .milestone-grid { grid-template-columns: 1fr; }
+  .entry-header { grid-template-columns: 60px 1fr; }
+  .entry-badges { display: none; }
+  .nav-links { display: none; }
+}
+
+/* ══════════════════════════════════
+   LEGEND ROW
+══════════════════════════════════ */
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text2);
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════
+   SECTION BG STRIPE
+══════════════════════════════════ */
+.section-stripe {
+  background: var(--surface);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#hero" class="nav-logo">☕ Hari // Archive</a>
+  <div class="nav-links">
+    <a href="#analytics" class="nav-link">Analytics</a>
+    <a href="#origins" class="nav-link">Origins</a>
+    <a href="#entries" class="nav-link">All Entries</a>
+    <a href="#hardware" class="nav-link">Hardware</a>
+    <a href="#varietals" class="nav-link">Varietals</a>
+    <a href="#milestones" class="nav-link">Milestones</a>
+  </div>
+  <div class="nav-badge">2026 ARCHIVE</div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     HERO
+═══════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="scanlines"></div>
+
+  <p class="hero-eyebrow">// Specialty Coffee Audit Archive // Q1–Q2 2026 //</p>
+
+  <h1 class="hero-title"><em>Operator</em><br>Hari</h1>
+  <p class="hero-subtitle">Master Extraction Archivist &amp; Coffee Connoisseur</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-val">23</span>
+      <span class="hero-stat-label">Audits Logged</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">11</span>
+      <span class="hero-stat-label">Unique Cafes</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">4</span>
+      <span class="hero-stat-label">Cities</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">18+</span>
+      <span class="hero-stat-label">Varietals</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">88.5</span>
+      <span class="hero-stat-label">Avg SCA Score</span>
+    </div>
+  </div>
+
+  <div class="hero-tags">
+    <span class="tag amber">Geisha</span>
+    <span class="tag amber">Sudan Rume</span>
+    <span class="tag amber">Wush Wush</span>
+    <span class="tag teal">EK Omnia 98mm</span>
+    <span class="tag teal">FM-120 Flat Burr</span>
+    <span class="tag teal">SSP Sculptor 078</span>
+    <span class="tag violet">Flat-Bottom Geometry</span>
+    <span class="tag violet">1:15 — 1:17 Ratio Range</span>
+    <span class="tag">Co-Ferment</span>
+    <span class="tag">Anaerobic Natural</span>
+    <span class="tag">Holy Trinity Complete</span>
+  </div>
+
+  <div class="scroll-hint">↓ scroll to explore archive ↓</div>
+</section>
+
+<!-- ═══════════════════════════════════
+     ANALYTICS
+═══════════════════════════════════ -->
+<section class="section" id="analytics">
+  <div class="section-header">
+    <span class="section-num">01 //</span>
+    <h2 class="section-title">Extraction Analytics</h2>
+    <span class="section-meta">23 entries // Jan–May 2026</span>
+  </div>
+
+  <div class="analytics-grid">
+
+    <div class="analytics-card amber fade-in">
+      <p class="analytics-title">Processing Method Distribution</p>
+      <div class="legend-row">
+        <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Natural</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#93c5fd"></span>Washed</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#f9a8d4"></span>Anaerobic</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#86efac"></span>Honey/Co-Fer</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="processChart" role="img" aria-label="Processing method distribution pie chart">Natural: 9, Washed: 11, Anaerobic: 3, Honey/Co-Ferment: 2</canvas>
+      </div>
+    </div>
+
+    <div class="analytics-card teal fade-in">
+      <p class="analytics-title">Brew Method Breakdown</p>
+      <div class="chart-container">
+        <canvas id="brewChart" role="img" aria-label="Brew method distribution bar chart">Pour-over 9, Flat-Bottom 5, V60 4, Flat White 3, Espresso 2</canvas>
+      </div>
+    </div>
+
+    <div class="analytics-card violet fade-in">
+      <p class="analytics-title">Ratio Distribution</p>
+      <div class="chart-container">
+        <canvas id="ratioChart" role="img" aria-label="Brew ratio frequency chart">1:14 = 1, 1:15 = 5, 1:15.3 = 1, 1:15.4 = 1, 1:17 = 3, Unknown = 12</canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="analytics-2col">
+
+    <div class="analytics-card coral fade-in">
+      <p class="analytics-title">Entries by City</p>
+      <div class="chart-container">
+        <canvas id="cityChart" role="img" aria-label="Entries by city bar chart">Singapore 15, Bali 3, Mumbai 2, Johor Bahru 1</canvas>
+      </div>
+    </div>
+
+    <div class="analytics-card green fade-in">
+      <p class="analytics-title">Monthly Audit Cadence</p>
+      <div class="chart-container">
+        <canvas id="monthChart" role="img" aria-label="Monthly audit count line chart">Jan 3, Feb 2, Mar 6, Apr 6, May 6</canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="analytics-fullrow fade-in">
+    <p class="analytics-title">Coffee Origin Frequency</p>
+    <div class="chart-container" style="height:240px">
+      <canvas id="originChart" role="img" aria-label="Coffee origin horizontal bar chart">Brazil 6, Ethiopia 4, Kenya 3, Colombia 3, Panama/Peru 3, Nicaragua 2, India 1, Indonesia 3</canvas>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════
+     ORIGINS
+═══════════════════════════════════ -->
+<div class="section-stripe">
+<section class="section" id="origins">
+  <div class="section-header">
+    <span class="section-num">02 //</span>
+    <h2 class="section-title">Origin Intelligence</h2>
+    <span class="section-meta">8 origins // 3 continents</span>
+  </div>
+
+  <div class="origin-grid">
+
+    <div class="origin-card fade-in" data-origin="brazil">
+      <div class="origin-flag">🇧🇷</div>
+      <div class="origin-country">Brazil</div>
+      <div class="origin-region">MOGIANA // CERRADO // FAZENDA</div>
+      <div class="origin-count brazil">06</div>
+      <div class="origin-coffees">Arara (Obatã × Yellow Catuaí) · Catucai 24/137 · Brasil Mogiana Natural · Serra dos Ciganos · Santuário Sul · House Natural. Brazil dominates your archive with diverse varietals across low-acid, high-body profiles.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="ethiopia">
+      <div class="origin-flag">🇪🇹</div>
+      <div class="origin-country">Ethiopia</div>
+      <div class="origin-region">YIRGACHEFFE // GEDEB // GUJI</div>
+      <div class="origin-count ethiopia">04</div>
+      <div class="origin-coffees">Banko Gotiti Heirloom Washed · Beloya Natural · COE#1 2024 Basha Bekele Anaerobic · Guji Gerba Heirloom Washed. Birthplace of Arabica — heirloom genetics at 1,900–2,300 MASL.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="kenya">
+      <div class="origin-flag">🇰🇪</div>
+      <div class="origin-country">Kenya</div>
+      <div class="origin-region">KIRINYAGA // NYERI // KIAMBU</div>
+      <div class="origin-count kenya">03</div>
+      <div class="origin-coffees">Kiamugumo AA Washed · Ndiaini AA Washed · (Menu: Kirinyaga Njemu AA). SL28 / SL34 genetics. Classic Kenyan phosphoric acidity and blackcurrant complexity.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="colombia">
+      <div class="origin-flag">🇨🇴</div>
+      <div class="origin-country">Colombia</div>
+      <div class="origin-region">CAUCA // QUINDÍO // ARMENIA</div>
+      <div class="origin-count colombia">03</div>
+      <div class="origin-coffees">La Laja (Sudan Rume Washed, James Fernández) · Castillo Watermelon Co-Ferment (Jairo Arcila) · Wush Wush Washed. Milestone origin — Holy Trinity Sudan Rume completed here.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="panama">
+      <div class="origin-flag">🇵🇦</div>
+      <div class="origin-country">Panama / Peru</div>
+      <div class="origin-region">CHIRIQUÍ // JAÉN // CAJAMARCA</div>
+      <div class="origin-count panama">03</div>
+      <div class="origin-coffees">Corpachi Geisha Red Honey (Boquerón, Panama) · Peru Gesha Washed — Wilder Garcia (Jaén) · Peru Gesha Iced Flash-Chill (Cajamarca). Elite high-altitude Geisha genetics.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="nicaragua">
+      <div class="origin-flag">🇳🇮</div>
+      <div class="origin-country">Nicaragua</div>
+      <div class="origin-region">MATAGALPA // NUEVA SEGOVIA</div>
+      <div class="origin-count nicaragua">02</div>
+      <div class="origin-coffees">Matagalpa Washed (Agora) · Buena Vista Parainema Natural Anaerobic (Nylon). Parainema is a IHCAFE hybrid known for thick body and disease resistance — ideal for espresso.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="india">
+      <div class="origin-flag">🇮🇳</div>
+      <div class="origin-country">India</div>
+      <div class="origin-region">RATNAGIRI // COORG</div>
+      <div class="origin-count india">01</div>
+      <div class="origin-coffees">Project Pearl Ratnagiri Experimental Anaerobic (Subko Mumbai). Rare coastal terroir — Indian specialty is an emerging scene. Processed with advanced anaerobic techniques rivaling Colombian craft.</div>
+    </div>
+
+    <div class="origin-card fade-in" data-origin="indonesia">
+      <div class="origin-flag">🇮🇩</div>
+      <div class="origin-country">Indonesia</div>
+      <div class="origin-region">BALI KINTAMANI // SULAWESI TORAJA</div>
+      <div class="origin-count indonesia">03</div>
+      <div class="origin-coffees">Bali Karana Kintamani Natural · Sulawesi Toraja Semi-Washed (Wet-Hulled) · House Blend Piccolo. Wet-hulled (Giling Basah) produces classic earthy, heavy-body Indonesian expression.</div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════
+     ALL ENTRIES
+═══════════════════════════════════ -->
+<section class="section" id="entries">
+  <div class="section-header">
+    <span class="section-num">03 //</span>
+    <h2 class="section-title">Complete Audit Log</h2>
+    <span class="section-meta">Click entry to expand // 23 records</span>
+  </div>
+
+  <div class="timeline-filter">
+    <button class="filter-btn active" onclick="filterEntries('all', this)">All</button>
+    <button class="filter-btn" onclick="filterEntries('natural', this)">Natural</button>
+    <button class="filter-btn" onclick="filterEntries('washed', this)">Washed</button>
+    <button class="filter-btn" onclick="filterEntries('anaerobic', this)">Anaerobic</button>
+    <button class="filter-btn" onclick="filterEntries('honey', this)">Honey / Co-Fer</button>
+    <button class="filter-btn" onclick="filterEntries('singapore', this)">Singapore</button>
+    <button class="filter-btn" onclick="filterEntries('filter', this)">Filter Brew</button>
+    <button class="filter-btn" onclick="filterEntries('espresso', this)">Espresso</button>
+  </div>
+
+  <div class="entries-list" id="entriesList">
+
+    <!-- Entry 001 -->
+    <div class="entry-card" data-tags="natural indonesia bali filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#001</div><div class="entry-date">10 Jan 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Bali Karana Kintamani</div>
+          <div class="entry-cafe">Seniman Coffee Studio<span>·</span>Ubud, Bali</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span><span class="proc-badge proc-semiwashed" style="color:#a5b4fc;border-color:rgba(165,180,252,0.3);background:rgba(165,180,252,0.08)">Filter</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Heirloom</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast Level</div><div class="entry-field-val">Light</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Clean citrus, floral</div></div>
+        </div>
+        <div class="entry-verdict">"Excellent clarity for a natural process, bright and floral."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Bali Kintamani sits at 1,200–1,700 MASL with volcanic soil (Gunung Batur). Local Balinese heirloom (Kintamani variety) processed natural retains malic acid clarity due to lower ambient fermentation temperature vs. equatorial lowlands. Foundational exposure establishing Indonesian terroir baseline.</div>
+      </div>
+    </div>
+
+    <!-- Entry 002 -->
+    <div class="entry-card" data-tags="semiwashed indonesia bali filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#002</div><div class="entry-date">10 Jan 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Sulawesi Toraja</div>
+          <div class="entry-cafe">Seniman Coffee Studio<span>·</span>Ubud, Bali</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-semiwashed">Semi-Washed</span><span class="proc-badge proc-semiwashed" style="color:#a5b4fc;border-color:rgba(165,180,252,0.3);background:rgba(165,180,252,0.08)">Filter</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Heirloom</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Semi-Washed / Wet-Hulled</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast Level</div><div class="entry-field-val">Medium</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Cocoa, earthy structure</div></div>
+        </div>
+        <div class="entry-verdict">"Heavy body with rich cocoa notes."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Giling Basah (wet-hulling) is unique to Indonesia — parchment is removed at 35–50% moisture, dramatically altering cell structure. This ruptures lipid walls, causing heavy body and lower acid expression. The "earthy" notes you detected are characteristic volatile phenols amplified by this process. Classic Indonesian macro-structure vs. Ethiopian micro-floral expression.</div>
+      </div>
+    </div>
+
+    <!-- Entry 003 -->
+    <div class="entry-card" data-tags="espresso indonesia bali" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#003</div><div class="entry-date">10 Jan 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">House Blend</div>
+          <div class="entry-cafe">Seniman Coffee Studio<span>·</span>Ubud, Bali</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-semiwashed">Espresso Blend</span><span class="proc-badge" style="color:#c4b5fd;border-color:rgba(196,181,253,0.3);background:rgba(196,181,253,0.08)">Piccolo</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Blend</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast Level</div><div class="entry-field-val">Espresso Roast</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Piccolo (4oz)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Notes</div><div class="entry-field-val">Balanced</div></div>
+        </div>
+        <div class="entry-verdict">"Great milk integration."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Baseline espresso-milk calibration in Bali context. Piccolo (4oz) format provides 1:3 milk-to-espresso ratio — lower milk fat dilution than flat white preserves espresso's natural sweetness. Established foundational espresso-milk pairing benchmark for subsequent archive comparisons.</div>
+      </div>
+    </div>
+
+    <!-- Entry 004 -->
+    <div class="entry-card" data-tags="washed kenya singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#004</div><div class="entry-date">15 Feb 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Kenya Kiamugumo AA</div>
+          <div class="entry-cafe">Kyuukei Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge" style="color:#a5b4fc;border-color:rgba(165,180,252,0.3);background:rgba(165,180,252,0.08)">Flat-Bottom</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown (likely SL28/SL34)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over (Flat-Bottom)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">120mm Hybrid Burr</div></div>
+          <div class="entry-field"><div class="entry-field-label">Notes</div><div class="entry-field-val">Unknown (AA grade)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">Unknown</div></div>
+        </div>
+        <div class="entry-verdict">"Excellent baseline for clarity."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Kiamugumo washing station in Kirinyaga — 1,600–1,800 MASL. AA screen size (≥18) = denser beans = higher soluble yield per gram. Flat-bottom geometry + 120mm hybrid burr establishes your "Kenyan clarity baseline" — phosphoric acid expression (blackcurrant, plum) without conical bypass. This grinder session marked your first 120mm flat burr experience.</div>
+      </div>
+    </div>
+
+    <!-- Entry 005 -->
+    <div class="entry-card" data-tags="washed kenya singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#005</div><div class="entry-date">28 Feb 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Kenya Ndiaini AA</div>
+          <div class="entry-cafe">Kyuukei Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown (likely SL28/SL34)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+        </div>
+        <div class="entry-verdict">"High clarity. Further exploration of Kenyan terroir."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Ndiaini washing station, Nyeri district. Nyeri vs Kirinyaga produces perceptible terroir differences — Nyeri tends toward higher citric acidity (lemon, grapefruit) vs Kirinyaga's deeper plum/phosphoric. This second Kenyan entry completed your dual-station AA calibration, establishing a comparative framework.</div>
+      </div>
+    </div>
+
+    <!-- Entry 006 -->
+    <div class="entry-card" data-tags="anaerobic india filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#006</div><div class="entry-date">01 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Project Pearl Ratnagiri</div>
+          <div class="entry-cafe">Subko Coffee Roasters<span>·</span>Mumbai, India</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-anaerobic">Experimental Anaerobic</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Indian</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Experimental Anaerobic</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Notes</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Location</div><div class="entry-field-val">Ratnagiri Coast, India</div></div>
+        </div>
+        <div class="entry-verdict">"Clean and balanced despite intense process."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Subko's Project Pearl represents cutting-edge Indian specialty — Ratnagiri on the Konkan coast is non-traditional coffee terroir (monsoon influence, coastal humidity). Anaerobic fermentation in this climate requires precise temperature control to prevent acetaldehyde overshoot. Your "clean and balanced" verdict confirms Subko's fermentation management was technically successful — rare for coastal Indian processing.</div>
+      </div>
+    </div>
+
+    <!-- Entry 007 -->
+    <div class="entry-card" data-tags="anaerobic india filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#007</div><div class="entry-date">08 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Raspberry in Loop</div>
+          <div class="entry-cafe">Grey Soul Coffee Roasters<span>·</span>Mumbai, India</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-anaerobic">Multi-stage Anaerobic</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Multi-stage Anaerobic</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Chocolate</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+        </div>
+        <div class="entry-verdict">"Heavy body, over-smoothed expression. Fermentation muted the brightness."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>CRITICAL LEARNING: Multi-stage anaerobic over-fermentation case study. When fermentation stages exceed optimal windows, acetic acid and advanced ester formation cross a threshold where brightness is chemically suppressed. The roaster listed "chocolate" (a hallmark of over-processed ferment) — masking terroir. This entry taught you to distinguish processing-driven identity from genetic clarity. Became your benchmark for "muted over-ferment" comparison.</div>
+      </div>
+    </div>
+
+    <!-- Entry 008 -->
+    <div class="entry-card" data-tags="washed colombia singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#008</div><div class="entry-date">15 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Colombia Wush Wush</div>
+          <div class="entry-cafe">Apartment Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-natural" style="color:#fde68a;border-color:rgba(253,230,138,0.4);background:rgba(253,230,138,0.08)">Rare Varietal</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Wush Wush ★</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Tea-like</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Milestone</div><div class="entry-field-val" style="color:var(--green)">Holy Trinity — Leg 2</div></div>
+        </div>
+        <div class="entry-verdict">"Incredible tea-like clarity."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Wush Wush is an ancient Ethiopian landrace grown in Colombia's Cauca at 1,700–2,100 MASL. The varietal's genetic structure (extremely elongated bean = unusual cell density distribution) produces signature tea-like, delicate mouthfeel that washed processing amplifies perfectly. This entry was your Holy Trinity Leg 2 — Wush Wush captured. Historically prized at World Barista Championships. Your "incredible clarity" verdict confirms maximum genetic expression vs. processing interference.</div>
+      </div>
+    </div>
+
+    <!-- Entry 009 -->
+    <div class="entry-card" data-tags="washed nicaragua singapore espresso" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#009</div><div class="entry-date">18 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Nicaragua Matagalpa</div>
+          <div class="entry-cafe">Agora Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-semiwashed" style="color:#fca5a5;border-color:rgba(252,165,165,0.3);background:rgba(252,165,165,0.08)">Flat White</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed (Espresso Roast)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Flat White</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+          <div class="entry-field"><div class="entry-field-label">Notes</div><div class="entry-field-val">Unknown</div></div>
+        </div>
+        <div class="entry-verdict">"Solid milk beverage."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Central American washed espresso baseline. Matagalpa (1,000–1,400 MASL) produces moderate-altitude coffee with clean, balanced profile — ideal for milk drinks where sweetness is prioritized over complexity. Washed Central American varieties in espresso-milk format act as a structural base, allowing steamed milk fats to dominate the sensory profile. Agora baseline calibration entry.</div>
+      </div>
+    </div>
+
+    <!-- Entry 010 -->
+    <div class="entry-card" data-tags="natural ethiopia singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#010</div><div class="entry-date">18 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Ethiopia Beloya</div>
+          <div class="entry-cafe">Agora Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Heirloom Landrace</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">V60</div></div>
+          <div class="entry-field"><div class="entry-field-label">Region</div><div class="entry-field-val">Gedeb Zone, Ethiopia</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown</div></div>
+        </div>
+        <div class="entry-verdict">"Classic natural profile."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Beloya washing station (Gedeb/Yirgacheffe border) processes naturals differently from their washed line — cherry fermentation at 1,900+ MASL produces jammy berry esters without excessive acetic acid. Your "classic natural profile" tags a reference baseline: standard fruit-forward Ethiopian natural. This entry later calibrated your Banko Gotiti washed tasting (entry #022) — the contrast between natural and washed at the same origin became a learning milestone.</div>
+      </div>
+    </div>
+
+    <!-- Entry 011 -->
+    <div class="entry-card" data-tags="natural brazil singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#011</div><div class="entry-date">20 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Brazil Natural (Mogiana)</div>
+          <div class="entry-cafe">Tiong Hoe Specialty Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Mogiana</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Pour-over</div></div>
+          <div class="entry-field"><div class="entry-field-label">Region</div><div class="entry-field-val">Mogiana, SP/MG border</div></div>
+        </div>
+        <div class="entry-verdict">"Classic dense Brazilian profile."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Brazilian Mogiana baseline at moderate elevation (900–1,200 MASL) — lower than Ethiopian counterparts, producing Maillard-dominant sweetness (chocolate, nuts, caramel) over acid-driven fruit. Natural processing at low elevation creates caramelized rather than fermented sweetness. This entry established your Brazilian terroir DNA profile for comparison against later entries #017–021.</div>
+      </div>
+    </div>
+
+    <!-- Entry 012 -->
+    <div class="entry-card" data-tags="natural brazil singapore filter espresso" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#012</div><div class="entry-date">28 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Brasil Mogiana + Piccolo (Dual)</div>
+          <div class="entry-cafe">Tiong Hoe Specialty Coffee · VivoCity<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span><span class="proc-badge proc-semiwashed" style="color:#fca5a5;border-color:rgba(252,165,165,0.3);background:rgba(252,165,165,0.08)">Dual Calibration</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Mogiana</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">225g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast</div><div class="entry-field-val">Medium</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">V60 + Piccolo</div></div>
+          <div class="entry-field"><div class="entry-field-label">Espresso Blend</div><div class="entry-field-val">"Smoky Quartz" 50% Brazil / 50% India</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Red Dates, Chocolate, Honey</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 13.10</div></div>
+        </div>
+        <div class="entry-verdict">"Perfectly hit the Chocolatey &amp; Nutty profile. Rich, smooth, heavy body. Piccolo mirrored filter profile identically — Profile Consistent System."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>System coherence discovery: V60 filter and Piccolo espresso both expressed Chocolate/Nut/Red Date. 1:15 ratio concentrates Maillard-reaction sugars. The "Smoky Quartz" blend (50% Brazil Mogiana + 50% India Robusta) uses India's higher lipid content to extend mouthfeel and crema stability — classic specialty blend architecture. Your preference model confirmed: Execution &gt; Experimentation, Clarity &gt; Complexity.</div>
+      </div>
+    </div>
+
+    <!-- Entry 013 -->
+    <div class="entry-card" data-tags="washed peru singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#013</div><div class="entry-date">29 Mar 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Peru Gesha — Wilder Garcia (Iced Flash-Chill)</div>
+          <div class="entry-cafe">Asylum Coffeehouse<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-natural" style="color:#67e8f9;border-color:rgba(103,232,249,0.3);background:rgba(103,232,249,0.08)">Iced Pour-over</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Gesha ★</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Producer</div><div class="entry-field-val">Wilder Garcia, Cajamarca</div></div>
+          <div class="entry-field"><div class="entry-field-label">Altitude</div><div class="entry-field-val">1,750–1,950 MASL</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">~240g total + 80–100g ice</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">~1:15</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Lagom P64 (Flat Burr)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Iced Pour-over (Flash-Chill)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Jasmine, Caramel, Lime, Cacao Nibs</div></div>
+        </div>
+        <div class="entry-verdict">"High-clarity, floral-dominant iced Gesha using flat burr + flat-bottom + flash-chill method. Audit Reliability: 7.5–9.5/10"</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Flash-chill (hot brew over ice) concentrates extraction then rapid thermal shock below 10°C halts extraction instantly — preserving volatile aromatic esters (jasmine, floral aldehydes) that evaporate above 30°C. Lagom P64's flat burrs + flat-bottom brewer = even extraction bed. Peru Cajamarca at 1,750+ MASL achieves Gesha genetic expression comparable to Panama at lower cost. The temperature shock is a legitimate technique for maximum aromatic preservation.</div>
+      </div>
+    </div>
+
+    <!-- Entry 014 -->
+    <div class="entry-card" data-tags="honey panama singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#014</div><div class="entry-date">01 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Corpachi Geisha — Panama (Red Honey)</div>
+          <div class="entry-cafe">Lume Cafe<span>·</span>08 Robinson Road, Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-honey">Red Honey</span><span class="proc-badge proc-natural" style="color:#fde68a;border-color:rgba(253,230,138,0.4);background:rgba(253,230,138,0.08)">Geisha ★★</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Geisha (Corpachi Farm)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Origin</div><div class="entry-field-val">Boquerón, Chiriquí, Panama</div></div>
+          <div class="entry-field"><div class="entry-field-label">Altitude</div><div class="entry-field-val">1,450–1,600 MASL</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Red Honey</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast Date</div><div class="entry-field-val">01 Feb 2026</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Mahlkönig EK43</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">V60 Manual Pourover</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 12</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Mandarin Candy, Jasmine, Apricot</div></div>
+        </div>
+        <div class="entry-verdict">"Apricot detected clearly (Malic Acid expression). Honey process added viscosity/roundness — not sweetness spike. Perceived as structured elegance. 5/5 stars."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Red Honey = 75–80% mucilage retention during drying. More than Yellow/White Honey — adds body and mouthfeel without full ferment complexity of Natural. Geisha's intrinsic malic acid profile (apricot/stone fruit) was amplified by Red Honey's retained sugars. EK43's 98mm flat burrs + V60 conical = classic clarity-bias extraction. Dual temperature strategy (90°C bloom → 70°C main pour) executed by barista — Phase 1 extracts volatile florals (jasmine), Phase 2 stabilizes structural sugars. Lume Cafe's barista philosophy demonstrated precision-controlled extraction as an artform.</div>
+      </div>
+    </div>
+
+    <!-- Entry 015 -->
+    <div class="entry-card" data-tags="washed colombia singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#015</div><div class="entry-date">01 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">La Laja — Sudan Rume Washed</div>
+          <div class="entry-cafe">Maxi Coffee Bar (Club Street)<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-natural" style="color:#fde68a;border-color:rgba(253,230,138,0.4);background:rgba(253,230,138,0.08)">Sudan Rume ★★★</span><span class="proc-badge proc-new">Milestone</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Sudan Rume ★ (Ancient / Rare)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Origin</div><div class="entry-field-val">La Laja, El Tambo, Cauca, Colombia</div></div>
+          <div class="entry-field"><div class="entry-field-label">Producer</div><div class="entry-field-val">James Fernández (Renowned Cupper)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">230g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15.3</div></div>
+          <div class="entry-field"><div class="entry-field-label">Temp</div><div class="entry-field-val mono">92–94°C</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">FM-Grinder 120mm Flat Burr</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brewer</div><div class="entry-field-val">Flat-Bottom Wave Dripper</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Raspberry, Nectarine, Floral</div></div>
+        </div>
+        <div class="entry-verdict">"Successfully isolated the intended tasting notes. Palate accuracy 99% confirmed — Raspberry (citric), Nectarine (malic). HOLY TRINITY COMPLETE."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Sudan Rume: ancient Ethiopian landrace (Boma Plateau origin), low-yielding, prized for intense aromatic complexity. 120mm FM flat burrs at near-perfect uniformity = virtually zero fines = zero bitter masking = raspberry/nectarine acid isolation. 1:15.3 tightened from standard 1:16 to add structural weight (nectarine malic body) while maintaining raspberry brightness. 92–94°C avoids tannin extraction bitterness from Sudan Rume's dense bean structure. Holy Trinity (Geisha + Wush Wush + Sudan Rume) completed. Q1/Q2 portfolio milestone: 3 washed rare varietals captured.</div>
+      </div>
+    </div>
+
+    <!-- Entry 016 -->
+    <div class="entry-card" data-tags="coferment colombia singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#016</div><div class="entry-date">05 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Castillo 'Watermelon' — Jairo Arcila Co-Ferment</div>
+          <div class="entry-cafe">Asylum Coffeehouse<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-coferment">Co-Ferment</span><span class="proc-badge proc-semiwashed">Experimental</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Castillo (Experimental)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Producer</div><div class="entry-field-val">Jairo Arcila, Finca Santa Monica</div></div>
+          <div class="entry-field"><div class="entry-field-label">Origin</div><div class="entry-field-val">Armenia, Quindío, Colombia</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed + Watermelon Co-Fermentation (48h anaerobic + watermelon mossto)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">225g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Timemore Sculptor 078 (SSP Burrs)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 12.50</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Watermelon, Mint, Lime, Chocolate</div></div>
+        </div>
+        <div class="entry-verdict">"Distinct fruit-forward expression. Sweetness layered rather than sharp. Non-traditional acid forward. Processing-driven identity confirmed."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Co-fermentation = intentional introduction of external fruit mossto (watermelon juice) into anaerobic fermentation tank. Yeast metabolizes both coffee sugars AND watermelon compounds, producing ester signatures (watermelon esters, mint-like menthol volatiles) genetically absent from Castillo. Timemore Sculptor 078's SSP burrs preferred for coarse precision without thinning body — necessary for co-ferment's dense ester matrix. Portfolio category: Experimental Fermentation. Processing-influence priority vs. varietal-driven clarity. This entry established your framework: co-ferments are artistically engineered, not terroir-expressed.</div>
+      </div>
+    </div>
+
+    <!-- Entry 017 -->
+    <div class="entry-card" data-tags="washed peru singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#017</div><div class="entry-date">05 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Peru Gesha — Wilder Garcia (Washed)</div>
+          <div class="entry-cafe">Asylum Coffeehouse<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-natural" style="color:#fde68a;border-color:rgba(253,230,138,0.4);background:rgba(253,230,138,0.08)">Geisha ★★</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Gesha (Cajamarca Farm)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Producer</div><div class="entry-field-val">Wilder Garcia, Jaén, Peru</div></div>
+          <div class="entry-field"><div class="entry-field-label">Altitude</div><div class="entry-field-val">1,750–1,950 MASL</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">15g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">225g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Timemore Sculptor 078 (SSP Burrs)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 12.50</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Jasmine, Caramel, Lime, Cacao Nibs</div></div>
+        </div>
+        <div class="entry-verdict">"Clean, structured, high-clarity cup. High transparency — minimal processing interference highlighting intrinsic genetic purity."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Dual-calibration with entry #016 using identical hardware (Sculptor 078 SSP) and ratio (1:15). This was a deliberate experimental design: Castillo Co-Ferment vs. Peru Gesha Washed on same burr stack. SSP burrs preferred for coarse precision without thinning body. Gesha washed = maximum genetic transparency: jasmine florals (linalool esters), caramel sweetness (natural sucrose concentration at altitude), lime (citric acid from high MASL slow maturation). Portfolio category: High-End Washed / Genetic Purity. Your preference model (Clarity &gt; Complexity) was validated.</div>
+      </div>
+    </div>
+
+    <!-- Entry 018 -->
+    <div class="entry-card" data-tags="anaerobic filter johor" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#018</div><div class="entry-date">18 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Hacienda La Florida — Typica Mejorado</div>
+          <div class="entry-cafe">Unknown Specialty Cafe<span>·</span>Johor Bahru, Malaysia</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-anaerobic">Anaerobic Washed</span><span class="proc-badge proc-natural" style="color:#fde68a;border-color:rgba(253,230,138,0.4);background:rgba(253,230,138,0.08)">Typica Mejorado ★</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Typica Mejorado (Ecuador)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Origin</div><div class="entry-field-val">Hacienda La Florida, Ecuador</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Anaerobic Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">18g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">277g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:15.4</div></div>
+          <div class="entry-field"><div class="entry-field-label">Bloom</div><div class="entry-field-val mono">42g / 30s (1:2.3 bloom ratio)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Mahlkönig EK Omnia</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brewer</div><div class="entry-field-val">Origami (Conical)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">MYR 35.00</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Lemon verbena, Red plum, Citronella, Hibiscus</div></div>
+        </div>
+        <div class="entry-verdict">"Excellent. Lime when hot — distinct plum as it cooled. Perfect thermal phase transition isolated. Citric → Malic acid shift confirmed."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Critical thermal phase transition documented: at high temperature (85–90°C), citric acid dominates perception (lime). As cup cools to 55–65°C, less-volatile malic acid becomes perceptible (plum). EK Omnia + Origami conical drove extreme clarity — conical's faster flow rate (K=1.3 vs flat-bottom K=1.0) preserved the acid structure without over-extraction muddiness. Typica Mejorado (Nestlé Ecuador breeding program orphan) has exceptional malic/citric balance that rewards thermal analysis. This is your most technically documented JB entry. Anaerobic washed process adds floral hibiscus esters without the funk of anaerobic naturals.</div>
+      </div>
+    </div>
+
+    <!-- Entry 019 -->
+    <div class="entry-card" data-tags="natural brazil singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#019</div><div class="entry-date">24 Apr 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Brazil Santuário Sul (Natural Fermentation)</div>
+          <div class="entry-cafe">Agora Coffee<span>·</span>Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural Ferm.</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Unknown Brazilian</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural Fermentation</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roast</div><div class="entry-field-val">Light–Medium</div></div>
+          <div class="entry-field"><div class="entry-field-label">Dose</div><div class="entry-field-val mono">16g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Yield</div><div class="entry-field-val mono">224g</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:14 (Tight)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Mahlkönig EK43 (98mm)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">V60</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Blackcurrant, Black cherry, Dark chocolate</div></div>
+        </div>
+        <div class="entry-verdict">"Full body. Prominent blackcurrant. Clear chocolaty finish."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Tightest ratio in your archive: 1:14. This is a deliberate density play — higher coffee-to-water ratio concentrates dissolved solids (TDS ~1.6–1.8%) maximizing body and sweetness intensity. EK43's 98mm flat burrs maintained clarity even at this concentration, preventing bitter over-extraction. Santuário Sul's natural fermentation produces blackcurrant/anthocyanin compounds. At 1:14, these are amplified without the thin/sour profile that would result from lesser grinders. Your most concentrated documented pour-over to date.</div>
+      </div>
+    </div>
+
+    <!-- Entry 020 -->
+    <div class="entry-card" data-tags="natural brazil singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#020</div><div class="entry-date">06 May 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Brazil FAF Organic — Arara Natural</div>
+          <div class="entry-cafe">Nylon Coffee Roasters<span>·</span>Everton Park, Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span><span class="proc-badge proc-semiwashed" style="color:#a5b4fc;border-color:rgba(165,180,252,0.3);background:rgba(165,180,252,0.08)">xBloom</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Arara (Obatã × Yellow Catuaí)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:17 (Lean)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Mahlkönig EK Omnia (98mm)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brewer</div><div class="entry-field-val">xBloom Automated + Flat-Bottom</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 7.50</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Red Apple, Cherry, Raisin, Milk Chocolate</div></div>
+        </div>
+        <div class="entry-verdict">"Solid body with crisp green apple (malic) front resolving into smooth milk chocolate finish. Ratio shifted red apple → green apple = acid isolation success."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>1:17 elongated ratio on natural = high-risk strategy. EK Omnia's 98mm particle uniformity + xBloom's robotic flat-bottom pour rescued structural body while stretching fruit acids for maximum clarity. Arara's Obatã heritage (Timor Hybrid lineage) provides lipid density that survived the lean extraction. The ratio shift from "Red Apple" (roaster) to "Green Apple" (your palate) is the malic acid isolation signature — 1:17 stretches extraction window into brighter acid territory. Hardware-varietal synergy score: 10/10.</div>
+      </div>
+    </div>
+
+    <!-- Entry 021 -->
+    <div class="entry-card" data-tags="natural brazil singapore espresso" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#021</div><div class="entry-date">06 May 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Brazil Serra dos Ciganos — Catucai 24/137</div>
+          <div class="entry-cafe">Nylon Coffee Roasters<span>·</span>Everton Park, Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-natural">Natural</span><span class="proc-badge proc-semiwashed" style="color:#fca5a5;border-color:rgba(252,165,165,0.3);background:rgba(252,165,165,0.08)">Flat White</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Catucai 24/137 (Icatu × Catuaí)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Flat White (Espresso)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Unknown (Espresso)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Sultana, Dried Apricot, Praline, Roasted Hazelnut</div></div>
+        </div>
+        <div class="entry-verdict">"Excellent cup with highly pleasant, lingering sweet aftertaste. Flavors integrated rather than sharply isolated. Milk-espresso lipid binding achieved perfect sensory harmony."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Catucai 24/137's Icatu parent (Robusta lineage) contributes higher lipid content than pure Arabica. Espresso at 9 bars fully emulsifies these lipids — milk proteins (casein, whey) bind them, creating dense syrupy matrix. Shift from sharp fruit (Sultana/Apricot, roaster) to caramelized sweetness (Praline/Hazelnut, your palate) = milk's protein-acid buffering chemistry in action. Lingering finish = acylglycerol lipid compounds adhering to oral mucosa post-swallow. Catucai's high-lipid genetics made this the ideal flat white base.</div>
+      </div>
+    </div>
+
+    <!-- Entry 022 -->
+    <div class="entry-card" data-tags="washed ethiopia singapore filter" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#022</div><div class="entry-date">07 May 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Ethiopia Banko Gotiti — Heirloom Washed</div>
+          <div class="entry-cafe">Nylon Coffee Roasters<span>·</span>Everton Park, Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-washed">Washed</span><span class="proc-badge proc-new">Today</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Heirloom Landrace</div></div>
+          <div class="entry-field"><div class="entry-field-label">Origin</div><div class="entry-field-val">Gedeb District, 2,300 MASL</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Washed</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">1:17 (Nylon Standard)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val mono">Mahlkönig EK Omnia (98mm)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brewer</div><div class="entry-field-val">xBloom Flat-Bottom</div></div>
+          <div class="entry-field"><div class="entry-field-label">Price</div><div class="entry-field-val mono">SGD 8.50</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Lemonade, Raspberry, Peach, Bergamot</div></div>
+        </div>
+        <div class="entry-verdict">"Lemon front → heavy melon mid-cup → clean white tea fade. Washed clarity. Citric → melon → bergamot thermal phase confirmed."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Washed Yirgacheffe vs. Natural Arara (Entry #020) on identical hardware = perfect controlled experiment. At 1:17, washed process coffee reveals pure genetic citric acid (lemon front) unmasked by fermentation. High altitude (2,300 MASL) = slow cherry maturation = maximum sugar accumulation = melon sweetness peak at mid-cup. "White tea fade" = Gedeb Heirloom's distinctive tannin structure (lighter than Kenya's phosphoric) creating a delicate dry finish. No lipid coating (unlike Arara natural) = clean fade. Washed = terroir transparency; Natural = fermentation expression. Both validated at 1:17.</div>
+      </div>
+    </div>
+
+    <!-- Entry 023 -->
+    <div class="entry-card" data-tags="anaerobic nicaragua singapore espresso" onclick="toggleEntry(this)">
+      <div class="entry-header">
+        <div><div class="entry-num">#023</div><div class="entry-date">07 May 2026</div></div>
+        <div class="entry-main">
+          <div class="entry-coffee-name">Nicaragua Buena Vista — Parainema Anaerobic</div>
+          <div class="entry-cafe">Nylon Coffee Roasters<span>·</span>Everton Park, Singapore</div>
+        </div>
+        <div class="entry-badges"><span class="proc-badge proc-anaerobic">Anaerobic Natural</span><span class="proc-badge proc-new">Today</span><span class="proc-badge proc-semiwashed" style="color:#fca5a5;border-color:rgba(252,165,165,0.3);background:rgba(252,165,165,0.08)">Single Shot</span></div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-grid">
+          <div class="entry-field"><div class="entry-field-label">Varietal</div><div class="entry-field-val">Parainema (IHCAFE Hybrid)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Process</div><div class="entry-field-val">Natural Anaerobic</div></div>
+          <div class="entry-field"><div class="entry-field-label">Brew Method</div><div class="entry-field-val">Single Espresso (Black)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Ratio</div><div class="entry-field-val mono">~1:2</div></div>
+          <div class="entry-field"><div class="entry-field-label">Grinder</div><div class="entry-field-val">Unknown (Espresso)</div></div>
+          <div class="entry-field"><div class="entry-field-label">Roaster Notes</div><div class="entry-field-val">Chiku, Stewed Cherry, Dried Apricot, Brazil Nut</div></div>
+        </div>
+        <div class="entry-verdict">"Thick syrupy body. Highly fermented, savory — NOT sweet. Long lingering finish. Total inversion of the Banko Gotiti filter clarity."</div>
+        <div class="entry-enrichment"><div class="entry-enrichment-label">// Technical Enrichment</div>Perfect inversion experiment: Washed Filter (Banko Gotiti) → clean citric lemon → light white tea fade. Anaerobic Espresso (Buena Vista) → thick syrupy ferment → long acetic linger. Anaerobic fermentation metabolizes sugars into complex savory esters (acetic acid, butyric acid, volatile phenols) — espresso's 9-bar pressure fully emulsifies these into dense oil matrix. Parainema's IHCAFE heritage provides disease resistance + medium-high lipid content, amplifying body. "Not sweet" = acetic acid suppresses residual sugar perception. Milk would buffer this acetic funk → sweetness (as proven by Entry #021 Catucai). Single shot = maximum fermentation transparency. Today's dual-entry completes the washed vs. anaerobic process comparison at Nylon.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     HARDWARE REGISTRY
+═══════════════════════════════════ -->
+<div class="section-stripe">
+<section class="section" id="hardware">
+  <div class="section-header">
+    <span class="section-num">04 //</span>
+    <h2 class="section-title">Hardware Registry</h2>
+    <span class="section-meta">Grinders &amp; Brewers Encountered</span>
+  </div>
+
+  <div class="hardware-grid">
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">⚙️</div>
+      <div class="hw-name">Mahlkönig EK Omnia</div>
+      <div class="hw-spec">98mm FLAT BURRS // EK SERIES</div>
+      <div class="hw-desc">Your most-used grinder in 2026. Next-generation 98mm flat burrs deliver elite particle uniformity across the entire grind spectrum. Near-zero fines prevents bitter over-extraction. The industry benchmark for filter clarity.</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Burr diameter</span><span class="spec-val">98mm flat</span></div>
+        <div class="spec-row"><span class="spec-key">Burr type</span><span class="spec-val">Flat (Unimodal distribution)</span></div>
+        <div class="spec-row"><span class="spec-key">Best for</span><span class="spec-val">Filter, pour-over, lean ratios</span></div>
+        <div class="spec-row"><span class="spec-key">Flow coeff K</span><span class="spec-val">Precision uniform</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #018, #020, #021, #022</div>
+    </div>
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">⚙️</div>
+      <div class="hw-name">FM-Grinder 120mm</div>
+      <div class="hw-spec">120mm MASSIVE FLAT BURRS // COMMERCIAL</div>
+      <div class="hw-desc">The largest flat burr set in your archive. 120mm surface area creates exceptional coarse particle precision with virtually zero fines. Eliminates muddiness entirely. The choice for rare genetics (Sudan Rume) where burr quality equals varietal expression.</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Burr diameter</span><span class="spec-val">120mm flat</span></div>
+        <div class="spec-row"><span class="spec-key">Noise level</span><span class="spec-val">Exceptionally quiet</span></div>
+        <div class="spec-row"><span class="spec-key">Particle uniformity</span><span class="spec-val">Near-perfect</span></div>
+        <div class="spec-row"><span class="spec-key">Best for</span><span class="spec-val">Rare varietals, flat-bottom extraction</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #015 (Holy Trinity Sudan Rume)</div>
+    </div>
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">⚙️</div>
+      <div class="hw-name">Timemore Sculptor 078</div>
+      <div class="hw-spec">SSP BURRS // HYBRID GEOMETRY</div>
+      <div class="hw-desc">SSP (Sim Sung Precision) burrs installed. Preferred for coarse precision without thinning body — the critical balance for co-ferment and washed Gesha extractions. High uniformity across a wider grind range than standard commercial grinders.</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Burr type</span><span class="spec-val">SSP (aftermarket)</span></div>
+        <div class="spec-row"><span class="spec-key">Best for</span><span class="spec-val">Coarse precision, body retention</span></div>
+        <div class="spec-row"><span class="spec-key">Burr geometry</span><span class="spec-val">Hybrid flat</span></div>
+        <div class="spec-row"><span class="spec-key">Used with</span><span class="spec-val">Pour-over, V60</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #016 (Castillo Co-Ferment), #017 (Peru Gesha)</div>
+    </div>
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">⚙️</div>
+      <div class="hw-name">Lagom P64</div>
+      <div class="hw-spec">64mm FLAT BURRS // SINGLE DOSE</div>
+      <div class="hw-desc">Weber Key single-dose grinder. High uniformity 64mm flat burrs. Used for the Peru Gesha iced flash-chill — flat burrs + flat-bottom = clarity bias for washed Gesha florals (jasmine, caramel, lime).</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Burr diameter</span><span class="spec-val">64mm flat</span></div>
+        <div class="spec-row"><span class="spec-key">Type</span><span class="spec-val">Single-dose, zero retention</span></div>
+        <div class="spec-row"><span class="spec-key">Best for</span><span class="spec-val">High-clarity filter, iced pour-over</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #013 (Peru Gesha Iced Flash-Chill)</div>
+    </div>
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">⚙️</div>
+      <div class="hw-name">Mahlkönig EK43</div>
+      <div class="hw-spec">98mm FLAT BURRS // CLASSIC REFERENCE</div>
+      <div class="hw-desc">The industry reference grinder. 98mm burrs with slightly different cutting geometry vs. the Omnia. Used at Lume Cafe (Entry #014) for the Corpachi Geisha dual-temperature V60 — clarity bias perfectly matched to Red Honey Geisha.</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Burr diameter</span><span class="spec-val">98mm flat</span></div>
+        <div class="spec-row"><span class="spec-key">Industry role</span><span class="spec-val">Benchmark reference</span></div>
+        <div class="spec-row"><span class="spec-key">Best for</span><span class="spec-val">Filter (high clarity), espresso</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #014 (Corpachi Geisha), #019 (Brazil Santuário Sul)</div>
+    </div>
+
+    <div class="hardware-card fade-in">
+      <div class="hw-icon">🤖</div>
+      <div class="hw-name">xBloom Automated Precision Brewer</div>
+      <div class="hw-spec">FLAT-BOTTOM WAVE DRIPPER // ROBOTIC POUR</div>
+      <div class="hw-desc">Nylon Coffee Roasters' primary brewer. Solid-State Pouring Technology replicates precise barista pour patterns with robotic consistency. Flat-bottom geometry prevents bypass, promotes even extraction bed. Used with EK Omnia — the most technologically advanced pairing in your archive.</div>
+      <div style="margin-bottom: 1rem;">
+        <div class="spec-row"><span class="spec-key">Brewer type</span><span class="spec-val">Flat-bottom / Wave-style</span></div>
+        <div class="spec-row"><span class="spec-key">Pour control</span><span class="spec-val">Robotic / Automated</span></div>
+        <div class="spec-row"><span class="spec-key">Bypass</span><span class="spec-val">Near-zero (flat geometry)</span></div>
+        <div class="spec-row"><span class="spec-key">Flow coeff K</span><span class="spec-val">~1.0 (even)</span></div>
+      </div>
+      <div class="hw-entries">USED IN: #020 (Brazil Arara), #022 (Ethiopia Banko Gotiti)</div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════
+     VARIETALS
+═══════════════════════════════════ -->
+<section class="section" id="varietals">
+  <div class="section-header">
+    <span class="section-num">05 //</span>
+    <h2 class="section-title">Varietal Intelligence</h2>
+    <span class="section-meta">Genetics // Processing // Sensory</span>
+  </div>
+
+  <div class="varietal-list">
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Gesha / Geisha ★★★</div>
+      <div class="varietal-origin">PANAMA // PERU // COLOMBIA // ETHIOPIA ORIGIN</div>
+      <div class="varietal-notes">The holy grail varietal. Ethiopia-origin (Gesha village, Kaffa) → Introduced to Panama 2004. Distinctive elongated bean. Jasmine, bergamot, stone fruit, white tea. Entries: #013, #014, #017</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Sudan Rume ★★★</div>
+      <div class="varietal-origin">BOMA PLATEAU, SUDAN // ANCIENT LANDRACE</div>
+      <div class="varietal-notes">Ancient, rare, low-yielding. Competition-prized. Intense raspberry/nectarine aromatics. The Holy Trinity final piece. Raspberry = citric, Nectarine = malic. Entries: #015</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Wush Wush ★★★</div>
+      <div class="varietal-origin">ETHIOPIA LANDRACE // GROWN IN CAUCA, COLOMBIA</div>
+      <div class="varietal-notes">Ancient Ethiopian cultivar transplanted to Colombia. Extremely elongated bean structure, delicate tea-like mouthfeel. Signature: incredible clarity, minimal body. Holy Trinity Leg 2. Entries: #008</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Typica Mejorado ★★</div>
+      <div class="varietal-origin">ECUADOR // NESTLÉ BREEDING EXPERIMENT ORPHAN</div>
+      <div class="varietal-notes">Refined Typica from Ecuador's Pichincha. Exceptional malic/citric balance, velvety clarity, creamy mouthfeel. Documented thermal phase shift: citric (lime hot) → malic (plum cool). Entries: #018</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Arara ★★</div>
+      <div class="varietal-origin">BRAZIL // OBATÃ × YELLOW CATUAÍ CROSS</div>
+      <div class="varietal-notes">Natural cross discovered 1988. Uniquely high acidity for Brazil. Obatã heritage (Timor Hybrid lineage) provides lipid density. Survived 1:17 lean ratio with body intact. Competition winner 2019 (92.5 SCA). Entries: #020</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Catucai 24/137 ★★</div>
+      <div class="varietal-origin">BRAZIL // ICATU × CATUAÍ SELECTION</div>
+      <div class="varietal-notes">High-lipid content from Icatu (Robusta lineage) parent. Ideal for espresso-milk integration. Lingering praline/hazelnut finish. Milk proteins bind lipids for dense syrupy matrix. Entries: #021</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Castillo (Co-Ferment) ★</div>
+      <div class="varietal-origin">COLOMBIA // COLOMBIAN HYBRID BREED</div>
+      <div class="varietal-notes">Standard Colombian variety elevated by Jairo Arcila's watermelon co-fermentation. Processing-driven identity — ester engineering creates watermelon/mint esters genetically absent from Castillo. Entries: #016</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Parainema ★</div>
+      <div class="varietal-origin">NICARAGUA // IHCAFE HYBRID</div>
+      <div class="varietal-notes">IHCAFE (Honduras) disease-resistant hybrid. Medium-high lipid content. Under anaerobic natural processing + espresso emulsification = thick, savory fermented body. Not sweet. Long acetic linger. Entries: #023</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">Ethiopian Heirloom</div>
+      <div class="varietal-origin">GEDEB / YIRGACHEFFE // 2,300 MASL</div>
+      <div class="varietal-notes">650+ smallholder "garden coffee" landraces. Bergamot, lemon, melon, white tea. Classic washed Yirgacheffe archetype. Slow maturation at 2,300m locks in sugars. Entries: #022</div>
+    </div>
+
+    <div class="varietal-card fade-in">
+      <div class="varietal-name">SL28 / SL34 (Kenya AA)</div>
+      <div class="varietal-origin">KENYA // SCOTT LAB SELECTIONS</div>
+      <div class="varietal-notes">Scott Lab 1930s selections. Phosphoric acid dominant — blackcurrant, dark plum, mango. AA screen size (≥18) = denser beans. Your Kenyan baseline comparators at Kyuukei. Entries: #004, #005</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     MILESTONES
+═══════════════════════════════════ -->
+<div class="section-stripe">
+<section class="section" id="milestones">
+  <div class="section-header">
+    <span class="section-num">06 //</span>
+    <h2 class="section-title">Portfolio Milestones</h2>
+    <span class="section-meta">Q1/Q2 2026 Achievements</span>
+  </div>
+
+  <div class="milestone-grid">
+
+    <div class="milestone-card achieved fade-in">
+      <div class="milestone-icon">🏆</div>
+      <div class="milestone-name">The Holy Trinity</div>
+      <div class="milestone-desc">Geisha (Washed) + Wush Wush (Washed) + Sudan Rume (Washed) — all three ancient/rare varietals audited in washed format. Completed 01 Apr 2026 at Maxi Coffee Bar.</div>
+    </div>
+
+    <div class="milestone-card achieved fade-in">
+      <div class="milestone-icon">🔬</div>
+      <div class="milestone-name">Thermal Phase Shift</div>
+      <div class="milestone-desc">Documented citric → malic acid transition as cup cools. Hot = lime (citric). Cooled = plum (malic). Typica Mejorado, Hacienda La Florida, JB. Entry #018.</div>
+    </div>
+
+    <div class="milestone-card achieved fade-in">
+      <div class="milestone-icon">⚗️</div>
+      <div class="milestone-name">1:17 Ratio Mastery</div>
+      <div class="milestone-desc">Aggressive 1:17 lean ratio rescued by EK Omnia + xBloom flat-bottom hardware. Natural Arara maintained body + malic clarity. Nylon Coffee Roasters standard validated. Entries #020, #022.</div>
+    </div>
+
+    <div class="milestone-card achieved fade-in">
+      <div class="milestone-icon">🥛</div>
+      <div class="milestone-name">Milk-Lipid Integration</div>
+      <div class="milestone-desc">Catucai 24/137 espresso lipids + steamed milk proteins = lingering praline/hazelnut matrix. Shift from sharp fruit to caramelized sweetness. Entry #021.</div>
+    </div>
+
+    <div class="milestone-card achieved fade-in">
+      <div class="milestone-icon">🌍</div>
+      <div class="milestone-name">4-City Field Research</div>
+      <div class="milestone-desc">Singapore · Ubud, Bali · Mumbai, India · Johor Bahru. Cross-continental terroir comparison spanning Indonesia, India, Malaysia, Singapore.</div>
+    </div>
+
+    <div class="milestone-card pending fade-in">
+      <div class="milestone-icon">🎯</div>
+      <div class="milestone-name">Laurina Varietal</div>
+      <div class="milestone-desc">Low-caffeine, high-sweetness varietal from Reunion Island. Unique sugar profile without the bitterness baseline. Target: next specialty cafe visit.</div>
+    </div>
+
+    <div class="milestone-card pending fade-in">
+      <div class="milestone-icon">🎯</div>
+      <div class="milestone-name">Eugenioides</div>
+      <div class="milestone-desc">Ancient parent species of Arabica. Extremely rare, extremely low caffeine. One of the most prized varietals in specialty coffee. Still elusive.</div>
+    </div>
+
+    <div class="milestone-card pending fade-in">
+      <div class="milestone-icon">⏳</div>
+      <div class="milestone-name">La Laja Geisha #024</div>
+      <div class="milestone-desc">Colombia La Laja Geisha (James Fernández) — too fresh at Nylon, 07 May 2026. Needs 2–3 more weeks post-roast rest. Entry #024 is locked and loading.</div>
+    </div>
+
+    <div class="milestone-card pending fade-in">
+      <div class="milestone-icon">🎯</div>
+      <div class="milestone-name">JB Cafe Identification</div>
+      <div class="milestone-desc">Entry #018 (Hacienda La Florida) came from an unidentified JB cafe. Cafe name and grinder details missing. Needs verification and backfill on next JB visit.</div>
+    </div>
+
+  </div>
+
+  <!-- Acid Map -->
+  <div class="analytics-fullrow fade-in" style="margin-top: 0;">
+    <p class="analytics-title">Acid Type Intelligence — What You've Tasted in 2026</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 0.5rem;">
+      <div style="background: var(--card2); border: 1px solid var(--border); padding: 1rem; border-radius: 2px; border-left: 3px solid #93c5fd;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: #93c5fd; letter-spacing: 0.1em; margin-bottom: 0.5rem;">CITRIC ACID</div>
+        <div style="font-size: 0.82rem; color: var(--text2);">Zippy, bright, lemon. Washed Ethiopians, high-altitude Colombia. Perceived HOT. Entries: #022, #018 (hot phase)</div>
+      </div>
+      <div style="background: var(--card2); border: 1px solid var(--border); padding: 1rem; border-radius: 2px; border-left: 3px solid #fcd34d;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: #fcd34d; letter-spacing: 0.1em; margin-bottom: 0.5rem;">MALIC ACID</div>
+        <div style="font-size: 0.82rem; color: var(--text2);">Juicy, mouth-watering, stone fruit. Geisha, Typica Mejorado, high-altitude naturals. Perceived COOLING. Entries: #014, #017, #018, #020</div>
+      </div>
+      <div style="background: var(--card2); border: 1px solid var(--border); padding: 1rem; border-radius: 2px; border-left: 3px solid #a78bfa;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: #a78bfa; letter-spacing: 0.1em; margin-bottom: 0.5rem;">PHOSPHORIC ACID</div>
+        <div style="font-size: 0.82rem; color: var(--text2);">Clean brightness, blackcurrant, plum. Classic Kenyan SL28/SL34. Not metallic but mineral. Entries: #004, #005</div>
+      </div>
+      <div style="background: var(--card2); border: 1px solid var(--border); padding: 1rem; border-radius: 2px; border-left: 3px solid #fb7185;">
+        <div style="font-family: var(--mono); font-size: 0.6rem; color: #fb7185; letter-spacing: 0.1em; margin-bottom: 0.5rem;">ACETIC ACID</div>
+        <div style="font-size: 0.82rem; color: var(--text2);">Savory, fermented, vinegar-adjacent. Anaerobic natural over-ferment signature. Long linger on palate. Entries: #007, #023</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</div>
+
+<!-- ═══════════════════════════════════
+     FOOTER
+═══════════════════════════════════ -->
+<div class="divider"></div>
+<div class="footer">
+  <div class="footer-sig">Hari</div>
+  <div class="footer-title">Master Extraction Archivist // Specialty Coffee Connoisseur // Q1/Q2 2026</div>
+  <div style="font-family: var(--mono); font-size: 0.7rem; color: var(--text3); margin-bottom: 1.5rem; font-style: italic;">"Only the top 1% understand what's in this cup."</div>
+  <div class="footer-line">23 Audits · 11 Cafes · 4 Cities · 3 Continents · 18+ Varietals · Average SCA 88.5</div>
+  <div class="footer-line" style="margin-top: 0.5rem;">Bali · Mumbai · Singapore · Johor Bahru · 2026 ARCHIVE</div>
+  <div style="margin-top: 2rem; font-family: var(--mono); font-size: 0.55rem; color: var(--text3); letter-spacing: 0.1em;">// EXTRACTION PHYSICS // VOLATILE ACID PROFILING // VARIETAL GENETICS // BURR GEOMETRY ANALYSIS //</div>
+</div>
+
+<script>
+// ── CHART CONFIGS ──
+const chartDefaults = {
+  color: '#9090b0',
+  borderColor: '#252535',
+};
+
+// Processing method donut
+new Chart(document.getElementById('processChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Washed (11)', 'Natural (9)', 'Anaerobic (3)', 'Honey/Co-Fer (2)'],
+    datasets: [{
+      data: [11, 9, 3, 2],
+      backgroundColor: ['#93c5fd', '#f59e0b', '#f9a8d4', '#86efac'],
+      borderColor: '#14141f',
+      borderWidth: 3,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1a1a28',
+        borderColor: '#252535',
+        borderWidth: 1,
+        titleColor: '#e8e8f0',
+        bodyColor: '#9090b0',
+        titleFont: { family: 'Space Mono', size: 11 },
+        bodyFont: { family: 'Space Mono', size: 11 }
+      }
+    },
+    cutout: '60%'
+  }
+});
+
+// Brew method bar
+new Chart(document.getElementById('brewChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Pour-over', 'Flat-Bottom', 'V60', 'Flat White', 'Espresso'],
+    datasets: [{
+      data: [9, 5, 4, 3, 2],
+      backgroundColor: ['#2dd4bf','#2dd4bf','#2dd4bf','#2dd4bf','#2dd4bf'],
+      borderColor: 'transparent',
+      borderRadius: 2,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a28', borderColor: '#252535', borderWidth: 1, titleColor: '#e8e8f0', bodyColor: '#9090b0', titleFont: { family: 'Space Mono', size: 11 }, bodyFont: { family: 'Space Mono', size: 11 } } },
+    scales: {
+      x: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 } }, grid: { display: false }, border: { display: false } },
+      y: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 }, stepSize: 3 }, grid: { color: '#1a1a28' }, border: { display: false } }
+    }
+  }
+});
+
+// Ratio chart
+new Chart(document.getElementById('ratioChart'), {
+  type: 'bar',
+  data: {
+    labels: ['1:14', '1:15', '1:15.3', '1:15.4', '1:17', 'Unknown'],
+    datasets: [{
+      data: [1, 5, 1, 1, 3, 12],
+      backgroundColor: ['#a78bfa','#a78bfa','#a78bfa','#a78bfa','#a78bfa','#252535'],
+      borderColor: 'transparent',
+      borderRadius: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a28', borderColor: '#252535', borderWidth: 1, titleColor: '#e8e8f0', bodyColor: '#9090b0', titleFont: { family: 'Space Mono', size: 11 }, bodyFont: { family: 'Space Mono', size: 11 } } },
+    scales: {
+      x: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 } }, grid: { display: false }, border: { display: false } },
+      y: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 }, stepSize: 4 }, grid: { color: '#1a1a28' }, border: { display: false } }
+    }
+  }
+});
+
+// City bar
+new Chart(document.getElementById('cityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Singapore', 'Bali', 'Mumbai', 'Johor Bahru'],
+    datasets: [{
+      data: [17, 3, 2, 1],
+      backgroundColor: ['#f87171','#f87171','#f87171','#f87171'],
+      borderColor: 'transparent',
+      borderRadius: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a28', borderColor: '#252535', borderWidth: 1, titleColor: '#e8e8f0', bodyColor: '#9090b0', titleFont: { family: 'Space Mono', size: 11 }, bodyFont: { family: 'Space Mono', size: 11 } } },
+    scales: {
+      x: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 } }, grid: { display: false }, border: { display: false } },
+      y: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 }, stepSize: 5 }, grid: { color: '#1a1a28' }, border: { display: false } }
+    }
+  }
+});
+
+// Monthly line chart
+new Chart(document.getElementById('monthChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [{
+      data: [3, 2, 8, 6, 4],
+      borderColor: '#4ade80',
+      backgroundColor: 'rgba(74,222,128,0.08)',
+      borderWidth: 2,
+      pointBackgroundColor: '#4ade80',
+      pointBorderColor: '#14141f',
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a28', borderColor: '#252535', borderWidth: 1, titleColor: '#e8e8f0', bodyColor: '#9090b0', titleFont: { family: 'Space Mono', size: 11 }, bodyFont: { family: 'Space Mono', size: 11 } } },
+    scales: {
+      x: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 } }, grid: { display: false }, border: { display: false } },
+      y: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 }, stepSize: 3 }, grid: { color: '#1a1a28' }, border: { display: false }, min: 0 }
+    }
+  }
+});
+
+// Origin horizontal bar
+new Chart(document.getElementById('originChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Brazil', 'Ethiopia', 'Kenya', 'Colombia', 'Panama/Peru', 'Nicaragua', 'India', 'Indonesia'],
+    datasets: [{
+      data: [6, 4, 3, 3, 3, 2, 1, 3],
+      backgroundColor: ['#f87171','#f59e0b','#4ade80','#a78bfa','#2dd4bf','#fb923c','#e879f9','#60a5fa'],
+      borderColor: 'transparent',
+      borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a28', borderColor: '#252535', borderWidth: 1, titleColor: '#e8e8f0', bodyColor: '#9090b0', titleFont: { family: 'Space Mono', size: 11 }, bodyFont: { family: 'Space Mono', size: 11 } } },
+    scales: {
+      x: { ticks: { color: '#555570', font: { family: 'Space Mono', size: 10 }, stepSize: 2 }, grid: { color: '#1a1a28' }, border: { display: false } },
+      y: { ticks: { color: '#9090b0', font: { family: 'Space Mono', size: 10 } }, grid: { display: false }, border: { display: false } }
+    }
+  }
+});
+
+// ── ENTRY TOGGLE ──
+function toggleEntry(card) {
+  const body = card.querySelector('.entry-body');
+  body.classList.toggle('open');
+}
+
+// ── FILTER ──
+function filterEntries(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.entry-card').forEach(card => {
+    if (filter === 'all') {
+      card.classList.remove('hidden');
+      return;
+    }
+    const tags = card.getAttribute('data-tags') || '';
+    card.classList.toggle('hidden', !tags.includes(filter));
+  });
+}
+
+// ── INTERSECTION OBSERVER (fade in) ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

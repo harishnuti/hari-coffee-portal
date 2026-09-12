@@ -1,0 +1,9 @@
+# Reproducible JavaScript dependencies
+**/node_modules/
+
+# Local secrets and development-only files
+**/.env
+**/.env.*
+!.env.example
+**/.DS_Store
+Thumbs.db

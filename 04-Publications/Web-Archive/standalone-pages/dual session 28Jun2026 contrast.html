@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dual Session — 28 June 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Mosto side — deep ferment purple/raspberry */
+  --m-dark:    #0e0718;
+  --m-mid:     #2a0d3e;
+  --m-accent:  #c4235a;
+  --m-bright:  #e8547a;
+  --m-pale:    #f7d0dc;
+  --m-gold:    #8b3fa0;
+
+  /* Sudan Rume side — savanna gold/lemongrass green */
+  --s-dark:    #07130e;
+  --s-mid:     #0d2818;
+  --s-accent:  #c08a1e;
+  --s-bright:  #e8b84b;
+  --s-pale:    #fdf3d0;
+  --s-green:   #2d7a4f;
+
+  /* Shared neutrals */
+  --ink:       #0a0a0f;
+  --cream:     #f5f1eb;
+  --mid-grey:  #1e1e28;
+  --rule:      rgba(255,255,255,0.08);
+
+  --bebas: 'Bebas Neue', sans-serif;
+  --body:  'DM Sans', sans-serif;
+  --mono:  'DM Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--ink);
+  font-family: var(--body);
+  color: var(--cream);
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px;
+}
+
+/* ══════════════════════════════════
+   MASTHEAD
+══════════════════════════════════ */
+.masthead {
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.masthead-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,241,235,0.4);
+  margin-bottom: 10px;
+}
+
+.masthead-title {
+  font-family: var(--bebas);
+  font-size: clamp(52px, 8vw, 88px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg,
+    var(--m-bright) 0%,
+    var(--cream) 40%,
+    var(--s-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.masthead-sub {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(245,241,235,0.55);
+  letter-spacing: 0.04em;
+}
+
+.masthead-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--m-accent),
+    rgba(255,255,255,0.3),
+    var(--s-accent),
+    transparent);
+  margin: 20px 0 0;
+}
+
+/* ══════════════════════════════════
+   HERO SPLIT — THE SPINE
+══════════════════════════════════ */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  margin-bottom: 20px;
+  min-height: 220px;
+}
+
+.hero-left {
+  background: linear-gradient(135deg, var(--m-dark), var(--m-mid));
+  border-radius: 16px 0 0 16px;
+  padding: 28px 24px;
+  border: 1px solid rgba(196,35,90,0.25);
+  border-right: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(196,35,90,0.25) 0%, transparent 70%);
+}
+
+.hero-right {
+  background: linear-gradient(135deg, var(--s-dark), var(--s-mid));
+  border-radius: 0 16px 16px 0;
+  padding: 28px 24px;
+  border: 1px solid rgba(192,138,30,0.25);
+  border-left: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-right::after {
+  content: '';
+  position: absolute;
+  top: -40px; left: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(192,138,30,0.2) 0%, transparent 70%);
+}
+
+.hero-spine {
+  background: var(--mid-grey);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.spine-vs {
+  font-family: var(--bebas);
+  font-size: 32px;
+  background: linear-gradient(180deg, var(--m-bright), var(--s-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.spine-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+.spine-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(180deg, var(--m-accent), transparent);
+  max-height: 40px;
+}
+
+.spine-line-b {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(180deg, transparent, var(--s-accent));
+  max-height: 40px;
+}
+
+.hero-entry {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  opacity: 0.6;
+}
+
+.hero-bean {
+  font-family: var(--bebas);
+  font-size: 28px;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hero-left .hero-bean { color: var(--m-bright); }
+.hero-right .hero-bean { color: var(--s-bright); }
+
+.hero-process-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.badge-mosto {
+  background: rgba(196,35,90,0.2);
+  border: 1px solid rgba(196,35,90,0.5);
+  color: var(--m-bright);
+}
+
+.badge-ef2 {
+  background: rgba(192,138,30,0.2);
+  border: 1px solid rgba(192,138,30,0.5);
+  color: var(--s-bright);
+}
+
+.hero-meta {
+  font-size: 12px;
+  color: rgba(245,241,235,0.55);
+  line-height: 1.6;
+}
+
+.hero-meta strong {
+  color: rgba(245,241,235,0.85);
+  font-weight: 500;
+}
+
+.hero-time {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 10px;
+  opacity: 0.4;
+}
+
+/* ══════════════════════════════════
+   MAIN CONTRAST GRID
+══════════════════════════════════ */
+.contrast-section {
+  margin-bottom: 20px;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,241,235,0.3);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.contrast-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  gap: 0;
+  margin-bottom: 3px;
+}
+
+.cr-left {
+  background: rgba(196,35,90,0.06);
+  border: 1px solid rgba(196,35,90,0.12);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  padding: 14px 18px;
+}
+
+.cr-right {
+  background: rgba(192,138,30,0.06);
+  border: 1px solid rgba(192,138,30,0.12);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+}
+
+.cr-mid {
+  background: var(--mid-grey);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.cr-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,241,235,0.35);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.cr-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.cr-sub {
+  font-size: 11px;
+  color: rgba(245,241,235,0.5);
+  line-height: 1.4;
+}
+
+.cr-left .cr-value { color: var(--m-pale); }
+.cr-right .cr-value { color: var(--s-pale); }
+
+/* ══════════════════════════════════
+   THERMAL ARC — THE CENTREPIECE
+══════════════════════════════════ */
+.thermal-section {
+  margin-bottom: 20px;
+}
+
+.thermal-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3px;
+}
+
+.thermal-phase {
+  padding: 18px 16px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.tp-hot-m  { background: rgba(196,35,90,0.12);  border: 1px solid rgba(196,35,90,0.25); }
+.tp-mid    { background: rgba(160,80,120,0.10);  border: 1px solid rgba(160,80,120,0.2); }
+.tp-cool-s { background: rgba(192,138,30,0.10); border: 1px solid rgba(192,138,30,0.22); }
+
+.tp-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.tp-hot-m .tp-label  { color: var(--m-bright); }
+.tp-mid .tp-label    { color: rgba(200,130,180,0.9); }
+.tp-cool-s .tp-label { color: var(--s-bright); }
+
+.tp-title {
+  font-family: var(--bebas);
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.tp-hot-m .tp-title  { color: var(--m-bright); }
+.tp-mid .tp-title    { color: rgba(210,160,200,1); }
+.tp-cool-s .tp-title { color: var(--s-bright); }
+
+.tp-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tp-side {
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.tp-side-m { background: rgba(196,35,90,0.12); }
+.tp-side-s { background: rgba(192,138,30,0.1); }
+.tp-side-shared { background: rgba(255,255,255,0.04); }
+
+.tp-cafe {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.tp-side-m .tp-cafe  { color: var(--m-bright); }
+.tp-side-s .tp-cafe  { color: var(--s-bright); }
+
+.tp-note {
+  font-size: 11px;
+  color: rgba(245,241,235,0.75);
+  line-height: 1.4;
+}
+
+.tp-shared-note {
+  font-size: 11px;
+  color: rgba(245,241,235,0.6);
+  line-height: 1.5;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ══════════════════════════════════
+   FLAVOUR FINGERPRINT
+══════════════════════════════════ */
+.fingerprint-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.fp-card {
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+
+.fp-mosto { background: linear-gradient(135deg, var(--m-dark), #1a0520); border: 1px solid rgba(196,35,90,0.2); }
+.fp-sr    { background: linear-gradient(135deg, var(--s-dark), #0a1f10); border: 1px solid rgba(192,138,30,0.2); }
+
+.fp-title {
+  font-family: var(--bebas);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.fp-mosto .fp-title { color: var(--m-bright); }
+.fp-sr    .fp-title { color: var(--s-bright); }
+
+.fp-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.fp-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fp-bar-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(245,241,235,0.45);
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.fp-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fp-fill {
+  height: 100%;
+  border-radius: 3px;
+  position: relative;
+}
+
+.fp-val {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(245,241,235,0.35);
+  width: 24px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════
+   HARDWARE DUEL
+══════════════════════════════════ */
+.hardware-section {
+  margin-bottom: 20px;
+}
+
+.hw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 3px;
+}
+
+.hw-header {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 3px;
+  margin-bottom: 3px;
+}
+
+.hw-col-head {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,241,235,0.25);
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.hw-row {
+  display: contents;
+}
+
+.hw-cell {
+  padding: 11px 10px;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 0;
+  line-height: 1.3;
+}
+
+.hw-cell:first-child { border-radius: 8px 0 0 8px; }
+.hw-cell:last-child  { border-radius: 0 8px 8px 0; }
+
+.hw-m { background: rgba(196,35,90,0.08); border: 1px solid rgba(196,35,90,0.12); color: var(--m-pale); font-weight: 500; }
+.hw-s { background: rgba(192,138,30,0.08); border: 1px solid rgba(192,138,30,0.12); color: var(--s-pale); font-weight: 500; }
+.hw-param { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: rgba(245,241,235,0.4); font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
+.hw-same { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(245,241,235,0.55); }
+.hw-diff-badge {
+  display: inline-block;
+  font-size: 8px;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+}
+.diff-m { background: rgba(196,35,90,0.2); color: var(--m-bright); }
+.diff-s { background: rgba(192,138,30,0.2); color: var(--s-bright); }
+.diff-same { background: rgba(255,255,255,0.08); color: rgba(245,241,235,0.5); }
+
+/* ══════════════════════════════════
+   VERDICT BAR
+══════════════════════════════════ */
+.verdict-bar {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.vb-left {
+  background: linear-gradient(135deg, var(--m-dark), #200830);
+  padding: 24px 28px;
+}
+
+.vb-divider {
+  background: linear-gradient(180deg, var(--m-accent), var(--s-accent));
+}
+
+.vb-right {
+  background: linear-gradient(135deg, var(--s-dark), #0a2010);
+  padding: 24px 28px;
+}
+
+.vb-verdict-word {
+  font-family: var(--bebas);
+  font-size: 36px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.vb-left .vb-verdict-word  { color: var(--m-bright); }
+.vb-right .vb-verdict-word { color: var(--s-bright); }
+
+.vb-quote {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(245,241,235,0.55);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.vb-stars { font-size: 14px; letter-spacing: 2px; }
+.stars-m { color: var(--m-bright); }
+.stars-s { color: var(--s-bright); }
+
+/* ══════════════════════════════════
+   MILESTONE FOOTER
+══════════════════════════════════ */
+.milestone-footer {
+  background: linear-gradient(135deg, #0d0518, #050f08);
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 20px;
+}
+
+.mf-title {
+  font-family: var(--bebas);
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: rgba(245,241,235,0.6);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.mf-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.mf-item {
+  text-align: center;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.mf-icon { font-size: 20px; margin-bottom: 6px; }
+
+.mf-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mf-m { color: var(--m-bright); }
+.mf-s { color: var(--s-bright); }
+.mf-both { color: rgba(245,241,235,0.45); }
+
+.mf-desc {
+  font-size: 10px;
+  color: rgba(245,241,235,0.5);
+  line-height: 1.4;
+}
+
+/* ══════════════════════════════════
+   ARCHIVE STAMP
+══════════════════════════════════ */
+.archive-stamp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.stamp-left {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(245,241,235,0.3);
+  letter-spacing: 0.08em;
+}
+
+.stamp-centre {
+  font-family: var(--bebas);
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  background: linear-gradient(90deg, var(--m-bright), var(--s-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stamp-right {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(245,241,235,0.3);
+  letter-spacing: 0.08em;
+}
+
+.locked-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(45,122,79,0.2);
+  border: 1px solid rgba(45,122,79,0.4);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #6ed49a;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── MASTHEAD ── -->
+  <div class="masthead">
+    <div class="masthead-eyebrow">Hari Coffee Archive · Dual Session Report · Singapore</div>
+    <div class="masthead-title">TWO CUPS<br>ONE MORNING</div>
+    <div class="masthead-sub">Entries #37 & #38 · 28 June 2026 · Farrer Park → Jalan Besar · Two process milestones in a single audit session</div>
+    <div class="masthead-line"></div>
+  </div>
+
+  <!-- ── HERO SPLIT ── -->
+  <div class="hero-split" style="margin-bottom:20px">
+    <div class="hero-left">
+      <div class="hero-entry">Entry #37 · 10:30 AM</div>
+      <div class="hero-bean">Ethiopia Urabeast G1</div>
+      <div><span class="hero-process-badge badge-mosto">Mosto Fermentation</span></div>
+      <div class="hero-meta">
+        <strong>Keryi Coffee</strong> · Farrer Park<br>
+        Uraga, Guji · JARC 74110 + 74112<br>
+        Hario Switch · Ditting 98mm · 1:14
+      </div>
+      <div class="hero-time">10:30</div>
+    </div>
+    <div class="hero-spine">
+      <div class="spine-line"></div>
+      <div class="spine-dot" style="background:var(--m-accent)"></div>
+      <div class="spine-vs">VS</div>
+      <div class="spine-dot" style="background:var(--s-accent)"></div>
+      <div class="spine-line-b"></div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-entry">Entry #38 · 11:06 AM</div>
+      <div class="hero-bean">Yellow Sudan Rume</div>
+      <div><span class="hero-process-badge badge-ef2">Extended Fermentation EF2</span></div>
+      <div class="hero-meta">
+        <strong>Asylum Coffeehouse</strong> · Jalan Besar<br>
+        Pijiao, Quindío · Felipe Arcila, Jardines Del Eden<br>
+        April Brewer · Lagom P64 · 1:16
+      </div>
+      <div class="hero-time" style="text-align:right">11:06</div>
+    </div>
+  </div>
+
+  <!-- ── CONTRAST ROWS ── -->
+  <div class="contrast-section">
+    <div class="section-label">// Head-to-head comparison</div>
+
+    <div class="contrast-row">
+      <div class="cr-left">
+        <div class="cr-value">Ethiopia · Uraga, Guji</div>
+        <div class="cr-sub">African highlands · volcanic terroir · JARC heirloom selection</div>
+      </div>
+      <div class="cr-mid"><div class="cr-label">Origin</div></div>
+      <div class="cr-right">
+        <div class="cr-value">Colombia · Pijiao, Quindío</div>
+        <div class="cr-sub">Andean highlands · Felipe Arcila, Jardines Del Eden</div>
+      </div>
+    </div>
+
+    <div class="contrast-row">
+      <div class="cr-left">
+        <div class="cr-value">Cherry pulp juice as fermentation medium</div>
+        <div class="cr-sub">Anaerobic · controlled sugar input · restrained winey complexity</div>
+      </div>
+      <div class="cr-mid"><div class="cr-label">Process Logic</div></div>
+      <div class="cr-right">
+        <div class="cr-value">24h dry aerobic in Grainpro bags at &lt;22°C</div>
+        <div class="cr-sub">Raised bed dried to 11% moisture · EF2 category</div>
+      </div>
+    </div>
+
+    <div class="contrast-row">
+      <div class="cr-left">
+        <div class="cr-value">88°C → 70°C descending</div>
+        <div class="cr-sub">Lower entry temp suppresses acetic acid · 1:14 tight · ~2 min</div>
+      </div>
+      <div class="cr-mid"><div class="cr-label">Extraction</div></div>
+      <div class="cr-right">
+        <div class="cr-value">90°C constant · two-pour method</div>
+        <div class="cr-sub">110g bloom + 130g finish · 1:16 open · flat-bottom geometry</div>
+      </div>
+    </div>
+
+    <div class="contrast-row">
+      <div class="cr-left">
+        <div class="cr-value">Raspberry · Winey · Dark fruits</div>
+        <div class="cr-sub">Fermentation-forward · ester dominant hot · acetic reveals on cooling</div>
+      </div>
+      <div class="cr-mid"><div class="cr-label">Flavour DNA</div></div>
+      <div class="cr-right">
+        <div class="cr-value">Lemongrass · Vanilla · Brown sugar</div>
+        <div class="cr-sub">Varietal-native geraniol · vanillin at cool · sucrose retention</div>
+      </div>
+    </div>
+
+    <div class="contrast-row">
+      <div class="cr-left">
+        <div class="cr-value">Light-to-medium · clean short finish</div>
+        <div class="cr-sub">JARC 74112 varietal signature · no lingering bitterness</div>
+      </div>
+      <div class="cr-mid"><div class="cr-label">Body & Finish</div></div>
+      <div class="cr-right">
+        <div class="cr-value">Light-to-medium · pleasant lingering mouthfeel</div>
+        <div class="cr-sub">April flat-bottom maintained even extraction · clean fade</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THERMAL ARC ── -->
+  <div class="thermal-section">
+    <div class="section-label">// Three-phase thermal arc — how each cup evolved across temperature</div>
+    <div class="thermal-container">
+
+      <div class="thermal-phase tp-hot-m">
+        <div class="tp-label">● Hot Phase &gt;65°C</div>
+        <div class="tp-title">Dark Fruits Explode</div>
+        <div class="tp-split">
+          <div class="tp-side tp-side-m">
+            <div class="tp-cafe">#37 Keryi</div>
+            <div class="tp-note">Raspberry immediate — isoamyl acetate volatile esters burst. Floral lift, juicy bright acidity. No winey sharpness yet.</div>
+          </div>
+          <div class="tp-side tp-side-s">
+            <div class="tp-cafe">#38 Asylum</div>
+            <div class="tp-note">Red fruits forward — ethyl butyrate + hexanoate from EF2. Bright acidity, fruit-forward, light body.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thermal-phase tp-mid">
+        <div class="tp-label">◐ Mid-Cool 45–55°C</div>
+        <div class="tp-title">The Divergence</div>
+        <div style="margin-top:8px">
+          <div class="tp-side tp-side-m" style="margin-bottom:6px">
+            <div class="tp-cafe">#37 Keryi</div>
+            <div class="tp-note">Winey character emerges as acetic compounds surface. Raspberry mellows. Ferment reveals itself.</div>
+          </div>
+          <div class="tp-side tp-side-s">
+            <div class="tp-cafe">#38 Asylum</div>
+            <div class="tp-note">Lemongrass clarifies — geraniol (varietal-native, not process). Vanilla appears as background aromatic.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thermal-phase tp-cool-s">
+        <div class="tp-label">○ Cool Phase &lt;45°C</div>
+        <div class="tp-title">Sweet Resolution</div>
+        <div class="tp-split">
+          <div class="tp-side tp-side-m">
+            <div class="tp-cafe">#37 Keryi</div>
+            <div class="tp-note">Vinous resolution. Purple grape ambiguous. Clean dry finish — JARC varietal cuts short.</div>
+          </div>
+          <div class="tp-side tp-side-s">
+            <div class="tp-cafe">#38 Asylum</div>
+            <div class="tp-note">Brown sugar sweetness confirmed — sucrose retention. Mellowed. Clean lingering warmth.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FLAVOUR FINGERPRINT ── -->
+  <div class="fingerprint-section">
+    <div class="fp-card fp-mosto">
+      <div class="fp-title">Mosto Fingerprint — #37</div>
+      <div class="fp-bars">
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Raspberry</span>
+          <div class="fp-track"><div class="fp-fill" style="width:90%;background:linear-gradient(90deg,#c4235a,#8b1a3a)"></div></div>
+          <span class="fp-val">9.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Winey</span>
+          <div class="fp-track"><div class="fp-fill" style="width:65%;background:linear-gradient(90deg,#6b3fa0,#3d1a5e)"></div></div>
+          <span class="fp-val">6.5</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Florals</span>
+          <div class="fp-track"><div class="fp-fill" style="width:55%;background:linear-gradient(90deg,#a060c0,#6b3fa0)"></div></div>
+          <span class="fp-val">5.5</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Pur. Grape</span>
+          <div class="fp-track"><div class="fp-fill" style="width:30%;background:linear-gradient(90deg,#7a1a4a,#3d0d25)"></div></div>
+          <span class="fp-val">3.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Sweetness</span>
+          <div class="fp-track"><div class="fp-fill" style="width:40%;background:linear-gradient(90deg,#c4235a,#6b3fa0)"></div></div>
+          <span class="fp-val">4.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Acidity</span>
+          <div class="fp-track"><div class="fp-fill" style="width:75%;background:linear-gradient(90deg,#e8547a,#c4235a)"></div></div>
+          <span class="fp-val">7.5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-card fp-sr">
+      <div class="fp-title">Sudan Rume Fingerprint — #38</div>
+      <div class="fp-bars">
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Lemongrass</span>
+          <div class="fp-track"><div class="fp-fill" style="width:80%;background:linear-gradient(90deg,#2d7a4f,#1a4a2e)"></div></div>
+          <span class="fp-val">8.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Red Fruits</span>
+          <div class="fp-track"><div class="fp-fill" style="width:75%;background:linear-gradient(90deg,#c08a1e,#8b6010)"></div></div>
+          <span class="fp-val">7.5</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Vanilla</span>
+          <div class="fp-track"><div class="fp-fill" style="width:60%;background:linear-gradient(90deg,#e8b84b,#c08a1e)"></div></div>
+          <span class="fp-val">6.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Brown Sugar</span>
+          <div class="fp-track"><div class="fp-fill" style="width:70%;background:linear-gradient(90deg,#c08a1e,#7a5510)"></div></div>
+          <span class="fp-val">7.0</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Sweetness</span>
+          <div class="fp-track"><div class="fp-fill" style="width:72%;background:linear-gradient(90deg,#e8b84b,#2d7a4f)"></div></div>
+          <span class="fp-val">7.2</span>
+        </div>
+        <div class="fp-bar-row">
+          <span class="fp-bar-label">Acidity</span>
+          <div class="fp-track"><div class="fp-fill" style="width:65%;background:linear-gradient(90deg,#2d7a4f,#1a4a2e)"></div></div>
+          <span class="fp-val">6.5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HARDWARE DUEL ── -->
+  <div class="hardware-section">
+    <div class="section-label">// Hardware & parameters — where they matched and where they diverged</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr; gap:3px; margin-bottom:3px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,241,235,0.25);padding:6px 10px;text-align:center;">Parameter</div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--m-bright);padding:6px 10px;text-align:center;opacity:0.7">#37 Keryi</div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,241,235,0.25);padding:6px 10px;text-align:center;">Match?</div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--s-bright);padding:6px 10px;text-align:center;opacity:0.7">#38 Asylum</div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,241,235,0.25);padding:6px 10px;text-align:center;">Significance</div>
+    </div>
+
+    <!-- Row: Brewer -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:3px;">
+      <div class="hw-cell hw-param">Brewer</div>
+      <div class="hw-cell hw-m">Hario Switch<br><span style="font-size:9px;opacity:0.6">Immersion hybrid</span></div>
+      <div class="hw-cell hw-same" style="text-align:center"><span class="hw-diff-badge diff-m">DIFFERENT</span></div>
+      <div class="hw-cell hw-s">April Brewer<br><span style="font-size:9px;opacity:0.6">Flat-bottom only</span></div>
+      <div class="hw-cell hw-same" style="font-size:10px;color:rgba(245,241,235,0.45)">Immersion vs percolation changes ester extraction profile</div>
+    </div>
+
+    <!-- Row: Grinder -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:3px;">
+      <div class="hw-cell hw-param">Grinder</div>
+      <div class="hw-cell hw-m">Ditting 98mm<br><span style="font-size:9px;opacity:0.6">Flat burr</span></div>
+      <div class="hw-cell hw-same" style="text-align:center"><span class="hw-diff-badge diff-same">BOTH FLAT</span></div>
+      <div class="hw-cell hw-s">Lagom P64<br><span style="font-size:9px;opacity:0.6">Flat burr</span></div>
+      <div class="hw-cell hw-same" style="font-size:10px;color:rgba(245,241,235,0.45)">Both flat burr — unimodal distribution ensured clarity in both cups</div>
+    </div>
+
+    <!-- Row: Dose -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:3px;">
+      <div class="hw-cell hw-param">Dose</div>
+      <div class="hw-cell hw-m">15g</div>
+      <div class="hw-cell hw-same" style="text-align:center"><span class="hw-diff-badge diff-same">IDENTICAL</span></div>
+      <div class="hw-cell hw-s">15g</div>
+      <div class="hw-cell hw-same" style="font-size:10px;color:rgba(245,241,235,0.45)">Consistent dose — ratio difference driven by yield</div>
+    </div>
+
+    <!-- Row: Ratio -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:3px;">
+      <div class="hw-cell hw-param">Ratio</div>
+      <div class="hw-cell hw-m">1:14 (210g)</div>
+      <div class="hw-cell hw-same" style="text-align:center"><span class="hw-diff-badge diff-m">DIFFERENT</span></div>
+      <div class="hw-cell hw-s">1:16 (240g)</div>
+      <div class="hw-cell hw-same" style="font-size:10px;color:rgba(245,241,235,0.45)">Tighter mosto ratio suppresses acetic over-extraction</div>
+    </div>
+
+    <!-- Row: Temp -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;">
+      <div class="hw-cell hw-param">Temp</div>
+      <div class="hw-cell hw-m">88°C → 70°C<br><span style="font-size:9px;opacity:0.6">Descending</span></div>
+      <div class="hw-cell hw-same" style="text-align:center"><span class="hw-diff-badge diff-m">DIFFERENT</span></div>
+      <div class="hw-cell hw-s">90°C constant<br><span style="font-size:9px;opacity:0.6">Stable</span></div>
+      <div class="hw-cell hw-same" style="font-size:10px;color:rgba(245,241,235,0.45)">Keryi descends to protect ferment character; Asylum stable for geraniol clarity</div>
+    </div>
+  </div>
+
+  <!-- ── VERDICT BAR ── -->
+  <div class="verdict-bar">
+    <div class="vb-left">
+      <div class="vb-verdict-word">Excellent</div>
+      <div class="vb-quote">"Fruity and controlled. Raspberry dominates hot, winey on cooling — a process-honest mosto arc."</div>
+      <div class="vb-stars stars-m">★★★★☆</div>
+    </div>
+    <div class="vb-divider"></div>
+    <div class="vb-right">
+      <div class="vb-verdict-word">Terrific</div>
+      <div class="vb-quote">"Bright, fruity, balanced. Lemongrass at mid-cool, brown sugar at the finish — varietal-honest."</div>
+      <div class="vb-stars stars-s">★★★★½</div>
+    </div>
+  </div>
+
+  <!-- ── MILESTONES ── -->
+  <div class="milestone-footer">
+    <div class="mf-title">Five Archive Milestones — One Morning</div>
+    <div class="mf-grid">
+      <div class="mf-item">
+        <div class="mf-icon">🧪</div>
+        <div class="mf-label mf-m">Process #1</div>
+        <div class="mf-desc">First Mosto Fermentation entry in archive</div>
+      </div>
+      <div class="mf-item">
+        <div class="mf-icon">🌿</div>
+        <div class="mf-label mf-s">Process #2</div>
+        <div class="mf-desc">First EF2 Extended Fermentation Natural in archive</div>
+      </div>
+      <div class="mf-item">
+        <div class="mf-icon">⭐</div>
+        <div class="mf-label mf-s">Varietal</div>
+        <div class="mf-desc">First Yellow Sudan Rume mutation — extremely rare</div>
+      </div>
+      <div class="mf-item">
+        <div class="mf-icon">🌱</div>
+        <div class="mf-label mf-s">Producer</div>
+        <div class="mf-desc">New: Felipe Arcila, Jardines Del Eden unlocked</div>
+      </div>
+      <div class="mf-item">
+        <div class="mf-icon">📍</div>
+        <div class="mf-label mf-both">Session</div>
+        <div class="mf-desc">First dual-milestone session in archive history</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STAMP ── -->
+  <div class="archive-stamp">
+    <div class="stamp-left">HARI COFFEE ARCHIVE 2026 · ENTRIES #37 & #38</div>
+    <div class="stamp-centre">DUAL SESSION · 28 JUNE 2026 · SINGAPORE</div>
+    <div class="stamp-right"><span class="locked-pill">⬤ BOTH ENTRIES LOCKED</span></div>
+  </div>
+
+</div>
+</body>
+</html>

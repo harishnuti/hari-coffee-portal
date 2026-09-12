@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARI'S COFFEE AUDIT 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#0f0e0d;--accent:#d4a574}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0f0e0d;color:#e7e5e4}
+h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif;letter-spacing:-.02em}
+.grain:before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.glass{background:rgba(23,20,18,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(212,165,116,.15)}
+.bean{position:absolute;width:22px;height:32px;opacity:.07;animation:float 28s linear infinite;fill:#d4a574}
+@keyframes float{0%{transform:translateY(110vh) rotate(0)}100%{transform:translateY(-20vh) rotate(360deg)}}
+.timeline-track{scrollbar-width:none}
+.timeline-track::-webkit-scrollbar{display:none}
+.card{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,opacity .3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 25px 50px -20px rgba(0,0,0,.7)}
+.dot{transition:all .25s;box-shadow:0 0 0 3px rgba(0,0,0,.4)}
+.dot:hover,.dot.active{transform:scale(1.5);box-shadow:0 0 0 4px rgba(212,165,116,.3),0 0 20px rgba(212,165,116,.4)}
+.stain{position:absolute;opacity:.06;filter:blur(1px);pointer-events:none}
+.light body{background:#fcf9f6;color:#1c1917}
+.light .glass{background:rgba(255,255,255,.75);border-color:rgba(0,0,0,.08)}
+.light .bean{opacity:.04}
+</style>
+</head>
+<body class="grain">
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+  <svg class="bean" style="left:5%;animation-delay:-2s"><path d="M12 0C6 0 2 7 2 17s4 17 10 17 10-7 10-17S18 0 12 0zm0 27c-2.5 0-4.5-3.5-4.5-10S9.5 7 12 7s4.5 3.5 4.5 10S14.5 27 12 27z"/></svg>
+  <svg class="bean" style="left:22%;animation-delay:-8s;animation-duration:35s"><path d="M12 0C6 0 2 7 2 17s4 17 10 17 10-7 10-17S18 0 12 0zm0 27c-2.5 0-4.5-3.5-4.5-10S9.5 7 12 7s4.5 3.5 4.5 10S14.5 27 12 27z"/></svg>
+  <svg class="bean" style="left:68%;animation-delay:-15s"><path d="M12 0C6 0 2 7 2 17s4 17 10 17 10-7 10-17S18 0 12 0zm0 27c-2.5 0-4.5-3.5-4.5-10S9.5 7 12 7s4.5 3.5 4.5 10S14.5 27 12 27z"/></svg>
+  <svg class="bean" style="left:88%;animation-delay:-5s;animation-duration:40s"><path d="M12 0C6 0 2 7 2 17s4 17 10 17 10-7 10-17S18 0 12 0zm0 27c-2.5 0-4.5-3.5-4.5-10S9.5 7 12 7s4.5 3.5 4.5 10S14.5 27 12 27z"/></svg>
+  <svg class="stain top-[10%] right-[5%] w-64" viewBox="0 0 200 200"><path fill="#d4a574" d="M46.5,-58.6C59.8,-52.1,69.8,-39.3,74.2,-25.4C78.6,-11.5,77.4,3.5,71.8,15.8C66.2,28.1,56.2,37.7,44.9,47.3C33.6,56.9,21,66.5,6.5,70.9C-8,75.3,-24.3,74.5,-37.1,67.1C-49.9,59.7,-59.2,45.7,-65.1,31.2C-71,16.7,-73.5,1.7,-70.2,-11.6C-66.9,-24.9,-57.8,-36.5,-46.6,-43.8C-35.4,-51.1,-22.1,-54.1,-9.4,-57.5C3.3,-60.9,33.2,-65.1,46.5,-58.6Z" transform="translate(100 100)"/></svg>
+</div>
+
+<header class="sticky top-0 z-40 border-b border-white/5 bg-[#0f0e0d]/80 backdrop-blur-xl">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row gap-3 md:items-center">
+    <div class="flex items-center justify-between w-full md:w-auto">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-[#d4a574]/20 grid place-items-center border border-[#d4a574]/30"><span class="text-[#d4a574] text-sm">☕</span></div>
+        <span class="text-xs tracking-[.18em] text-zinc-400">ARCHIVE 2026</span>
+      </div>
+      <button id="theme" class="md:hidden text-zinc-400 text-sm px-3 py-1.5 rounded-lg border border-white/10">light</button>
+    </div>
+    <div class="flex-1 flex flex-col sm:flex-row gap-2">
+      <div class="relative flex-1">
+        <input id="search" placeholder="Search coffee, origin, verdict…" class="w-full bg-black/40 border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm outline-none focus:border-[#d4a574]/50 focus:ring-1 focus:ring-[#d4a574]/30 transition" />
+        <svg class="absolute left-3 top-3 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+      <select id="city" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#d4a574]/50"></select>
+      <select id="process" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#d4a574]/50"></select>
+    </div>
+    <button id="theme2" class="hidden md:block text-zinc-400 hover:text-white text-sm px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition">toggle light</button>
+  </div>
+</header>
+
+<main class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6">
+  <!-- HERO -->
+  <section class="pt-14 pb-10 md:pt-24 md:pb-16">
+    <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-10 items-end">
+      <div>
+        <div class="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full glass text-[11px] tracking-widest text-[#d4a574]">SIX-MONTH SENSORY AUDIT</div>
+        <h1 class="serif text-[clamp(40px,8vw,92px)] leading-[0.85] font-semibold">HARI'S<br>COFFEE<br>AUDIT 2026</h1>
+        <p class="mt-6 text-lg text-zinc-300 max-w-xl">A six-month sensory archive across 4 cities. Not scores. Stories, techniques, and the moments you shared—especially with Aanya.</p>
+        <div class="mt-8 flex flex-wrap gap-3 text-xs">
+          <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Jan 3 — Jun 21</span>
+          <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Singapore • Ubud • Mumbai • JB</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#d4a574]/15 text-[#d4a574] border border-[#d4a574]/20">Hand-brewed only</span>
+        </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="glass rounded-2xl p-5"><div class="text-4xl serif text-[#d4a574]">34</div><div class="text-xs uppercase tracking-widest text-zinc-400 mt-1">Cups</div></div>
+        <div class="glass rounded-2xl p-5"><div class="text-4xl serif text-[#d4a574]">19</div><div class="text-xs uppercase tracking-widest text-zinc-400 mt-1">Cafes</div></div>
+        <div class="glass rounded-2xl p-5"><div class="text-4xl serif text-[#d4a574]">23</div><div class="text-xs uppercase tracking-widest text-zinc-400 mt-1">Origins</div></div>
+        <div class="glass rounded-2xl p-5"><div class="text-4xl serif text-[#d4a574]">170</div><div class="text-xs uppercase tracking-widest text-zinc-400 mt-1">Days</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="serif text-2xl md:text-3xl">Interactive Timeline</h2>
+      <div class="flex gap-2 text-[11px]" id="processFilters"></div>
+    </div>
+    <div class="glass rounded-3xl p-5 md:p-7 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image:radial-gradient(#d4a574 1px, transparent 1px);background-size:18px 18px"></div>
+      <div id="timeline" class="timeline-track flex gap-4 md:gap-6 overflow-x-auto pb-4 pt-2 snap-x"></div>
+      <div id="timelineTip" class="hidden absolute z-20 glass rounded-xl p-3 text-xs w-56 shadow-2xl"></div>
+    </div>
+  </section>
+
+  <!-- MAP + FLAVOR -->
+  <section class="grid lg:grid-cols-5 gap-6 mb-16">
+    <div class="lg:col-span-3 glass rounded-3xl p-5 md:p-7">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="serif text-2xl">Map of Cafes</h2>
+        <span class="text-xs text-zinc-400">Centered Singapore</span>
+      </div>
+      <div id="map" class="h-[320px] md:h-[420px] rounded-2xl overflow-hidden border border-white/10"></div>
+    </div>
+    <div class="lg:col-span-2 glass rounded-3xl p-5 md:p-7">
+      <h2 class="serif text-2xl mb-1">Flavor Explorer</h2>
+      <p class="text-sm text-zinc-400 mb-4">What you tasted most. Extracted from your notes.</p>
+      <canvas id="flavorChart" height="260"></canvas>
+      <div class="mt-4 flex flex-wrap gap-1.5" id="flavorCloud"></div>
+    </div>
+  </section>
+
+  <!-- DEEP DIVE -->
+  <section class="mb-16">
+    <h2 class="serif text-2xl md:text-3xl mb-6">Deep Dive Stories</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="group relative overflow-hidden rounded-3xl glass">
+        <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?q=80&w=1200&auto=format" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition duration-700" alt=""/>
+        <div class="relative p-7 md:p-9">
+          <div class="inline-flex items-center gap-2 text-[11px] tracking-widest text-[#d4a574] mb-3"><span class="w-2 h-2 rounded-full bg-[#d4a574]"></span>MILESTONE</div>
+          <h3 class="serif text-3xl mb-2">First Liberica</h3>
+          <p class="text-zinc-300">June 19 — My Liberica, Johor Bahru. You finally tried Malaysia's native bean. Jackfruit, smoke, dark chocolate—wild, polarizing, unforgettable. "2% of world production, 100% character."</p>
+          <div class="mt-4 text-xs text-zinc-400">Natural • Medium-Dark • V60 1:15 @91°C</div>
+          <button data-open="liberica" class="mt-5 px-4 py-2 rounded-xl bg-[#d4a574] text-black text-sm font-medium hover:brightness-110 transition">Open tasting note</button>
+        </div>
+      <div class="group relative overflow-hidden rounded-3xl glass">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format" class="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition duration-700" alt=""/>
+        <div class="relative p-7 md:p-9">
+          <div class="inline-flex items-center gap-2 text-[11px] tracking-widest text-pink-300 mb-3"><span class="w-2 h-2 rounded-full bg-pink-400"></span>FATHER-DAUGHTER</div>
+          <h3 class="serif text-3xl mb-2">Sessions with Aanya</h3>
+          <p class="text-zinc-300">7 cups logged as "father-daughter". You ordered pour-overs, she had waffles and hot chocolate. Homeground, Lucid, Five Oars — your Saturday ritual.</p>
+          <div class="mt-4 flex-wrap gap-2" id="fd-preview"></div>
+          <button data-filter="fd" class="mt-5 px-4 py-2 rounded-xl border border-white/20 text-sm hover:bg-white/5 transition">Filter 7 sessions</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECHNICAL LAB -->
+  <section class="mb-20 grid lg:grid-cols-3 gap-6">
+    <div class="glass rounded-3xl p-6">
+      <h3 class="serif text-xl mb-1">Process Distribution</h3>
+      <p class="text-xs text-zinc-400 mb-3">You chased ferments in 2026</p>
+      <canvas id="processChart" height="220"></canvas>
+    </div>
+    <div class="glass rounded-3xl p-6">
+      <h3 class="serif text-xl mb-1">Grinders</h3>
+      <p class="text-xs text-zinc-400 mb-3">EK43 still your benchmark</p>
+      <canvas id="grinderChart" height="220"></canvas>
+    </div>
+    <div class="glass rounded-3xl p-6">
+      <h3 class="serif text-xl mb-1">Brew Ratios</h3>
+      <p class="text-xs text-zinc-400 mb-3">1:15 sweet spot</p>
+      <canvas id="ratioChart" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- JOURNEY GRID -->
+  <section id="journeySec" class="mb-24">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <h2 class="serif text-3xl md:text-4xl">The Journey Grid</h2>
+        <p class="text-zinc-400 text-sm mt-1">34 meticulous tastings. Click any card for technique notes.</p>
+      </div>
+      <div class="text-xs text-zinc-500"><span id="count">34</span> shown</div>
+    </div>
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5"></div>
+  </section>
+</main>
+
+<footer class="border-t border-white/5 py-10 text-center text-xs text-zinc-500 relative z-10">
+  Crafted from Hari's 2026 audit • 34 meticulous tastings • Built as a living archive
+</footer>
+
+<script>
+const coffeeData = [
+{"Date":"2026-01-03","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Ethiopia Guji","Origin":"Ethiopia","Varietal":"Heirloom","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":93,"Grinder":"EK43","Price_SGD":9,"Official_Notes":"jasmine, bergamot, apricot","Your_Verdict":"Floral like spring tea, apricot sweetness lingered forever","Technical_Enrichment":"92-94C preserves florals; 1:15 gave clarity","Visit_Context":"solo morning, first cup of audit"},
+{"Date":"2026-01-08","City":"Singapore","Cafe_Name":"Chye Seng Huat Hardware","Coffee_Name":"Kenya Kiamabara","Origin":"Kenya","Varietal":"SL28","Process":"Washed","Roast_Level":"Light","Brew_Method":"Kalita Wave","Ratio":"1:16","Water_Temp_C":94,"Grinder":"EK Omnia","Price_SGD":8.5,"Official_Notes":"blackcurrant, grapefruit, brown sugar","Your_Verdict":"Blackcurrant bomb, zingy acidity you love","Technical_Enrichment":"High turbulence Kalita tames acidity","Visit_Context":"with colleague after work"},
+{"Date":"2026-01-14","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Colombia La Papaya","Origin":"Colombia","Varietal":"Papaya","Process":"Anaerobic Natural","Roast_Level":"Light-Medium","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":90,"Grinder":"Lagom P64","Price_SGD":14,"Official_Notes":"peach, tropical, fermented mango","Your_Verdict":"Peach candy with a funky edge – wild and clean","Technical_Enrichment":"Anaerobic brings lactics; lower temp avoids overextract","Visit_Context":"solo exploration"},
+{"Date":"2026-01-21","City":"Singapore","Cafe_Name":"Homeground Coffee Roasters","Coffee_Name":"Brazil Carmo","Origin":"Brazil","Varietal":"Yellow Bourbon","Process":"Natural","Roast_Level":"Medium","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":88,"Grinder":"EK43","Price_SGD":7,"Official_Notes":"chocolate, hazelnut, caramel","Your_Verdict":"Comfort chocolate, like a brownie in a cup","Technical_Enrichment":"Immersion softens Brazil roast","Visit_Context":"rainy afternoon father-daughter with Aanya"},
+{"Date":"2026-01-27","City":"Singapore","Cafe_Name":"PPP Coffee","Coffee_Name":"Panama Geisha Bambito","Origin":"Panama","Varietal":"Geisha","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":93,"Grinder":"EK Omnia","Price_SGD":18,"Official_Notes":"jasmine, peach, bergamot","Your_Verdict":"Floral fireworks, peach tea finish","Technical_Enrichment":"90+ SCA score lot; careful 2:30 drawdown","Visit_Context":"special occasion solo"},
+{"Date":"2026-02-02","City":"Singapore","Cafe_Name":"Tiong Hoe Specialty Coffee","Coffee_Name":"Costa Rica Las Lajas","Origin":"Costa Rica","Varietal":"Caturra","Process":"Honey","Roast_Level":"Medium-Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":92,"Grinder":"EK43","Price_SGD":8,"Official_Notes":"red apple, honey, milk chocolate","Your_Verdict":"Honey sweetness coats tongue, chocolate close","Technical_Enrichment":"Honey process = mucilage sugars","Visit_Context":"weekend market walk"},
+{"Date":"2026-02-09","City":"Mumbai","Cafe_Name":"Subko","Coffee_Name":"India Ratnagiri","Origin":"India","Varietal":"Catuai","Process":"Natural","Roast_Level":"Medium","Brew_Method":"Chemex","Ratio":"1:16","Water_Temp_C":91,"Grinder":"EK43","Price_SGD":6,"Official_Notes":"spice, dark chocolate, fig","Your_Verdict":"Chocolate and spice, like masala chai's cousin","Technical_Enrichment":"Low altitude Indian natural","Visit_Context":"Mumbai work trip solo"},
+{"Date":"2026-02-11","City":"Mumbai","Cafe_Name":"Blue Tokai","Coffee_Name":"Ethiopia Halo Bariti","Origin":"Ethiopia","Varietal":"74110","Process":"Natural","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":93,"Grinder":"Lagom P64","Price_SGD":7,"Official_Notes":"strawberry, lychee, floral","Your_Verdict":"Strawberry jam and lychee perfume","Technical_Enrichment":"Natural Ethiopians showcase esters","Visit_Context":"exploring Bandra"},
+{"Date":"2026-02-18","City":"Singapore","Cafe_Name":"Alchemist","Coffee_Name":"Rwanda Shyira","Origin":"Rwanda","Varietal":"Bourbon","Process":"Washed","Roast_Level":"Light","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":90,"Grinder":"EK Omnia","Price_SGD":9,"Official_Notes":"blackcurrant, hibiscus, apricot","Your_Verdict":"Blackcurrant and apricot tartness bright","Technical_Enrichment":"Rwanda washed for clarity","Visit_Context":"father-daughter date with Aanya after school"},
+{"Date":"2026-02-25","City":"Singapore","Cafe_Name":"Bearded Bella","Coffee_Name":"Guatemala El Socorro","Origin":"Guatemala","Varietal":"Maracaturra","Process":"Washed","Roast_Level":"Medium","Brew_Method":"Kalita","Ratio":"1:15","Water_Temp_C":92,"Grinder":"EK43","Price_SGD":10,"Official_Notes":"chocolate, orange, caramel","Your_Verdict":"Round chocolate orange, comforting","Technical_Enrichment":"Maracaturra gives body","Visit_Context":"brunch with wife"},
+{"Date":"2026-03-03","City":"Singapore","Cafe_Name":"Pacamara Boutique","Coffee_Name":"Peru Cajamarca","Origin":"Peru","Varietal":"Caturra","Process":"Honey","Roast_Level":"Light-Medium","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":91,"Grinder":"Lagom P64","Price_SGD":8.5,"Official_Notes":"apricot, brown sugar, floral","Your_Verdict":"Floral honey, soft apricot","Technical_Enrichment":"Honey adds viscosity","Visit_Context":"solo"},
+{"Date":"2026-03-10","City":"Singapore","Cafe_Name":"Lucid","Coffee_Name":"Burundi Ngozi","Origin":"Burundi","Varietal":"Bourbon","Process":"Anaerobic Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":89,"Grinder":"EK Omnia","Price_SGD":12,"Official_Notes":"peach, black tea, lychee","Your_Verdict":"Peach tea elegance with lychee whisper","Technical_Enrichment":"Anaerobic washed = clean ferment","Visit_Context":"evening tasting"},
+{"Date":"2026-03-17","City":"Singapore","Cafe_Name":"Five Oars Coffee Roasters","Coffee_Name":"Colombia El Paraiso","Origin":"Colombia","Varietal":"Castillo","Process":"Anaerobic Natural","Roast_Level":"Light","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":88,"Grinder":"EK43","Price_SGD":13,"Official_Notes":"strawberry, rose, peach","Your_Verdict":"Strawberry rose bomb, super aromatic","Technical_Enrichment":"Thermal shock process","Visit_Context":"father-daughter with Aanya picking dessert"},
+{"Date":"2026-03-24","City":"Ubud Bali","Cafe_Name":"Seniman Coffee","Coffee_Name":"Bali Kintamani","Origin":"Indonesia","Varietal":"Typica","Process":"Natural","Roast_Level":"Medium","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":92,"Grinder":"EK43","Price_SGD":5,"Official_Notes":"chocolate, tobacco, apricot","Your_Verdict":"Earthy chocolate with apricot lift","Technical_Enrichment":"Local terroir shine","Visit_Context":"Ubud trip solo morning"},
+{"Date":"2026-03-26","City":"Ubud Bali","Cafe_Name":"Pison Ubud","Coffee_Name":"Ethiopia Sidamo","Origin":"Ethiopia","Varietal":"Heirloom","Process":"Honey","Roast_Level":"Light","Brew_Method":"Kalita","Ratio":"1:15","Water_Temp_C":93,"Grinder":"EK43","Price_SGD":6,"Official_Notes":"floral, honey, lemon","Your_Verdict":"Delicate floral honey tea","Technical_Enrichment":"Bali water soft","Visit_Context":"breakfast with friends"},
+{"Date":"2026-04-02","City":"Singapore","Cafe_Name":"Kurasu Singapore","Coffee_Name":"Tanzania Acacia Hills","Origin":"Tanzania","Varietal":"Kent","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":94,"Grinder":"EK Omnia","Price_SGD":9,"Official_Notes":"blackcurrant, chocolate, citrus","Your_Verdict":"Blackcurrant leads into dark chocolate","Technical_Enrichment":"Kenyan lineage","Visit_Context":"solo"},
+{"Date":"2026-04-09","City":"Singapore","Cafe_Name":"Parallel Coffee Roasters","Coffee_Name":"Honduras La Salsa","Origin":"Honduras","Varietal":"Pacamara","Process":"Natural","Roast_Level":"Medium-Light","Brew_Method":"Chemex","Ratio":"1:17","Water_Temp_C":92,"Grinder":"Lagom P64","Price_SGD":9.5,"Official_Notes":"apricot, milk chocolate, almond","Your_Verdict":"Apricot chocolate milkshake vibe","Technical_Enrichment":"Pacamara huge beans","Visit_Context":"work from cafe"},
+{"Date":"2026-04-15","City":"Singapore","Cafe_Name":"Atlas Coffeehouse","Coffee_Name":"El Salvador Santa Rosa","Origin":"El Salvador","Varietal":"Pacas","Process":"Washed","Roast_Level":"Medium","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":90,"Grinder":"EK43","Price_SGD":8,"Official_Notes":"chocolate, pecan, caramel","Your_Verdict":"Pecan pie chocolate comfort","Technical_Enrichment":"Classic central","Visit_Context":"father-daughter, Aanya tried hot chocolate"},
+{"Date":"2026-04-22","City":"Singapore","Cafe_Name":"Syip","Coffee_Name":"Bolivia Alasitas","Origin":"Bolivia","Varietal":"Caturra","Process":"Anaerobic Natural","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":89,"Grinder":"EK Omnia","Price_SGD":14,"Official_Notes":"floral, peach, tropical","Your_Verdict":"Peach perfume, tropical lift","Technical_Enrichment":"High altitude ferment","Visit_Context":"late night cupping"},
+{"Date":"2026-04-29","City":"Singapore","Cafe_Name":"Prodigal Roasters","Coffee_Name":"Mexico Chiapas","Origin":"Mexico","Varietal":"Bourbon","Process":"Washed","Roast_Level":"Light-Medium","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":92,"Grinder":"EK43","Price_SGD":8,"Official_Notes":"brown sugar, chocolate, orange","Your_Verdict":"Orange chocolate bar","Technical_Enrichment":"","Visit_Context":"solo"},
+{"Date":"2026-05-03","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Yemen Haraaz","Origin":"Yemen","Varietal":"Udaini","Process":"Natural","Roast_Level":"Medium","Brew_Method":"Chemex","Ratio":"1:16","Water_Temp_C":93,"Grinder":"Lagom P64","Price_SGD":16,"Official_Notes":"dried fruit, spice, chocolate","Your_Verdict":"Raisin chocolate with exotic spice","Technical_Enrichment":"Ancient cultivar","Visit_Context":"weekend treat"},
+{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"PNG Kunjin","Origin":"Papua New Guinea","Varietal":"Typica","Process":"Washed","Roast_Level":"Medium","Brew_Method":"Kalita","Ratio":"1:15","Water_Temp_C":91,"Grinder":"EK43","Price_SGD":9,"Official_Notes":"blackcurrant, malt, chocolate","Your_Verdict":"Blackcurrant malt, super clean","Technical_Enrichment":"","Visit_Context":"after gym"},
+{"Date":"2026-05-12","City":"Singapore","Cafe_Name":"Chye Seng Huat Hardware","Coffee_Name":"Uganda Sipi Falls","Origin":"Uganda","Varietal":"SL14","Process":"Natural","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":90,"Grinder":"EK Omnia","Price_SGD":10,"Official_Notes":"apricot, floral, berry","Your_Verdict":"Floral apricot jam","Technical_Enrichment":"","Visit_Context":"solo"},
+{"Date":"2026-05-17","City":"Singapore","Cafe_Name":"Homeground Coffee Roasters","Coffee_Name":"Nicaragua Los Congos","Origin":"Nicaragua","Varietal":"Maragogipe","Process":"Honey","Roast_Level":"Light-Medium","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":89,"Grinder":"EK43","Price_SGD":11,"Official_Notes":"chocolate, apricot, honey","Your_Verdict":"Honeyed apricot chocolate","Technical_Enrichment":"","Visit_Context":"father-daughter with Aanya"},
+{"Date":"2026-05-21","City":"Singapore","Cafe_Name":"PPP Coffee","Coffee_Name":"Colombia Wush Wush","Origin":"Colombia","Varietal":"Geisha","Process":"Anaerobic Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":92,"Grinder":"Lagom P64","Price_SGD":22,"Official_Notes":"jasmine, lychee, peach","Your_Verdict":"Jasmine lychee tea, peach finish","Technical_Enrichment":"","Visit_Context":"birthday splurge solo"},
+{"Date":"2026-05-25","City":"Singapore","Cafe_Name":"Tiong Hoe Specialty Coffee","Coffee_Name":"Ecuador Typica Mejorado","Origin":"Ecuador","Varietal":"Typica Mejorado","Process":"Anaerobic Natural","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":88,"Grinder":"EK Omnia","Price_SGD":15,"Official_Notes":"tropical, mango, floral","Your_Verdict":"Tropical perfume","Technical_Enrichment":"","Visit_Context":"rainy day"},
+{"Date":"2026-05-29","City":"Singapore","Cafe_Name":"Alchemist","Coffee_Name":"Kenya Nyeri","Origin":"Kenya","Varietal":"SL28 SL34","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":94,"Grinder":"EK43","Price_SGD":9,"Official_Notes":"blackcurrant, grape, tomato","Your_Verdict":"Classic blackcurrant Kenya","Technical_Enrichment":"","Visit_Context":"quick stop"},
+{"Date":"2026-06-02","City":"Singapore","Cafe_Name":"Bearded Bella","Coffee_Name":"Costa Rica Geisha","Origin":"Costa Rica","Varietal":"Geisha","Process":"Anaerobic Honey","Roast_Level":"Light","Brew_Method":"Kalita","Ratio":"1:15","Water_Temp_C":90,"Grinder":"Lagom P64","Price_SGD":17,"Official_Notes":"apricot, honey, floral","Your_Verdict":"Apricot honey silk","Technical_Enrichment":"","Visit_Context":"work meeting"},
+{"Date":"2026-06-05","City":"Singapore","Cafe_Name":"Pacamara Boutique","Coffee_Name":"Panama Elida Geisha","Origin":"Panama","Varietal":"Geisha","Process":"Natural","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":91,"Grinder":"EK Omnia","Price_SGD":24,"Official_Notes":"floral, bergamot, peach","Your_Verdict":"Floral bergamot, peach purity","Technical_Enrichment":"","Visit_Context":"solo meditation"},
+{"Date":"2026-06-08","City":"Singapore","Cafe_Name":"Lucid","Coffee_Name":"Rwanda Gitesi","Origin":"Rwanda","Varietal":"Red Bourbon","Process":"Anaerobic Natural","Roast_Level":"Light","Brew_Method":"AeroPress","Ratio":"1:14","Water_Temp_C":88,"Grinder":"EK43","Price_SGD":13,"Official_Notes":"strawberry, chocolate, floral","Your_Verdict":"Strawberry chocolate truffle","Technical_Enrichment":"","Visit_Context":"evening"},
+{"Date":"2026-06-11","City":"Singapore","Cafe_Name":"Five Oars Coffee Roasters","Coffee_Name":"Brazil Arara","Origin":"Brazil","Varietal":"Arara","Process":"Washed","Roast_Level":"Medium","Brew_Method":"Chemex","Ratio":"1:17","Water_Temp_C":90,"Grinder":"EK43","Price_SGD":7.5,"Official_Notes":"chocolate, nut, caramel","Your_Verdict":"Comforting milk chocolate","Technical_Enrichment":"","Visit_Context":"father-daughter Aanya loves the waffles"},
+{"Date":"2026-06-15","City":"Singapore","Cafe_Name":"Kurasu Singapore","Coffee_Name":"Ethiopia Worka","Origin":"Ethiopia","Varietal":"74158","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":93,"Grinder":"EK Omnia","Price_SGD":9.5,"Official_Notes":"floral, lemon, apricot","Your_Verdict":"Lemon floral tea, apricot sweet","Technical_Enrichment":"","Visit_Context":"solo"},
+{"Date":"2026-06-19","City":"Johor Bahru","Cafe_Name":"My Liberica","Coffee_Name":"Liberica Malaysia Jasin","Origin":"Malaysia","Varietal":"Liberica","Process":"Natural","Roast_Level":"Medium-Dark","Brew_Method":"V60","Ratio":"1:15","Water_Temp_C":91,"Grinder":"EK43","Price_SGD":8,"Official_Notes":"jackfruit, smoke, chocolate","Your_Verdict":"First Liberica – jackfruit funk, smoky chocolate, unforgettable","Technical_Enrichment":"Liberica = 2% world production, huge beans","Visit_Context":"road trip father-daughter adventure with Aanya to JB"},
+{"Date":"2026-06-21","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Colombia Pink Bourbon","Origin":"Colombia","Varietal":"Pink Bourbon","Process":"Washed","Roast_Level":"Light","Brew_Method":"V60","Ratio":"1:16","Water_Temp_C":92,"Grinder":"Lagom P64","Price_SGD":12,"Official_Notes":"floral, peach, apricot","Your_Verdict":"Peach apricot candy, floral finale to audit","Technical_Enrichment":"Final cup of 170 day journey","Visit_Context":"solo closing the audit"}
+];
+
+const processColors = { Washed:'#14b8a6', Natural:'#d4a574', Honey:'#ec4899', Anaerobic:'#a855f7' };
+const getGroup = p => p.includes('Anaerobic') ? 'Anaerobic' : p;
+
+const citySel = document.getElementById('city');
+const procSel = document.getElementById('process');
+const search = document.getElementById('search');
+const grid = document.getElementById('grid');
+const count = document.getElementById('count');
+
+function initFilters(){
+  const cities = ['All Cities', ...new Set(coffeeData.map(d=>d.City))];
+  citySel.innerHTML = cities.map(c=>`<option>${c}</option>`).join('');
+  procSel.innerHTML = ['All Processes','Washed','Natural','Honey','Anaerobic'].map(p=>`<option>${p}</option>`).join('');
+  const pf = document.getElementById('processFilters');
+  pf.innerHTML = Object.entries(processColors).map(([k,v])=>`<button data-p="${k}" class="px-2.5 py-1 rounded-full border border-white/10 hover:border-white/20" style="color:${v}">${k}</button>`).join('');
+  pf.querySelectorAll('button').forEach(b=>b.onclick=()=>{procSel.value=b.dataset.p;render()});
+}
+
+function renderTimeline(data){
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+  data.forEach((d,i)=>{
+    const g = getGroup(d.Process);
+    const dot = document.createElement('button');
+    dot.className='dot snap-start shrink-0 w-3 h-3 rounded-full relative';
+    dot.style.background = processColors[g];
+    dot.innerHTML = `<span class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] text-zinc-500 whitespace-nowrap">${d.Date.slice(5)}</span>`;
+    dot.onmouseenter = e=>{showTip(e,d,g)};
+    dot.onmouseleave = hideTip;
+    dot.onclick = ()=>document.getElementById('c'+i)?.scrollIntoView({behavior:'smooth',block:'center'});
+    tl.appendChild(dot);
+    if(i<data.length-1){ const line=document.createElement('div'); line.className='h-px w-8 md:w-12 bg-white/10 self-center'; tl.appendChild(line); }
+  });
+}
+function showTip(e,d,g){
+  const tip=document.getElementById('timelineTip');
+  tip.innerHTML=`<div class="text-[11px] text-zinc-400">${d.Date} • ${d.City}</div><div class="font-medium mt-1">${d.Coffee_Name}</div><div class="text-xs mt-1" style="color:${processColors[g]}">${d.Process} • ${d.Brew_Method}</div><div class="text-[11px] mt-1 text-zinc-300 italic">"${d.Your_Verdict.slice(0,70)}..."</div>`;
+  tip.style.left = Math.min(e.clientX, window.innerWidth-230)+'px';
+  tip.style.top = (e.target.getBoundingClientRect().top - 110)+'px';
+  tip.classList.remove('hidden');
+}
+function hideTip(){document.getElementById('timelineTip').classList.add('hidden')}
+
+function renderGrid(data){
+  grid.innerHTML = data.map((d,i)=>{
+    const g=getGroup(d.Process);
+    const fd = /father-daughter|Aanya/i.test(d.Visit_Context);
+    return `<article id="c${i}" class="card glass rounded-[22px] p-5 flex flex-col">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <div class="text-[11px] tracking-widest text-zinc-500">${d.Date} • ${d.City.toUpperCase()}</div>
+          <h3 class="serif text-xl leading-tight mt-1">${d.Coffee_Name}</h3>
+          <div class="text-sm text-zinc-400">${d.Cafe_Name}</div>
+        </div>
+        <div class="text-lg">${fd?'👧':'☕'}</div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-1.5">
+        <span class="px-2.5 py-1 rounded-full text-[11px] bg-white/5 border border-white/10">${d.Origin}</span>
+        <span class="px-2.5 py-1 rounded-full text-[11px] bg-white/5 border border-white/10">${d.Varietal}</span>
+      </div>
+      <blockquote class="mt-4 text-[15px] leading-snug text-zinc-200 border-l-2 pl-3" style="border-color:${processColors[g]}">"${d.Your_Verdict}"</blockquote>
+      <details class="mt-3 group">
+        <summary class="cursor-pointer text-xs text-zinc-400 hover:text-zinc-200 list-none flex items-center gap-1">Technical <svg class="w-3 h-3 transition group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary>
+        <div class="mt-2 text-xs text-zinc-300 bg-black/30 rounded-xl p-3 border border-white/5">${d.Technical_Enrichment||'No notes'} • ${d.Ratio} • ${d.Water_Temp_C}°C • ${d.Grinder}</div>
+      </details>
+      <div class="mt-auto pt-4 flex items-center justify-between">
+        <div class="flex gap-1.5">
+          <span class="px-2 py-1 rounded-lg text-[10px] uppercase tracking-wider border" style="border-color:${processColors[g]}33;color:${processColors[g]};background:${processColors[g]}15">${g}</span>
+          <span class="px-2 py-1 rounded-lg text-[10px] uppercase tracking-wider bg-white/5 border border-white/10">${d.Brew_Method}</span>
+        </div>
+        <div class="text-[11px] text-zinc-500 italic max-w-[50%] truncate" title="${d.Visit_Context}">${d.Visit_Context}</div>
+      </div>
+    </article>`
+  }).join('');
+  count.textContent = data.length;
+}
+
+function initMap(){
+  const map = L.map('map',{scrollWheelZoom:false,attributionControl:false}).setView([1.3521,103.8198],5);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:18}).addTo(map);
+  const coords = { Singapore:[1.3521,103.8198], 'Ubud Bali':[-8.5069,115.2625], Mumbai:[19.076,72.8777], 'Johor Bahru':[1.4927,103.7414] };
+  const byCafe = {};
+  coffeeData.forEach(d=>{
+    const k=d.Cafe_Name+'|'+d.City;
+    if(!byCafe[k]) byCafe[k]={...d,count:0};
+    byCafe[k].count++;
+  });
+  Object.values(byCafe).forEach(c=>{
+    const base=coords[c.City]||coords.Singapore;
+    const jitter = c.City==='Singapore' ? (Math.sin(c.Cafe_Name.length)*0.02) : 0;
+    const lat=base[0]+jitter+(Math.random()-0.5)*0.015;
+    const lng=base[1]+jitter+(Math.random()-0.5)*0.015;
+    const m = L.circleMarker([lat,lng],{radius:5+Math.min(c.count,4),color:'#d4a574',weight:2,fillColor:'#d4a574',fillOpacity:.7}).addTo(map);
+    m.bindPopup(`<div style="font-family:Inter"><strong>${c.Cafe_Name}</strong><br><span style="color:#999">${c.City} • ${c.count} cups</span><br><em style="font-size:12px">${c.Coffee_Name}</em></div>`);
+  });
+}
+
+function initCharts(){
+  const flavorCtx = document.getElementById('flavorChart');
+  new Chart(flavorCtx,{type:'bar',data:{labels:['Floral','Chocolate','Apricot','Blackcurrant','Peach','Honey','Strawberry','Lychee','Bergamot'],datasets:[{data:[5,5,5,4,4,3,2,2,3],backgroundColor:'#d4a574',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#a1a1aa'},grid:{display:false}},y:{ticks:{color:'#71717a'},grid:{color:'rgba(255,255,255,.06)'}}}}});
+  document.getElementById('flavorCloud').innerHTML = ['floral','chocolate','apricot','peach','blackcurrant','honey','strawberry','lychee','bergamot','jasmine','spice'].map(w=>`<span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs hover:border-[#d4a574]/40 hover:text-[#d4a574] transition cursor-default">${w}</span>`).join('');
+
+  const counts = coffeeData.reduce((a,d)=>{const g=getGroup(d.Process);a[g]=(a[g]||0)+1;return a},{});
+  new Chart(document.getElementById('processChart'),{type:'doughnut',data:{labels:Object.keys(counts),datasets:[{data:Object.values(counts),backgroundColor:Object.keys(counts).map(k=>processColors[k]),borderWidth:0}]},options:{plugins:{legend:{labels:{color:'#c7c7c7'}}},cutout:'68%'}});
+
+  const grinds = coffeeData.reduce((a,d)=>{a[d.Grinder]=(a[d.Grinder]||0)+1;return a},{});
+  new Chart(document.getElementById('grinderChart'),{type:'bar',data:{labels:Object.keys(grinds),datasets:[{data:Object.values(grinds),backgroundColor:'#d4a57490',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#a1a1aa'},grid:{display:false}},y:{display:false}}}});
+
+  const ratios = coffeeData.reduce((a,d)=>{a[d.Ratio]=(a[d.Ratio]||0)+1;return a},{});
+  new Chart(document.getElementById('ratioChart'),{type:'line',data:{labels:Object.keys(ratios).sort(),datasets:[{data:Object.keys(ratios).sort().map(k=>ratios[k]),tension:.4,borderColor:'#d4a574',backgroundColor:'rgba(212,165,116,.2)',fill:true}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#a1a1aa'},grid:{display:false}},y:{display:false}}}});
+}
+
+function render(){
+  const q = search.value.toLowerCase();
+  const city = citySel.value;
+  const proc = procSel.value;
+  let data = coffeeData.filter(d=>{
+    const matchQ = !q || (d.Coffee_Name+d.Origin+d.Your_Verdict+d.Official_Notes).toLowerCase().includes(q);
+    const matchC = city==='All Cities' || d.City===city;
+    const matchP = proc==='All Processes' || getGroup(d.Process)===proc;
+    return matchQ && matchC && matchP;
+  });
+  renderTimeline(data);
+  renderGrid(data);
+}
+
+document.getElementById('theme').onclick = document.getElementById('theme2').onclick = ()=>document.documentElement.classList.toggle('light');
+search.oninput = citySel.onchange = procSel.onchange = render;
+document.querySelector('[data-filter="fd"]').onclick = ()=>{search.value='aanya';render();document.getElementById('journeySec').scrollIntoView()};
+document.querySelector('[data-open="liberica"]').onclick = ()=>{search.value='Liberica';render();document.getElementById('journeySec').scrollIntoView()};
+
+initFilters();
+render();
+initMap();
+initCharts();
+
+// father-daughter preview
+const fd = coffeeData.filter(d=>/father-daughter|Aanya/i.test(d.Visit_Context));
+document.getElementById('fd-preview').innerHTML = fd.slice(0,3).map(d=>`<span class="px-2 py-1 rounded-lg bg-pink-500/10 text-pink-200 border border-pink-500/20 text-[11px]">${d.Cafe_Name.split(' ')[0]}</span>`).join('') + `<span class="text-[11px] text-zinc-400">+${fd.length-3} more</span>`;
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;var a=target.closest?target.closest("a[href]"):null;if(!a||!a.href||!/^https?:\/\//.test(a.href))return;if(a.href.replace(/#.*$/,"")===loc)return;var productId=extractProductId(target)||extractProductId(a);if(!productId)return;e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*")},true)})();</script></body>
+</html>

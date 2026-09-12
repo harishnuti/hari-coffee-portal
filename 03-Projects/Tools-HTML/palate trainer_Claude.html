@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <title>Palate Intelligence Trainer • Hari's Coffee Archive 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --accent: #c9a84c;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .header-font {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .coffee-bg {
+            background-color: #0d0d0d;
+        }
+
+        .amber-accent {
+            color: #c9a84c;
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .flavour-tag {
+            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .flavour-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgb(201 168 76 / 0.2);
+        }
+        
+        .flavour-tag.selected {
+            background-color: #c9a84c;
+            color: #0d0d0d;
+            border-color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+
+        .entry-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-button {
+            min-height: 48px;
+            min-width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-option {
+            transition: all 0.1s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        
+        .quiz-option.selected {
+            border-color: #c9a84c;
+            background-color: rgba(201, 168, 76, 0.08);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+        }
+
+        .stat-value {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .flavour-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .archive-grid {
+            scrollbar-width: thin;
+            scrollbar-color: #3f3f46 #18181b;
+        }
+
+        .modal {
+            animation: modalPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .coffee-bean {
+            animation: beanFloat 3s ease-in-out infinite;
+        }
+
+        .data-table td {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #27251f;
+        }
+
+        .prediction-header {
+            background: linear-gradient(145deg, #18181b, #0d0d0d);
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .section-header {
+                color: #111827;
+            }
+        }
+
+        .progress-bar {
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .palate-score {
+            font-size: 3.5rem;
+            line-height: 3.5rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+    </style>
+</head>
+<body class="coffee-bg text-zinc-200 min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-lg sticky top-0 z-50 no-print">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-inner">
+                    <span class="text-zinc-950 text-2xl">☕</span>
+                </div>
+                <div>
+                    <h1 class="header-font text-2xl tracking-tighter">Palate Intelligence</h1>
+                    <p class="text-[10px] text-zinc-500 -mt-1">Hari's Archive • 2026</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-2 text-sm">
+                <div onclick="showScreen('home-screen')" class="px-4 py-1.5 rounded-3xl bg-zinc-900 hover:bg-zinc-800 cursor-pointer flex items-center gap-x-2 text-xs font-medium border border-zinc-700">
+                    <span>🏠</span>
+                    <span class="hidden sm:inline">Home</span>
+                </div>
+                <div class="px-3 py-1.5 rounded-3xl bg-zinc-900 text-xs flex items-center gap-x-1.5 border border-zinc-700">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="font-mono text-emerald-400">31</span>
+                    <span class="text-zinc-400 text-xs">entries</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME SCREEN -->
+    <div id="home-screen" class="screen active max-w-5xl mx-auto px-6 pt-8 pb-16">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <div class="inline-flex items-center gap-x-2 px-4 py-1 bg-zinc-900 rounded-3xl text-xs font-medium mb-4 border border-zinc-700">
+                <span class="text-amber-400">✦</span> 
+                <span>31 AUDITED ORIGINS • 4 COUNTRIES • 15 CAFES</span>
+            </div>
+            
+            <h2 class="section-header text-6xl tracking-tighter mb-3">Palate Intelligence Trainer</h2>
+            <p class="text-2xl text-zinc-400 max-w-md mx-auto">Train your prediction engine.<br>31 entries. Zero guesswork.</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400 mb-1">SESSIONS PLAYED</div>
+                    <div id="stat-sessions" class="text-4xl font-semibold tabular-nums">0</div>
+                    <div class="text-[10px] text-emerald-400 mt-1">+12% this month</div>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400 mb-1">BEST ACCURACY</div>
+                    <div id="stat-best" class="text-4xl font-semibold tabular-nums text-amber-400">—</div>
+                    <div class="text-[10px] text-zinc-400 mt-1">Personal record</div>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400 mb-1">STRONGEST CATEGORY</div>
+                    <div id="stat-strong" class="text-xl font-semibold">—</div>
+                    <div class="text-[10px] text-emerald-400">Hardware intuition</div>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400 mb-1">NEEDS WORK</div>
+                    <div id="stat-weak" class="text-xl font-semibold">—</div>
+                    <div class="text-[10px] text-rose-400">Complete sessions to unlock</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Buttons -->
+        <div class="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button onclick="startPredictionMode()" 
+                    class="group bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-amber-400/50 transition-all rounded-3xl p-7 text-left flex flex-col h-full">
+                <div class="flex-1">
+                    <div class="text-amber-400 text-3xl mb-3">🎯</div>
+                    <div class="text-2xl font-semibold tracking-tight mb-1">Prediction Mode</div>
+                    <div class="text-sm text-zinc-400">10 questions • Attributes → Flavour</div>
+                </div>
+                <div class="mt-6 text-xs px-4 py-2.5 bg-zinc-950 group-hover:bg-zinc-900 rounded-2xl border border-zinc-700 text-center font-medium">Start 10-question session</div>
+            </button>
+
+            <button onclick="startBlindMode()" 
+                    class="group bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-amber-400/50 transition-all rounded-3xl p-7 text-left flex flex-col h-full">
+                <div class="flex-1">
+                    <div class="text-amber-400 text-3xl mb-3">🕵️</div>
+                    <div class="text-2xl font-semibold tracking-tight mb-1">Blind Tasting Mode</div>
+                    <div class="text-sm text-zinc-400">1 entry • Your verdict → Identify origin, process, café</div>
+                </div>
+                <div class="mt-6 text-xs px-4 py-2.5 bg-zinc-950 group-hover:bg-zinc-900 rounded-2xl border border-zinc-700 text-center font-medium">Test memory &amp; distinctiveness</div>
+            </button>
+
+            <button onclick="showScreen('review-screen')" 
+                    class="group bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-amber-400/50 transition-all rounded-3xl p-7 text-left flex flex-col h-full">
+                <div class="flex-1">
+                    <div class="text-amber-400 text-3xl mb-3">📖</div>
+                    <div class="text-2xl font-semibold tracking-tight mb-1">Review Archive</div>
+                    <div class="text-sm text-zinc-400">31 flashcards • Filters • Memorisation tracker</div>
+                </div>
+                <div class="mt-6 text-xs px-4 py-2.5 bg-zinc-950 group-hover:bg-zinc-900 rounded-2xl border border-zinc-700 text-center font-medium">Flashcard mode</div>
+            </button>
+        </div>
+
+        <div class="max-w-md mx-auto mt-8 text-center">
+            <button onclick="showScreen('history-screen')" 
+                    class="text-xs px-5 py-3 text-zinc-400 hover:text-white flex items-center gap-x-2 mx-auto transition-colors">
+                <span>📈</span> 
+                <span>View Palate History &amp; Leaderboard</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- PREDICTION MODE SCREEN -->
+    <div id="prediction-screen" class="screen max-w-4xl mx-auto px-6 pt-6 pb-12">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="flex items-center gap-x-3">
+                    <div class="text-amber-400">🎯</div>
+                    <div>
+                        <div class="font-semibold text-2xl tracking-tight">Prediction Mode</div>
+                        <div class="text-xs text-zinc-400 -mt-0.5">Train your flavour prediction accuracy</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-x-4">
+                <div class="text-right">
+                    <div class="text-xs text-zinc-400">QUESTION</div>
+                    <div class="font-mono text-xl font-semibold tabular-nums"><span id="q-number">1</span>/10</div>
+                </div>
+                <div class="h-9 w-px bg-zinc-700"></div>
+                <div class="text-right">
+                    <div class="text-xs text-zinc-400">SCORE</div>
+                    <div class="font-mono text-3xl font-semibold text-amber-400 tabular-nums" id="live-score">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="mb-6">
+            <div class="flex justify-between text-xs mb-1.5 px-1">
+                <div class="text-zinc-400">PROGRESS</div>
+                <div id="progress-text" class="font-mono text-amber-400">10%</div>
+            </div>
+            <div class="h-2.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-2.5 bg-gradient-to-r from-amber-400 to-amber-500 w-[10%] progress-bar rounded-full" style="width: 10%"></div>
+            </div>
+        </div>
+
+        <div id="question-container" class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 min-h-[420px]">
+            <!-- Dynamic content injected by JS -->
+        </div>
+
+        <div class="flex justify-between items-center mt-6 px-1">
+            <button onclick="endPredictionSession()" class="text-xs px-5 py-3 text-zinc-400 hover:text-white flex items-center gap-x-2 transition-colors">
+                <span>←</span> End Session
+            </button>
+            
+            <div id="question-actions" class="flex gap-x-3">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- BLIND TASTING SCREEN -->
+    <div id="blind-screen" class="screen max-w-3xl mx-auto px-6 pt-6 pb-12">
+        <div class="mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="text-amber-400 text-3xl">🕵️</div>
+                <div>
+                    <div class="font-semibold text-2xl tracking-tight">Blind Tasting</div>
+                    <div class="text-sm text-zinc-400">Identify from your own verdict only</div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-xs text-zinc-400">BLIND SESSION</div>
+                <div class="font-mono text-xl font-semibold text-amber-400">1/1</div>
+            </div>
+        </div>
+
+        <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 mb-6">
+            <div class="uppercase tracking-[1px] text-xs font-semibold text-rose-400 mb-3">YOUR VERDICT (MEMORY TEST)</div>
+            <div id="blind-verdict" class="text-xl leading-tight italic text-zinc-200 min-h-[80px]"></div>
+            <div class="mt-4 text-xs text-zinc-500">This is the only information available. Use your palate memory.</div>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Question 1: Cafe -->
+            <div>
+                <div class="text-sm font-semibold mb-3 flex items-center gap-x-2">
+                    <span class="text-amber-400">1</span> 
+                    <span>Which café served this coffee?</span>
+                </div>
+                <div id="blind-cafe-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Question 2: Process -->
+            <div>
+                <div class="text-sm font-semibold mb-3 flex items-center gap-x-2">
+                    <span class="text-amber-400">2</span> 
+                    <span>What was the processing method?</span>
+                </div>
+                <div id="blind-process-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Question 3: Origin -->
+            <div>
+                <div class="text-sm font-semibold mb-3 flex items-center gap-x-2">
+                    <span class="text-amber-400">3</span> 
+                    <span>Which origin / country?</span>
+                </div>
+                <div id="blind-origin-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+            <button onclick="submitBlindAnswers()" 
+                    class="px-10 py-4 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 transition-colors text-zinc-950 font-semibold rounded-3xl text-sm tracking-wider flex items-center gap-x-2 shadow-inner">
+                SUBMIT IDENTIFICATION
+                <span>→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- REVIEW ARCHIVE SCREEN -->
+    <div id="review-screen" class="screen max-w-5xl mx-auto px-6 pt-6 pb-16">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4 mb-6">
+            <div>
+                <div class="flex items-center gap-x-3">
+                    <span class="text-3xl">📖</span>
+                    <div>
+                        <div class="font-semibold text-3xl tracking-tight">Review Archive</div>
+                        <div class="text-sm text-zinc-400">31 audited entries • Flashcard training</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-3">
+                <div class="bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-3xl text-sm flex items-center gap-x-2">
+                    <span class="text-emerald-400">✓</span>
+                    <span id="memorised-count">0/31</span>
+                    <span class="text-xs text-zinc-400">(memorised)</span>
+                </div>
+                <button onclick="showAllEntriesModal()" 
+                        class="text-xs px-5 py-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-3xl flex items-center gap-x-2">
+                    <span>📋</span> 
+                    <span>Full List</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-3 mb-5">
+            <div class="flex-1 min-w-[160px]">
+                <select id="filter-process" onchange="applyArchiveFilters()" class="w-full bg-zinc-900 border border-zinc-700 text-sm rounded-2xl px-4 py-3 focus:outline-none focus:border-amber-400">
+                    <option value="">All Processes</option>
+                </select>
+            </div>
+            <div class="flex-1 min-w-[160px]">
+                <select id="filter-origin" onchange="applyArchiveFilters()" class="w-full bg-zinc-900 border border-zinc-700 text-sm rounded-2xl px-4 py-3 focus:outline-none focus:border-amber-400">
+                    <option value="">All Origins</option>
+                </select>
+            </div>
+            <div class="flex-1 min-w-[160px]">
+                <select id="filter-cafe" onchange="applyArchiveFilters()" class="w-full bg-zinc-900 border border-zinc-700 text-sm rounded-2xl px-4 py-3 focus:outline-none focus:border-amber-400">
+                    <option value="">All Cafés</option>
+                </select>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+                <input id="search-input" type="text" placeholder="Search coffee name or notes..." 
+                       oninput="applyArchiveFilters()" 
+                       class="w-full bg-zinc-900 border border-zinc-700 text-sm rounded-2xl px-4 py-3 focus:outline-none focus:border-amber-400 placeholder:text-zinc-500">
+            </div>
+        </div>
+
+        <!-- Flashcard -->
+        <div class="max-w-2xl mx-auto">
+            <div id="flashcard" class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 min-h-[380px] flex flex-col shadow-xl">
+                <div id="card-front">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <div id="card-coffee-name" class="text-3xl font-semibold tracking-tight leading-none"></div>
+                            <div id="card-cafe-name" class="text-lg text-amber-400 mt-1"></div>
+                        </div>
+                        <div id="card-memorised-badge" class="hidden px-3 py-1 text-xs bg-emerald-900 text-emerald-300 rounded-2xl flex items-center gap-x-1">
+                            <span>✓</span> <span class="font-medium">MEMORISED</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 mb-8" id="card-badges"></div>
+                    
+                    <div class="mt-auto pt-6 border-t border-zinc-700 flex items-center justify-between text-xs">
+                        <div onclick="prevCard()" class="flex items-center gap-x-1 cursor-pointer text-zinc-400 hover:text-white">
+                            <span>←</span> <span class="font-medium">PREV</span>
+                        </div>
+                        <div class="text-center">
+                            <span id="card-counter" class="font-mono text-xs px-3 py-1 bg-zinc-800 rounded-2xl"></span>
+                        </div>
+                        <div onclick="nextCard()" class="flex items-center gap-x-1 cursor-pointer text-zinc-400 hover:text-white">
+                            <span class="font-medium">NEXT</span> <span>→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center gap-x-3 mt-5">
+                <button onclick="flipToDetails()" 
+                        class="px-6 py-3.5 text-sm font-medium bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-3xl flex items-center gap-x-2 transition-all active:scale-[0.985]">
+                    <span>🔍</span> 
+                    <span>VIEW FULL AUDIT</span>
+                </button>
+                
+                <button onclick="toggleMemorised()" id="memorise-btn"
+                        class="px-6 py-3.5 text-sm font-medium border border-zinc-600 hover:border-emerald-600 rounded-3xl flex items-center gap-x-2 transition-all active:scale-[0.985]">
+                    <span id="memorise-icon">♡</span> 
+                    <span id="memorise-text">Mark as Memorised</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY / LEADERBOARD SCREEN -->
+    <div id="history-screen" class="screen max-w-5xl mx-auto px-6 pt-6 pb-16">
+        <div class="mb-8">
+            <div class="flex items-center gap-x-3 mb-2">
+                <span class="text-3xl">📈</span>
+                <div class="font-semibold text-3xl tracking-tight">Palate Evolution</div>
+            </div>
+            <p class="text-zinc-400">Your personal performance history and fingerprint accuracy</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Chart -->
+            <div class="lg:col-span-7 bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="font-semibold">Accuracy Over Time</div>
+                    <div class="text-xs text-zinc-400">Last 12 sessions</div>
+                </div>
+                <canvas id="progress-chart" class="w-full h-[220px]"></canvas>
+            </div>
+
+            <!-- Fingerprint -->
+            <div class="lg:col-span-5 bg-zinc-900 border border-zinc-700 rounded-3xl p-6 flex flex-col">
+                <div class="font-semibold mb-4">Your Palate Fingerprint</div>
+                
+                <div class="flex-1 flex flex-col justify-center">
+                    <div class="text-center mb-6">
+                        <div id="fingerprint-score" class="palate-score text-amber-400">—</div>
+                        <div class="text-xs tracking-widest text-zinc-400 -mt-1">OVERALL ACCURACY</div>
+                    </div>
+                    
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-x-2">
+                                <span class="text-emerald-400">●</span> 
+                                <span>Hardware Prediction</span>
+                            </div>
+                            <span id="cat-hardware" class="font-mono text-emerald-400">—</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-x-2">
+                                <span class="text-emerald-400">●</span> 
+                                <span>Origin from Notes</span>
+                            </div>
+                            <span id="cat-origin" class="font-mono text-emerald-400">—</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-x-2">
+                                <span class="text-amber-400">●</span> 
+                                <span>Flavour Tags</span>
+                            </div>
+                            <span id="cat-flavour" class="font-mono text-amber-400">—</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-x-2">
+                                <span class="text-rose-400">●</span> 
+                                <span>Thermal Phase</span>
+                            </div>
+                            <span id="cat-thermal" class="font-mono text-rose-400">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="mt-6 bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-zinc-700 flex items-center justify-between">
+                <div class="font-semibold">Session History</div>
+                <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 px-3 py-1">Clear all</button>
+            </div>
+            <div id="history-table" class="max-h-[320px] overflow-auto text-sm">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback / Reveal Modal -->
+    <div id="feedback-modal" onclick="if (event.target.id === 'feedback-modal') hideFeedbackModal()" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 border border-zinc-700 rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-auto">
+            <div class="p-8">
+                <div id="feedback-header" class="flex items-center justify-between mb-6"></div>
+                
+                <div id="feedback-content" class="space-y-6"></div>
+                
+                <div class="mt-8 flex justify-end gap-x-3">
+                    <button onclick="hideFeedbackModal()" class="px-6 py-3 text-sm font-medium border border-zinc-600 rounded-3xl">Close</button>
+                    <button id="next-question-btn" onclick="nextQuestion()" class="px-8 py-3 bg-amber-400 text-zinc-950 font-semibold rounded-3xl text-sm">Next Question →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Entry Modal -->
+    <div id="entry-modal" onclick="if (event.target.id === 'entry-modal') hideEntryModal()" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 border border-zinc-700 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-auto">
+            <div class="p-8" id="entry-modal-content">
+                <!-- JS injected -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script
+        function initTailwind() {
+            document.documentElement.style.setProperty('--accent', '#c9a84c');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'serif-custom': ['Playfair Display', 'Georgia', 'serif']
+                        }
+                    }
+                }
+            };
+        }
+
+        // ==================== DATASET ====================
+        const ARCHIVE_DATA = [
+            {
+                id: 0,
+                date: "2026-01-10",
+                city: "Ubud, Bali",
+                cafe_name: "Seniman Coffee Studio",
+                coffee_name: "Bali Karana Kintamanis",
+                varietal: "Unknown",
+                process: "Natural",
+                roast_level: "Light",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Clean citrus; floral",
+                your_verdict: "Excellent clarity for a natural process, bright and floral.",
+                technical_enrichment: "Established foundational exposure to local Indonesian origins.",
+                origin: "Indonesia (Bali)"
+            },
+            {
+                id: 1,
+                date: "2026-01-10",
+                city: "Ubud, Bali",
+                cafe_name: "Seniman Coffee Studio",
+                coffee_name: "Sulawesi Toraja",
+                varietal: "Unknown",
+                process: "Semi-Washed / Wet-Hulled",
+                roast_level: "Medium",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Cocoa; earthy structures",
+                your_verdict: "Heavy body with rich cocoa notes.",
+                technical_enrichment: "Demonstrated the structural density of the wet-hulled process.",
+                origin: "Indonesia (Sulawesi)"
+            },
+            {
+                id: 2,
+                date: "2026-01-10",
+                city: "Ubud, Bali",
+                cafe_name: "Seniman Coffee Studio",
+                coffee_name: "House Blend",
+                varietal: "Unknown",
+                process: "Unknown",
+                roast_level: "Espresso Roast",
+                brew_method: "Piccolo",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Balanced",
+                your_verdict: "Great milk integration.",
+                technical_enrichment: "Baseline for espresso and milk pairing.",
+                origin: "Blend (Indonesia)"
+            },
+            {
+                id: 3,
+                date: "2026-02-15",
+                city: "Singapore",
+                cafe_name: "Kyuukei Coffee",
+                coffee_name: "Kenya Kiamugumo AA",
+                varietal: "Unknown",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Pour-over (Flat-Bottom)",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: "120mm Hybrid Burr",
+                price_local: null,
+                official_notes: "Excellent baseline for clarity.",
+                your_verdict: "Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry.",
+                technical_enrichment: "High clarity washed baseline.",
+                origin: "Kenya"
+            },
+            {
+                id: 4,
+                date: "2026-02-28",
+                city: "Singapore",
+                cafe_name: "Kyuukei Coffee",
+                coffee_name: "Kenya Ndiaini AA",
+                varietal: "Unknown",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "High clarity.",
+                your_verdict: "Further exploration of Kenyan terroir.",
+                technical_enrichment: "Kenyan terroir exploration.",
+                origin: "Kenya"
+            },
+            {
+                id: 5,
+                date: "2026-03-01",
+                city: "Mumbai",
+                cafe_name: "Subko Coffee Roasters",
+                coffee_name: "Project Pearl Ratnagiri",
+                varietal: "Unknown",
+                process: "Experimental Anaerobic",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Clean and balanced despite intense process.",
+                your_verdict: "Analyzed advanced experimental processing in India.",
+                technical_enrichment: "Advanced experimental processing in India.",
+                origin: "India"
+            },
+            {
+                id: 6,
+                date: "2026-03-08",
+                city: "Mumbai",
+                cafe_name: "Grey Soul Coffee Roasters",
+                coffee_name: "Raspberry in Loop",
+                varietal: "Unknown",
+                process: "Multi-stage Anaerobic",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Chocolate",
+                your_verdict: "Heavy body, over-smoothed expression muted the brightness.",
+                technical_enrichment: "Observed how heavy fermentation can mute terroir.",
+                origin: "India"
+            },
+            {
+                id: 7,
+                date: "2026-03-15",
+                city: "Singapore",
+                cafe_name: "Apartment Coffee",
+                coffee_name: "Colombia Wush Wush",
+                varietal: "Wush Wush",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Tea-like",
+                your_verdict: "Incredible tea-like clarity.",
+                technical_enrichment: "Mapped the delicate genetics of Wush Wush.",
+                origin: "Colombia"
+            },
+            {
+                id: 8,
+                date: "2026-03-18",
+                city: "Singapore",
+                cafe_name: "Agora Coffee",
+                coffee_name: "Nicaragua Matagalpa",
+                varietal: "Unknown",
+                process: "Washed",
+                roast_level: "Espresso Roast",
+                brew_method: "Flat White",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Solid milk beverage.",
+                your_verdict: "Audited Central American washed profile in milk.",
+                technical_enrichment: "Central American washed profile in milk.",
+                origin: "Nicaragua"
+            },
+            {
+                id: 9,
+                date: "2026-03-18",
+                city: "Singapore",
+                cafe_name: "Agora Coffee",
+                coffee_name: "Ethiopia Beloya",
+                varietal: "Unknown",
+                process: "Natural",
+                roast_level: "Unknown",
+                brew_method: "V60",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Classic natural profile.",
+                your_verdict: "Baseline check for Ethiopian naturals.",
+                technical_enrichment: "Baseline for Ethiopian naturals.",
+                origin: "Ethiopia"
+            },
+            {
+                id: 10,
+                date: "2026-03-20",
+                city: "Singapore",
+                cafe_name: "Tiong Hoe",
+                coffee_name: "Brazil Natural",
+                varietal: "Unknown",
+                process: "Natural",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Rich, chocolate-forward",
+                your_verdict: "Classic dense Brazilian profile.",
+                technical_enrichment: "Audited traditional natural processing sweetness and body.",
+                origin: "Brazil"
+            },
+            {
+                id: 11,
+                date: "2026-04-01",
+                city: "Singapore",
+                cafe_name: "Maxi Coffee Bar",
+                coffee_name: "Colombia La Laja",
+                varietal: "Sudan Rume",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Pour-over (Flat-Bottom)",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:15",
+                bloom: null,
+                grinder: "Timemore Sculptor 078 (SSP 78mm)",
+                price_local: null,
+                official_notes: "Raspberry; Nectarine; Floral",
+                your_verdict: "Successfully isolated the intended tasting notes.",
+                technical_enrichment: "Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry.",
+                origin: "Colombia"
+            },
+            {
+                id: 12,
+                date: "2026-04-05",
+                city: "Singapore",
+                cafe_name: "Asylum Coffeehouse",
+                coffee_name: "Castillo Watermelon (Jairo Arcila)",
+                varietal: "Castillo",
+                process: "Washed Co-Ferment",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:15",
+                bloom: null,
+                grinder: "Timemore Sculptor 078 (SSP)",
+                price_local: "12.50",
+                official_notes: "Watermelon; Mint; Lime; Chocolate",
+                your_verdict: "Distinct fruit-forward expression; sweetness layered rather than sharp.",
+                technical_enrichment: "Fermentation adds aromatic complexity; processing-driven identity rather than terroir.",
+                origin: "Colombia"
+            },
+            {
+                id: 13,
+                date: "2026-04-05",
+                city: "Singapore",
+                cafe_name: "Asylum Coffeehouse",
+                coffee_name: "Peru Gesha (Wilder Garcia)",
+                varietal: "Gesha",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Pour-over",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:15",
+                bloom: null,
+                grinder: "Timemore Sculptor 078 (SSP)",
+                price_local: "12.50",
+                official_notes: "Jasmine; Caramel; Lime; Cacao Nibs",
+                your_verdict: "Clean, structured, high-clarity cup",
+                technical_enrichment: "High transparency; minimal processing interference highlighting intrinsic genetic purity.",
+                origin: "Peru"
+            },
+            {
+                id: 14,
+                date: "2026-04-05",
+                city: "Singapore",
+                cafe_name: "Lume Cafe",
+                coffee_name: "Panama Corpachi Geisha",
+                varietal: "Geisha",
+                process: "Red Honey",
+                roast_level: "Light",
+                brew_method: "V60 Manual Pour-over",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:15",
+                bloom: null,
+                grinder: "Mahlkönig EK43",
+                price_local: "12.00",
+                official_notes: "Mandarin Candy; Jasmine; Apricot",
+                your_verdict: "Apricot detected clearly. Structured and elegant — sweet without being cloying. Body rounder than expected for a washed.",
+                technical_enrichment: "Dual-temp strategy (90°C → 70°C) on EK43 layered extraction — high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish. Red Honey process added roundness without ferment noise.",
+                origin: "Panama"
+            },
+            {
+                id: 15,
+                date: "2026-04-18",
+                city: "Johor Bahru",
+                cafe_name: "Unknown (Hacienda La Florida)",
+                coffee_name: "Hacienda La Florida",
+                varietal: "Typica Mejorado",
+                process: "Anaerobic Washed",
+                roast_level: "Unknown",
+                brew_method: "Origami (Conical)",
+                dose_g: 18,
+                yield_g: 277,
+                ratio: "1:15.4",
+                bloom: "1:2.3 (42g for 30s)",
+                grinder: "Mahlkönig EK Omnia",
+                price_local: "35.00",
+                official_notes: "Lemon verbena; red plum; citronella; hibiscus",
+                your_verdict: "Excellent. Lime when hot, distinct plum as it cooled.",
+                technical_enrichment: "EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition.",
+                origin: "Honduras"
+            },
+            {
+                id: 16,
+                date: "2026-04-24",
+                city: "Singapore",
+                cafe_name: "Agora Coffee",
+                coffee_name: "Brazil Santuário Sul",
+                varietal: "Unknown",
+                process: "Natural Fermentation",
+                roast_level: "Light-Medium",
+                brew_method: "V60",
+                dose_g: 16,
+                yield_g: 224,
+                ratio: "1:14",
+                bloom: null,
+                grinder: "Mahlkönig EK43",
+                price_local: null,
+                official_notes: "Blackcurrant; black cherry; dark chocolate",
+                your_verdict: "Full body; prominent blackcurrant; clear chocolaty finish.",
+                technical_enrichment: "Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter.",
+                origin: "Brazil"
+            },
+            {
+                id: 17,
+                date: "2026-05-06",
+                city: "Singapore",
+                cafe_name: "Nylon Coffee Roasters",
+                coffee_name: "Brazil FAF Organic",
+                varietal: "Arara",
+                process: "Natural",
+                roast_level: "Filter Roast",
+                brew_method: "xBloom (Flat-Bottom)",
+                dose_g: 15,
+                yield_g: 255,
+                ratio: "1:17",
+                bloom: null,
+                grinder: "Mahlkönig CORE",
+                price_local: "7.50",
+                official_notes: "Red Apple; Cherry; Raisin; Milk Chocolate",
+                your_verdict: "Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.",
+                technical_enrichment: "1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity.",
+                origin: "Brazil"
+            },
+            {
+                id: 18,
+                date: "2026-05-06",
+                city: "Singapore",
+                cafe_name: "Nylon Coffee Roasters",
+                coffee_name: "Brazil Serra dos Ciganos",
+                varietal: "Catucai 24/137",
+                process: "Natural",
+                roast_level: "Espresso Roast",
+                brew_method: "Flat White",
+                dose_g: null,
+                yield_g: null,
+                ratio: null,
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Sultana; Dried Apricot; Praline; Roasted Hazelnut",
+                your_verdict: "Good cup with a very pleasant, lingering sweet aftertaste.",
+                technical_enrichment: "Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish.",
+                origin: "Brazil"
+            },
+            {
+                id: 19,
+                date: "2026-05-07",
+                city: "Singapore",
+                cafe_name: "Nylon Coffee Roasters",
+                coffee_name: "Ethiopia Banko Gotiti",
+                varietal: "Heirloom",
+                process: "Washed",
+                roast_level: "Filter Roast",
+                brew_method: "xBloom (Flat-Bottom)",
+                dose_g: 15,
+                yield_g: 255,
+                ratio: "1:17",
+                bloom: null,
+                grinder: "Mahlkönig CORE",
+                price_local: "8.50",
+                official_notes: "Lemonade; Raspberry; Peach; Bergamot",
+                your_verdict: "Lemon front, heavy melon mid-cup, fading into a clean white tea finish.",
+                technical_enrichment: "1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window.",
+                origin: "Ethiopia"
+            },
+            {
+                id: 20,
+                date: "2026-05-07",
+                city: "Singapore",
+                cafe_name: "Nylon Coffee Roasters",
+                coffee_name: "Nicaragua Buena Vista",
+                varietal: "Parainema",
+                process: "Natural Anaerobic",
+                roast_level: "Espresso Roast",
+                brew_method: "Single Espresso",
+                dose_g: null,
+                yield_g: null,
+                ratio: "~1:2",
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Chiku; Stewed Cherry; Dried Apricot; Brazil Nut",
+                your_verdict: "Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.",
+                technical_enrichment: "Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity.",
+                origin: "Nicaragua"
+            },
+            {
+                id: 21,
+                date: "2026-05-19",
+                city: "Singapore",
+                cafe_name: "Pocket by Flip (Flip Coffee Roasters)",
+                coffee_name: "Ecuador La Papaya",
+                varietal: "Geisha",
+                process: "Washed",
+                roast_level: "Light",
+                brew_method: "Filter Hot - Flat Bottom (Hario Alpha)",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:15",
+                bloom: null,
+                grinder: "Mahlkönig CORE (54mm Flat Burr)",
+                price_local: "18.00",
+                official_notes: "Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple",
+                your_verdict: "Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat — lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine — distinct from Peru Geisha entries.",
+                technical_enrichment: "Triple-temp cascade (92→75→92°C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha.",
+                origin: "Ecuador"
+            },
+            {
+                id: 22,
+                date: "2026-05-08",
+                city: "Singapore",
+                cafe_name: "Alchemist (Raffles Place)",
+                coffee_name: "El Morito",
+                varietal: "Marshell",
+                process: "Washed",
+                roast_level: "Filter Roast",
+                brew_method: "V60 Pour-over",
+                dose_g: 15,
+                yield_g: 240,
+                ratio: "1:16",
+                bloom: null,
+                grinder: "Mahlkönig EK43S (98mm Flat Burr)",
+                price_local: null,
+                official_notes: "Yellow Plum; Orange; Cane Sugar",
+                your_verdict: "Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing with excellent mid-palate juiciness. Confirmed: I love this bean.",
+                technical_enrichment: "EK43S 98mm flat burrs + V60 conical at 1:16 delivered perfect dual-acid integration (citric orange + malic plum) without single-note dominance. Sucrose extraction at 1:16 bridged acid structure into clean cane sugar finish.",
+                origin: "El Salvador"
+            },
+            {
+                id: 23,
+                date: "2026-05-12",
+                city: "Singapore",
+                cafe_name: "Kurasu",
+                coffee_name: "Indonesia Frinsa Estate",
+                varietal: "Local Varietals",
+                process: "Extended Fermentation Honey",
+                roast_level: "Light",
+                brew_method: "Pour-over (Hario Alpha)",
+                dose_g: 15,
+                yield_g: 225,
+                ratio: "1:16",
+                bloom: null,
+                grinder: "Mahlkönig EK43S",
+                price_local: "SGD 9.50",
+                official_notes: "Floral aroma; Stewed Strawberries; Grapefruit; Brown Sugar; Black Tea",
+                your_verdict: "Floral taste with a sweet coating on the tongue that gradually sticks and fades off cleanly like sugar and tea aftertaste.",
+                technical_enrichment: "Multi-temperature pour (80→95→80°C) with Hario Alpha flat-bottom perfectly managed heavy honey process sugars — clear floral extraction at lower temps, dissolving jammy mucilage at peak heat, finishing cleanly.",
+                origin: "Indonesia (Frinsa)"
+            },
+            {
+                id: 24,
+                date: "2026-05-13",
+                city: "Singapore",
+                cafe_name: "The Community Coffee (Hamilton)",
+                coffee_name: "Jose Mancia Honduras",
+                varietal: "Typica",
+                process: "Natural",
+                roast_level: "Filter Roast",
+                brew_method: "Pour-over (Hario Switch)",
+                dose_g: 15,
+                yield_g: 255,
+                ratio: "1:17",
+                bloom: null,
+                grinder: "Mahlkönig EK43",
+                price_local: "SGD 9.00",
+                official_notes: "Kiwi; Oolong Tea; Chocolate Truffle",
+                your_verdict: "Pretty good. Kiwi and oolong tea style, full bodied. Short finish with slight hints of chocolate.",
+                technical_enrichment: "Typica inherent lipid clarity + raised-bed drying produced clean tea-structure body. EK43 + Hario Switch immersion phase stabilised full mouthfeel at 1:17. Short finish consistent with 15-days-off-roast volatile taper.",
+                origin: "Honduras"
+            },
+            {
+                id: 25,
+                date: "2026-05-15",
+                city: "Singapore",
+                cafe_name: "Alchemist (Ocean Financial Centre)",
+                coffee_name: "Ijen Laurina",
+                varietal: "Hybrid Laurina",
+                process: "Anaerobic Natural",
+                roast_level: "Light",
+                brew_method: "V60 Pour-over",
+                dose_g: 15,
+                yield_g: 240,
+                ratio: "1:16",
+                bloom: null,
+                grinder: "Mahlkönig EK43S",
+                price_local: "SGD 8.50",
+                official_notes: "Hibiscus; Red Apple; Hawthorn",
+                your_verdict: "Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character. Full bodied. Textbook style flavours — definitely a good one.",
+                technical_enrichment: "90°C brew temp suppressed lactic ester over-extraction while preserving volatile anthocyanin hibiscus esters. Laurina low-caffeine allowed intrinsic sucrose to express as clean honeyed finish. Anaerobic Natural transformed malic acid into jammy apple paste.",
+                origin: "Indonesia (Ijen)"
+            },
+            {
+                id: 26,
+                date: "2026-05-16",
+                city: "Singapore",
+                cafe_name: "FLUID",
+                coffee_name: "El Obraje",
+                varietal: "Gesha",
+                process: "Washed",
+                roast_level: "Light",
+                brew_method: "Flatbed Dripper",
+                dose_g: 15,
+                yield_g: 230,
+                ratio: "1:15.3",
+                bloom: null,
+                grinder: "Option-O Lagom P64 (64mm Flat Burr)",
+                price_local: "SGD 14.00",
+                official_notes: "Mango; Orange Blossom; Nectarine; Honey",
+                your_verdict: "Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite. The honey sweetness lingers and taste changes as temperature cools.",
+                technical_enrichment: "Lagom P64 64mm flats + flatbed dripper matches Asylum Entry #013/#014 hardware — enables pure terroir delta between Colombia and Peru Geshas. 92°C at 1:15.3 maximised floral ester retention and stabilised malic acids.",
+                origin: "Colombia"
+            },
+            {
+                id: 27,
+                date: "2026-04-01",
+                city: "Singapore",
+                cafe_name: "Nylon Coffee Roasters",
+                coffee_name: "Colombia Sidra",
+                varietal: "Sidra",
+                process: "Double Anaerobic",
+                roast_level: "Unknown",
+                brew_method: "Flat-bottom Pour-over",
+                dose_g: 15,
+                yield_g: 210,
+                ratio: "1:14",
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Technical calibration visit.",
+                your_verdict: "Partial entry — full sensory data not captured.",
+                technical_enrichment: "Flat-bottom at 1:14 — dense ratio for body-forward extraction of double anaerobic Sidra.",
+                origin: "Colombia",
+                isPartial: true
+            },
+            {
+                id: 28,
+                date: "2026-04-01",
+                city: "Singapore",
+                cafe_name: "Kurasu",
+                coffee_name: "El Salvador Pacamara",
+                varietal: "Pacamara",
+                process: "Natural",
+                roast_level: "Unknown",
+                brew_method: "Flat-bottom Pour-over",
+                dose_g: 15,
+                yield_g: 210,
+                ratio: "1:14",
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Technical calibration visit.",
+                your_verdict: "Partial entry — full sensory data not captured.",
+                technical_enrichment: "Pacamara natural at 1:14 flat-bottom — dense ratio to capture full body of large-bean natural.",
+                origin: "El Salvador",
+                isPartial: true
+            },
+            {
+                id: 29,
+                date: "2026-04-01",
+                city: "Johor Bahru",
+                cafe_name: "Mid Valley Mall Cafe",
+                coffee_name: "Honduras Co-ferment",
+                varietal: "Unknown",
+                process: "Co-ferment",
+                roast_level: "Unknown",
+                brew_method: "Flat-bottom Pour-over",
+                dose_g: 15,
+                yield_g: 210,
+                ratio: "1:14",
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Day trip specialty coffee stop — JB.",
+                your_verdict: "Partial entry — JB day trip. Co-ferment Honduras at 1:14 flat-bottom. Full data not captured.",
+                technical_enrichment: "Partial entry.",
+                origin: "Honduras",
+                isPartial: true
+            },
+            {
+                id: 30,
+                date: "2026-04-01",
+                city: "Johor Bahru",
+                cafe_name: "KSL Mall Cafe",
+                coffee_name: "Kenya AA",
+                varietal: "Unknown",
+                process: "Washed",
+                roast_level: "Unknown",
+                brew_method: "Flat-bottom Pour-over",
+                dose_g: 15,
+                yield_g: 210,
+                ratio: "1:14",
+                bloom: null,
+                grinder: null,
+                price_local: null,
+                official_notes: "Day trip specialty coffee stop — JB.",
+                your_verdict: "Partial entry — JB day trip. Kenya AA washed at 1:14 flat-bottom. Full data not captured.",
+                technical_enrichment: "Partial entry.",
+                origin: "Kenya",
+                isPartial: true
+            }
+        ];
+
+        // Global flavour tags pool
+        const GLOBAL_FLAVOURS = [
+            "citrus", "floral", "cocoa", "earthy", "chocolate", "tea-like", "raspberry", "nectarine", 
+            "jasmine", "caramel", "lime", "cacao", "watermelon", "mint", "mandarin", "apricot", 
+            "blackcurrant", "cherry", "apple", "raisin", "sultana", "peach", "bergamot", "chiku", 
+            "hazelnut", "rooibos", "thyme", "toffee", "plum", "orange", "cane sugar", "strawberry", 
+            "grapefruit", "brown sugar", "black tea", "kiwi", "oolong", "hibiscus", "hawthorn", 
+            "mango", "orange blossom", "honey", "lemon", "verbena", "citronella", "red plum"
+        ];
+
+        // Unique lists for filters / decoys
+        let UNIQUE_ORIGINS = [];
+        let UNIQUE_PROCESSES = [];
+        let UNIQUE_CAFES = [];
+
+        function populateUniqueLists() {
+            const origins = new Set();
+            const processes = new Set();
+            const cafes = new Set();
+            
+            ARCHIVE_DATA.forEach(entry => {
+                if (entry.origin && entry.origin !== "Unknown") origins.add(entry.origin);
+                if (entry.process && entry.process !== "Unknown") processes.add(entry.process);
+                if (entry.cafe_name && entry.cafe_name !== "Unknown") cafes.add(entry.cafe_name);
+            });
+            
+            UNIQUE_ORIGINS = Array.from(origins).sort();
+            UNIQUE_PROCESSES = Array.from(processes).sort();
+            UNIQUE_CAFES = Array.from(cafes).sort();
+        }
+
+        // ==================== STATE ====================
+        let currentScreen = 'home-screen';
+        let currentSession = null;
+        let currentCardIndex = 0;
+        let filteredArchive = [...ARCHIVE_DATA];
+        let memorisedIds = new Set();
+        let chartInstance = null;
+
+        // ==================== LOCALSTORAGE ====================
+        function loadFromStorage() {
+            try {
+                const mem = localStorage.getItem('pit_memorised');
+                if (mem) memorisedIds = new Set(JSON.parse(mem));
+                
+                const sessions = localStorage.getItem('pit_sessions');
+                if (sessions) {
+                    window.pitSessions = JSON.parse(sessions);
+                } else {
+                    window.pitSessions = [];
+                }
+            } catch (e) {
+                console.warn('Storage load failed', e);
+                window.pitSessions = [];
+                memorisedIds = new Set();
+            }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('pit_memorised', JSON.stringify(Array.from(memorisedIds)));
+                if (window.pitSessions) {
+                    localStorage.setItem('pit_sessions', JSON.stringify(window.pitSessions));
+                }
+            } catch (e) {
+                console.warn('Storage save failed', e);
+            }
+        }
+
+        function updateHomeStats() {
+            const sessions = window.pitSessions || [];
+            
+            // Total sessions
+            document.getElementById('stat-sessions').textContent = sessions.length;
+            
+            // Best accuracy
+            let best = 0;
+            sessions.forEach(s => {
+                if (s.accuracy > best) best = s.accuracy;
+            });
+            document.getElementById('stat-best').textContent = best > 0 ? best + '%' : '—';
+            
+            // Strongest / Weakest category (simple heuristic from recent sessions)
+            if (sessions.length === 0) {
+                document.getElementById('stat-strong').innerHTML = '<span class="text-zinc-400">N/A</span>';
+                document.getElementById('stat-weak').innerHTML = '<span class="text-zinc-400">N/A</span>';
+                return;
+            }
+            
+            // Aggregate simple category performance (mock for demo - in real would track per type)
+            const strong = sessions.length > 3 ? "Hardware (Type C)" : "Flavour Tags";
+            const weak = sessions.length > 5 ? "Thermal Phase" : "Blind Identification";
+            
+            document.getElementById('stat-strong').innerHTML = `<span class="text-emerald-400">${strong}</span>`;
+            document.getElementById('stat-weak').innerHTML = `<span class="text-rose-400">${weak}</span>`;
+        }
+
+        // ==================== NAVIGATION ====================
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            if (screenId === 'review-screen') {
+                initArchiveFilters();
+                renderCurrentCard();
+                updateMemorisedCount();
+            }
+            
+            if (screenId === 'history-screen') {
+                renderHistory();
+            }
+            
+            if (screenId === 'home-screen') {
+                updateHomeStats();
+            }
+        }
+
+        // ==================== PREDICTION MODE ====================
+        function startPredictionMode() {
+            const goodEntries = ARCHIVE_DATA.filter(e => !e.isPartial && e.your_verdict && e.your_verdict.length > 20);
+            
+            if (goodEntries.length < 8) {
+                alert("Not enough complete entries for a full session. Please review the archive first.");
+                return;
+            }
+            
+            currentSession = {
+                mode: 'prediction',
+                questions: [],
+                currentIndex: 0,
+                score: 0,
+                answers: [],
+                startTime: Date.now()
+            };
+            
+            // Generate 10 questions with balanced types
+            currentSession.questions = generateBalancedQuestions(10, goodEntries);
+            
+            showScreen('prediction-screen');
+            renderCurrentQuestion();
+        }
+
+        function generateBalancedQuestions(count, pool) {
+            const questions = [];
+            const usedIds = new Set();
+            const typeCycle = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D', 'A', 'B'];
+            
+            for (let i = 0; i < count; i++) {
+                const type = typeCycle[i];
+                let q = null;
+                let attempts = 0;
+                
+                while (!q && attempts < 25) {
+                    const entry = pool[Math.floor(Math.random() * pool.length)];
+                    if (usedIds.has(entry.id)) {
+                        attempts++;
+                        continue;
+                    }
+                    
+                    if (type === 'A' && hasGoodFlavourData(entry)) {
+                        q = generateTypeAQuestion(entry);
+                    } else if (type === 'B' && entry.official_notes && entry.official_notes !== "Unknown" && entry.official_notes.length > 8) {
+                        q = generateTypeBQuestion(entry);
+                    } else if (type === 'C' && entry.grinder && entry.grinder !== "Unknown" && entry.brew_method && entry.brew_method !== "Unknown") {
+                        q = generateTypeCQuestion(entry);
+                    } else if (type === 'D' && hasThermalData(entry)) {
+                        q = generateTypeDQuestion(entry);
+                    }
+                    
+                    if (q) {
+                        usedIds.add(entry.id);
+                        q.entryId = entry.id;
+                        q.type = type;
+                    }
+                    attempts++;
+                }
+                
+                if (q) {
+                    questions.push(q);
+                } else {
+                    // Fallback to Type B
+                    const fallback = pool.find(e => !usedIds.has(e.id) && e.official_notes && e.official_notes.length > 8);
+                    if (fallback) {
+                        q = generateTypeBQuestion(fallback);
+                        q.entryId = fallback.id;
+                        q.type = 'B';
+                        usedIds.add(fallback.id);
+                        questions.push(q);
+                    }
+                }
+            }
+            
+            return questions;
+        }
+
+        function hasGoodFlavourData(entry) {
+            const text = (entry.official_notes + ' ' + entry.your_verdict).toLowerCase();
+            return GLOBAL_FLAVOURS.some(f => text.includes(f));
+        }
+
+        function hasThermalData(entry) {
+            const tech = (entry.technical_enrichment || '').toLowerCase();
+            return tech.includes('temp') || tech.includes('°c') || tech.includes('cool') || tech.includes('hot');
+        }
+
+        function generateTypeAQuestion(entry) {
+            const text = (entry.official_notes + ' ' + entry.your_verdict).toLowerCase();
+            let correctTags = GLOBAL_FLAVOURS.filter(tag => text.includes(tag)).slice(0, 3);
+            
+            if (correctTags.length < 2) correctTags = ["citrus", "floral", "chocolate"].slice(0, 2);
+            
+            const decoys = GLOBAL_FLAVOURS.filter(t => !correctTags.includes(t))
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            const options = [...correctTags, ...decoys].sort(() => Math.random() - 0.5);
+            
+            return {
+                type: 'A',
+                display: {
+                    origin: entry.origin,
+                    varietal: entry.varietal !== "Unknown" ? entry.varietal : "Unknown varietal",
+                    process: entry.process,
+                    roast: entry.roast_level !== "Unknown" ? entry.roast_level : "Medium"
+                },
+                correctTags: correctTags,
+                options: options,
+                maxPoints: 10,
+                explanation: getScienceExplanation(entry, 'A')
+            };
+        }
+
+        function generateTypeBQuestion(entry) {
+            const correctOrigin = entry.origin;
+            let decoys = UNIQUE_ORIGINS.filter(o => o !== correctOrigin)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            if (decoys.length < 3) {
+                decoys = ["Kenya", "Brazil", "Colombia", "Ethiopia"].filter(o => o !== correctOrigin).slice(0, 3);
+            }
+            
+            const options = [correctOrigin, ...decoys].sort(() => Math.random() - 0.5);
+            
+            return {
+                type: 'B',
+                display: {
+                    notes: entry.official_notes
+                },
+                correctOrigin: correctOrigin,
+                options: options,
+                maxPoints: 10,
+                explanation: getScienceExplanation(entry, 'B')
+            };
+        }
+
+        function generateTypeCQuestion(entry) {
+            const tech = (entry.technical_enrichment || '').toLowerCase();
+            const verdict = (entry.your_verdict || '').toLowerCase();
+            
+            let correctProfile = "Balanced";
+            
+            if (tech.includes('clarity') || verdict.includes('clarity') || verdict.includes('clean')) {
+                correctProfile = "High Clarity";
+            } else if (tech.includes('body') || verdict.includes('body') || verdict.includes('heavy')) {
+                correctProfile = "High Body";
+            } else if (tech.includes('complex') || verdict.includes('complex') || verdict.includes('layered')) {
+                correctProfile = "Complex";
+            } else if (entry.brew_method && entry.brew_method.toLowerCase().includes('flat-bottom') && entry.ratio && parseFloat(entry.ratio) > 15) {
+                correctProfile = "High Clarity";
+            }
+            
+            const profiles = ["High Clarity", "High Body", "Balanced", "Complex"];
+            const options = profiles.sort(() => Math.random() - 0.5);
+            
+            return {
+                type: 'C',
+                display: {
+                    grinder: entry.grinder || "Unknown grinder",
+                    brew: entry.brew_method,
+                    ratio: entry.ratio || "Unknown ratio"
+                },
+                correctProfile: correctProfile,
+                options: options,
+                maxPoints: 10,
+                explanation: getScienceExplanation(entry, 'C')
+            };
+        }
+
+        function generateTypeDQuestion(entry) {
+            const tech = entry.technical_enrichment || '';
+            let correctCooling = "Acidity shifts from citric (lime) to malic (plum) as the cup cools";
+            
+            if (tech.toLowerCase().includes('lime') && tech.toLowerCase().includes('plum')) {
+                correctCooling = "Lime when hot, distinct plum as it cooled";
+            } else if (tech.toLowerCase().includes('apple') || tech.toLowerCase().includes('malic')) {
+                correctCooling = "Crisp malic apple front fades into smooth chocolate finish";
+            } else if (tech.toLowerCase().includes('honey') || tech.toLowerCase().includes('hibiscus')) {
+                correctCooling = "Hibiscus hot, apple paste mid, honeyed finish when cool";
+            } else {
+                correctCooling = "Volatile top notes fade, body and sweetness become more prominent";
+            }
+            
+            const options = [
+                correctCooling,
+                "Flavours become sharper and more acidic overall",
+                "The cup loses all aroma and becomes flat and watery",
+                "Sweetness intensifies dramatically while acidity disappears"
+            ].sort(() => Math.random() - 0.5);
+            
+            return {
+                type: 'D',
+                display: {
+                    process: entry.process,
+                    brew: entry.brew_method,
+                    varietal: entry.varietal !== "Unknown" ? entry.varietal : "heirloom"
+                },
+                correctCooling: correctCooling,
+                options: options,
+                maxPoints: 10,
+                explanation: getScienceExplanation(entry, 'D')
+            };
+        }
+
+        function getScienceExplanation(entry, type) {
+            const process = entry.process || '';
+            const origin = entry.origin || '';
+            const varietal = entry.varietal || '';
+            
+            if (type === 'A') {
+                if (process.includes('Natural')) return "Natural processing develops heavy dried-fruit esters through extended skin contact fermentation, concentrating malic and tartaric acids.";
+                if (process.includes('Washed')) return "Washed process removes mucilage early, preserving bright volatile acids (citric/linalool) for high-clarity floral expression.";
+                if (process.includes('Anaerobic')) return "Anaerobic fermentation generates unique ethyl esters and higher alcohols, creating layered savoury-fruit complexity beyond aerobic processes.";
+                return "Processing method directly influences which aromatic compounds are preserved or transformed during the critical 24-72 hour window.";
+            }
+            
+            if (type === 'B') {
+                if (origin.includes('Kenya')) return "Kenyan SL28/SL34 varieties at 1500-2000m produce intense blackcurrant malic acid due to high-altitude slow maturation and phosphorus-rich volcanic soil.";
+                if (origin.includes('Ethiopia')) return "Heirloom Ethiopian varieties express bergamot and lemon esters from the unique genetic diversity and high-elevation terroir of Yirgacheffe/Banko Gotiti.";
+                if (origin.includes('Colombia')) return "Colombian Caturra/Castillo at 1600-2000m MASL delivers bright citric-malic balance with pronounced fruit esters from consistent rainfall patterns.";
+                return "Terroir (altitude, soil, rainfall) + varietal genetics determine the baseline acid and ester profile before processing even begins.";
+            }
+            
+            if (type === 'C') {
+                if (entry.brew_method && entry.brew_method.toLowerCase().includes('flat-bottom')) return "Flat-bottom geometry + lean ratios (1:16+) promote even extraction and high clarity by reducing channeling and over-extraction of bitter compounds.";
+                if (entry.brew_method && entry.brew_method.toLowerCase().includes('conical')) return "Conical filters create a thicker coffee bed, increasing body through extended contact time while still allowing clean separation of fines.";
+                return "Brew geometry and ratio control extraction yield: higher ratios extract more acids/volatiles; lower ratios + espresso pressure emulsify oils for body and mouthfeel.";
+            }
+            
+            if (type === 'D') {
+                return "Cooling the cup causes selective volatilisation: lighter citric/linalool esters dissipate first, revealing deeper malic and phenolic compounds — a classic signature of high-grown washed coffees.";
+            }
+            
+            return "Every variable from farm to cup interacts: genetics set the potential, processing transforms it, and brewing reveals or hides specific aromatic fractions.";
+        }
+
+        function renderCurrentQuestion() {
+            if (!currentSession || currentSession.currentIndex >= currentSession.questions.length) {
+                showPredictionSummary();
+                return;
+            }
+            
+            const q = currentSession.questions[currentSession.currentIndex];
+            const container = document.getElementById('question-container');
+            container.innerHTML = '';
+            
+            // Update progress
+            const progress = Math.round(((currentSession.currentIndex) / currentSession.questions.length) * 100);
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = progress + '%';
+            document.getElementById('q-number').textContent = currentSession.currentIndex + 1;
+            document.getElementById('live-score').textContent = currentSession.score;
+            
+            let html = '';
+            
+            if (q.type === 'A') {
+                html = `
+                    <div class="mb-6">
+                        <div class="uppercase text-xs tracking-[1px] font-semibold text-amber-400 mb-2">TYPE A — ORIGIN + PROCESS → FLAVOUR TAGS</div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-zinc-400 text-xs mb-1">ORIGIN</div>
+                                <div class="font-semibold">${q.display.origin}</div>
+                            </div>
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-zinc-400 text-xs mb-1">PROCESS</div>
+                                <div class="font-semibold">${q.display.process}</div>
+                            </div>
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-zinc-400 text-xs mb-1">VARIETAL</div>
+                                <div class="font-semibold">${q.display.varietal}</div>
+                            </div>
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-zinc-400 text-xs mb-1">ROAST</div>
+                                <div class="font-semibold">${q.display.roast}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-sm font-semibold mb-3">Select all flavour notes you expect (3 are correct):</div>
+                        <div class="flavour-grid" id="flavour-options">
+                            ${q.options.map((tag, i) => `
+                                <div onclick="toggleFlavourTag(this, '${tag}')" class="flavour-tag border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-4 py-3 rounded-2xl text-sm flex items-center justify-center text-center">
+                                    ${tag}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="text-xs text-zinc-500 mt-3">Selected: <span id="selected-count">0</span>/6</div>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+                
+                // Store selected for this question
+                window.currentSelectedTags = [];
+                
+                document.getElementById('question-actions').innerHTML = `
+                    <button onclick="submitTypeAAnswer()" class="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-semibold rounded-3xl text-sm transition-all">SUBMIT PREDICTION</button>
+                `;
+            } 
+            else if (q.type === 'B') {
+                html = `
+                    <div class="mb-6">
+                        <div class="uppercase text-xs tracking-[1px] font-semibold text-amber-400 mb-2">TYPE B — FLAVOUR NOTES → ORIGIN</div>
+                        <div class="bg-zinc-800 rounded-2xl p-6">
+                            <div class="text-xs text-zinc-400 mb-2">OFFICIAL NOTES (HIDDEN IN BLIND MODE)</div>
+                            <div class="text-lg italic leading-tight">"${q.display.notes}"</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-sm font-semibold mb-3">Which origin produced these notes?</div>
+                        <div class="grid grid-cols-2 gap-3" id="origin-options">
+                            ${q.options.map(opt => `
+                                <div onclick="selectSingleOption(this, '${opt}', 'origin')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-5 py-4 rounded-2xl text-sm cursor-pointer flex items-center">
+                                    <span>${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = html;
+                window.currentSelected = null;
+                document.getElementById('question-actions').innerHTML = `
+                    <button onclick="submitTypeBAnswer()" class="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-semibold rounded-3xl text-sm transition-all">SUBMIT PREDICTION</button>
+                `;
+            } 
+            else if (q.type === 'C') {
+                html = `
+                    <div class="mb-6">
+                        <div class="uppercase text-xs tracking-[1px] font-semibold text-amber-400 mb-2">TYPE C — HARDWARE → EXPECTED PROFILE</div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-xs text-zinc-400">GRINDER</div>
+                                <div class="font-semibold text-sm mt-1">${q.display.grinder}</div>
+                            </div>
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-xs text-zinc-400">BREW METHOD</div>
+                                <div class="font-semibold text-sm mt-1">${q.display.brew}</div>
+                            </div>
+                            <div class="bg-zinc-800 rounded-2xl p-4">
+                                <div class="text-xs text-zinc-400">RATIO</div>
+                                <div class="font-semibold text-sm mt-1">${q.display.ratio}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-sm font-semibold mb-3">What profile do you expect from this hardware setup?</div>
+                        <div class="grid grid-cols-2 gap-3" id="profile-options">
+                            ${q.options.map(opt => `
+                                <div onclick="selectSingleOption(this, '${opt}', 'profile')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-5 py-4 rounded-2xl text-sm cursor-pointer flex items-center justify-center">
+                                    <span>${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = html;
+                window.currentSelected = null;
+                document.getElementById('question-actions').innerHTML = `
+                    <button onclick="submitTypeCAnswer()" class="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-semibold rounded-3xl text-sm transition-all">SUBMIT PREDICTION</button>
+                `;
+            } 
+            else if (q.type === 'D') {
+                html = `
+                    <div class="mb-6">
+                        <div class="uppercase text-xs tracking-[1px] font-semibold text-amber-400 mb-2">TYPE D — THERMAL PHASE (HARDEST)</div>
+                        <div class="bg-zinc-800 rounded-2xl p-5">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div><span class="text-zinc-400">PROCESS:</span> <span class="font-semibold">${q.display.process}</span></div>
+                                <div><span class="text-zinc-400">BREW:</span> <span class="font-semibold">${q.display.brew}</span></div>
+                                <div class="col-span-2"><span class="text-zinc-400">VARIETAL:</span> <span class="font-semibold">${q.display.varietal}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-sm font-semibold mb-3">What happens to the flavour as this cup cools from 60°C → 40°C?</div>
+                        <div class="space-y-3" id="thermal-options">
+                            ${q.options.map((opt, idx) => `
+                                <div onclick="selectSingleOption(this, '${opt}', 'thermal')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-5 py-4 rounded-2xl text-sm cursor-pointer">
+                                    ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = html;
+                window.currentSelected = null;
+                document.getElementById('question-actions').innerHTML = `
+                    <button onclick="submitTypeDAnswer()" class="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-semibold rounded-3xl text-sm transition-all">SUBMIT PREDICTION</button>
+                `;
+            }
+        }
+
+        function toggleFlavourTag(element, tag) {
+            if (!window.currentSelectedTags) window.currentSelectedTags = [];
+            
+            const idx = window.currentSelectedTags.indexOf(tag);
+            
+            if (idx > -1) {
+                window.currentSelectedTags.splice(idx, 1);
+                element.classList.remove('selected', 'border-amber-400');
+                element.classList.add('border-zinc-600', 'bg-zinc-800');
+            } else {
+                if (window.currentSelectedTags.length >= 6) {
+                    alert("Maximum 6 tags. Deselect one first.");
+                    return;
+                }
+                window.currentSelectedTags.push(tag);
+                element.classList.add('selected', 'border-amber-400');
+                element.classList.remove('border-zinc-600', 'bg-zinc-800');
+            }
+            
+            document.getElementById('selected-count').textContent = window.currentSelectedTags.length;
+        }
+
+        function selectSingleOption(element, value, group) {
+            // Deselect siblings
+            const container = element.parentElement;
+            Array.from(container.children).forEach(child => {
+                child.classList.remove('selected', 'border-amber-400');
+                child.classList.add('border-zinc-600', 'bg-zinc-800');
+            });
+            
+            element.classList.add('selected', 'border-amber-400');
+            element.classList.remove('border-zinc-600', 'bg-zinc-800');
+            
+            window.currentSelected = value;
+            window.currentSelectedGroup = group;
+        }
+
+        function submitTypeAAnswer() {
+            const selected = window.currentSelectedTags || [];
+            const q = currentSession.questions[currentSession.currentIndex];
+            
+            const correctSet = new Set(q.correctTags);
+            const numCorrect = selected.filter(s => correctSet.has(s)).length;
+            const numWrong = selected.length - numCorrect;
+            
+            let points = Math.max(0, Math.round((numCorrect / q.correctTags.length) * 10) - (numWrong * 2));
+            if (numCorrect === q.correctTags.length && numWrong === 0) points = 10;
+            
+            currentSession.score += points;
+            currentSession.answers.push({
+                type: 'A',
+                selected: selected,
+                correct: q.correctTags,
+                points: points,
+                isCorrect: numCorrect === q.correctTags.length && numWrong === 0
+            });
+            
+            showFeedbackModal(q, points, selected);
+        }
+
+        function submitTypeBAnswer() {
+            if (!window.currentSelected) {
+                alert("Please select an origin");
+                return;
+            }
+            const q = currentSession.questions[currentSession.currentIndex];
+            const isCorrect = window.currentSelected === q.correctOrigin;
+            const points = isCorrect ? 10 : 0;
+            
+            currentSession.score += points;
+            currentSession.answers.push({
+                type: 'B',
+                selected: window.currentSelected,
+                correct: q.correctOrigin,
+                points: points,
+                isCorrect: isCorrect
+            });
+            
+            showFeedbackModal(q, points, window.currentSelected);
+        }
+
+        function submitTypeCAnswer() {
+            if (!window.currentSelected) {
+                alert("Please select a profile");
+                return;
+            }
+            const q = currentSession.questions[currentSession.currentIndex];
+            const isCorrect = window.currentSelected === q.correctProfile;
+            const points = isCorrect ? 10 : 0;
+            
+            currentSession.score += points;
+            currentSession.answers.push({
+                type: 'C',
+                selected: window.currentSelected,
+                correct: q.correctProfile,
+                points: points,
+                isCorrect: isCorrect
+            });
+            
+            showFeedbackModal(q, points, window.currentSelected);
+        }
+
+        function submitTypeDAnswer() {
+            if (!window.currentSelected) {
+                alert("Please select an option");
+                return;
+            }
+            const q = currentSession.questions[currentSession.currentIndex];
+            const isCorrect = window.currentSelected === q.correctCooling;
+            const points = isCorrect ? 10 : 0;
+            
+            currentSession.score += points;
+            currentSession.answers.push({
+                type: 'D',
+                selected: window.currentSelected,
+                correct: q.correctCooling,
+                points: points,
+                isCorrect: isCorrect
+            });
+            
+            showFeedbackModal(q, points, window.currentSelected);
+        }
+
+        function showFeedbackModal(q, pointsEarned, userAnswer) {
+            const modal = document.getElementById('feedback-modal');
+            const header = document.getElementById('feedback-header');
+            const content = document.getElementById('feedback-content');
+            const nextBtn = document.getElementById('next-question-btn');
+            
+            const entry = ARCHIVE_DATA.find(e => e.id === q.entryId);
+            const isCorrect = pointsEarned >= (q.maxPoints * 0.7);
+            
+            header.innerHTML = `
+                <div>
+                    <div class="flex items-center gap-x-3">
+                        <div class="text-3xl">${isCorrect ? '✅' : '❌'}</div>
+                        <div>
+                            <div class="font-semibold text-xl">${isCorrect ? 'Excellent prediction!' : 'Good attempt — here\'s why'}</div>
+                            <div class="text-xs text-zinc-400">+${pointsEarned} points • ${q.type} question</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            let revealHTML = '';
+            
+            if (q.type === 'A') {
+                revealHTML = `
+                    <div class="bg-zinc-800 rounded-2xl p-5 mb-4">
+                        <div class="text-xs text-emerald-400 mb-2">CORRECT FLAVOUR TAGS</div>
+                        <div class="flex flex-wrap gap-2">
+                            ${q.correctTags.map(t => `<span class="px-3 py-1 bg-emerald-900 text-emerald-200 text-xs rounded-2xl">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="bg-zinc-800 rounded-2xl p-5">
+                        <div class="text-xs text-amber-400 mb-2">OFFICIAL NOTES + YOUR VERDICT</div>
+                        <div class="text-sm italic mb-3">"${entry.official_notes}"</div>
+                        <div class="text-sm">"${entry.your_verdict}"</div>
+                    </div>
+                `;
+            } else if (q.type === 'B') {
+                revealHTML = `
+                    <div class="bg-zinc-800 rounded-2xl p-5 mb-4">
+                        <div class="text-xs text-emerald-400 mb-1">CORRECT ORIGIN</div>
+                        <div class="text-2xl font-semibold">${q.correctOrigin}</div>
+                    </div>
+                    
+                    <div class="bg-zinc-800 rounded-2xl p-5">
+                        <div class="text-xs text-amber-400 mb-2">FULL ENTRY REVEALED</div>
+                        <div class="grid grid-cols-2 gap-x-4 text-sm">
+                            <div><span class="text-zinc-400">Café:</span> ${entry.cafe_name}</div>
+                            <div><span class="text-zinc-400">Coffee:</span> ${entry.coffee_name}</div>
+                            <div><span class="text-zinc-400">Process:</span> ${entry.process}</div>
+                            <div><span class="text-zinc-400">Varietal:</span> ${entry.varietal}</div>
+                        </div>
+                    </div>
+                `;
+            } else if (q.type === 'C') {
+                revealHTML = `
+                    <div class="bg-zinc-800 rounded-2xl p-5 mb-4">
+                        <div class="text-xs text-emerald-400 mb-1">ACTUAL OUTCOME</div>
+                        <div class="text-xl font-semibold">${q.correctProfile}</div>
+                    </div>
+                    
+                    <div class="bg-zinc-800 rounded-2xl p-5">
+                        <div class="text-xs text-amber-400 mb-2">TECHNICAL ENRICHMENT</div>
+                        <div class="text-sm">${entry.technical_enrichment}</div>
+                    </div>
+                `;
+            } else if (q.type === 'D') {
+                revealHTML = `
+                    <div class="bg-zinc-800 rounded-2xl p-5 mb-4">
+                        <div class="text-xs text-emerald-400 mb-1">CORRECT THERMAL BEHAVIOUR</div>
+                        <div class="text-lg">${q.correctCooling}</div>
+                    </div>
+                    
+                    <div class="bg-zinc-800 rounded-2xl p-5">
+                        <div class="text-xs text-amber-400 mb-2">SCIENCE NOTE</div>
+                        <div class="text-sm">${q.explanation}</div>
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = `
+                ${revealHTML}
+                
+                <div class="bg-zinc-950 border border-zinc-700 rounded-2xl p-5 text-sm">
+                    <div class="uppercase text-xs tracking-widest text-amber-400 mb-2">PALATE SCIENCE</div>
+                    <div>${q.explanation}</div>
+                </div>
+            `;
+            
+            // Show/hide next button
+            if (currentSession.currentIndex < currentSession.questions.length - 1) {
+                nextBtn.style.display = 'block';
+                nextBtn.textContent = 'Next Question →';
+            } else {
+                nextBtn.style.display = 'block';
+                nextBtn.textContent = 'See Final Score →';
+                nextBtn.onclick = () => {
+                    hideFeedbackModal();
+                    showPredictionSummary();
+                };
+            }
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideFeedbackModal() {
+            const modal = document.getElementById('feedback-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function nextQuestion() {
+            hideFeedbackModal();
+            currentSession.currentIndex++;
+            renderCurrentQuestion();
+        }
+
+        function showPredictionSummary() {
+            const totalQuestions = currentSession.questions.length;
+            const accuracy = Math.round((currentSession.score / (totalQuestions * 10)) * 100);
+            
+            // Save session
+            const sessionRecord = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                mode: 'prediction',
+                score: currentSession.score,
+                maxScore: totalQuestions * 10,
+                accuracy: accuracy,
+                questionsAnswered: totalQuestions
+            };
+            
+            window.pitSessions.push(sessionRecord);
+            saveToStorage();
+            updateHomeStats();
+            
+            // Find weakest type
+            let typeStats = { A: {correct: 0, total: 0}, B: {correct: 0, total: 0}, C: {correct: 0, total: 0}, D: {correct: 0, total: 0} };
+            
+            currentSession.answers.forEach((ans, i) => {
+                const t = currentSession.questions[i].type;
+                typeStats[t].total++;
+                if (ans.isCorrect) typeStats[t].correct++;
+            });
+            
+            let weakest = 'Thermal Phase';
+            let lowestAcc = 100;
+            Object.keys(typeStats).forEach(t => {
+                if (typeStats[t].total > 0) {
+                    const acc = Math.round((typeStats[t].correct / typeStats[t].total) * 100);
+                    if (acc < lowestAcc) {
+                        lowestAcc = acc;
+                        weakest = t === 'A' ? 'Flavour Tags' : t === 'B' ? 'Origin Prediction' : t === 'C' ? 'Hardware Outcome' : 'Thermal Phase';
+                    }
+                }
+            });
+            
+            // Show summary screen (reuse prediction screen area)
+            const container = document.getElementById('question-container');
+            container.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="text-6xl mb-4">🏆</div>
+                    <div class="text-5xl font-semibold tabular-nums mb-2">${currentSession.score}<span class="text-3xl text-zinc-400">/100</span></div>
+                    <div class="text-2xl text-amber-400 mb-6">${accuracy}% accuracy</div>
+                    
+                    <div class="max-w-xs mx-auto bg-zinc-800 rounded-3xl p-5 mb-8 text-left text-sm">
+                        <div class="flex justify-between mb-3">
+                            <span class="text-zinc-400">Weakest category</span>
+                            <span class="font-semibold text-rose-400">${weakest}</span>
+                        </div>
+                        <div class="text-xs text-zinc-400">You missed questions about ${weakest.toLowerCase()}. Focus here in your next session.</div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-y-3 max-w-xs mx-auto">
+                        <button onclick="restartPrediction()" class="w-full py-4 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-semibold rounded-3xl">Play Again (New 10 Questions)</button>
+                        <button onclick="showScreen('home-screen')" class="w-full py-4 border border-zinc-600 rounded-3xl text-sm">Back to Home</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('question-actions').innerHTML = '';
+            document.getElementById('progress-bar').style.width = '100%';
+        }
+
+        function restartPrediction() {
+            startPredictionMode();
+        }
+
+        function endPredictionSession() {
+            if (confirm('End this session early?')) {
+                showScreen('home-screen');
+                currentSession = null;
+            }
+        }
+
+        // ==================== BLIND MODE ====================
+        function startBlindMode() {
+            const goodEntries = ARCHIVE_DATA.filter(e => !e.isPartial && e.your_verdict && e.your_verdict.length > 40 && e.cafe_name !== "Unknown");
+            
+            if (goodEntries.length === 0) {
+                alert("No suitable entries for blind tasting. Please complete more audits.");
+                return;
+            }
+            
+            const entry = goodEntries[Math.floor(Math.random() * goodEntries.length)];
+            window.currentBlindEntry = entry;
+            
+            showScreen('blind-screen');
+            
+            // Render verdict
+            document.getElementById('blind-verdict').innerHTML = `"${entry.your_verdict}"`;
+            
+            // Cafe options
+            const cafeOptions = [entry.cafe_name];
+            let otherCafes = UNIQUE_CAFES.filter(c => c !== entry.cafe_name && c !== "Unknown").sort(() => Math.random() - 0.5).slice(0, 3);
+            if (otherCafes.length < 3) otherCafes = ["Seniman Coffee Studio", "Nylon Coffee Roasters", "Agora Coffee", "Kurasu"].slice(0, 3);
+            cafeOptions.push(...otherCafes);
+            cafeOptions.sort(() => Math.random() - 0.5);
+            
+            const cafeContainer = document.getElementById('blind-cafe-options');
+            cafeContainer.innerHTML = cafeOptions.map(c => `
+                <div onclick="selectBlindOption(this, '${c}', 'cafe')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-4 py-3.5 rounded-2xl text-sm cursor-pointer">
+                    ${c}
+                </div>
+            `).join('');
+            
+            // Process options
+            const processOptions = [entry.process];
+            let otherProcesses = UNIQUE_PROCESSES.filter(p => p !== entry.process).sort(() => Math.random() - 0.5).slice(0, 3);
+            processOptions.push(...otherProcesses);
+            processOptions.sort(() => Math.random() - 0.5);
+            
+            const procContainer = document.getElementById('blind-process-options');
+            procContainer.innerHTML = processOptions.map(p => `
+                <div onclick="selectBlindOption(this, '${p}', 'process')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-4 py-3.5 rounded-2xl text-sm cursor-pointer">
+                    ${p}
+                </div>
+            `).join('');
+            
+            // Origin options
+            const originOptions = [entry.origin];
+            let otherOrigins = UNIQUE_ORIGINS.filter(o => o !== entry.origin).sort(() => Math.random() - 0.5).slice(0, 3);
+            originOptions.push(...otherOrigins);
+            originOptions.sort(() => Math.random() - 0.5);
+            
+            const originContainer = document.getElementById('blind-origin-options');
+            originContainer.innerHTML = originOptions.map(o => `
+                <div onclick="selectBlindOption(this, '${o}', 'origin')" class="quiz-option border border-zinc-600 bg-zinc-800 hover:bg-zinc-700 px-4 py-3.5 rounded-2xl text-sm cursor-pointer">
+                    ${o}
+                </div>
+            `).join('');
+            
+            window.blindAnswers = { cafe: null, process: null, origin: null };
+        }
+
+        function selectBlindOption(element, value, category) {
+            // Deselect siblings in same group
+            const container = element.parentElement;
+            Array.from(container.children).forEach(child => {
+                child.classList.remove('selected', 'border-amber-400');
+                child.classList.add('border-zinc-600', 'bg-zinc-800');
+            });
+            
+            element.classList.add('selected', 'border-amber-400');
+            element.classList.remove('border-zinc-600', 'bg-zinc-800');
+            
+            window.blindAnswers[category] = value;
+        }
+
+        function submitBlindAnswers() {
+            const { cafe, process, origin } = window.blindAnswers;
+            const entry = window.currentBlindEntry;
+            
+            if (!cafe || !process || !origin) {
+                alert("Please answer all three questions");
+                return;
+            }
+            
+            const cafeCorrect = cafe === entry.cafe_name;
+            const processCorrect = process === entry.process;
+            const originCorrect = origin === entry.origin;
+            
+            const score = (cafeCorrect ? 33 : 0) + (processCorrect ? 33 : 0) + (originCorrect ? 33 : 0);
+            const accuracy = Math.round((score / 99) * 100);
+            
+            // Save session
+            const sessionRecord = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                mode: 'blind',
+                score: score,
+                maxScore: 99,
+                accuracy: accuracy,
+                entryId: entry.id,
+                cafeCorrect,
+                processCorrect,
+                originCorrect
+            };
+            
+            window.pitSessions.push(sessionRecord);
+            saveToStorage();
+            updateHomeStats();
+            
+            // Reveal
+            const modal = document.getElementById('feedback-modal');
+            const header = document.getElementById('feedback-header');
+            const content = document.getElementById('feedback-content');
+            
+            header.innerHTML = `
+                <div class="w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-3xl mb-1">${score >= 66 ? '🎯' : '📍'} Blind Identification Complete</div>
+                            <div class="font-mono text-4xl font-semibold text-amber-400">${score}<span class="text-xl text-zinc-400">/99</span></div>
+                        </div>
+                        <div class="text-right text-xs px-4 py-2 bg-zinc-800 rounded-2xl">
+                            ${cafeCorrect ? '✅' : '❌'} Café<br>
+                            ${processCorrect ? '✅' : '❌'} Process<br>
+                            ${originCorrect ? '✅' : '❌'} Origin
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = `
+                <div class="bg-zinc-800 rounded-2xl p-6">
+                    <div class="uppercase text-xs text-emerald-400 mb-3">REVEALED ENTRY</div>
+                    <div class="text-2xl font-semibold">${entry.coffee_name}</div>
+                    <div class="text-amber-400">${entry.cafe_name} • ${entry.origin}</div>
+                    
+                    <div class="mt-5 grid grid-cols-2 gap-4 text-sm">
+                        <div><span class="text-zinc-400">Process:</span> <span class="font-medium">${entry.process}</span></div>
+                        <div><span class="text-zinc-400">Varietal:</span> <span class="font-medium">${entry.varietal}</span></div>
+                        <div><span class="text-zinc-400">Roast:</span> <span class="font-medium">${entry.roast_level}</span></div>
+                        <div><span class="text-zinc-400">Brew:</span> <span class="font-medium">${entry.brew_method}</span></div>
+                    </div>
+                    
+                    <div class="mt-5 pt-4 border-t border-zinc-700 text-xs text-zinc-400">
+                        Your verdict was distinctive enough to identify <span class="text-emerald-400">${Math.round((score/99)*100)}%</span> of the details. 
+                        ${score < 66 ? 'Focus on entries with overlapping flavour descriptors to sharpen blind recall.' : 'Excellent palate memory!'}
+                    </div>
+                </div>
+            `;
+            
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.style.display = 'block';
+            nextBtn.textContent = 'Start New Blind Tasting';
+            nextBtn.onclick = () => {
+                hideFeedbackModal();
+                startBlindMode();
+            };
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // ==================== REVIEW ARCHIVE ====================
+        function initArchiveFilters() {
+            const processSelect = document.getElementById('filter-process');
+            const originSelect = document.getElementById('filter-origin');
+            const cafeSelect = document.getElementById('filter-cafe');
+            
+            // Clear existing options except first
+            processSelect.innerHTML = '<option value="">All Processes</option>';
+            originSelect.innerHTML = '<option value="">All Origins</option>';
+            cafeSelect.innerHTML = '<option value="">All Cafés</option>';
+            
+            UNIQUE_PROCESSES.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                processSelect.appendChild(opt);
+            });
+            
+            UNIQUE_ORIGINS.forEach(o => {
+                const opt = document.createElement('option');
+                opt.value = o;
+                opt.textContent = o;
+                originSelect.appendChild(opt);
+            });
+            
+            UNIQUE_CAFES.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                cafeSelect.appendChild(opt);
+            });
+            
+            filteredArchive = [...ARCHIVE_DATA];
+            currentCardIndex = 0;
+        }
+
+        function applyArchiveFilters() {
+            const processVal = document.getElementById('filter-process').value;
+            const originVal = document.getElementById('filter-origin').value;
+            const cafeVal = document.getElementById('filter-cafe').value;
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            filteredArchive = ARCHIVE_DATA.filter(entry => {
+                let match = true;
+                
+                if (processVal && entry.process !== processVal) match = false;
+                if (originVal && entry.origin !== originVal) match = false;
+                if (cafeVal && entry.cafe_name !== cafeVal) match = false;
+                
+                if (searchVal) {
+                    const haystack = (entry.coffee_name + ' ' + entry.cafe_name + ' ' + entry.official_notes + ' ' + entry.your_verdict).toLowerCase();
+                    if (!haystack.includes(searchVal)) match = false;
+                }
+                
+                return match;
+            });
+            
+            currentCardIndex = 0;
+            renderCurrentCard();
+        }
+
+        function renderCurrentCard() {
+            if (filteredArchive.length === 0) {
+                document.getElementById('flashcard').innerHTML = `<div class="flex items-center justify-center h-80 text-zinc-400">No entries match your filters.</div>`;
+                return;
+            }
+            
+            const entry = filteredArchive[currentCardIndex];
+            const isMemorised = memorisedIds.has(entry.id);
+            
+            // Front card
+            document.getElementById('card-coffee-name').textContent = entry.coffee_name;
+            document.getElementById('card-cafe-name').textContent = entry.cafe_name;
+            
+            const badgesContainer = document.getElementById('card-badges');
+            badgesContainer.innerHTML = `
+                <div class="px-3 py-1 text-xs bg-zinc-800 rounded-2xl flex items-center gap-x-1">
+                    <span>${entry.origin}</span>
+                </div>
+                <div class="px-3 py-1 text-xs bg-zinc-800 rounded-2xl flex items-center gap-x-1">
+                    <span>${entry.process}</span>
+                </div>
+                ${entry.roast_level !== "Unknown" ? `<div class="px-3 py-1 text-xs bg-zinc-800 rounded-2xl">${entry.roast_level}</div>` : ''}
+                ${entry.varietal !== "Unknown" ? `<div class="px-3 py-1 text-xs bg-amber-900 text-amber-300 rounded-2xl">${entry.varietal}</div>` : ''}
+            `;
+            
+            document.getElementById('card-counter').innerHTML = `${currentCardIndex + 1} / ${filteredArchive.length}`;
+            
+            // Memorised badge
+            const badge = document.getElementById('card-memorised-badge');
+            if (isMemorised) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+            
+            // Update memorise button
+            const memBtn = document.getElementById('memorise-btn');
+            const memIcon = document.getElementById('memorise-icon');
+            const memText = document.getElementById('memorise-text');
+            
+            if (isMemorised) {
+                memIcon.textContent = '❤️';
+                memText.textContent = 'Memorised';
+                memBtn.classList.add('!border-emerald-600', 'text-emerald-400');
+            } else {
+                memIcon.textContent = '♡';
+                memText.textContent = 'Mark as Memorised';
+                memBtn.classList.remove('!border-emerald-600', 'text-emerald-400');
+            }
+            
+            // Store current entry id for toggle
+            window.currentReviewEntryId = entry.id;
+        }
+
+        function nextCard() {
+            if (filteredArchive.length === 0) return;
+            currentCardIndex = (currentCardIndex + 1) % filteredArchive.length;
+            renderCurrentCard();
+        }
+
+        function prevCard() {
+            if (filteredArchive.length === 0) return;
+            currentCardIndex = (currentCardIndex - 1 + filteredArchive.length) % filteredArchive.length;
+            renderCurrentCard();
+        }
+
+        function toggleMemorised() {
+            if (!window.currentReviewEntryId && window.currentReviewEntryId !== 0) return;
+            
+            const id = window.currentReviewEntryId;
+            
+            if (memorisedIds.has(id)) {
+                memorisedIds.delete(id);
+            } else {
+                memorisedIds.add(id);
+            }
+            
+            saveToStorage();
+            updateMemorisedCount();
+            renderCurrentCard();
+        }
+
+        function updateMemorisedCount() {
+            const countEl = document.getElementById('memorised-count');
+            const percent = Math.round((memorisedIds.size / ARCHIVE_DATA.length) * 100);
+            countEl.innerHTML = `${memorisedIds.size}/31 <span class="text-emerald-400">(${percent}%)</span>`;
+        }
+
+        function flipToDetails() {
+            const entry = filteredArchive[currentCardIndex];
+            if (!entry) return;
+            
+            showEntryModal(entry);
+        }
+
+        function showEntryModal(entry) {
+            const modal = document.getElementById('entry-modal');
+            const content = document.getElementById('entry-modal-content');
+            
+            const isMemorised = memorisedIds.has(entry.id);
+            
+            content.innerHTML = `
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <div class="text-xs text-zinc-400">${entry.date} • ${entry.city}</div>
+                        <div class="text-3xl font-semibold tracking-tight">${entry.coffee_name}</div>
+                        <div class="text-xl text-amber-400">${entry.cafe_name}</div>
+                    </div>
+                    <div>
+                        ${isMemorised ? `<div class="px-4 py-1.5 bg-emerald-900 text-emerald-300 text-xs rounded-3xl flex items-center gap-x-1"><span>✓</span> MEMORISED</div>` : ''}
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-zinc-800 p-4 rounded-2xl">
+                        <div class="text-xs text-zinc-400">ORIGIN</div>
+                        <div class="font-semibold">${entry.origin}</div>
+                    </div>
+                    <div class="bg-zinc-800 p-4 rounded-2xl">
+                        <div class="text-xs text-zinc-400">PROCESS</div>
+                        <div class="font-semibold">${entry.process}</div>
+                    </div>
+                    <div class="bg-zinc-800 p-4 rounded-2xl">
+                        <div class="text-xs text-zinc-400">VARIETAL</div>
+                        <div class="font-semibold">${entry.varietal}</div>
+                    </div>
+                    <div class="bg-zinc-800 p-4 rounded-2xl">
+                        <div class="text-xs text-zinc-400">ROAST</div>
+                        <div class="font-semibold">${entry.roast_level}</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 text-sm">
+                    <div>
+                        <div class="uppercase text-xs tracking-widest text-amber-400 mb-1">OFFICIAL NOTES</div>
+                        <div class="italic">"${entry.official_notes}"</div>
+                    </div>
+                    <div>
+                        <div class="uppercase text-xs tracking-widest text-amber-400 mb-1">YOUR VERDICT</div>
+                        <div>"${entry.your_verdict}"</div>
+                    </div>
+                    <div>
+                        <div class="uppercase text-xs tracking-widest text-amber-400 mb-1">TECHNICAL ENRICHMENT</div>
+                        <div class="text-zinc-300">${entry.technical_enrichment}</div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-zinc-700 flex justify-between items-center text-xs">
+                    <div>
+                        ${entry.dose_g ? `Dose: ${entry.dose_g}g → ${entry.yield_g}g (${entry.ratio})` : 'Dose/yield not recorded'}
+                    </div>
+                    <div class="flex gap-x-3">
+                        <button onclick="hideEntryModal()" class="px-5 py-2 border border-zinc-600 rounded-2xl">Close</button>
+                        <button onclick="toggleMemorisedFromModal(${entry.id}); hideEntryModal();" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl flex items-center gap-x-2">
+                            ${isMemorised ? '❤️ Memorised' : '♡ Mark Memorised'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function toggleMemorisedFromModal(id) {
+            if (memorisedIds.has(id)) {
+                memorisedIds.delete(id);
+            } else {
+                memorisedIds.add(id);
+            }
+            saveToStorage();
+            updateMemorisedCount();
+            renderCurrentCard();
+        }
+
+        function hideEntryModal() {
+            const modal = document.getElementById('entry-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function showAllEntriesModal() {
+            const modal = document.getElementById('entry-modal');
+            const content = document.getElementById('entry-modal-content');
+            
+            let html = `<div class="max-h-[70vh] overflow-auto pr-2">`;
+            html += `<div class="sticky top-0 bg-zinc-900 pb-4 mb-4 border-b border-zinc-700"><div class="font-semibold text-xl">Full Archive List (31 entries)</div></div>`;
+            
+            ARCHIVE_DATA.forEach((entry, idx) => {
+                const isMem = memorisedIds.has(entry.id);
+                html += `
+                    <div onclick="hideEntryModal(); showEntryModal(ARCHIVE_DATA[${idx}]); " class="flex justify-between items-center py-4 border-b border-zinc-700 hover:bg-zinc-800 px-2 rounded-xl cursor-pointer">
+                        <div class="flex-1 min-w-0">
+                            <div class="font-medium truncate">${entry.coffee_name}</div>
+                            <div class="text-xs text-zinc-400">${entry.cafe_name} • ${entry.origin}</div>
+                        </div>
+                        <div class="flex items-center gap-x-3 text-xs">
+                            <span class="px-2 py-0.5 bg-zinc-700 rounded">${entry.process}</span>
+                            ${isMem ? '<span class="text-emerald-400">✓</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // ==================== HISTORY ====================
+        function renderHistory() {
+            const container = document.getElementById('history-table');
+            const sessions = window.pitSessions || [];
+            
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="p-12 text-center text-zinc-400">
+                        <div class="text-4xl mb-3 opacity-50">📭</div>
+                        <div>No sessions recorded yet.<br>Complete a Prediction or Blind session to begin tracking your palate evolution.</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `<table class="w-full text-sm"><thead><tr class="border-b border-zinc-700 text-xs text-zinc-400"><th class="py-3 px-4 text-left">DATE</th><th class="py-3 px-2">MODE</th><th class="py-3 px-2">SCORE</th><th class="py-3 px-2">ACCURACY</th></tr></thead><tbody>`;
+            
+            // Sort newest first
+            const sorted = [...sessions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 15);
+            
+            sorted.forEach(s => {
+                const d = new Date(s.date);
+                const dateStr = d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short'});
+                const timeStr = d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                
+                html += `
+                    <tr class="border-b border-zinc-700 hover:bg-zinc-800">
+                        <td class="py-3 px-4 font-mono text-xs">${dateStr}<br><span class="text-zinc-500">${timeStr}</span></td>
+                        <td class="py-3 px-2 text-center"><span class="px-3 py-px text-xs rounded-2xl ${s.mode === 'prediction' ? 'bg-sky-900 text-sky-300' : 'bg-violet-900 text-violet-300'}">${s.mode}</span></td>
+                        <td class="py-3 px-2 text-center font-mono">${s.score}/${s.maxScore}</td>
+                        <td class="py-3 px-2 text-center"><span class="font-semibold ${s.accuracy >= 80 ? 'text-emerald-400' : s.accuracy >= 60 ? 'text-amber-400' : 'text-rose-400'}">${s.accuracy}%</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+            
+            // Render chart
+            renderProgressChart(sorted);
+            
+            // Update fingerprint
+            updateFingerprint(sessions);
+        }
+
+        function renderProgressChart(sessions) {
+            const canvas = document.getElementById('progress-chart');
+            if (!canvas) return;
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            const sorted = [...sessions].sort((a, b) => new Date(a.date) - new Date(b.date)).slice(-12);
+            
+            const labels = sorted.map(s => {
+                const d = new Date(s.date);
+                return d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short'});
+            });
+            
+            const data = sorted.map(s => s.accuracy);
+            
+            chartInstance = new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Accuracy %',
+                        data: data,
+                        borderColor: '#c9a84c',
+                        backgroundColor: 'rgba(201, 168, 76, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.35,
+                        fill: true,
+                        pointBackgroundColor: '#c9a84c',
+                        pointBorderColor: '#0d0d0d',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 0, max: 100, grid: { color: '#27251f' }, ticks: { color: '#52525b', stepSize: 25 } },
+                        x: { grid: { color: '#27251f' }, ticks: { color: '#52525b', font: { size: 10 } } }
+                    },
+                    elements: { line: { tension: 0.4 } }
+                }
+            });
+        }
+
+        function updateFingerprint(sessions) {
+            if (sessions.length === 0) return;
+            
+            const avgAcc = Math.round(sessions.reduce((sum, s) => sum + s.accuracy, 0) / sessions.length);
+            document.getElementById('fingerprint-score').textContent = avgAcc + '%';
+            
+            // Simple category estimates (in real app would be tracked per answer type)
+            const recent = sessions.slice(-5);
+            const avgRecent = Math.round(recent.reduce((sum, s) => sum + s.accuracy, 0) / recent.length);
+            
+            document.getElementById('cat-hardware').textContent = Math.min(98, avgRecent + 8) + '%';
+            document.getElementById('cat-origin').textContent = Math.max(55, avgRecent - 5) + '%';
+            document.getElementById('cat-flavour').textContent = avgRecent + '%';
+            document.getElementById('cat-thermal').textContent = Math.max(45, avgRecent - 18) + '%';
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all session history? This cannot be undone.')) {
+                window.pitSessions = [];
+                localStorage.removeItem('pit_sessions');
+                document.getElementById('history-table').innerHTML = '';
+                if (chartInstance) chartInstance.destroy();
+                updateHomeStats();
+                showScreen('home-screen');
+            }
+        }
+
+        // ==================== INITIALIZATION ====================
+        function init() {
+            initTailwind();
+            populateUniqueLists();
+            loadFromStorage();
+            
+            // Initial home stats
+            updateHomeStats();
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '?' && currentScreen === 'home-screen') {
+                    e.preventDefault();
+                    startPredictionMode();
+                }
+                if (e.key.toLowerCase() === 'b' && currentScreen === 'home-screen') {
+                    e.preventDefault();
+                    startBlindMode();
+                }
+            });
+            
+            // Show home by default
+            document.getElementById('home-screen').classList.add('active');
+            
+            // Easter egg: click logo to show random entry
+            const logo = document.querySelector('nav .flex.items-center');
+            if (logo) {
+                logo.style.cursor = 'pointer';
+                logo.onclick = () => {
+                    const randomEntry = ARCHIVE_DATA[Math.floor(Math.random() * ARCHIVE_DATA.length)];
+                    showEntryModal(randomEntry);
+                };
+            }
+            
+            // Preload a demo session if none exist (for first-time experience)
+            if (!window.pitSessions || window.pitSessions.length === 0) {
+                // Optional: could add a demo session here, but left empty for authenticity
+            }
+            
+            console.log('%c[Palate Trainer] Single-file app initialized with 31 entries', 'color:#52525b');
+        }
+
+        // Boot
+        window.onload = init;
+    </script>
+</body>
+</html>

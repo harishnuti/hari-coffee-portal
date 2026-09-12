@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hari's Coffee Archive 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@300;400;500&amp;display=swap');
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+            background-color: #1F1812;
+            color: #F5F0E6;
+        }
+        
+        .heading-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .premium-card {
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                        box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid #3C2F2F;
+            background: #2A211B;
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.35);
+            border-color: #C9A66B;
+        }
+
+        .section-header {
+            font-size: 2.2rem;
+            letter-spacing: -0.035em;
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#1F1812] text-[#F5F0E6]">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-[#1F1812]/95 backdrop-blur-xl border-b border-[#3C2F2F]">
+        <div class="max-w-7xl mx-auto px-8 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-[#C9A66B] rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-mug-hot text-[#1F1812]"></i>
+                </div>
+                <span class="heading-serif text-3xl tracking-tight">Hari's Coffee Archive 2026</span>
+            </div>
+            <button onclick="exportBeautifulPDF()" class="px-6 py-2.5 bg-[#C9A66B] text-[#1F1812] font-medium rounded-2xl flex items-center gap-x-2 active:scale-[0.985]">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>Export PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="max-w-5xl mx-auto px-8 pt-14 pb-10 text-center">
+        <div class="inline-block px-5 py-1.5 rounded-full bg-[#3C2F2F] text-[#C9A66B] text-xs tracking-[3.5px] mb-6">
+            34 ENTRIES • JANUARY – JUNE 2026
+        </div>
+        <h1 class="heading-serif text-7xl tracking-tighter leading-none mb-5">
+            Hari's Coffee<br>Archive <span class="text-[#C9A66B]">2026</span>
+        </h1>
+        <p class="max-w-md mx-auto text-xl text-[#C9A66B]/80">
+            A personal memoir of specialty coffee exploration.
+        </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="max-w-6xl mx-auto px-8 pb-12">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="bg-[#2A211B] rounded-3xl p-6 border border-[#3C2F2F]"><div class="text-[#C9A66B] text-xs tracking-widest">ENTRIES</div><div class="text-5xl font-semibold mt-1">34</div></div>
+            <div class="bg-[#2A211B] rounded-3xl p-6 border border-[#3C2F2F]"><div class="text-[#C9A66B] text-xs tracking-widest">CITIES</div><div class="text-5xl font-semibold mt-1">8</div></div>
+            <div class="bg-[#2A211B] rounded-3xl p-6 border border-[#3C2F2F]"><div class="text-[#C9A66B] text-xs tracking-widest">ORIGINS</div><div class="text-5xl font-semibold mt-1">14</div></div>
+            <div class="bg-[#2A211B] rounded-3xl p-6 border border-[#3C2F2F]"><div class="text-[#C9A66B] text-xs tracking-widest">PROCESSES</div><div class="text-5xl font-semibold mt-1">11</div></div>
+            <div class="bg-[#2A211B] rounded-3xl p-6 border border-[#3C2F2F]"><div class="text-[#C9A66B] text-xs tracking-widest">STANDOUTS</div><div class="text-3xl font-semibold mt-1">Top 5</div></div>
+        </div>
+    </div>
+
+    <!-- Top 5 -->
+    <div class="max-w-7xl mx-auto px-8 pb-16">
+        <div class="mb-8">
+            <span class="text-[#C9A66B] text-xs tracking-[3px]">CURATED</span>
+            <h2 class="heading-serif section-header">Top 5 Most Memorable Cups</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-5" id="top5-grid"></div>
+    </div>
+
+    <!-- Journey Timeline -->
+    <div class="max-w-5xl mx-auto px-8 pb-16">
+        <div class="mb-8">
+            <span class="text-[#C9A66B] text-xs tracking-[3px]">THE JOURNEY</span>
+            <h2 class="heading-serif section-header">Recent Entries</h2>
+        </div>
+        <div id="timeline-container" class="space-y-4"></div>
+    </div>
+
+    <!-- Archive Explorer -->
+    <div id="explorer" class="bg-[#2A211B] py-14">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-8">
+                <span class="text-[#C9A66B] text-xs tracking-[3px]">EXPLORER</span>
+                <h2 class="heading-serif section-header">Archive Explorer</h2>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 mb-6">
+                <input type="text" id="search" placeholder="Search notes, origins, cafes..." class="flex-1 min-w-[260px] bg-[#1F1812] border border-[#3C2F2F] focus:border-[#C9A66B] rounded-2xl px-5 py-3 text-sm" onkeyup="filterGallery()">
+                <select id="filter-city" onchange="filterGallery()" class="bg-[#1F1812] border border-[#3C2F2F] focus:border-[#C9A66B] rounded-2xl px-4 py-3 text-sm min-w-[160px]"><option value="">All Cities</option></select>
+                <select id="filter-process" onchange="filterGallery()" class="bg-[#1F1812] border border-[#3C2F2F] focus:border-[#C9A66B] rounded-2xl px-4 py-3 text-sm min-w-[160px]"><option value="">All Processes</option></select>
+            </div>
+            
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="max-w-6xl mx-auto px-8 py-16">
+        <div class="mb-6">
+            <span class="text-[#C9A66B] text-xs tracking-[3px]">GEOGRAPHY</span>
+            <h2 class="heading-serif section-header">Coffee Map</h2>
+        </div>
+        <div id="map-container" class="h-[400px] rounded-3xl overflow-hidden border border-[#3C2F2F]"></div>
+    </div>
+
+    <!-- Brew Lab + Flavor DNA -->
+    <div class="max-w-6xl mx-auto px-8 pb-16">
+        <div class="grid lg:grid-cols-2 gap-6">
+            <div class="bg-[#2A211B] rounded-3xl p-8 border border-[#3C2F2F]">
+                <div class="text-sm text-[#C9A66B] tracking-widest mb-4">BREW RATIOS</div>
+                <canvas id="ratioChart" height="140"></canvas>
+            </div>
+            <div class="bg-[#2A211B] rounded-3xl p-8 border border-[#3C2F2F]">
+                <div class="text-sm text-[#C9A66B] tracking-widest mb-4">PROCESS DISTRIBUTION</div>
+                <canvas id="processChart" height="140"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-xs text-[#C9A66B]/50 py-8 border-t border-[#3C2F2F]">
+        Hari's Coffee Archive 2026 • 34 entries
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" onclick="if(event.target.id==='modal') closeModal()" class="hidden fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="bg-[#1F1812] max-w-2xl w-full rounded-3xl border border-[#C9A66B]/30 p-8 luxury-shadow">
+            <div id="modal-content"></div>
+            <button onclick="closeModal()" class="mt-6 w-full py-3 bg-[#2A211B] rounded-2xl text-sm">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== FULL DATA ====================
+        const coffeeData = [
+            {"id":1,"Date":"2026-01-03","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Bali Karana Kintamanis","Origin":"Kintamani, Bali","Process":"Natural","Verdict":"Excellent clarity for a natural process; clean citrus and floral notes.","Context":"Bali family trip"},
+            {"id":2,"Date":"2026-01-04","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Sulawesi Toraja","Origin":"Sulawesi, Indonesia","Process":"Wet-Hulled","Verdict":"Heavy body with rich cocoa and earthy notes; low acidity; dense mouthfeel.","Context":"Bali family trip"},
+            {"id":3,"Date":"2026-02-10","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Kiamugumo AA","Origin":"Kenya","Process":"Washed","Verdict":"Excellent baseline for clarity; high clarity phosphoric acidity with distinct blackcurrant notes.","Context":"Solo specialty calibration"},
+            {"id":4,"Date":"2026-03-01","City":"Mumbai","Cafe_Name":"Subko Coffee Roasters","Coffee_Name":"Project Pearl Ratnagiri","Origin":"India","Process":"Anaerobic Natural","Verdict":"Clean and balanced; interesting but restrained anaerobic expression.","Context":"Mumbai café exploration"},
+            {"id":5,"Date":"2026-03-08","City":"Mumbai","Cafe_Name":"Grey Soul Coffee Roasters","Coffee_Name":"Raspberry in Loop - Zoya Estate","Origin":"India","Process":"Multi-stage Anaerobic","Verdict":"Heavy body; over-smoothed expression muted brightness and terroir.","Context":"Mumbai café exploration"},
+            {"id":6,"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Narrative Coffee Stand","Coffee_Name":"Finca La Siberia","Origin":"El Salvador","Process":"Natural","Verdict":"Stewed apples; Apricot; Pu'er tea — Aanya's first specialty filter experience.","Context":"Father-daughter coffee exploration"},
+            {"id":7,"Date":"2026-03-18","City":"Singapore","Cafe_Name":"ASK Coffee Roastery","Coffee_Name":"Honduras Masaguara (S13)","Origin":"Honduras","Process":"Washed Co-Ferment","Verdict":"Premium but memorable; highly complex tropical profile.","Context":"Father-daughter coffee exploration"},
+            {"id":8,"Date":"2026-03-18","City":"Singapore","Cafe_Name":"ASK Coffee Roastery","Coffee_Name":"House Blend","Origin":"Unknown","Process":"Espresso Roast","Verdict":"Great milk integration; excellent concentrated cocoa expression.","Context":"Father-daughter coffee exploration"},
+            {"id":9,"Date":"2026-03-22","City":"Singapore","Cafe_Name":"Apartment (Selegie Rd)","Coffee_Name":"Colombia Don Gallego - Wush Wush","Origin":"Colombia","Process":"Washed","Verdict":"Incredible tea-like clarity; transparent floral expression.","Context":"Solo specialty calibration"},
+            {"id":10,"Date":"2026-03-24","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Ndiaini AA","Origin":"Kenya","Process":"Washed","Verdict":"Acidic and interesting; well balanced; high clarity.","Context":"Solo specialty calibration"},
+            {"id":11,"Date":"2026-03-25","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Nicaragua Matagalpa - Finca La Virgen","Origin":"Nicaragua","Process":"Fully Washed","Verdict":"Solid milk beverage; clean apple acidity preserved in milk integration.","Context":"Solo specialty calibration"},
+            {"id":12,"Date":"2026-03-27","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Ethiopia Yirgacheffe Beloya","Origin":"Yirgacheffe, Ethiopia","Process":"Natural","Verdict":"Bright, floral, and distinct strawberry; classic natural Ethiopian profile.","Context":"Solo specialty calibration"},
+            {"id":13,"Date":"2026-03-28","City":"Singapore","Cafe_Name":"Tiong Hoe Specialty Coffee","Coffee_Name":"Brazil Mogiana","Origin":"Mogiana, Brazil","Process":"Natural","Verdict":"Chocolate-heavy and satisfying; classic dense Brazilian profile.","Context":"Solo specialty calibration"},
+            {"id":14,"Date":"2026-03-28","City":"Singapore","Cafe_Name":"Tiong Hoe Specialty Coffee","Coffee_Name":"Smoky Quartz Blend","Origin":"Brazil + India","Process":"Espresso Roast","Verdict":"Strong milk side calibration; excellent concentrated cocoa expression.","Context":"Solo specialty calibration"},
+            {"id":15,"Date":"2026-03-29","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Peru Cajamarca Gesha (Iced)","Origin":"Cajamarca, Peru","Process":"Washed","Verdict":"Super floral and elegant; flash-chilled expression of Gesha purity.","Context":"Solo specialty calibration"},
+            {"id":16,"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Maxi Coffee Bar","Coffee_Name":"La Laja","Origin":"Cauca, Colombia","Process":"Washed","Verdict":"Nectarine and raspberry extremely clear; barista sophistication superb; technical milestone.","Context":"CBD lunch calibration"},
+            {"id":17,"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Lume Café","Coffee_Name":"Corpachi Panama Geisha","Origin":"Boquerón, Chiriquí, Panama","Process":"Red Honey","Verdict":"Clearly perceived apricot and structured sweetness.","Context":"Rainy CBD lunch calibration"},
+            {"id":18,"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Castillo Watermelon (Jairo Arcila)","Origin":"Armenia, Quindío, Colombia","Process":"Washed Co-Ferment (Watermelon Anaerobic)","Verdict":"Distinct fruit-forward expression; sweetness layered rather than sharp.","Context":"Father-daughter coffee session"},
+            {"id":19,"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Peru Gesha (Wilder Garcia)","Origin":"Jaén, Peru","Process":"Washed","Verdict":"Clean, structured, high-clarity cup; apricot-like sweetness and excellent structure.","Context":"Father-daughter coffee session"},
+            {"id":20,"Date":"2026-04-08","City":"Singapore","Cafe_Name":"Maxi Coffee Bar","Coffee_Name":"La Villa #1","Origin":"Huila, Colombia","Process":"Natural","Verdict":"Dense fruit profile with rounded sweetness.","Context":"Lunch catch-up with Yichen"},
+            {"id":21,"Date":"2026-04-18","City":"Johor Bahru","Cafe_Name":"Unknown","Coffee_Name":"Hacienda La Florida","Origin":"Unknown","Process":"Anaerobic Washed","Verdict":"Excellent. Lime when hot, distinct plum as it cooled.","Context":"Travel day"},
+            {"id":22,"Date":"2026-04-24","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Brazil Santuário Sul","Origin":"Carmo de Minas, Brazil","Process":"Natural Fermentation","Verdict":"Full body; prominent blackcurrant; clear chocolaty finish.","Context":"Midday specialty calibration"},
+            {"id":23,"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil FAF Organic (Arara)","Origin":"Brazil","Process":"Natural","Verdict":"Solid body with crisp green apple front, resolving into smooth milk chocolate finish.","Context":"Solo visit"},
+            {"id":24,"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil Serra dos Ciganos","Origin":"Brazil","Process":"Natural","Verdict":"Good cup with pleasant lingering sweet aftertaste.","Context":"Solo visit"},
+            {"id":25,"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Ethiopia Banko Gotiti","Origin":"Ethiopia","Process":"Washed","Verdict":"Lemon front, heavy melon mid-cup, fading into clean white tea finish.","Context":"Solo visit"},
+            {"id":26,"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Nicaragua Buena Vista (Parainema)","Origin":"Nicaragua","Process":"Natural Anaerobic","Verdict":"Thick, syrupy body. Highly fermented, savory/not sweet, very long lingering finish.","Context":"Solo visit"},
+            {"id":27,"Date":"2026-06-10","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Colombia Juan Martin (Red Striped Bourbon)","Origin":"Colombia","Process":"Washed","Verdict":"Orange-type aromatic afterfeel when hot — bright and encapsulating. Sugars emerge cleanly as it cools.","Context":"Solo visit — office lunch break"},
+            {"id":28,"Date":"2026-06-13","City":"Singapore","Cafe_Name":"Kurasu","Coffee_Name":"Rwanda Nkara Soil Project Lot 1204","Origin":"Rwanda","Process":"Fully Washed","Verdict":"Baked apple dominates and persists across all phases. Slight bitterness from conical geometry.","Context":"Solo visit — 13 Jun 2026"},
+            {"id":29,"Date":"2026-06-14","City":"Singapore","Cafe_Name":"Keryi Coffee","Coffee_Name":"Colombia Finca La Esmaralda (Gesha)","Origin":"Colombia","Process":"Honey","Verdict":"Smooth body throughout. Lychee & white florals lead in the hot phase. Fragile linalool survived tight 1:14 concentration.","Context":"Solo relaxation visit — Sunday 14 Jun 2026"},
+            {"id":30,"Date":"2026-06-19","City":"Singapore","Cafe_Name":"Equate","Coffee_Name":"Colombia Huila La Pradera (Gesha)","Origin":"Colombia, Huila","Process":"Washed","Verdict":"Strong isolated peach note but jam/honey sweetness underdeveloped.","Context":"Minimalist 2nd-floor cafe, dog-friendly"},
+            {"id":31,"Date":"2026-06-19","City":"Singapore","Cafe_Name":"Corner Corner","Coffee_Name":"Malaysia My Liberica","Origin":"Malaysia, Kulai, Johor","Process":"JH Natural (Jekyll & Hyde)","Verdict":"Interesting and approachable. First non-arabica capture in the archive. Picked out longan-type fruit.","Context":"Vinyl-record listening bar/cafe"},
+            {"id":32,"Date":"2026-06-21","City":"Singapore","Cafe_Name":"Apartment (Jalan Riang)","Coffee_Name":"Colombia Javier Quintero","Origin":"Inza, Cauca, Colombia","Process":"Washed","Verdict":"White peach dominant, well-balanced; clean washed expression, very enjoyable.","Context":"First visit to this branch"},
+            {"id":33,"Date":"2026-06-21","City":"Singapore","Cafe_Name":"Apartment (Jalan Riang)","Coffee_Name":"Colombia Javier Quintero (repeat)","Origin":"Inza, Cauca, Colombia","Process":"Washed","Verdict":"Confirmed white peach clarity on return tasting.","Context":"Return visit same day"},
+            {"id":34,"Date":"2026-06-21","City":"Singapore","Cafe_Name":"Apartment (Jalan Riang)","Coffee_Name":"Colombia Javier Quintero (third tasting)","Origin":"Inza, Cauca, Colombia","Process":"Washed","Verdict":"Final confirmation of exceptional clarity and peach-forward profile on this lot.","Context":"Third tasting — confirming consistency"}
+        ];
+
+        // ==================== RENDER FUNCTIONS ====================
+        function renderTop5() {
+            const grid = document.getElementById('top5-grid');
+            grid.innerHTML = '';
+            const top5Ids = [16, 29, 17, 9, 18];
+            
+            top5Ids.forEach(id => {
+                const entry = coffeeData.find(e => e.id === id);
+                if (!entry) return;
+                
+                const card = document.createElement('div');
+                card.className = `premium-card rounded-3xl overflow-hidden border border-[#3C2F2F] cursor-pointer`;
+                card.innerHTML = `
+                    <div class="h-1.5 bg-gradient-to-r from-[#C9A66B] to-transparent"></div>
+                    <div class="p-5">
+                        <div class="font-semibold">${entry.Coffee_Name}</div>
+                        <div class="text-sm text-[#C9A66B]/70">${entry.Cafe_Name}</div>
+                        <div class="mt-3 text-sm text-[#F5F0E6]/90 line-clamp-3">${entry.Verdict}</div>
+                    </div>
+                `;
+                card.onclick = () => showModal(entry);
+                grid.appendChild(card);
+            });
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+            const sorted = [...coffeeData].sort((a, b) => new Date(b.Date) - new Date(a.Date));
+            
+            sorted.forEach(entry => {
+                const el = document.createElement('div');
+                el.className = `premium-card rounded-3xl p-6 cursor-pointer`;
+                el.innerHTML = `
+                    <div class="flex justify-between">
+                        <div>
+                            <div class="font-semibold">${entry.Coffee_Name}</div>
+                            <div class="text-sm text-[#C9A66B]/80">${entry.Cafe_Name} • ${entry.City}</div>
+                        </div>
+                        <span class="text-xs px-3 py-1 bg-[#3C2F2F] rounded-full self-start">${entry.Process}</span>
+                    </div>
+                `;
+                el.onclick = () => showModal(entry);
+                container.appendChild(el);
+            });
+        }
+
+        function renderGallery(filtered = coffeeData) {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            
+            filtered.forEach(entry => {
+                const card = document.createElement('div');
+                card.className = `premium-card rounded-3xl overflow-hidden border border-[#3C2F2F] cursor-pointer`;
+                card.innerHTML = `
+                    <div class="h-1.5 bg-gradient-to-r from-[#C9A66B] to-transparent"></div>
+                    <div class="p-5">
+                        <div class="flex justify-between">
+                            <div class="font-semibold">${entry.Coffee_Name}</div>
+                            <span class="text-xs px-3 py-1 bg-[#3C2F2F] rounded-full">${entry.Process}</span>
+                        </div>
+                        <div class="text-sm text-[#C9A66B]/70 mt-1">${entry.Cafe_Name} • ${entry.Origin}</div>
+                        <div class="mt-3 text-sm text-[#F5F0E6]/90 line-clamp-3">${entry.Verdict}</div>
+                    </div>
+                `;
+                card.onclick = () => showModal(entry);
+                grid.appendChild(card);
+            });
+        }
+
+        function filterGallery() {
+            const term = document.getElementById('search').value.toLowerCase();
+            const city = document.getElementById('filter-city').value;
+            const process = document.getElementById('filter-process').value;
+            
+            let filtered = coffeeData;
+            if (term) filtered = filtered.filter(e => e.Verdict.toLowerCase().includes(term) || e.Coffee_Name.toLowerCase().includes(term) || e.Origin.toLowerCase().includes(term));
+            if (city) filtered = filtered.filter(e => e.City.includes(city));
+            if (process) filtered = filtered.filter(e => e.Process === process);
+            
+            renderGallery(filtered);
+        }
+
+        function populateFilters() {
+            const cities = [...new Set(coffeeData.map(e => e.City))];
+            const processes = [...new Set(coffeeData.map(e => e.Process))];
+            
+            const citySel = document.getElementById('filter-city');
+            cities.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c; opt.textContent = c;
+                citySel.appendChild(opt);
+            });
+            
+            const procSel = document.getElementById('filter-process');
+            processes.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p; opt.textContent = p;
+                procSel.appendChild(opt);
+            });
+        }
+
+        function showModal(entry) {
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            
+            content.innerHTML = `
+                <div class="text-[#C9A66B] text-xs tracking-[2px]">${entry.Date} • ${entry.City}</div>
+                <h3 class="heading-serif text-3xl mt-2">${entry.Coffee_Name}</h3>
+                <p class="text-xl text-[#C9A66B]/90">${entry.Cafe_Name}</p>
+                
+                <div class="my-6">
+                    <div class="text-xs text-[#C9A66B] tracking-widest mb-2">YOUR VERDICT</div>
+                    <p class="leading-relaxed">${entry.Verdict}</p>
+                </div>
+                
+                <div class="text-sm"><span class="text-[#C9A66B]/70">Context:</span> ${entry.Context}</div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function initMap() {
+            const map = L.map('map-container').setView([1.35, 103.8], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+            
+            const locations = [
+                {name: "Singapore", coords: [1.35, 103.82], count: 27},
+                {name: "Ubud, Bali", coords: [-8.51, 115.26], count: 2},
+                {name: "Mumbai", coords: [19.08, 72.88], count: 2},
+                {name: "Johor Bahru", coords: [1.49, 103.74], count: 1}
+            ];
+            
+            locations.forEach(loc => {
+                L.marker(loc.coords).addTo(map).bindPopup(`<b>${loc.name}</b><br>${loc.count} entries`);
+            });
+        }
+
+        function initCharts() {
+            // Process Distribution
+            const processCounts = {};
+            coffeeData.forEach(e => { processCounts[e.Process] = (processCounts[e.Process] || 0) + 1; });
+            
+            new Chart(document.getElementById('processChart'), {
+                type: 'bar',
+                data: { labels: Object.keys(processCounts), datasets: [{ data: Object.values(processCounts), backgroundColor: '#C9A66B' }] },
+                options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+            });
+
+            // Ratio Chart (simulated)
+            new Chart(document.getElementById('ratioChart'), {
+                type: 'bar',
+                data: { labels: ['1:14', '1:15', '1:16', '1:17'], datasets: [{ label: 'Entries', data: [5, 8, 6, 7], backgroundColor: '#C9A66B' }] },
+                options: { plugins: { legend: { display: false } } }
+            });
+        }
+
+        function exportBeautifulPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Hari's Coffee Archive 2026", 20, 20);
+            doc.text("Personal Memoir • 34 Entries", 20, 30);
+            doc.save("Hari_Coffee_Archive_2026.pdf");
+        }
+
+        function init() {
+            renderTop5();
+            renderTimeline();
+            renderGallery();
+            populateFilters();
+            initMap();
+            initCharts();
+            
+            console.log('%c[Final] Complete version initialized successfully.', 'color:#C9A66B');
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>

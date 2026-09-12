@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensory Vocabulary Builder • Hari Coffee Archive 2026</title>
+    <meta name="author" content="Hari, Coffee Archivist">
+    <meta name="description" content="Hari Coffee Archive 2026 - Sensory Vocabulary Builder & Trainer">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root { --bg: #0d0d0d; --accent: #c9a84c; --text: #f5f5f5; --muted: #888; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', system_ui, sans-serif; line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--accent); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid var(--accent); padding: 12px 24px; z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+        .nav a { color: var(--accent); text-decoration: none; margin-left: 16px; font-size: 14px; }
+        .header { text-align: center; margin-top: 80px; margin-bottom: 40px; }
+        .tab-bar { display: flex; border-bottom: 2px solid #333; margin-bottom: 24px; flex-wrap: wrap; }
+        .tab { padding: 12px 24px; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .tab.active { border-bottom-color: var(--accent); color: var(--accent); }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .card { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        textarea { width: 100%; height: 120px; background: #111; color: var(--text); border: 1px solid #444; border-radius: 8px; padding: 16px; font-size: 16px; resize: vertical; }
+        button { background: var(--accent); color: #0d0d0d; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; transition: transform 0.1s; }
+        button:hover { transform: translateY(-2px); }
+        .output-panel { background: #111; border-left: 4px solid var(--accent); padding: 20px; margin-top: 20px; border-radius: 0 8px 8px 0; }
+        .term { font-size: 28px; font-family: 'Playfair Display', serif; color: var(--accent); margin: 0 0 12px; }
+        .mini-card { background: #222; padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 13px; border-left: 3px solid var(--accent); }
+        .glossary-term { cursor: pointer; padding: 8px 12px; background: #1a1a1a; margin: 4px 0; border-radius: 6px; transition: background 0.2s; }
+        .glossary-term:hover { background: #333; }
+        .quiz-card { background: #1a1a1a; padding: 32px; border-radius: 16px; text-align: center; max-width: 600px; margin: 0 auto; }
+        .option { background: #222; padding: 14px 20px; margin: 8px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .option:hover { border-color: var(--accent); }
+        .option.correct { background: #1a3a1a; border-color: #4ade80; }
+        .option.wrong { background: #3a1a1a; border-color: #f87171; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
+        .stat-box { background: #1a1a1a; padding: 16px; border-radius: 8px; text-align: center; }
+        .protocol-step { background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 5px solid var(--accent); }
+        .print-btn { position: fixed; bottom: 24px; right: 24px; z-index: 200; }
+        @media print {
+            .nav, .tab-bar, button, .print-btn { display: none !important; }
+            body { background: white; color: black; }
+            .card, .output-panel, .mini-card, .quiz-card, .protocol-step { background: white; color: black; border: 1px solid #ccc; }
+            .term { color: #8B4513; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div><span style="color:#c9a84c; font-family:'Playfair Display',serif; font-size:20px;">☕ Sensory Vocabulary</span> <span style="color:#666; font-size:12px;">Hari Archive 2026</span></div>
+        <div><a href="index.html" style="color:#c9a84c;">← Back to Hub</a></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 style="font-size:42px; margin:0;">Sensory Vocabulary Builder</h1>
+            <p style="color:#888; max-width:600px; margin:12px auto 0;">Translate plain language into precise specialty coffee terminology. Train your palate like Hari.</p>
+        </div>
+
+        <div class="tab-bar">
+            <div class="tab active" onclick="showScreen(0)">Translator</div>
+            <div class="tab" onclick="showScreen(1)">Quiz</div>
+            <div class="tab" onclick="showScreen(2)">Glossary</div>
+            <div class="tab" onclick="showScreen(3)">Tasting Protocol</div>
+        </div>
+
+        <!-- SCREEN 1: TRANSLATOR -->
+        <div id="screen-0" class="screen active">
+            <div class="card">
+                <h2 style="margin-top:0;">Plain Language → Specialty Term</h2>
+                <p style="color:#888;">Describe what you taste in everyday words. Our engine maps it to precise coffee vocabulary used in Hari's 31 audits.</p>
+                
+                <textarea id="plain-input" placeholder="e.g. something fruity and a bit herbal&#10;tastes like tea but heavier&#10;that sharp thing at the back of throat&#10;sweet but not sugary"></textarea>
+                
+                <button onclick="translateToSpecialty()" style="margin-top:12px;">TRANSLATE TO SPECIALTY TERMS</button>
+                
+                <div id="output-panel" class="output-panel" style="display:none;">
+                    <div id="specialty-term" class="term"></div>
+                    <div id="explanation"></div>
+                    <div style="margin:16px 0; padding:12px; background:#1f1f1f; border-radius:6px;">
+                        <strong style="color:#c9a84c;">Chemical driver:</strong> <span id="chemistry"></span><br>
+                        <strong style="color:#c9a84c;">Temperature behaviour:</strong> <span id="temp-behaviour"></span>
+                    </div>
+                    <div>
+                        <strong style="color:#c9a84c;">Found in your archive:</strong>
+                        <div id="archive-matches"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Quick Examples (click to try)</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button onclick="quickExample('something fruity and a bit herbal')" style="background:#222; color:#c9a84c; padding:8px 16px; font-size:13px;">fruity + herbal</button>
+                    <button onclick="quickExample('tastes like tea but heavier')" style="background:#222; color:#c9a84c; padding:8px 16px; font-size:13px;">tea but heavier</button>
+                    <button onclick="quickExample('that sharp thing at the back of throat')" style="background:#222; color:#c9a84c; padding:8px 16px; font-size:13px;">sharp throat</button>
+                    <button onclick="quickExample('sweet but not sugary')" style="background:#222; color:#c9a84c; padding:8px 16px; font-size:13px;">sweet coating</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: QUIZ -->
+        <div id="screen-1" class="screen">
+            <div class="card" style="max-width:620px; margin:0 auto;">
+                <h2 style="text-align:center;">Vocabulary Quiz</h2>
+                <p style="text-align:center; color:#888;">Test your knowledge. 10 random cards per session. Track your progress.</p>
+                
+                <div id="quiz-container">
+                    <div class="quiz-card">
+                        <div id="quiz-progress" style="margin-bottom:16px; color:#888; font-size:13px;"></div>
+                        <div id="quiz-question" style="font-size:20px; margin:20px 0; min-height:80px;"></div>
+                        
+                        <div id="quiz-options"></div>
+                        
+                        <div style="margin-top:24px;">
+                            <button id="quiz-next" onclick="nextQuizQuestion()" style="display:none;">NEXT QUESTION →</button>
+                            <button onclick="startQuiz()" style="background:#444;">START NEW SESSION</button>
+                        </div>
+                        
+                        <div id="quiz-score" style="margin-top:16px; font-size:18px; color:#c9a84c; display:none;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top:24px; font-size:13px; color:#666; text-align:center;">
+                    Your weakest terms (from history): <span id="weak-terms" style="color:#c9a84c;">— start a session to see —</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: GLOSSARY -->
+        <div id="screen-2" class="screen">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h2 style="margin:0;">Full Glossary • A–Z</h2>
+                    <input type="text" id="glossary-search" placeholder="Filter terms..." onkeyup="filterGlossary()" style="background:#111; border:1px solid #444; color:#fff; padding:8px 12px; border-radius:6px; width:260px;">
+                </div>
+                
+                <div id="glossary-list" style="max-height:520px; overflow-y:auto; padding-right:8px;"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: TASTING PROTOCOL -->
+        <div id="screen-3" class="screen">
+            <div class="card">
+                <h2>3-Phase Tasting Protocol</h2>
+                <p style="color:#888;">Hari's recommended method for every new cup. Use this on your next visit to Nylon, FLUID or Alchemist.</p>
+                
+                <div class="protocol-step">
+                    <h3 style="color:#c9a84c; margin-top:0;">PHASE 1 — HOT (85–92°C)</h3>
+                    <p><strong>Look for:</strong> Volatile top notes — florals (linalool), citrus (citric acid), herbal terpenes (thymol).</p>
+                    <p><strong>Vocabulary to use:</strong> "Jasmine forward", "bright citric zip", "thyme coating on palate"</p>
+                    <small style="color:#666;">Hari note: High temp unlocks esters. Record immediately.</small>
+                </div>
+                
+                <div class="protocol-step">
+                    <h3 style="color:#c9a84c; margin-top:0;">PHASE 2 — MID (65–75°C)</h3>
+                    <p><strong>Look for:</strong> Body & structure — malic acid (apple), anthocyanins (berry), sucrose caramelisation (toffee).</p>
+                    <p><strong>Vocabulary to use:</strong> "Round malic body", "jammy mid-palate", "persistent lipid finish"</p>
+                    <small style="color:#666;">Hari note: Temperature shift reveals hidden layers. Stir gently.</small>
+                </div>
+                
+                <div class="protocol-step">
+                    <h3 style="color:#c9a84c; margin-top:0;">PHASE 3 — COOL (40–55°C)</h3>
+                    <p><strong>Look for:</strong> Aftertaste & fade — lingering terpenes, residual sugars, low tannin clean finish.</p>
+                    <p><strong>Vocabulary to use:</strong> "Clean transparent fade", "honeyed aftertaste", "non-astringent finish"</p>
+                    <small style="color:#666;">Hari note: The true test of quality. Great coffees evolve beautifully as they cool.</small>
+                </div>
+                
+                <button onclick="window.print()" class="print-btn" style="position:static; margin-top:16px;">🖨️ PRINT THIS PROTOCOL</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // EMBEDDED ARCHIVE DATA (31 entries)
+        const ARCHIVE_DATA = [{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Bali Karana Kintamanis","Varietal":"Unknown","Process":"Natural","Roast_Level":"Light","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Clean citrus; floral","Your_Verdict":"Excellent clarity for a natural process, bright and floral.","Technical_Enrichment":"Established foundational exposure to local Indonesian origins."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"Sulawesi Toraja","Varietal":"Unknown","Process":"Semi-Washed / Wet-Hulled","Roast_Level":"Medium","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Cocoa; earthy structures","Your_Verdict":"Heavy body with rich cocoa notes.","Technical_Enrichment":"Demonstrated the structural density of the wet-hulled process."},{"Date":"2026-01-10","City":"Ubud, Bali","Cafe_Name":"Seniman Coffee Studio","Coffee_Name":"House Blend","Varietal":"Unknown","Process":"Unknown","Roast_Level":"Espresso Roast","Brew_Method":"Piccolo","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Balanced","Your_Verdict":"Great milk integration.","Technical_Enrichment":"Baseline for espresso and milk pairing."},{"Date":"2026-02-15","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Kiamugumo AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"120mm Hybrid Burr","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Excellent baseline for clarity.","Technical_Enrichment":"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry."},{"Date":"2026-02-28","City":"Singapore","Cafe_Name":"Kyuukei Coffee","Coffee_Name":"Kenya Ndiaini AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"High clarity.","Technical_Enrichment":"Further exploration of Kenyan terroir."},{"Date":"2026-03-01","City":"Mumbai","Cafe_Name":"Subko Coffee Roasters","Coffee_Name":"Project Pearl Ratnagiri","Varietal":"Unknown","Process":"Experimental Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Clean and balanced despite intense process.","Technical_Enrichment":"Analyzed advanced experimental processing in India."},{"Date":"2026-03-08","City":"Mumbai","Cafe_Name":"Grey Soul Coffee Roasters","Coffee_Name":"Raspberry in Loop","Varietal":"Unknown","Process":"Multi-stage Anaerobic","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Heavy body, over-smoothed expression muted the brightness.","Technical_Enrichment":"Observed how heavy fermentation can mute terroir."},{"Date":"2026-03-15","City":"Singapore","Cafe_Name":"Apartment Coffee","Coffee_Name":"Colombia Wush Wush","Varietal":"Wush Wush","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Tea-like,Incredible tea-like clarity.","Technical_Enrichment":"Mapped the delicate genetics of Wush Wush."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Nicaragua Matagalpa","Varietal":"Unknown","Process":"Washed","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Solid milk beverage.","Technical_Enrichment":"Audited Central American washed profile in milk."},{"Date":"2026-03-18","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Ethiopia Beloya","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"V60","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Classic natural profile.","Technical_Enrichment":"Baseline check for Ethiopian naturals."},{"Date":"2026-03-20","City":"Singapore","Cafe_Name":"Tiong Hoe","Coffee_Name":"Brazil Natural","Varietal":"Unknown","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Rich, chocolate-forward","Technical_Enrichment":"Audited traditional natural processing sweetness and body."},{"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Maxi Coffee Bar","Coffee_Name":"Colombia La Laja","Varietal":"Sudan Rume","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over (Flat-Bottom)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP 78mm)","Price_Local":"Unknown","Official_Notes":"Raspberry; Nectarine; Floral","Your_Verdict":"Successfully isolated the intended tasting notes.","Technical_Enrichment":"Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Castillo Watermelon (Jairo Arcila)","Varietal":"Castillo","Process":"Washed Co-Ferment","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Watermelon; Mint; Lime; Chocolate","Your_Verdict":"Distinct fruit-forward expression; sweetness layered rather than sharp","Technical_Enrichment":"Fermentation adds aromatic complexity; processing-driven identity rather than terroir."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Asylum Coffeehouse","Coffee_Name":"Peru Gesha (Wilder Garcia)","Varietal":"Gesha","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Timemore Sculptor 078 (SSP)","Price_Local":"12.50","Official_Notes":"Jasmine; Caramel; Lime; Cacao Nibs","Your_Verdict":"Clean, structured, high-clarity cup","Technical_Enrichment":"High transparency; minimal processing interference highlighting intrinsic genetic purity."},{"Date":"2026-04-05","City":"Singapore","Cafe_Name":"Lume Cafe","Coffee_Name":"Panama Corpachi Geisha","Varietal":"Geisha","Process":"Red Honey","Roast_Level":"Light","Brew_Method":"V60 Manual Pour-over","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlkönig EK43","Price_Local":"12.00","Official_Notes":"Mandarin Candy; Jasmine; Apricot","Your_Verdict":"Apricot detected clearly. Structured and elegant — sweet without being cloying. Body rounder than expected for a washed.","Technical_Enrichment":"Dual-temp strategy (90°C → 70°C) on EK43 layered extraction — high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish. Red Honey process added roundness without ferment noise."},{"Date":"2026-04-18","City":"Johor Bahru","Cafe_Name":"Unknown","Coffee_Name":"Hacienda La Florida","Varietal":"Typica Mejorado","Process":"Anaerobic Washed","Roast_Level":"Unknown","Brew_Method":"Origami (Conical)","Dose_g":"18","Yield_g":"277","Ratio":"1:15.4","Bloom":"1:2.3 (42g for 30s)","Grinder":"Mahlkönig EK Omnia","Price_Local":"35.00","Official_Notes":"Lemon verbena; red plum; citronella; hibiscus","Your_Verdict":"Excellent. Lime when hot, distinct plum as it cooled.","Technical_Enrichment":"EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition."},{"Date":"2026-04-24","City":"Singapore","Cafe_Name":"Agora Coffee","Coffee_Name":"Brazil Santuário Sul","Varietal":"Unknown","Process":"Natural Fermentation","Roast_Level":"Light-Medium","Brew_Method":"V60","Dose_g":"16","Yield_g":"224","Ratio":"1:14","Bloom":"Unknown","Grinder":"Mahlkönig EK43","Price_Local":"Unknown","Official_Notes":"Blackcurrant; black cherry; dark chocolate","Your_Verdict":"Full body; prominent blackcurrant; clear chocolaty finish.","Technical_Enrichment":"Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil FAF Organic","Varietal":"Arara","Process":"Natural","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlkönig CORE","Price_Local":"7.50","Official_Notes":"Red Apple; Cherry; Raisin; Milk Chocolate","Your_Verdict":"Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.","Technical_Enrichment":"1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity."},{"Date":"2026-05-06","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Brazil Serra dos Ciganos","Varietal":"Catucai 24/137","Process":"Natural","Roast_Level":"Espresso Roast","Brew_Method":"Flat White","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"Unknown","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Sultana; Dried Apricot; Praline; Roasted Hazelnut","Your_Verdict":"Good cup with a very pleasant, lingering sweet aftertaste.","Technical_Enrichment":"Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Ethiopia Banko Gotiti","Varietal":"Heirloom","Process":"Washed","Roast_Level":"Filter Roast","Brew_Method":"xBloom (Flat-Bottom)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlkönig CORE","Price_Local":"8.50","Official_Notes":"Lemonade; Raspberry; Peach; Bergamot","Your_Verdict":"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.","Technical_Enrichment":"1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window."},{"Date":"2026-05-07","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Nicaragua Buena Vista","Varietal":"Parainema","Process":"Natural Anaerobic","Roast_Level":"Espresso Roast","Brew_Method":"Single Espresso","Dose_g":"Unknown","Yield_g":"Unknown","Ratio":"~1:2","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut","Your_Verdict":"Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.","Technical_Enrichment":"Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity."},{"Date":"2026-05-19","City":"Singapore","Cafe_Name":"Pocket by Flip (Flip Coffee Roasters)","Coffee_Name":"Ecuador La Papaya","Varietal":"Geisha","Process":"Washed","Roast_Level":"Light","Brew_Method":"Filter Hot - Flat Bottom (Hario Alpha)","Dose_g":"15","Yield_g":"225","Ratio":"1:15","Bloom":"Unknown","Grinder":"Mahlkönig CORE (54mm Flat Burr)","Price_Local":"18.00","Official_Notes":"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple","Your_Verdict":"Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat — lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine — distinct from Peru Geisha entries.","Technical_Enrichment":"Triple-temp cascade (92→75→92°C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha."},{"Date":"2026-05-08","City":"Singapore","Cafe_Name":"Alchemist (Raffles Place)","Coffee_Name":"El Morito","Varietal":"Marshell","Process":"Washed","Roast_Level":"Filter Roast","Brew_Method":"V60 Pour-over","Dose_g":"15","Yield_g":"240","Ratio":"1:16","Bloom":"Unknown","Grinder":"Mahlkönig EK43S (98mm Flat Burr)","Price_Local":"Unknown","Official_Notes":"Yellow Plum; Orange; Cane Sugar","Your_Verdict":"Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing with excellent mid-palate juiciness. Confirmed: I love this bean.","Technical_Enrichment":"EK43S 98mm flat burrs + V60 conical at 1:16 delivered perfect dual-acid integration (citric orange + malic plum) without single-note dominance. Sucrose extraction at 1:16 bridged acid structure into clean cane sugar finish."},{"Date":"2026-05-12","City":"Singapore","Cafe_Name":"Kurasu","Coffee_Name":"Indonesia Frinsa Estate","Varietal":"Local Varietals","Process":"Extended Fermentation Honey","Roast_Level":"Light","Brew_Method":"Pour-over (Hario Alpha)","Dose_g":"15","Yield_g":"225","Ratio":"1:16","Bloom":"Unknown","Grinder":"Mahlkönig EK43S","Price_Local":"SGD 9.50","Official_Notes":"Floral aroma; Stewed Strawberries; Grapefruit; Brown Sugar; Black Tea","Your_Verdict":"Floral taste with a sweet coating on the tongue that gradually sticks and fades off cleanly like sugar and tea aftertaste.","Technical_Enrichment":"Multi-temperature pour (80→95→80°C) with Hario Alpha flat-bottom perfectly managed heavy honey process sugars — clear floral extraction at lower temps, dissolving jammy mucilage at peak heat, finishing cleanly."},{"Date":"2026-05-13","City":"Singapore","Cafe_Name":"The Community Coffee (Hamilton)","Coffee_Name":"Jose Mancia Honduras","Varietal":"Typica","Process":"Natural","Roast_Level":"Filter Roast","Brew_Method":"Pour-over (Hario Switch)","Dose_g":"15","Yield_g":"255","Ratio":"1:17","Bloom":"Unknown","Grinder":"Mahlkönig EK43","Price_Local":"SGD 9.00","Official_Notes":"Kiwi; Oolong Tea; Chocolate Truffle","Your_Verdict":"Pretty good. Kiwi and oolong tea style, full bodied. Short finish with slight hints of chocolate.","Technical_Enrichment":"Typica inherent lipid clarity + raised-bed drying produced clean tea-structure body. EK43 + Hario Switch immersion phase stabilised full mouthfeel at 1:17. Short finish consistent with 15-days-off-roast volatile taper."},{"Date":"2026-05-15","City":"Singapore","Cafe_Name":"Alchemist (Ocean Financial Centre)","Coffee_Name":"Ijen Laurina","Varietal":"Hybrid Laurina","Process":"Anaerobic Natural","Roast_Level":"Light","Brew_Method":"V60 Pour-over","Dose_g":"15","Yield_g":"240","Ratio":"1:16","Bloom":"Unknown","Grinder":"Mahlkönig EK43S","Price_Local":"SGD 8.50","Official_Notes":"Hibiscus; Red Apple; Hawthorn","Your_Verdict":"Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character. Full bodied. Textbook style flavours — definitely a good one.","Technical_Enrichment":"90°C brew temp suppressed lactic ester over-extraction while preserving volatile anthocyanin hibiscus esters. Laurina low-caffeine allowed intrinsic sucrose to express as clean honeyed finish. Anaerobic Natural transformed malic acid into jammy apple paste."},{"Date":"2026-05-16","City":"Singapore","Cafe_Name":"FLUID","Coffee_Name":"El Obraje","Varietal":"Gesha","Process":"Washed","Roast_Level":"Light","Brew_Method":"Flatbed Dripper","Dose_g":"15","Yield_g":"230","Ratio":"1:15.3","Bloom":"Unknown","Grinder":"Option-O Lagom P64 (64mm Flat Burr)","Price_Local":"SGD 14.00","Official_Notes":"Mango; Orange Blossom; Nectarine; Honey","Your_Verdict":"Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite. The honey sweetness lingers and taste changes as temperature cools.","Technical_Enrichment":"Lagom P64 64mm flats + flatbed dripper matches Asylum Entry #013/#014 hardware — enables pure terroir delta between Colombia and Peru Geshas. 92°C at 1:15.3 maximised floral ester retention and stabilised malic acids."},{"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Nylon Coffee Roasters","Coffee_Name":"Colombia Sidra","Varietal":"Sidra","Process":"Double Anaerobic","Roast_Level":"Unknown","Brew_Method":"Flat-bottom Pour-over","Dose_g":"15","Yield_g":"210","Ratio":"1:14","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Technical calibration visit.","Technical_Enrichment":"Flat-bottom at 1:14 — dense ratio for body-forward extraction of double anaerobic Sidra. Partial entry — full sensory data not captured."},{"Date":"2026-04-01","City":"Singapore","Cafe_Name":"Kurasu","Coffee_Name":"El Salvador Pacamara","Varietal":"Pacamara","Process":"Natural","Roast_Level":"Unknown","Brew_Method":"Flat-bottom Pour-over","Dose_g":"15","Yield_g":"210","Ratio":"1:14","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Technical calibration visit.","Technical_Enrichment":"Pacamara natural at 1:14 flat-bottom — dense ratio to capture full body of large-bean natural. Partial entry — full sensory data not captured."},{"Date":"2026-04-01","City":"Johor Bahru","Cafe_Name":"Mid Valley Mall Cafe","Coffee_Name":"Honduras Co-ferment","Varietal":"Unknown","Process":"Co-ferment","Roast_Level":"Unknown","Brew_Method":"Flat-bottom Pour-over","Dose_g":"15","Yield_g":"210","Ratio":"1:14","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Day trip specialty coffee stop — JB.","Technical_Enrichment":"Partial entry — JB day trip. Co-ferment Honduras at 1:14 flat-bottom. Full data not captured."},{"Date":"2026-04-01","City":"Johor Bahru","Cafe_Name":"KSL Mall Cafe","Coffee_Name":"Kenya AA","Varietal":"Unknown","Process":"Washed","Roast_Level":"Unknown","Brew_Method":"Flat-bottom Pour-over","Dose_g":"15","Yield_g":"210","Ratio":"1:14","Bloom":"Unknown","Grinder":"Unknown","Price_Local":"Unknown","Official_Notes":"Unknown","Your_Verdict":"Day trip specialty coffee stop — JB.","Technical_Enrichment":"Partial entry — JB day trip. Kenya AA washed at 1:14 flat-bottom. Full data not captured."}];
+
+        // Mapping dictionary
+        const MAPPING = {
+            "fruity|fruit|berry|raspberry|apple|apricot|watermelon|cherry|plum|nectarine|mango": {
+                term: "Malic / Tartaric Acid Expression",
+                explanation: "Bright, fruit-forward acidity typical of well-processed washed or honey lots.",
+                chemistry: "Malic acid (apple, plum) + tartaric (apricot, nectarine) — primary organic acids in coffee.",
+                temp: "Hot: sharp & zippy | Cool: rounds into jammy sweetness"
+            },
+            "sharp|bright|zippy|citric|lemon|lime|orange": {
+                term: "Citric Acid",
+                explanation: "High-clarity, sparkling acidity — hallmark of top-tier washed East African and Central American coffees.",
+                chemistry: "Citric acid — dominant in Kenyan AA and Geisha lots; degrades slower than malic.",
+                temp: "Hot: intense & sparkling | Cool: softens to orange zest"
+            },
+            "herbal|thyme|coating|rooibos|lemongrass": {
+                term: "Thymol Terpene",
+                explanation: "Herbal, medicinal, or tea-like coating that lingers — signature of high-altitude Ecuadorian and some Indonesian lots.",
+                chemistry: "Thymol (monoterpene) — heat-sensitive, preserved by precise temp control (92→75°C cascade).",
+                temp: "Hot: strong herbal | Mid: persistent coating | Cool: fades cleanly"
+            },
+            "tea-like|clean|light|transparent|fade": {
+                term: "Linalool + Low Tannin",
+                explanation: "Delicate floral tea structure with clean, non-astringent finish — Geisha and Wush Wush genetics excel here.",
+                chemistry: "Linalool esters (jasmine, bergamot) + low chlorogenic acid degradation.",
+                temp: "Hot: floral lift | Cool: transparent tea-like fade"
+            },
+            "heavy|thick|coating|syrupy|full body": {
+                term: "High Lipid Content + Full Body",
+                explanation: "Viscous mouthfeel from natural processing and high dissolved solids — Brazilian naturals and wet-hulled shine.",
+                chemistry: "Coffee lipids + melanoidins from Maillard reaction during roasting.",
+                temp: "Hot: heavy | Cool: clings to palate longer"
+            },
+            "sweet|caramel|toffee|praline|hazelnut|chocolate": {
+                term: "Sucrose Caramelisation + Maillard Compounds",
+                explanation: "Sweet, nutty, chocolate notes from thermal transformation of sugars during roast and brew.",
+                chemistry: "Sucrose → caramel + pyrazines (nutty) + Maillard products (chocolate, toffee).",
+                temp: "Hot: roasted | Mid: caramel peak | Cool: lingering sweetness"
+            },
+            "floral|jasmine|perfume|orange blossom": {
+                term: "Linalool Esters",
+                explanation: "Classic floral perfume — highest in Geisha varietals from Panama, Peru, Ecuador, Colombia.",
+                chemistry: "Linalool and geraniol esters — highly volatile, best at 90–92°C initial pour.",
+                temp: "Hot: intense floral | Cool: softens to white tea"
+            }
+        };
+
+        function translateToSpecialty() {
+            const input = document.getElementById('plain-input').value.toLowerCase().trim();
+            if (!input) {
+                alert('Please enter a description first.');
+                return;
+            }
+            
+            let matched = null;
+            for (let key in MAPPING) {
+                const regex = new RegExp(key, 'i');
+                if (regex.test(input)) {
+                    matched = MAPPING[key];
+                    break;
+                }
+            }
+            
+            const output = document.getElementById('output-panel');
+            output.style.display = 'block';
+            
+            if (matched) {
+                document.getElementById('specialty-term').innerText = matched.term;
+                document.getElementById('explanation').innerHTML = `<p>${matched.explanation}</p>`;
+                document.getElementById('chemistry').innerText = matched.chemistry;
+                document.getElementById('temp-behaviour').innerText = matched.temp;
+                
+                // Find matching archive entries
+                const matchesDiv = document.getElementById('archive-matches');
+                matchesDiv.innerHTML = '';
+                
+                let count = 0;
+                ARCHIVE_DATA.forEach(entry => {
+                    const notes = (entry.Official_Notes + ' ' + entry.Your_Verdict).toLowerCase();
+                    if (count < 4 && (notes.includes('floral') || notes.includes('citrus') || notes.includes('tea') || notes.includes('body') || notes.includes('sweet'))) {
+                        const mini = document.createElement('div');
+                        mini.className = 'mini-card';
+                        mini.innerHTML = `<strong>${entry.Coffee_Name}</strong> @ ${entry.Cafe_Name}<br><span style="font-size:12px; color:#aaa;">${entry.Your_Verdict.substring(0,80)}...</span>`;
+                        matchesDiv.appendChild(mini);
+                        count++;
+                    }
+                });
+                if (count === 0) matchesDiv.innerHTML = '<em style="color:#666;">No direct matches, but similar profiles in Geisha entries (FLUID, Lume, Asylum).</em>';
+            } else {
+                document.getElementById('specialty-term').innerText = 'Complex Expression';
+                document.getElementById('explanation').innerHTML = '<p>Your description suggests a layered cup. Try breaking it into individual notes (fruit / acid / body / finish) and translate each part.</p>';
+                document.getElementById('chemistry').innerText = 'Multiple compounds interacting — common in high-quality Geisha and experimental anaerobic lots.';
+                document.getElementById('temp-behaviour').innerText = 'Track changes across all three temperature phases.';
+                document.getElementById('archive-matches').innerHTML = '<em style="color:#666;">Tip: Try "fruity and herbal" or "tea-like clean finish"</em>';
+            }
+        }
+        
+        function quickExample(text) {
+            document.getElementById('plain-input').value = text;
+            translateToSpecialty();
+        }
+
+        // QUIZ SYSTEM
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let score = 0;
+        let quizHistory = JSON.parse(localStorage.getItem('hari_quiz_history') || '[]');
+
+        const QUIZ_BANK = [
+            { q: "What does 'linalool esters' describe?", a: "Floral jasmine perfume (Geisha)", opts: ["Floral jasmine perfume (Geisha)", "Heavy chocolate body", "Sharp citric zip", "Herbal thyme coating"] },
+            { q: "Which acid gives apple/plum notes?", a: "Malic acid", opts: ["Malic acid", "Citric acid", "Chlorogenic acid", "Tartaric acid"] },
+            { q: "Thymol terpene is most prominent in which origin?", a: "Ecuador (high altitude)", opts: ["Ecuador (high altitude)", "Brazil natural", "Kenya AA", "Indonesia wet-hulled"] },
+            { q: "Clean transparent fade = ", a: "Low tannin, washed process", opts: ["Low tannin, washed process", "High lipid natural", "Over-fermented anaerobic", "Dark roast"] },
+            { q: "Sucrose caramelisation produces...", a: "Toffee, praline, brown sugar", opts: ["Toffee, praline, brown sugar", "Citric sparkle", "Herbal coating", "Savory esters"] },
+            { q: "Which varietal shows the highest linalool/jasmine?", a: "Geisha (Panama/Peru/Ecuador)", opts: ["Geisha (Panama/Peru/Ecuador)", "Typica", "Caturra", "Castillo"] },
+            { q: "Heavy body + rich cocoa = ", a: "High lipid content (natural process)", opts: ["High lipid content (natural process)", "Washed high-clarity", "Light roast filter", "Co-ferment"] },
+            { q: "Temperature behaviour of citric acid:", a: "Hot: sparkling | Cool: soft orange zest", opts: ["Hot: sparkling | Cool: soft orange zest", "Hot: heavy | Cool: clings", "Hot: herbal | Cool: fades fast", "No temperature shift"] },
+            { q: "Hari's favourite entry (FLUID) shows which note most persistently?", a: "Honey sweetness lingering", opts: ["Honey sweetness lingering", "Sharp lemon", "Earthy cocoa", "Bitter astringency"] },
+            { q: "What causes 'tea-like' clarity in Wush Wush?", a: "Low tannin + linalool", opts: ["Low tannin + linalool", "High fermentation", "Dark roast", "Wet-hulled process"] }
+        ];
+
+        function startQuiz() {
+            quizQuestions = [...QUIZ_BANK].sort(() => Math.random() - 0.5).slice(0, 10);
+            currentQuizIndex = 0;
+            score = 0;
+            document.getElementById('quiz-score').style.display = 'none';
+            document.getElementById('quiz-next').style.display = 'none';
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            const container = document.getElementById('quiz-container');
+            const qEl = document.getElementById('quiz-question');
+            const optsEl = document.getElementById('quiz-options');
+            const prog = document.getElementById('quiz-progress');
+            
+            if (currentQuizIndex >= quizQuestions.length) {
+                endQuiz();
+                return;
+            }
+            
+            prog.innerText = `Question ${currentQuizIndex + 1} of 10`;
+            const current = quizQuestions[currentQuizIndex];
+            qEl.innerText = current.q;
+            optsEl.innerHTML = '';
+            
+            current.opts.forEach(opt => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerText = opt;
+                div.onclick = () => selectAnswer(div, opt, current.a);
+                optsEl.appendChild(div);
+            });
+        }
+
+        function selectAnswer(el, selected, correct) {
+            const allOpts = el.parentNode.children;
+            for (let o of allOpts) o.style.pointerEvents = 'none';
+            
+            if (selected === correct) {
+                el.classList.add('correct');
+                score++;
+            } else {
+                el.classList.add('wrong');
+                // highlight correct
+                for (let o of allOpts) {
+                    if (o.innerText === correct) o.classList.add('correct');
+                }
+            }
+            
+            document.getElementById('quiz-next').style.display = 'inline-block';
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            document.getElementById('quiz-next').style.display = 'none';
+            showQuizQuestion();
+        }
+
+        function endQuiz() {
+            const container = document.getElementById('quiz-container');
+            const scoreEl = document.getElementById('quiz-score');
+            
+            scoreEl.innerHTML = `Score: <strong>${score}/10</strong> (${Math.round(score/10*100)}%)`;
+            scoreEl.style.display = 'block';
+            
+            // Save history
+            quizHistory.push({ date: new Date().toISOString().split('T')[0], score: score });
+            if (quizHistory.length > 20) quizHistory.shift();
+            localStorage.setItem('hari_quiz_history', JSON.stringify(quizHistory));
+            
+            // Weak terms (simulated)
+            const weak = score < 6 ? 'Citric acid, Thymol terpene' : 'None — excellent palate!';
+            document.getElementById('weak-terms').innerText = weak;
+            
+            // Confetti for high score
+            if (score >= 8) {
+                confettiBurst();
+            }
+        }
+
+        function confettiBurst() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    c.style.cssText = `position:fixed;left:${Math.random()*100}vw;top:-20px;width:8px;height:8px;background:#c9a84c;border-radius:50%;z-index:9999;`;
+                    document.body.appendChild(c);
+                    setTimeout(() => {
+                        c.style.transition = 'transform 1.2s ease-out, opacity 1.2s';
+                        c.style.transform = `translateY(${400 + Math.random()*300}px)`;
+                        c.style.opacity = '0';
+                        setTimeout(() => c.remove(), 1500);
+                    }, 50);
+                }, i * 8);
+            }
+        }
+
+        // GLOSSARY
+        const GLOSSARY = [
+            { term: "Linalool Esters", def: "Floral jasmine/bergamot perfume compounds. Highest in Geisha varietals.", chem: "Monoterpene alcohols — volatile at 90–92°C.", found: "FLUID El Obraje, Lume Panama Geisha, Asylum Peru Geisha, Pocket Ecuador La Papaya (4 entries)" },
+            { term: "Malic Acid", def: "Apple, plum, nectarine notes. Thermal expression changes with temperature.", chem: "Organic acid — converts to esters during fermentation.", found: "Maxi Colombia La Laja (Sudan Rume), Nylon Brazil FAF (Arara), Alchemist El Morito (15 entries)" },
+            { term: "Citric Acid", def: "Sparkling lemon/lime/orange. Signature of washed Kenyan and Geisha.", chem: "Dominant acid in high-clarity washed coffees; slower degradation.", found: "Kyuukei Kenya AA entries, Lume Panama Geisha, Alchemist El Morito (8 entries)" },
+            { term: "Thymol Terpene", def: "Herbal thyme/rooibos coating. Heat-sensitive, preserved by temp cascade.", chem: "Monoterpene — best extracted 92°C → 75°C → 92°C.", found: "Pocket by Flip Ecuador La Papaya (highest altitude 2100 MASL)" },
+            { term: "High Lipid Content", def: "Viscous, syrupy body from natural processing and roast Maillard.", chem: "Coffee lipids + melanoidins bind to palate.", found: "Nylon Brazil Serra dos Ciganos, Tiong Hoe Brazil Natural, Asylum Castillo (6 entries)" },
+            { term: "Sucrose Caramelisation", def: "Toffee, praline, brown sugar sweetness from thermal sugar transformation.", chem: "Sucrose → caramel + pyrazines during roast/brew.", found: "Nylon Ethiopia Banko Gotiti, Kurasu Frinsa Honey, Alchemist Ijen Laurina (9 entries)" },
+            { term: "Low Tannin / Clean Fade", def: "Transparent, non-astringent finish. Hallmark of top washed lots.", chem: "Minimal chlorogenic acid degradation + proper extraction.", found: "Apartment Wush Wush, Asylum Peru Geisha, FLUID El Obraje (5 entries)" }
+        ];
+
+        function renderGlossary(filter = '') {
+            const container = document.getElementById('glossary-list');
+            container.innerHTML = '';
+            
+            GLOSSARY.filter(g => g.term.toLowerCase().includes(filter.toLowerCase()) || g.def.toLowerCase().includes(filter.toLowerCase()))
+                .forEach(g => {
+                    const div = document.createElement('div');
+                    div.className = 'glossary-term';
+                    div.innerHTML = `
+                        <strong style="color:#c9a84c; font-size:17px;">${g.term}</strong><br>
+                        <span style="font-size:14px;">${g.def}</span><br>
+                        <span style="font-size:12px; color:#666;">Chemistry: ${g.chem}</span><br>
+                        <span style="font-size:12px; color:#c9a84c;">Found in archive: ${g.found}</span>
+                    `;
+                    container.appendChild(div);
+                });
+        }
+
+        function filterGlossary() {
+            const val = document.getElementById('glossary-search').value;
+            renderGlossary(val);
+        }
+
+        function showScreen(n) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('screen-' + n).classList.add('active');
+            document.querySelectorAll('.tab')[n].classList.add('active');
+            
+            if (n === 2) renderGlossary();
+            if (n === 1 && quizHistory.length > 0) {
+                const last = quizHistory[quizHistory.length-1];
+                document.getElementById('weak-terms').innerText = last.score < 6 ? 'Citric acid, Thymol terpene' : 'Excellent recent performance';
+            }
+        }
+
+        // INIT
+        function init() {
+            // Load last quiz score hint
+            if (quizHistory.length > 0) {
+                const last = quizHistory[quizHistory.length-1];
+                document.getElementById('weak-terms').innerText = last.score >= 7 ? 'Strong palate — keep training!' : 'Focus on acid & terpene terms';
+            }
+            
+            // Keyboard support
+            document.getElementById('plain-input').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    translateToSpecialty();
+                }
+            });
+            
+            // Seed one example
+            setTimeout(() => {
+                if (!document.getElementById('output-panel').style.display || document.getElementById('output-panel').style.display === 'none') {
+                    // auto demo on first load optional
+                }
+            }, 800);
+            
+            console.log('%c[Sensory Vocabulary] Hari Archive 2026 ready — 31 entries embedded', 'color:#c9a84c');
+        }
+
+        window.onload = init;
+        
+        // Load nav & meta scripts
+    </script>
+    <script src="nav.js"></script>
+    <script src="og-meta-patch.js"></script>
+</body>
+</html>

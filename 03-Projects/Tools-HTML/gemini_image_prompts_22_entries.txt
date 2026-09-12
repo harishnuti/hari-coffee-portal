@@ -1,0 +1,981 @@
+HARI COFFEE ARCHIVE 2026 — 22 GEMINI IMAGE PROMPTS
+Generated in priority order (highest data completeness first)
+Copy each prompt individually into Gemini ImageFX / Gemini Advanced
+================================================================================
+
+**GEMINI IMAGE PROMPT #1 — The Solid body with a crisp green apple (mal Experiment: Brazil FAF Organic**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Solid body with a crisp green apple (mal Experiment: Brazil FAF Organic
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-05-06
+City: Singapore
+Cafe: Nylon Coffee Roasters
+Coffee / Lot: Brazil FAF Organic
+Varietal: Arara
+Process: Natural
+Roast Level: Filter Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: xBloom (Flat-Bottom)
+Dose / Yield: 15g → 255g
+Ratio: 1:17
+Grinder: Mahlkönig CORE
+Price: 7.50 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Red Apple; Cherry; Raisin; Milk Chocolate
+Your Verdict: Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #1 • 2026-05-06 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #2 — The Apricot detected clearly. Structured and Experiment: Panama Corpachi Geisha**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Apricot detected clearly. Structured and Experiment: Panama Corpachi Geisha
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-05
+City: Singapore
+Cafe: Lume Cafe
+Coffee / Lot: Panama Corpachi Geisha
+Varietal: Geisha
+Process: Red Honey
+Roast Level: Light
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: V60 Manual Pour-over
+Dose / Yield: 15g → 225g
+Ratio: 1:15
+Grinder: Mahlkönig EK43
+Price: 12.00 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Mandarin Candy; Jasmine; Apricot
+Your Verdict: Apricot detected clearly. Structured and elegant — sweet without being cloying. Body rounder than expected for a washed.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Dual-temp strategy (90°C → 70°C) on EK43 layered extraction — high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish. Red Honey process added roundness without ferment noise.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #2 • 2026-04-05 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #3 — The Opening: tartaric apricot + rooibos aspa Experiment: Ecuador La Papaya**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Opening: tartaric apricot + rooibos aspa Experiment: Ecuador La Papaya
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-05-19
+City: Singapore
+Cafe: Pocket by Flip (Flip Coffee Roasters)
+Coffee / Lot: Ecuador La Papaya
+Varietal: Geisha
+Process: Washed
+Roast Level: Light
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Filter Hot - Flat Bottom (Hario Alpha)
+Dose / Yield: 15g → 225g
+Ratio: 1:15
+Grinder: Mahlkönig CORE (54mm Flat Burr)
+Price: 18.00 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple
+Your Verdict: Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat — lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine — distinct from Peru Geisha entries.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Triple-temp cascade (92→75→92°C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #3 • 2026-05-19 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #4 — The Excellent. Lime when hot, distinct plum  Experiment: Hacienda La Florida**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Excellent. Lime when hot, distinct plum  Experiment: Hacienda La Florida
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-18
+City: Johor Bahru
+Coffee / Lot: Hacienda La Florida
+Varietal: Typica Mejorado
+Process: Anaerobic Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Origami (Conical)
+Dose / Yield: 18g → 277g
+Ratio: 1:15.4
+Bloom: 1:2.3 (42g for 30s)
+Grinder: Mahlkönig EK Omnia
+Price: 35.00 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Lemon verbena; red plum; citronella; hibiscus
+Your Verdict: Excellent. Lime when hot, distinct plum as it cooled.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #4 • 2026-04-18 • Johor Bahru
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #5 — The Lemon front, heavy melon mid-cup, fading Experiment: Ethiopia Banko Gotiti**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Lemon front, heavy melon mid-cup, fading Experiment: Ethiopia Banko Gotiti
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-05-07
+City: Singapore
+Cafe: Nylon Coffee Roasters
+Coffee / Lot: Ethiopia Banko Gotiti
+Varietal: Heirloom
+Process: Washed
+Roast Level: Filter Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: xBloom (Flat-Bottom)
+Dose / Yield: 15g → 255g
+Ratio: 1:17
+Grinder: Mahlkönig CORE
+Price: 8.50 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Lemonade; Raspberry; Peach; Bergamot
+Your Verdict: Lemon front, heavy melon mid-cup, fading into a clean white tea finish.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #5 • 2026-05-07 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #6 — The Distinct fruit-forward expression Experiment: Castillo Watermelon**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Distinct fruit-forward expression Experiment: Castillo Watermelon
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-05
+City: Singapore
+Cafe: Asylum Coffeehouse
+Coffee / Lot: Castillo Watermelon (Jairo Arcila)
+Varietal: Castillo
+Process: Washed Co-Ferment
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+Dose / Yield: 15g → 225g
+Ratio: 1:15
+Grinder: Timemore Sculptor 078 (SSP)
+Price: 12.50 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Watermelon; Mint; Lime; Chocolate
+Your Verdict: Distinct fruit-forward expression; sweetness layered rather than sharp
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Fermentation adds aromatic complexity; processing-driven identity rather than terroir.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #6 • 2026-04-05 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #7 — The Clean, structured, high-clarity cup Experiment: Peru Gesha**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Clean, structured, high-clarity cup Experiment: Peru Gesha
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-05
+City: Singapore
+Cafe: Asylum Coffeehouse
+Coffee / Lot: Peru Gesha (Wilder Garcia)
+Varietal: Gesha
+Process: Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+Dose / Yield: 15g → 225g
+Ratio: 1:15
+Grinder: Timemore Sculptor 078 (SSP)
+Price: 12.50 (local)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Jasmine; Caramel; Lime; Cacao Nibs
+Your Verdict: Clean, structured, high-clarity cup
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+High transparency; minimal processing interference highlighting intrinsic genetic purity.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #7 • 2026-04-05 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #8 — The Successfully isolated the intended tasti Experiment: Colombia La Laja**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Successfully isolated the intended tasti Experiment: Colombia La Laja
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-01
+City: Singapore
+Cafe: Maxi Coffee Bar
+Coffee / Lot: Colombia La Laja
+Varietal: Sudan Rume
+Process: Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over (Flat-Bottom)
+Dose / Yield: 15g → 225g
+Ratio: 1:15
+Grinder: Timemore Sculptor 078 (SSP 78mm)
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Raspberry; Nectarine; Floral
+Your Verdict: Successfully isolated the intended tasting notes.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #8 • 2026-04-01 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #9 — The Full body Experiment: Brazil Santuário Sul**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Full body Experiment: Brazil Santuário Sul
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-04-24
+City: Singapore
+Cafe: Agora Coffee
+Coffee / Lot: Brazil Santuário Sul
+Process: Natural Fermentation
+Roast Level: Light-Medium
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: V60
+Dose / Yield: 16g → 224g
+Ratio: 1:14
+Grinder: Mahlkönig EK43
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Blackcurrant; black cherry; dark chocolate
+Your Verdict: Full body; prominent blackcurrant; clear chocolaty finish.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #9 • 2026-04-24 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #10 — The Thick, syrupy body. Highly fermented, sa Experiment: Nicaragua Buena Vista**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Thick, syrupy body. Highly fermented, sa Experiment: Nicaragua Buena Vista
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-05-07
+City: Singapore
+Cafe: Nylon Coffee Roasters
+Coffee / Lot: Nicaragua Buena Vista
+Varietal: Parainema
+Process: Natural Anaerobic
+Roast Level: Espresso Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Single Espresso
+Ratio: ~1:2
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Chiku; Stewed Cherry; Dried Apricot; Brazil Nut
+Your Verdict: Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #10 • 2026-05-07 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #11 — The Good cup with a very pleasant, lingering Experiment: Brazil Serra dos Ciganos**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Good cup with a very pleasant, lingering Experiment: Brazil Serra dos Ciganos
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-05-06
+City: Singapore
+Cafe: Nylon Coffee Roasters
+Coffee / Lot: Brazil Serra dos Ciganos
+Varietal: Catucai 24/137
+Process: Natural
+Roast Level: Espresso Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Flat White
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Sultana; Dried Apricot; Praline; Roasted Hazelnut
+Your Verdict: Good cup with a very pleasant, lingering sweet aftertaste.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #11 • 2026-05-06 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #12 — The Excellent clarity for a natural process, Experiment: Bali Karana Kintamanis**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Excellent clarity for a natural process, Experiment: Bali Karana Kintamanis
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-01-10
+City: Ubud, Bali
+Cafe: Seniman Coffee Studio
+Coffee / Lot: Bali Karana Kintamanis
+Process: Natural
+Roast Level: Light
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Clean citrus; floral
+Your Verdict: Excellent clarity for a natural process, bright and floral.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Established foundational exposure to local Indonesian origins.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #12 • 2026-01-10 • Ubud, Bali
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #13 — The Heavy body with rich cocoa notes. Experiment: Sulawesi Toraja**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Heavy body with rich cocoa notes. Experiment: Sulawesi Toraja
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-01-10
+City: Ubud, Bali
+Cafe: Seniman Coffee Studio
+Coffee / Lot: Sulawesi Toraja
+Process: Semi-Washed / Wet-Hulled
+Roast Level: Medium
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Cocoa; earthy structures
+Your Verdict: Heavy body with rich cocoa notes.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Demonstrated the structural density of the wet-hulled process.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #13 • 2026-01-10 • Ubud, Bali
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #14 — The Excellent baseline for clarity. Experiment: Kenya Kiamugumo AA**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Excellent baseline for clarity. Experiment: Kenya Kiamugumo AA
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-02-15
+City: Singapore
+Cafe: Kyuukei Coffee
+Coffee / Lot: Kenya Kiamugumo AA
+Process: Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over (Flat-Bottom)
+Grinder: 120mm Hybrid Burr
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Your Verdict: Excellent baseline for clarity.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #14 • 2026-02-15 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #15 — The Solid milk beverage. Experiment: Nicaragua Matagalpa**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Solid milk beverage. Experiment: Nicaragua Matagalpa
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-18
+City: Singapore
+Cafe: Agora Coffee
+Coffee / Lot: Nicaragua Matagalpa
+Process: Washed
+Roast Level: Espresso Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Flat White
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Your Verdict: Solid milk beverage.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Audited Central American washed profile in milk.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #15 • 2026-03-18 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #16 — The Incredible tea-like clarity. Experiment: Colombia Wush Wush**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Incredible tea-like clarity. Experiment: Colombia Wush Wush
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-15
+City: Singapore
+Cafe: Apartment Coffee
+Coffee / Lot: Colombia Wush Wush
+Varietal: Wush Wush
+Process: Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Tea-like
+Your Verdict: Incredible tea-like clarity.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Mapped the delicate genetics of Wush Wush.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #16 • 2026-03-15 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #17 — The Great milk integration. Experiment: House Blend**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Great milk integration. Experiment: House Blend
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-01-10
+City: Ubud, Bali
+Cafe: Seniman Coffee Studio
+Coffee / Lot: House Blend
+Roast Level: Espresso Roast
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Piccolo
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Balanced
+Your Verdict: Great milk integration.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Baseline for espresso and milk pairing.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #17 • 2026-01-10 • Ubud, Bali
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #18 — The High clarity. Experiment: Kenya Ndiaini AA**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The High clarity. Experiment: Kenya Ndiaini AA
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-02-28
+City: Singapore
+Cafe: Kyuukei Coffee
+Coffee / Lot: Kenya Ndiaini AA
+Process: Washed
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Your Verdict: High clarity.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Further exploration of Kenyan terroir.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #18 • 2026-02-28 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #19 — The Clean and balanced despite intense proce Experiment: Project Pearl Ratnagiri**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Clean and balanced despite intense proce Experiment: Project Pearl Ratnagiri
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-01
+City: Mumbai
+Cafe: Subko Coffee Roasters
+Coffee / Lot: Project Pearl Ratnagiri
+Process: Experimental Anaerobic
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Your Verdict: Clean and balanced despite intense process.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Analyzed advanced experimental processing in India.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #19 • 2026-03-01 • Mumbai
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #20 — The Classic dense Brazilian profile. Experiment: Brazil Natural**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Classic dense Brazilian profile. Experiment: Brazil Natural
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-20
+City: Singapore
+Cafe: Tiong Hoe
+Coffee / Lot: Brazil Natural
+Process: Natural
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Rich, chocolate-forward
+Your Verdict: Classic dense Brazilian profile.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Audited traditional natural processing sweetness and body.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #20 • 2026-03-20 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #21 — The Heavy body, over-smoothed expression mut Experiment: Raspberry in Loop**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Heavy body, over-smoothed expression mut Experiment: Raspberry in Loop
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-08
+City: Mumbai
+Cafe: Grey Soul Coffee Roasters
+Coffee / Lot: Raspberry in Loop
+Process: Multi-stage Anaerobic
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: Pour-over
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Official Notes: Chocolate
+Your Verdict: Heavy body, over-smoothed expression muted the brightness.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Observed how heavy fermentation can mute terroir.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #21 • 2026-03-08 • Mumbai
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+
+**GEMINI IMAGE PROMPT #22 — The Classic natural profile. Experiment: Ethiopia Beloya**
+
+Create a single, ultra-premium dark-themed coffee journal page in luxury print style for the Hari Coffee Archive 2026. 
+
+**Design System (strict):** 
+- Background: deep #0d0d0d matte black with subtle film grain and soft vignette
+- Accents: rich #c9a84c amber/gold metallic highlights, thin gold divider lines, elegant serif typography (Playfair Display style for headers), clean Inter-style sans-serif for body
+- Layout: cinematic 16:9 composition, left-aligned elegant hierarchy, infographic data cards with subtle drop shadows, high-resolution macro coffee bean photo with dramatic side lighting and steam wisps in top-right quadrant, small world map pin icon with location label, hardware silhouette icons (grinder, pour-over dripper, espresso machine), circular tasting wheel with highlighted notes, premium journal paper texture with slight edge wear
+- Mood: intimate, archival, scientific yet poetic, high-end specialty coffee publication quality (think Blue Bottle + Monocle + National Geographic coffee feature)
+- Lighting: soft cinematic key light from top-left, gentle rim lighting on gold elements, no harsh shadows
+
+**HEADER (top, large elegant serif, gold accent underline):**
+The Classic natural profile. Experiment: Ethiopia Beloya
+
+**SECTION 1 — GREEN DATA** (left column, clean card with gold border)
+Date: 2026-03-18
+City: Singapore
+Cafe: Agora Coffee
+Coffee / Lot: Ethiopia Beloya
+Process: Natural
+
+**SECTION 2 — HARDWARE SETUP** (center column, technical infographic style with small icons)
+Brew Method: V60
+
+**SECTION 3 — SENSORY DECODE** (right column, elegant tasting note cards with subtle color swatches matching dominant flavors)
+Your Verdict: Classic natural profile.
+
+**SECTION 4 — ARCHIVE MILESTONES** (bottom wide banner, gold accent)
+Baseline check for Ethiopian naturals.
+
+**SECTION 5 — TECHNICAL ENRICHMENT** (very bottom, small elegant footer text in gold)
+Hari Coffee Archive 2026 • Entry #22 • 2026-03-18 • Singapore
+
+**FINAL INSTRUCTIONS:** 
+- Omit any section or field that contains "Unknown" or has no data — do not display placeholder text.
+- Make the overall composition feel like a hand-crafted page from a private collector's coffee journal.
+- Highest possible detail on beans, steam, gold foil effects, and typography.
+- Aspect ratio: 16:9 landscape, ultra-high resolution, print-ready quality.
+
+================================================================================
+

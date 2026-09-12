@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <meta name="description" content="Hari Coffee Archive 2026 - Official Poster">
+    <title>Hari Coffee • Official Archive Poster 2026</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --bg: #0d0d0d; --gold: #c9a84c; --text: #f5f5f5; --card: #1a1a1a; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Inter', system_ui, sans-serif; background: var(--bg); color: var(--text); }
+        h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); }
+        .poster { max-width: 1200px; margin: 40px auto; background: #111; border: 12px solid #c9a84c; box-shadow: 0 0 80px rgba(201,168,76,0.3); }
+        .header { padding: 60px 80px 40px; text-align: center; border-bottom: 2px solid #c9a84c; }
+        .logo { font-size: 4.5rem; font-weight: 700; letter-spacing: -3px; }
+        .tagline { font-size: 1.4rem; color: #c9a84c; margin-top: 8px; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: #c9a84c; padding: 2px; margin: 40px 80px; }
+        .stat { background: #0d0d0d; padding: 28px 20px; text-align: center; }
+        .stat-number { font-size: 3.2rem; font-weight: 700; color: #c9a84c; }
+        .section { padding: 50px 80px; }
+        .top-beans { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .bean { background: #1a1a1a; padding: 24px; border-left: 6px solid #c9a84c; }
+        .print-btn { position: fixed; bottom: 40px; right: 40px; background: #c9a84c; color: #0d0d0d; border: none; padding: 18px 42px; font-size: 1.1rem; font-weight: 700; border-radius: 999px; box-shadow: 0 10px 30px rgba(201,168,76,0.4); cursor: pointer; z-index: 100; }
+        @media print {
+            body { background: white; color: black; }
+            .poster { box-shadow: none; border: 8px solid #111; max-width: 100%; margin: 0; }
+            .print-btn { display: none !important; }
+            .no-print { display: none; }
+        }
+        .footer { padding: 40px 80px; background: #0a0a0a; text-align: center; font-size: 0.95rem; color: #888; border-top: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">HARI COFFEE</div>
+            <div class="tagline">ARCHIVE 2026 — OFFICIAL POSTER</div>
+            <div style="margin-top: 20px; font-size: 1.1rem; color: #aaa;">Singapore • 31 Audited Entries • 12 Origins • May 2026</div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat"><div class="stat-number">31</div><div>Entries</div></div>
+            <div class="stat"><div class="stat-number">12</div><div>Origins</div></div>
+            <div class="stat"><div class="stat-number">5</div><div>Thermal Shifts</div></div>
+            <div class="stat"><div class="stat-number">27</div><div>Days Since Last</div></div>
+        </div>
+
+        <!-- TOP BEANS -->
+        <div class="section">
+            <h2 style="text-align:center; margin-bottom: 32px;">TOP RATED BEANS IN ARCHIVE</h2>
+            <div class="top-beans">
+                <div class="bean">
+                    <div style="font-weight:700; font-size:1.35rem;">El Obraje — Colombia Gesha</div>
+                    <div style="color:#c9a84c; margin: 8px 0;">FLUID • 16 May 2026 • 1:15.3</div>
+                    <div style="font-size:0.95rem; color:#ddd;">“Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite.”</div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4ade80;">★ 5.0 — Favourite</div>
+                </div>
+                <div class="bean">
+                    <div style="font-weight:700; font-size:1.35rem;">Ecuador La Papaya — Geisha</div>
+                    <div style="color:#c9a84c; margin: 8px 0;">Pocket by Flip • 19 May 2026 • 1:15</div>
+                    <div style="font-size:0.95rem; color:#ddd;">“Triple-temp cascade preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive.”</div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4ade80;">★ 5.0 — Terpene Landmark</div>
+                </div>
+                <div class="bean">
+                    <div style="font-weight:700; font-size:1.35rem;">El Morito — Marshell</div>
+                    <div style="color:#c9a84c; margin: 8px 0;">Alchemist (Raffles Place) • 8 May 2026 • 1:16</div>
+                    <div style="font-size:0.95rem; color:#ddd;">“Confirmed: I love this bean.” — Perfect dual-acid integration (citric + malic) with cane sugar finish.</div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4ade80;">★ 5.0 — Personal Favourite</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PALATE FINGERPRINT -->
+        <div class="section" style="background:#0a0a0a; border-top:1px solid #333; border-bottom:1px solid #333;">
+            <h2 style="text-align:center; margin-bottom:24px;">PALATE FINGERPRINT</h2>
+            <div style="max-width:620px; margin:0 auto; text-align:center; font-size:1.05rem; line-height:1.7;">
+                <strong style="color:#c9a84c;">Washed dominant</strong> • <strong style="color:#c9a84c;">Geisha highest rated</strong><br>
+                <strong style="color:#c9a84c;">Colombia strongest</strong> • <strong style="color:#c9a84c;">5 confirmed thermal shifts</strong><br>
+                <strong style="color:#c9a84c;">Optimal ratio: 1:15–1:17</strong> on flat-bottom geometry
+            </div>
+        </div>
+
+        <!-- ORIGIN BREAKDOWN -->
+        <div class="section">
+            <h2 style="text-align:center; margin-bottom:24px;">ORIGIN DISTRIBUTION</h2>
+            <div style="max-width:520px; margin:0 auto;">
+                <canvas id="origin-chart" width="500" height="280"></canvas>
+            </div>
+        </div>
+
+        <div class="footer">
+            Hari Coffee Archive 2026 • Built for the love of clarity, terroir &amp; process • Singapore
+        </div>
+    </div>
+
+    <button onclick="window.print()" class="print-btn no-print">PRINT POSTER (A3 / A2)</button>
+
+    <script>
+        // Embedded minimal data for poster
+        const ARCHIVE_DATA = [{"id":27,"Coffee_Name":"El Obraje","City":"Singapore","Process":"Washed","Your_Verdict":"Love this one. So far my favourite."},{"id":22,"Coffee_Name":"Ecuador La Papaya","City":"Singapore","Process":"Washed","Your_Verdict":"Triple-temp cascade preserved heat-sensitive thymol terpenes..."},{"id":23,"Coffee_Name":"El Morito","City":"Singapore","Process":"Washed","Your_Verdict":"Confirmed: I love this bean."}];
+
+        // Origin chart
+        function initChart() {
+            const ctx = document.getElementById('origin-chart');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ethiopia', 'Colombia', 'Brazil', 'Indonesia', 'Kenya', 'Others'],
+                    datasets: [{
+                        data: [6, 5, 3, 3, 2, 12],
+                        backgroundColor: ['#c9a84c', '#8b6f47', '#5c4033', '#4a7043', '#3a6b8c', '#6b4a8c'],
+                        borderColor: '#0d0d0d',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: 'right', labels: { color: '#ddd', font: { size: 13 } } } },
+                    cutout: '68%'
+                }
+            });
+        }
+
+        window.onload = function() {
+            initChart();
+            console.log('%c[Hari Coffee] coffee_poster.html ready — A3 print optimized', 'color:#c9a84c');
+        };
+    </script>
+    <script src="nav.js"></script>
+    <script src="og-meta-patch.js"></script>
+</body>
+</html>

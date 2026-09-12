@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Gatekeeper — Field Kit</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gatekeeper">
+<meta name="theme-color" content="#0e0a06">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230e0a06'/%3E%3Ctext x='90' y='118' font-size='88' text-anchor='middle' fill='%23d98d3a' font-family='Georgia'%3E☕%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0a06;--bg2:#141009;--card:#1c140b;--card2:#241a0e;
+  --line:#332613;--line2:#4a3a1e;
+  --acc:#d98d3a;--acc-soft:rgba(217,141,58,.13);--acc-line:rgba(217,141,58,.4);
+  --cream:#f2e8d5;--tan:#b39a76;--faint:#70573a;
+  --pass:#8aa87a;--fail:#b56b5c;
+  --serif:'Cormorant Garamond',serif;--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:var(--serif);font-weight:400}
+button,input,select,textarea{font-family:inherit;color:inherit;font-size:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+/* ── HEADER ── */
+#hdr{position:sticky;top:0;z-index:100;background:rgba(14,10,6,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(.8rem + env(safe-area-inset-top)) 1.1rem .8rem;display:flex;align-items:baseline;justify-content:space-between}
+#hdr h1{font-size:1.35rem;font-style:italic;color:var(--acc)}
+#hdr span{font-family:var(--mono);font-size:.5rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+
+/* ── TABS ── */
+#tabs{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:rgba(14,10,6,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tab{flex:1;background:none;border:none;padding:.65rem 0 .55rem;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--faint);transition:color .2s}
+.tab .ico{font-size:1.15rem;line-height:1}
+.tab .lbl{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase}
+.tab.on{color:var(--acc)}
+.pane{display:none;padding:1.2rem 1.1rem 2rem;max-width:640px;margin:0 auto}
+.pane.on{display:block}
+
+/* ── SHARED ── */
+.sec-lbl{font-family:var(--mono);font-size:.52rem;letter-spacing:.26em;text-transform:uppercase;color:var(--acc);margin:1.4rem 0 .7rem}
+.sec-lbl:first-child{margin-top:.2rem}
+.hint{font-size:.72rem;color:var(--faint);line-height:1.5;margin-bottom:.8rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--acc);color:#1a1208;border:none;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.85rem 1.2rem;width:100%;border-radius:2px}
+.btn:active{opacity:.85}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--tan);font-weight:400}
+.btn.small{width:auto;padding:.5rem .8rem;font-size:.54rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--cream);padding:.7rem .8rem;border-radius:2px;outline:none;font-size:.85rem;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc-line)}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%2370573a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center}
+label.f{display:block;margin-bottom:.65rem}
+label.f b{display:block;font-family:var(--mono);font-weight:400;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:.3rem}
+textarea{min-height:64px;resize:vertical}
+.card{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:1rem;margin-bottom:.7rem}
+.empty{text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;color:var(--faint);padding:2.4rem 1rem;text-transform:uppercase}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--acc-line);color:var(--cream);font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.7rem 1.2rem;border-radius:2px;opacity:0;pointer-events:none;transition:.3s;z-index:200;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── RADAR ── */
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.8rem}
+.chip{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;padding:.5rem .75rem;border:1px solid var(--line2);border-radius:2px;background:var(--card);color:var(--tan);position:relative}
+.chip.on{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.chip .x{margin-left:.5rem;color:var(--faint);font-weight:700}
+.addchip{display:flex;gap:.5rem;margin-bottom:.4rem}
+.addchip input{flex:1}
+.addchip button{width:auto;padding:.7rem 1rem}
+#radar-preview{font-family:var(--mono);font-size:.66rem;color:var(--tan);background:var(--card);border:1px dashed var(--line2);padding:.8rem;border-radius:2px;margin:.8rem 0;line-height:1.6;word-break:break-word}
+#radar-preview b{color:var(--acc);font-weight:400}
+.maps-row{display:grid;grid-template-columns:2.2fr 1fr;gap:.6rem;margin-top:.6rem}
+.presets{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.5rem}
+.preset{font-family:var(--mono);font-size:.53rem;letter-spacing:.08em;padding:.4rem .6rem;border:1px solid var(--line);background:transparent;color:var(--faint);border-radius:2px}
+.preset:active{color:var(--acc);border-color:var(--acc-line)}
+
+/* ── GATEKEEPER ── */
+.crit{display:flex;align-items:center;gap:.7rem;background:var(--card);border:1px solid var(--line);border-radius:2px;padding:.7rem .8rem;margin-bottom:.5rem}
+.crit .nm{flex:1;font-size:.82rem}
+.crit .wt{font-family:var(--mono);font-size:.58rem;color:var(--faint);white-space:nowrap}
+.crit .tgl{width:44px;height:26px;border-radius:13px;border:1px solid var(--line2);background:var(--bg2);position:relative;flex-shrink:0;transition:.2s}
+.crit .tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--faint);transition:.2s}
+.crit.yes .tgl{background:var(--acc-soft);border-color:var(--acc)}
+.crit.yes .tgl::after{left:20px;background:var(--acc)}
+.crit .del{background:none;border:none;color:var(--faint);font-size:.9rem;padding:0 .2rem}
+#gate-score{text-align:center;padding:1.4rem 1rem;border:1px solid var(--line2);border-radius:2px;margin:1rem 0;background:var(--card)}
+#gate-score .sc{font-family:var(--mono);font-size:2.6rem;line-height:1}
+#gate-score .vd{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;margin-top:.5rem}
+#gate-score.pass .sc,#gate-score.pass .vd{color:var(--pass)}
+#gate-score.fail .sc,#gate-score.fail .vd{color:var(--fail)}
+.thresh-row{display:flex;align-items:center;gap:.8rem;margin:.6rem 0 1rem}
+.thresh-row input[type=range]{flex:1;accent-color:var(--acc)}
+.thresh-row span{font-family:var(--mono);font-size:.72rem;color:var(--acc);min-width:44px;text-align:right}
+
+/* ── HIT LIST ── */
+.hit{border-left:3px solid var(--acc-line)}
+.hit.declined{border-left-color:var(--fail);opacity:.75}
+.hit h3{font-size:1.2rem;margin-bottom:.15rem}
+.hit .meta{font-family:var(--mono);font-size:.55rem;color:var(--tan);letter-spacing:.08em;margin-bottom:.5rem}
+.hit .why{font-size:.76rem;color:var(--tan);line-height:1.5;margin-bottom:.7rem}
+.hit .acts{display:flex;gap:.5rem;flex-wrap:wrap}
+.prio{font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid var(--acc-line);color:var(--acc);border-radius:2px;margin-left:.4rem;vertical-align:middle}
+
+/* ── AUDIT ── */
+.phase{border-left:3px solid;padding:.7rem .8rem;background:var(--card);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0 2px 2px 0;margin-bottom:.6rem}
+.phase.hot{border-left-color:#d98d3a}.phase.mid{border-left-color:#ce9d4e}.phase.cool{border-left-color:#b08768}
+.phase b{display:block;font-family:var(--mono);font-weight:400;font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:.3rem}
+.phase textarea{border:none;background:transparent;padding:0;min-height:38px}
+
+/* ── VAULT ── */
+.vrow{border-bottom:1px solid var(--line);padding:.8rem .2rem;cursor:pointer}
+.vrow .t{display:flex;justify-content:space-between;gap:.6rem;align-items:baseline}
+.vrow .nm{font-family:var(--serif);font-size:1.05rem}
+.vrow .nm .st{color:var(--acc);font-size:.85em}
+.vrow .dt{font-family:var(--mono);font-size:.52rem;color:var(--faint);white-space:nowrap}
+.vrow .sub{font-family:var(--mono);font-size:.55rem;color:var(--tan);letter-spacing:.06em;margin-top:.15rem}
+.vrow .full{display:none;margin-top:.7rem;font-size:.78rem;color:var(--tan);line-height:1.6}
+.vrow.open .full{display:block}
+.vrow .full .fld{margin-bottom:.4rem}
+.vrow .full .fld b{color:var(--acc);font-family:var(--mono);font-weight:400;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;display:block}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:2px;overflow:hidden;margin-bottom:1rem}
+.stat{background:var(--card);padding:.7rem .4rem;text-align:center}
+.stat b{display:block;font-family:var(--mono);font-weight:400;font-size:1.1rem;color:var(--acc)}
+.stat span{font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <h1>Gatekeeper</h1>
+  <span>Field Kit · v1.0</span>
+</header>
+
+<!-- ═══════ RADAR ═══════ -->
+<div class="pane on" id="p-radar">
+  <div class="sec-lbl">Keyword Arsenal</div>
+  <p class="hint">Tap chips to arm them. Armed keywords combine into one Google Maps search. Add your own — they persist on this device.</p>
+  <div class="chips" id="kw-chips"></div>
+  <div class="addchip">
+    <input type="text" id="kw-new" placeholder="add keyword… e.g. 'roasts on site'">
+    <button class="btn small" onclick="addKw()">Add</button>
+  </div>
+  <div class="sec-lbl">Quick Presets</div>
+  <div class="presets">
+    <button class="preset" onclick="preset(['specialty coffee','pour over'])">The Standard</button>
+    <button class="preset" onclick="preset(['specialty coffee','single origin','filter coffee'])">Purist</button>
+    <button class="preset" onclick="preset(['specialty coffee','gesha'])">Gesha Hunt</button>
+    <button class="preset" onclick="preset(['coffee roaster','pour over'])">Roastery</button>
+  </div>
+  <div id="radar-preview"></div>
+  <div class="sec-lbl">Search Area</div>
+  <input type="text" id="radar-area" placeholder="near me (default) — or type: Jurong, Tokyo, Melbourne…">
+  <div class="maps-row">
+    <button class="btn" onclick="fireMaps('g')">◈ Search Google Maps</button>
+    <button class="btn ghost" onclick="fireMaps('a')">Apple Maps</button>
+  </div>
+</div>
+
+<!-- ═══════ GATEKEEPER ═══════ -->
+<div class="pane" id="p-gate">
+  <div class="sec-lbl">Candidate</div>
+  <div class="row2">
+    <input type="text" id="gate-name" placeholder="Cafe name">
+    <input type="text" id="gate-area" placeholder="Area / city">
+  </div>
+  <div class="sec-lbl">The Examination</div>
+  <p class="hint">Toggle what the candidate satisfies. Criteria and weights are yours to edit — tap ✕ to remove, add below.</p>
+  <div id="crits"></div>
+  <div class="addchip">
+    <input type="text" id="crit-new" placeholder="new criterion…">
+    <input type="number" id="crit-wt" placeholder="wt" style="width:64px" min="1" max="10" value="5">
+    <button class="btn small" onclick="addCrit()">Add</button>
+  </div>
+  <div class="sec-lbl">Admission Threshold</div>
+  <div class="thresh-row">
+    <input type="range" id="thresh" min="30" max="95" value="65" oninput="calcGate()">
+    <span id="thresh-v">65%</span>
+  </div>
+  <div id="gate-score"><div class="sc">—</div><div class="vd">Awaiting Examination</div></div>
+  <div class="row2">
+    <button class="btn" onclick="admit()">Admit to Hit List</button>
+    <button class="btn ghost" onclick="decline()">Log as Declined</button>
+  </div>
+</div>
+
+<!-- ═══════ HIT LIST ═══════ -->
+<div class="pane" id="p-hits">
+  <div class="sec-lbl">Vetted — Awaiting Audit</div>
+  <div id="hit-list"></div>
+  <div class="sec-lbl">The Declined</div>
+  <p class="hint">Cafes that faced the examination and fell short. Kept for the record.</p>
+  <div id="declined-list"></div>
+</div>
+
+<!-- ═══════ AUDIT ═══════ -->
+<div class="pane" id="p-audit">
+  <div class="sec-lbl">Field Audit — New Entry</div>
+  <label class="f"><b>Date</b><input type="date" id="a-date"></label>
+  <div class="row2">
+    <label class="f"><b>Cafe</b><input type="text" id="a-cafe" placeholder="Cafe name"></label>
+    <label class="f"><b>City</b><input type="text" id="a-city" value="Singapore"></label>
+  </div>
+  <label class="f"><b>Coffee Name</b><input type="text" id="a-coffee" placeholder="e.g. Finca Villarazo Pink Bourbon"></label>
+  <div class="row2">
+    <label class="f"><b>Origin</b><input type="text" id="a-origin" placeholder="Country, region"></label>
+    <label class="f"><b>Producer / Farm</b><input type="text" id="a-farm" placeholder="Farm or producer"></label>
+  </div>
+  <div class="row2">
+    <label class="f"><b>Varietal</b><input type="text" id="a-varietal" list="dl-varietal" placeholder="type or pick"></label>
+    <label class="f"><b>Process</b><input type="text" id="a-process" list="dl-process" placeholder="type or pick"></label>
+  </div>
+  <div class="row2">
+    <label class="f"><b>Roast Level</b><select id="a-roast"><option>Light</option><option>Light (Filter Roast)</option><option>Light-Medium</option><option>Medium</option><option>Medium-Dark</option><option>Espresso Roast</option><option>Unknown</option></select></label>
+    <label class="f"><b>Brewer</b><input type="text" id="a-brewer" list="dl-brewer" placeholder="type or pick"></label>
+  </div>
+  <div class="row2">
+    <label class="f"><b>Grinder</b><input type="text" id="a-grinder" list="dl-grinder" placeholder="type or pick"></label>
+    <label class="f"><b>Ratio</b><select id="a-ratio"><option>1:15</option><option>1:14</option><option>1:14.5</option><option>1:15.5</option><option>1:16</option><option>1:16.5</option><option>1:17</option><option>~1:2 (espresso)</option><option>Unknown</option></select></label>
+  </div>
+  <div class="row2">
+    <label class="f"><b>Dose (g)</b><input type="number" id="a-dose" placeholder="15" inputmode="decimal"></label>
+    <label class="f"><b>Yield (g)</b><input type="number" id="a-yield" placeholder="225" inputmode="decimal"></label>
+  </div>
+  <div class="row2">
+    <label class="f"><b>Water Temp °C</b><input type="text" id="a-temp" placeholder="92, or 90→70"></label>
+    <label class="f"><b>Price (SGD)</b><input type="number" id="a-price" placeholder="9.00" inputmode="decimal" step="0.1"></label>
+  </div>
+  <label class="f"><b>Bloom</b><input type="text" id="a-bloom" placeholder="e.g. 45g / 30s"></label>
+  <label class="f"><b>Official Roaster Notes</b><input type="text" id="a-notes" placeholder="From the bean card"></label>
+  <div class="sec-lbl">Three-Phase Read</div>
+  <div class="phase hot"><b>Hot — Volatiles First</b><textarea id="a-hot" placeholder="What arrives immediately…"></textarea></div>
+  <div class="phase mid"><b>Mid-Cool — Sugars Emerge</b><textarea id="a-mid" placeholder="What changes as it settles…"></textarea></div>
+  <div class="phase cool"><b>Cool — The Truth</b><textarea id="a-cool" placeholder="What lingers at the finish…"></textarea></div>
+  <label class="f"><b>Verdict</b><textarea id="a-verdict" placeholder="The honest call"></textarea></label>
+  <label class="f"><b>Visit Context</b><input type="text" id="a-context" placeholder="Solo lunch audit / with Aanya / …"></label>
+  <button class="btn" onclick="saveAudit()">Save to Device</button>
+  <div style="height:.5rem"></div>
+  <div class="row2">
+    <button class="btn ghost" onclick="exportCSV()">Export CSV Rows</button>
+    <button class="btn ghost" onclick="backup()">Backup All Data</button>
+  </div>
+  <datalist id="dl-grinder">
+    <option>Mahlkönig EK43 (98mm Flat)</option><option>Mahlkönig EK43S (98mm Flat)</option>
+    <option>Mahlkönig EK Omnia (98mm Flat)</option><option>Mahlkönig X54</option>
+    <option>Ditting 807 (98mm Flat)</option><option>Ditting KR804</option>
+    <option>Option-O Lagom P64 (64mm Flat)</option><option>Option-O Lagom P100</option>
+    <option>DF64 Gen 2 (64mm Flat)</option><option>DF83V (83mm Flat)</option>
+    <option>Timemore Sculptor 078</option><option>Timemore Sculptor 078S</option>
+    <option>Fellow Ode Gen 2</option><option>Comandante C40 (Hand)</option>
+    <option>Kinu M47 (Hand)</option><option>1Zpresso ZP6 (Hand)</option>
+    <option>Mazzer Major V</option><option>Mazzer MM (83mm Flat)</option>
+    <option>Anfim SP II</option><option>Niche Zero (Conical)</option>
+    <option>Victoria Arduino Mythos MY85</option><option>Weber EG-1 (80mm Flat)</option>
+  </datalist>
+  <datalist id="dl-brewer">
+    <option>Hario V60 (Conical)</option><option>Orea V4 (Flat-Bottom)</option>
+    <option>April Brewer (Flat-Bottom)</option><option>Kalita Wave 155 (Flat-Bottom)</option>
+    <option>Kalita Wave 185 (Flat-Bottom)</option><option>Origami (Conical)</option>
+    <option>Origami + Wave Filter (Flat)</option><option>Hario Switch (Immersion Hybrid)</option>
+    <option>Hario Alpha (Flat-Bottom)</option><option>Deep27 (Flat-Bottom Immersion-Assist)</option>
+    <option>xBloom (Automated Flat-Bottom)</option><option>Chemex</option>
+    <option>Fellow Stagg X</option><option>AeroPress</option><option>Clever Dripper</option>
+    <option>Flatbed Dripper (Flat-Bottom)</option><option>Batch Brewer</option><option>Espresso Machine</option>
+  </datalist>
+  <datalist id="dl-varietal">
+    <option>Gesha</option><option>Geisha (Panama)</option><option>Sudan Rume</option>
+    <option>Sudan Rume (Yellow)</option><option>Wush Wush</option><option>Pink Bourbon</option>
+    <option>Red Bourbon</option><option>Yellow Bourbon</option><option>Bourbon Aruzi</option>
+    <option>Typica</option><option>Typica Mejorado</option><option>Caturra</option>
+    <option>Caturra Chiroso</option><option>Catuai</option><option>Pacamara</option>
+    <option>Maragogype</option><option>SL28</option><option>SL34</option><option>SL28 / SL34</option>
+    <option>Ruiru 11</option><option>Batian</option><option>Heirloom (Ethiopia)</option>
+    <option>74110 / 74112 (JARC)</option><option>Castillo</option><option>Colombia</option>
+    <option>Papayo</option><option>Parainema</option><option>Marshell</option>
+    <option>Arara</option><option>Catucai</option><option>Laurina</option>
+    <option>Liberica</option><option>Catimor</option><option>Purple Leaf Caturra</option><option>Sidra</option><option>Eugenioides</option>
+  </datalist>
+  <datalist id="dl-process">
+    <option>Washed</option><option>Fully Washed</option><option>Double Washed</option>
+    <option>Natural</option><option>Honey</option><option>Red Honey</option><option>Yellow Honey</option><option>Black Honey</option>
+    <option>Anaerobic Natural</option><option>Anaerobic Washed</option><option>Yeast Anaerobic Natural</option>
+    <option>Extended Fermentation Natural (EF2)</option><option>Extended Fermentation Honey</option>
+    <option>Mosto Fermentation</option><option>Carbonic Maceration</option><option>Thermal Shock</option>
+    <option>Co-Ferment</option><option>Wet-Hulled (Giling Basah)</option><option>Koji Fermentation</option>
+  </datalist>
+</div>
+
+<!-- ═══════ VAULT ═══════ -->
+<div class="pane" id="p-vault">
+  <div class="stat-strip" id="vault-stats"></div>
+  <input type="text" id="vsearch" placeholder="⌕  search the archive…" oninput="renderVault()">
+  <div style="height:.8rem"></div>
+  <div id="vrows"></div>
+</div>
+
+<!-- ═══════ TABS ═══════ -->
+<nav id="tabs">
+  <button class="tab on" data-p="p-radar"><span class="ico">📡</span><span class="lbl">Radar</span></button>
+  <button class="tab" data-p="p-gate"><span class="ico">🚪</span><span class="lbl">Gate</span></button>
+  <button class="tab" data-p="p-hits"><span class="ico">🎯</span><span class="lbl">Hits</span></button>
+  <button class="tab" data-p="p-audit"><span class="ico">☕</span><span class="lbl">Audit</span></button>
+  <button class="tab" data-p="p-vault"><span class="ico">🗄️</span><span class="lbl">Vault</span></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═════════ STORAGE (guarded — works on device, degrades in previews) ═════════ */
+const store={
+  ok:(()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true}catch(e){return false}})(),
+  mem:{},
+  get(k,d){if(!this.ok)return this.mem[k]??d;try{const v=localStorage.getItem('gk_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){if(!this.ok){this.mem[k]=v;return}try{localStorage.setItem('gk_'+k,JSON.stringify(v))}catch(e){}}
+};
+
+/* ═════════ TABS ═════════ */
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+  scrollTo(0,0);
+});
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+
+/* ═════════ RADAR ═════════ */
+const DEFAULT_KW=['specialty coffee','pour over','single origin','filter coffee','V60','hand brew','gesha','coffee roaster','light roast','third wave'];
+let kws=store.get('kws',DEFAULT_KW.map((k,i)=>({t:k,on:i<2})));
+function renderKw(){
+  const w=document.getElementById('kw-chips');w.innerHTML='';
+  kws.forEach((k,i)=>{
+    const c=document.createElement('button');
+    c.className='chip'+(k.on?' on':'');
+    c.innerHTML=k.t+'<span class="x" data-x>✕</span>';
+    c.onclick=e=>{
+      if(e.target.hasAttribute('data-x')){kws.splice(i,1)}else{k.on=!k.on}
+      store.set('kws',kws);renderKw();
+    };
+    w.appendChild(c);
+  });
+  const armed=kws.filter(k=>k.on).map(k=>k.t);
+  document.getElementById('radar-preview').innerHTML=armed.length
+    ?'Search query → <b>'+armed.join(' ')+'</b>'
+    :'No keywords armed — tap chips above to build your query.';
+}
+function addKw(){
+  const i=document.getElementById('kw-new');const v=i.value.trim();
+  if(!v)return;kws.push({t:v,on:true});i.value='';store.set('kws',kws);renderKw();
+}
+function preset(list){
+  kws.forEach(k=>k.on=list.includes(k.t));
+  list.forEach(t=>{if(!kws.find(k=>k.t===t))kws.push({t,on:true})});
+  store.set('kws',kws);renderKw();
+}
+function fireMaps(which){
+  const armed=kws.filter(k=>k.on).map(k=>k.t).join(' ');
+  if(!armed){toast('Arm at least one keyword');return}
+  const area=document.getElementById('radar-area').value.trim();
+  const q=encodeURIComponent(armed+(area?' in '+area:''));
+  const url=which==='g'
+    ?'https://www.google.com/maps/search/?api=1&query='+q
+    :'https://maps.apple.com/?q='+q;
+  window.open(url,'_blank');
+}
+
+/* ═════════ GATEKEEPER ═════════ */
+const DEFAULT_CRITS=[
+  {t:'Dedicated filter / pour-over menu',w:9,on:false},
+  {t:'Producer or farm named on menu',w:8,on:false},
+  {t:'Process stated (washed / natural / etc.)',w:8,on:false},
+  {t:'Single origins offered (not blend-only)',w:9,on:false},
+  {t:'Grinder visible & identifiable',w:6,on:false},
+  {t:'Roast date disclosed or in-house roast',w:6,on:false},
+  {t:'Barista can discuss ratio & temperature',w:7,on:false},
+  {t:'Flat-bottom brewer in rotation',w:5,on:false},
+  {t:'Rare varietal on menu (Gesha tier)',w:4,on:false},
+  {t:'Manual brewing only — no full automation',w:5,on:false},
+];
+let crits=store.get('crits',DEFAULT_CRITS);
+function renderCrits(){
+  const w=document.getElementById('crits');w.innerHTML='';
+  crits.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='crit'+(c.on?' yes':'');
+    d.innerHTML=`<span class="nm">${c.t}</span><span class="wt">×${c.w}</span><div class="tgl"></div><button class="del">✕</button>`;
+    d.querySelector('.tgl').onclick=()=>{c.on=!c.on;store.set('crits',crits);renderCrits()};
+    d.querySelector('.del').onclick=()=>{crits.splice(i,1);store.set('crits',crits);renderCrits()};
+    w.appendChild(d);
+  });
+  calcGate();
+}
+function addCrit(){
+  const t=document.getElementById('crit-new').value.trim();
+  const w=+document.getElementById('crit-wt').value||5;
+  if(!t)return;crits.push({t,w,on:false});
+  document.getElementById('crit-new').value='';
+  store.set('crits',crits);renderCrits();
+}
+function calcGate(){
+  const th=+document.getElementById('thresh').value;
+  document.getElementById('thresh-v').textContent=th+'%';
+  const tot=crits.reduce((s,c)=>s+c.w,0)||1;
+  const got=crits.filter(c=>c.on).reduce((s,c)=>s+c.w,0);
+  const pct=Math.round(got/tot*100);
+  const el=document.getElementById('gate-score');
+  const any=crits.some(c=>c.on);
+  el.className=any?(pct>=th?'pass':'fail'):'';
+  el.querySelector('.sc').textContent=any?pct+'%':'—';
+  el.querySelector('.vd').textContent=any?(pct>=th?'✓ Worthy of the List':'✗ Does Not Pass'):'Awaiting Examination';
+  return{pct,th};
+}
+function gateReset(){crits.forEach(c=>c.on=false);store.set('crits',crits);
+  document.getElementById('gate-name').value='';document.getElementById('gate-area').value='';renderCrits()}
+function admit(){
+  const n=document.getElementById('gate-name').value.trim();
+  if(!n){toast('Name the candidate first');return}
+  const{pct}=calcGate();
+  hits.unshift({n,area:document.getElementById('gate-area').value.trim(),score:pct,prio:'NEW',why:'Passed examination at '+pct+'%',declined:false,d:new Date().toISOString().slice(0,10)});
+  store.set('hits',hits);renderHits();gateReset();toast('Admitted → Hit List');
+}
+function decline(){
+  const n=document.getElementById('gate-name').value.trim();
+  if(!n){toast('Name the candidate first');return}
+  const{pct}=calcGate();
+  hits.push({n,area:document.getElementById('gate-area').value.trim(),score:pct,prio:'',why:'Failed examination at '+pct+'%',declined:true,d:new Date().toISOString().slice(0,10)});
+  store.set('hits',hits);renderHits();gateReset();toast('Logged in The Declined');
+}
+
+/* ═════════ HIT LIST ═════════ */
+let hits=store.get('hits',[
+  {n:'Glyph Supply Co',area:'Jurong, Singapore',score:null,prio:'HIGH PRIORITY',why:'Farm-specific bean tasting menu — barista-recommended. Long-standing watchlist target.',declined:false,d:'2026-05-26'},
+  {n:'Dough',area:'Victoria Street, Singapore',score:null,prio:'MEDIUM',why:'Glyph sister café — specialty coffee + food. Recommended at Zerah (Entry #35 visit).',declined:false,d:'2026-05-26'},
+]);
+function renderHits(){
+  const live=document.getElementById('hit-list'),dec=document.getElementById('declined-list');
+  live.innerHTML='';dec.innerHTML='';
+  let l=0,dd=0;
+  hits.forEach((h,i)=>{
+    const d=document.createElement('div');
+    d.className='card hit'+(h.declined?' declined':'');
+    d.innerHTML=`<h3>${h.n}${h.prio?`<span class="prio">${h.prio}</span>`:''}</h3>
+      <div class="meta">${h.area||'—'}${h.score!=null?' · scored '+h.score+'%':''} · ${h.d}</div>
+      <div class="why">${h.why}</div>
+      <div class="acts">
+        ${h.declined?'':`<button class="btn small" onclick="navTo(${i})">◈ Navigate</button>
+        <button class="btn small ghost" onclick="auditFrom(${i})">Begin Audit</button>`}
+        <button class="btn small ghost" onclick="dropHit(${i})">Remove</button>
+      </div>`;
+    (h.declined?dec:live).appendChild(d);
+    h.declined?dd++:l++;
+  });
+  if(!l)live.innerHTML='<div class="empty">No vetted targets — run a candidate through the Gate</div>';
+  if(!dd)dec.innerHTML='<div class="empty">None declined yet</div>';
+}
+function navTo(i){
+  const h=hits[i];
+  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(h.n+' '+(h.area||'')),'_blank');
+}
+function auditFrom(i){
+  const h=hits[i];
+  document.getElementById('a-cafe').value=h.n;
+  document.querySelector('[data-p="p-audit"]').click();
+  toast('Audit pre-filled: '+h.n);
+}
+function dropHit(i){hits.splice(i,1);store.set('hits',hits);renderHits()}
+
+/* ═════════ AUDIT ═════════ */
+let audits=store.get('audits',[]);
+function saveAudit(){
+  const g=id=>document.getElementById(id).value.trim();
+  if(!g('a-coffee')||!g('a-cafe')){toast('Coffee and cafe are required');return}
+  const verdictFull=[g('a-hot')&&'HOT: '+g('a-hot'),g('a-mid')&&'MID-COOL: '+g('a-mid'),g('a-cool')&&'COOL: '+g('a-cool'),g('a-verdict')].filter(Boolean).join(' | ');
+  const e={
+    Date:g('a-date')||new Date().toISOString().slice(0,10),City:g('a-city'),Cafe_Name:g('a-cafe'),
+    Coffee_Name:g('a-coffee'),Producer_Farm:g('a-farm')||'Unknown',Origin:g('a-origin')||'Unknown',
+    Varietal:g('a-varietal')||'Unknown',Process:g('a-process')||'Unknown',Roast_Level:g('a-roast'),
+    Brew_Method:g('a-brewer')||'Unknown',Dose_g:g('a-dose')||'Unknown',Yield_g:g('a-yield')||'Unknown',
+    Ratio:g('a-ratio'),Water_Temp_C:g('a-temp')||'Unknown',Bloom:g('a-bloom')||'Unknown',
+    Grinder:g('a-grinder')||'Unknown',Price_SGD:g('a-price')||'Unknown',
+    Official_Notes:g('a-notes')||'Unknown',Your_Verdict:verdictFull||'Unknown',
+    Technical_Enrichment:'Pending Claude enrichment',Visit_Context:g('a-context')||'Field audit via Gatekeeper',
+    Source:'Gatekeeper Field Kit'
+  };
+  audits.unshift(e);store.set('audits',audits);
+  document.querySelectorAll('#p-audit input,#p-audit textarea').forEach(x=>{if(x.id!=='a-city')x.value=''});
+  toast('Saved · '+audits.length+' field entr'+(audits.length===1?'y':'ies')+' on device');
+  renderVault();
+}
+const CSV_HEADER='Date,City,Cafe_Name,Coffee_Name,Producer_Farm,Origin,Varietal,Process,Roast_Level,Brew_Method,Dose_g,Yield_g,Ratio,Water_Temp_C,Bloom,Grinder,Price_SGD,Official_Notes,Your_Verdict,Technical_Enrichment,Visit_Context,Source';
+function csvCell(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function exportCSV(){
+  if(!audits.length){toast('No field audits saved yet');return}
+  const rows=audits.map(e=>CSV_HEADER.split(',').map(k=>csvCell(e[k])).join(','));
+  const txt=CSV_HEADER+'\n'+rows.join('\n');
+  if(navigator.share){navigator.share({title:'Gatekeeper field audits',text:txt}).catch(()=>copyTxt(txt))}
+  else copyTxt(txt);
+}
+function copyTxt(t){
+  navigator.clipboard?.writeText(t).then(()=>toast('CSV copied — paste to Claude'),()=>prompt('Copy:',t));
+}
+function backup(){
+  const data=JSON.stringify({kws,crits,hits,audits,v:1});
+  if(navigator.share){navigator.share({title:'Gatekeeper backup',text:data}).catch(()=>copyTxt(data))}
+  else copyTxt(data);
+}
+
+/* ═════════ VAULT — the 48 master entries + field audits ═════════ */
+const VAULT=[
+[1,'03 Jan','Seniman Coffee Studio','Ubud','Bali Karana Kintamanis','Natural','—','Clean citrus; floral',0],
+[2,'04 Jan','Seniman Coffee Studio','Ubud','Sulawesi Toraja','Wet-Hulled','—','Cocoa; earthy; syrup body',0],
+[3,'04 Jan','Seniman Coffee Studio','Ubud','House Blend (Piccolo)','—','—','Milk baseline',0],
+[4,'10 Feb','Kyūkei Coffee','SG','Kenya Kiamugumo AA','Washed','SL28/SL34','Blackcurrant, lemon, mineral — the measuring stick',1],
+[5,'01 Mar','Subko','Mumbai','Project Pearl Ratnagiri','Anaerobic Natural','—','Clean but roast-muted',0],
+[6,'08 Mar','Grey Soul','Mumbai','Raspberry in Loop','Multi-stage Anaerobic','—','Chocolate; over-smoothed',0],
+[7,'18 Mar','Narrative Coffee Stand','SG','Finca La Siberia','Natural','Pacamara',"Aanya's first filter — stewed apples, pu'er",1],
+[8,'18 Mar','Narrative Coffee Stand','SG','El Puente','Washed','Catuai','Black cherry, pecan espresso',0],
+[9,'18 Mar','ASK Coffee Roastery','SG','Honduras Masaguara S13','Washed Co-Ferment','Catuai/Caturra','Lychee, brandy, honeydew',0],
+[10,'18 Mar','ASK Coffee Roastery','SG','House Blend (Magic)','—','—','Ristretto milk calibration',0],
+[11,'22 Mar','Apartment (Selegie)','SG','Don Gallego Wush Wush','Washed','Wush Wush','Tea-like clarity at 1:17',1],
+[12,'24 Mar','Kyūkei Coffee','SG','Kenya Ndiaini AA','Washed','SL28/SL34/Ruiru 11','Redcurrant, elderflower',0],
+[13,'25 Mar','Agora Coffee','SG','Nicaragua Finca La Virgen','Fully Washed','—','Flat white; malic apple survives milk',0],
+[14,'27 Mar','Agora Coffee','SG','Ethiopia Beloya','Natural','Heirloom','Strawberry, white floral',0],
+[15,'28 Mar','Tiong Hoe','SG','Brazil Mogiana','Natural','—','Red dates, chocolate comfort',0],
+[16,'28 Mar','Tiong Hoe','SG','Smoky Quartz (Piccolo)','—','—','Dark chocolate, smoky milk',0],
+[17,'29 Mar','Asylum Coffeehouse','SG','Peru Cajamarca Gesha (Iced)','Washed','Gesha','First Gesha — jasmine in ice',1],
+[18,'01 Apr','Maxi Coffee Bar','SG','La Laja','Washed','Sudan Rume','Raspberry-nectarine, technical milestone',1],
+[19,'01 Apr','Lume Café','SG','Corpachi Panama Geisha','Red Honey','Geisha','First Panama Geisha; apricot',0],
+[20,'05 Apr','Asylum Coffeehouse','SG','Castillo Watermelon','Watermelon Co-Ferment','Castillo','Layered sweetness, controlled',0],
+[21,'05 Apr','Asylum Coffeehouse','SG','Peru Gesha (Wilder Garcia)','Washed','Gesha','Dual-temp clarity',0],
+[22,'08 Apr','Maxi Coffee Bar','SG','La Villa #1','Natural','Papayo','Forest berries, black forest cake',0],
+[23,'18 Apr','JB Café','JB','Hacienda La Florida','Anaerobic Washed','Typica Mejorado','Lime hot → plum cool. The revelation.',1],
+[24,'24 Apr','Agora Coffee','SG','Brazil Santuário Sul','Natural Fermentation','—','Blackcurrant, max body at 1:14',0],
+[25,'06 May','Nylon','SG','Brazil FAF Organic','Natural','Arara','Crisp malic → milk chocolate',0],
+[26,'06 May','Nylon','SG','Serra dos Ciganos','Natural','Catucai','Sultana praline flat white',0],
+[27,'07 May','Nylon','SG','Ethiopia Banko Gotiti','Washed','Heirloom','Lemon → melon → white tea. The perfect arc.',1],
+[28,'07 May','Nylon','SG','Nicaragua Buena Vista','Natural Anaerobic','Parainema','Savoury syrup espresso',0],
+[29,'08 May','Alchemist (Raffles)','SG','El Morito','Washed','Marshell','"Confirmed: I love this bean."',1],
+[30,'12 May','Kurasu','SG','Indonesia Frinsa Estate','Ext. Ferment Honey','Local','Sweet coating, clean fade',0],
+[31,'13 May','The Community','SG','Jose Mancia','Natural','Typica','Kiwi, oolong, truffle',0],
+[32,'15 May','Alchemist (OFC)','SG','Ijen Laurina','Anaerobic Natural','Laurina','Hibiscus → apple → honey, textbook',0],
+[33,'16 May','FLUID','SG','El Obraje','Washed','Gesha','★ CUP OF THE YEAR — mango, orange blossom, honey',1],
+[34,'19 May','Pocket by Flip','SG','Ecuador La Papaya','Washed','Geisha','2,100 MASL; terpene-forward',0],
+[35,'26 May','Zerah Roasters','SG','El Diviso "Ester Bomb"','Yeast Anaerobic','Caturra Chiroso','Three cups in one — passionfruit detonation',1],
+[36,'10 Jun','Nylon','SG','Colombia Juan Martin','Washed','Red Striped Bourbon','Orange-tea aromatics, lean',0],
+[37,'13 Jun','Kurasu','SG','Rwanda Nkara 1204','Fully Washed','Red Bourbon','Baked apple, bitter tail — average',0],
+[38,'14 Jun','Keryi Coffee','SG','Finca La Esmaralda','Honey','Gesha','Linalool survives 1:14',0],
+[39,'19 Jun','Corner Corner','SG','Malaysia My Liberica','JH Fermentation','Liberica','First non-Arabica — root beer, longan',1],
+[40,'19 Jun','Equate','SG','Huila La Pradera','Washed','Gesha','Isolated peach; rated average, honestly',0],
+[41,'21 Jun','Apartment (Jalan Riang)','SG','Javier Quintero','Washed','Bourbon Aruzi','White peach, beautifully balanced',0],
+[42,'25 Jun','PPP Coffee','SG','Ethiopia Suke Quto','Fully Washed','Welicho & Kurume','Hardware miss — terroir unrealised',0],
+[43,'27 Jun','Apartment (Jalan Riang)','SG','China Yunnan Meng Hai','Double Washed','Purple Leaf Caturra','First China — pandan-threaded surprise',1],
+[44,'28 Jun','Keryi Coffee','SG','Ethiopia Urabeast G1','Mosto Fermentation','74110/74112','First mosto — raspberry, winey on cue',0],
+[45,'28 Jun','Asylum Coffeehouse','SG','Yellow Sudan Rume','EF2 Natural','Sudan Rume (Y)','Triple milestone — lemongrass geraniol',1],
+[46,'30 Jun','2050 Coffee','SG','Myanmar Arakan Mountain','Washed & Honey','Catimor','The automation manifesto',0],
+[47,'01 Jul','Kyūkei Coffee','SG','Ethiopia Worka Chelchele','Washed','Landrace Triad','4/4 alignment; Wolisho jasmine tail',1],
+[48,'03 Jul','Zerah Roasters','SG','Finca Villarazo Pink Bourbon','Washed','Pink Bourbon','Pomegranate + mandarin; Aqil the great',1],
+];
+function renderVault(){
+  const q=(document.getElementById('vsearch').value||'').toLowerCase();
+  const w=document.getElementById('vrows');w.innerHTML='';
+  // Field audits first (newest work)
+  audits.forEach(a=>{
+    const s=`${a.Coffee_Name} ${a.Cafe_Name} ${a.Varietal} ${a.Process} ${a.Your_Verdict}`.toLowerCase();
+    if(q&&!s.includes(q))return;
+    const d=document.createElement('div');d.className='vrow';
+    d.innerHTML=`<div class="t"><span class="nm"><span class="st">◈</span> ${a.Coffee_Name}</span><span class="dt">${a.Date} · FIELD</span></div>
+      <div class="sub">${a.Cafe_Name} · ${a.Varietal} · ${a.Process}</div>
+      <div class="full"><div class="fld"><b>Verdict</b>${a.Your_Verdict}</div>
+      <div class="fld"><b>Brew</b>${a.Brew_Method} · ${a.Ratio} · ${a.Grinder}</div></div>`;
+    d.onclick=()=>d.classList.toggle('open');
+    w.appendChild(d);
+  });
+  VAULT.forEach(v=>{
+    const s=(v[2]+' '+v[4]+' '+v[5]+' '+v[6]+' '+v[7]).toLowerCase();
+    if(q&&!s.includes(q))return;
+    const d=document.createElement('div');d.className='vrow';
+    d.innerHTML=`<div class="t"><span class="nm">${v[8]?'<span class="st">★</span> ':''}${v[4]}</span><span class="dt">${v[1]} · Nº${String(v[0]).padStart(2,'0')}</span></div>
+      <div class="sub">${v[2]} · ${v[3]} · ${v[5]}</div>
+      <div class="full"><div class="fld"><b>Varietal</b>${v[6]}</div><div class="fld"><b>The read</b>${v[7]}</div></div>`;
+    d.onclick=()=>d.classList.toggle('open');
+    w.appendChild(d);
+  });
+  if(!w.children.length)w.innerHTML='<div class="empty">Nothing matches</div>';
+  // stats
+  const total=VAULT.length+audits.length;
+  document.getElementById('vault-stats').innerHTML=
+    `<div class="stat"><b>${total}</b><span>Entries</span></div>
+     <div class="stat"><b>${VAULT.filter(v=>v[8]).length}</b><span>Starred</span></div>
+     <div class="stat"><b>${audits.length}</b><span>Field New</span></div>
+     <div class="stat"><b>${hits.filter(h=>!h.declined).length}</b><span>Hit List</span></div>`;
+}
+
+/* ═════════ INIT ═════════ */
+document.getElementById('a-date').value=new Date().toISOString().slice(0,10);
+renderKw();renderCrits();renderHits();renderVault();
+if(!store.ok)toast('Preview mode — data persists only after deploying');
+</script>
+</body>
+</html>

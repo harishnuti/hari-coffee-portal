@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0a07">
+<title>EXTRACTION OS // Hari Coffee Archive</title>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Extraction OS","short_name":"ExtractionOS","start_url":".","display":"standalone","background_color":"#0d0a07","theme_color":"#0d0a07","icons":[]}'>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+ --bg:#0a0806;--bg2:#0d0a07;--surf:#141019;--card:#17131c;--card2:#1d1824;
+ --line:#2a2230;--line2:#3a3046;--gold:#c49a3c;--gold2:#e3b755;--amber:#f59e0b;
+ --teal:#2dd4bf;--coral:#f87171;--violet:#a78bfa;--green:#7dd87d;
+ --cream:#f0e6d0;--text:#e9e2d4;--t2:#9b9280;--t3:#5f5848;
+ --mono:'Space Mono',monospace;--serif:'Cormorant Garamond',serif;--sans:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.5;
+ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}::-webkit-scrollbar-track{background:transparent}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:.01em}
+.mono{font-family:var(--mono)}
+a{color:inherit}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;
+ padding:14px 22px;background:rgba(10,8,6,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-logo{font-family:var(--mono);font-size:.8rem;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+.nav-logo b{color:var(--cream)}
+.nav-right{display:flex;gap:16px;align-items:center}
+.nav-link{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--t2);text-transform:uppercase;cursor:pointer;text-decoration:none;transition:.2s}
+.nav-link:hover{color:var(--cream)}
+.kbtn{font-family:var(--mono);font-size:.62rem;color:var(--t2);border:1px solid var(--line2);border-radius:6px;padding:5px 9px;cursor:pointer;display:flex;gap:6px;align-items:center;transition:.2s}
+.kbtn:hover{border-color:var(--gold);color:var(--cream)}
+.kbtn kbd{background:var(--card2);border-radius:3px;padding:1px 5px;font-size:.9em}
+
+/* HERO */
+.hero{position:relative;padding:64px 22px 40px;max-width:1180px;margin:0 auto}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(196,154,60,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(196,154,60,.05) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 70% 70% at 30% 30%,#000,transparent);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.96;color:var(--cream)}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-family:var(--mono);font-size:.74rem;color:var(--t2);letter-spacing:.1em;margin-top:14px;max-width:560px}
+.hero-main{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;margin-top:34px;align-items:center}
+@media(max-width:780px){.hero-main{grid-template-columns:1fr}}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stat{background:var(--bg2);padding:18px 14px}
+.stat-v{font-family:var(--serif);font-size:2.3rem;color:var(--gold2);line-height:1}
+.stat-l{font-family:var(--mono);font-size:.58rem;letter-spacing:.13em;color:var(--t2);text-transform:uppercase;margin-top:7px}
+.dna-wrap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px 8px;position:relative}
+.dna-wrap h3{font-size:1.15rem;color:var(--cream);margin-bottom:2px}
+.dna-cap{font-family:var(--mono);font-size:.58rem;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+.dna-chart{height:240px;margin-top:6px}
+
+/* SECTION */
+.section{max-width:1180px;margin:0 auto;padding:30px 22px 10px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:.66rem;color:var(--gold);letter-spacing:.1em}
+.sec-head h2{font-size:1.7rem;color:var(--cream)}
+.sec-meta{font-family:var(--mono);font-size:.62rem;color:var(--t3);letter-spacing:.08em;margin-left:auto}
+
+/* ORACLE */
+.oracle{background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line2);border-radius:16px;padding:22px;display:grid;grid-template-columns:1fr 240px;gap:22px}
+@media(max-width:720px){.oracle{grid-template-columns:1fr}}
+.oracle label{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;color:var(--t2);text-transform:uppercase;display:block;margin:12px 0 6px}
+.oracle textarea,.oracle select{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:8px;color:var(--cream);font-family:var(--sans);font-size:.86rem;padding:10px}
+.oracle textarea{min-height:62px;resize:vertical}
+.orow{display:flex;gap:10px}.orow>div{flex:1}
+.obtn{margin-top:14px;background:var(--gold);color:#1a1206;border:none;border-radius:8px;padding:11px 18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-weight:700;transition:.2s}
+.obtn:hover{background:var(--gold2)}
+.gauge{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.gauge-num{font-family:var(--serif);font-size:4rem;line-height:1;color:var(--gold2)}
+.gauge-lab{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--t2);text-transform:uppercase;margin-top:4px}
+.gauge-verdict{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--cream);margin-top:12px}
+.orac-reasons{margin-top:12px;font-size:.8rem;color:var(--t2)}
+.orac-reasons div{padding:3px 0;border-top:1px dashed var(--line)}
+.orac-reasons b{color:var(--teal)}.orac-reasons .neg{color:var(--coral)}
+
+/* CONTROLS */
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.search{flex:1;min-width:200px;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;color:var(--cream);font-family:var(--mono);font-size:.78rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;padding:7px 12px;border:1px solid var(--line2);border-radius:20px;color:var(--t2);cursor:pointer;background:transparent;transition:.18s;text-transform:uppercase;white-space:nowrap}
+.chip:hover{border-color:var(--gold);color:var(--cream)}
+.chip.on{background:var(--gold);color:#1a1206;border-color:var(--gold);font-weight:700}
+.sortsel{background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--t2);font-family:var(--mono);font-size:.66rem;padding:8px}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:16px}
+.spec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:.22s;position:relative;overflow:hidden}
+.spec:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.spec-svg{display:block;margin:0 auto 10px}
+.spec-num{font-family:var(--mono);font-size:.58rem;color:var(--gold);letter-spacing:.1em}
+.spec-name{font-family:var(--serif);font-size:1.16rem;color:var(--cream);line-height:1.12;margin:3px 0}
+.spec-cafe{font-family:var(--mono);font-size:.6rem;color:var(--t2);letter-spacing:.05em}
+.spec-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.tg{font-family:var(--mono);font-size:.54rem;padding:3px 7px;border-radius:5px;letter-spacing:.05em;text-transform:uppercase}
+.fitbar{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.empty{font-family:var(--mono);font-size:.74rem;color:var(--t3);padding:40px;text-align:center}
+
+/* DEX */
+.dex{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.dexcard{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px}
+.dexcard h4{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
+.dexcard .frac{font-family:var(--serif);font-size:1.5rem;color:var(--cream)}
+.dexchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dx{font-family:var(--mono);font-size:.58rem;padding:4px 8px;border-radius:6px;background:var(--card2);color:var(--t2);border:1px solid var(--line)}
+.dx.got{background:rgba(196,154,60,.13);color:var(--gold2);border-color:rgba(196,154,60,.4)}
+.mile{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:.82rem;color:var(--t2);border-top:1px dashed var(--line)}
+.mile b{color:var(--cream);font-weight:500}
+.mile .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+
+/* DRAWER */
+.scrim{position:fixed;inset:0;background:rgba(4,3,2,.7);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:.25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,94vw);background:var(--bg2);border-left:1px solid var(--line2);z-index:301;transform:translateX(102%);transition:.34s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding:26px}
+.drawer.on{transform:translateX(0)}
+.dr-close{position:absolute;top:18px;right:20px;font-family:var(--mono);font-size:.7rem;color:var(--t2);cursor:pointer;border:1px solid var(--line2);border-radius:6px;padding:5px 9px}
+.dr-close:hover{color:var(--cream);border-color:var(--gold)}
+.dr-num{font-family:var(--mono);font-size:.62rem;color:var(--gold);letter-spacing:.12em}
+.dr-name{font-family:var(--serif);font-size:2rem;color:var(--cream);line-height:1.05;margin:4px 0}
+.dr-cafe{font-family:var(--mono);font-size:.68rem;color:var(--t2);letter-spacing:.06em}
+.dr-portrait{display:block;margin:18px auto}
+.dr-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:16px 0}
+.dr-f{background:var(--bg2);padding:11px 13px}
+.dr-f .l{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;color:var(--t3);text-transform:uppercase}
+.dr-f .v{font-size:.84rem;color:var(--cream);margin-top:3px}
+.block{margin:18px 0}
+.block-h{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:9px}
+.thermal{display:flex;gap:8px}
+.phase{flex:1;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px;cursor:default;transition:.2s}
+.phase .pt{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.phase.hot .pt{color:var(--coral)}.phase.mid .pt{color:var(--amber)}.phase.cool .pt{color:var(--teal)}
+.phase .px{font-size:.78rem;color:var(--t2);line-height:1.4}
+.verdict{font-family:var(--serif);font-style:italic;font-size:1.12rem;color:var(--cream);border-left:2px solid var(--gold);padding-left:14px}
+.enrich{font-size:.84rem;color:var(--t2);line-height:1.65}
+.physics{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px}
+.phys-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px dashed var(--line);font-size:.8rem}
+.phys-row:first-child{border-top:none}
+.phys-row .k{font-family:var(--mono);font-size:.6rem;color:var(--t3);letter-spacing:.06em;text-transform:uppercase}
+.phys-row .meter{flex:1;height:5px;background:var(--card2);border-radius:3px;margin:0 12px;overflow:hidden}
+.phys-row .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.fitpill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;background:rgba(196,154,60,.12);color:var(--gold2);border:1px solid rgba(196,154,60,.35);border-radius:20px;padding:6px 13px}
+
+/* DOSSIER */
+.greendata{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gd-node{font-family:var(--mono);font-size:.66rem;background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:5px 9px;color:var(--cream)}
+.gd-arrow{color:var(--t3);font-size:.7rem}
+.recipe{background:var(--card);border:1px solid var(--line2);border-radius:11px;padding:14px}
+.recipe-top{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.rc-dose{text-align:center}.rc-dose .v{font-family:var(--serif);font-size:1.5rem;color:var(--cream);line-height:1}
+.rc-dose .l{font-family:var(--mono);font-size:.5rem;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+.rc-arrow{color:var(--gold);font-size:1.2rem}
+.rc-ratio{background:rgba(196,154,60,.14);border:1px solid rgba(196,154,60,.4);color:var(--gold2);border-radius:8px;padding:7px 13px;font-family:var(--mono);font-size:.92rem;font-weight:700}
+.recipe-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.rg-cell{background:var(--bg2);padding:8px 11px}
+.rg-cell .l{font-family:var(--mono);font-size:.5rem;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}.rg-cell .v{font-size:.78rem;color:var(--cream);margin-top:2px}
+.logbook{font-family:var(--mono);font-size:.7rem}
+.lb-row{display:flex;gap:10px;padding:6px 0;border-top:1px dashed var(--line)}
+.lb-row .k{color:var(--t3);min-width:74px;text-transform:uppercase;font-size:.55rem;letter-spacing:.08em;padding-top:3px}
+.lb-row .v{color:var(--t2);flex:1;line-height:1.5}
+
+/* TIMELINE */
+.tl-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:12px;background:var(--bg2)}
+.tl-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--t2)}
+.tl-legend span{display:flex;gap:6px;align-items:center}
+.tl-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.tl-node{cursor:pointer}.tl-node:hover circle{stroke:#e3b755;stroke-width:2}
+
+/* VALUE MAP */
+.vm-wrap{display:grid;grid-template-columns:1fr 230px;gap:18px}
+@media(max-width:760px){.vm-wrap{grid-template-columns:1fr}}
+.vm-chart{height:400px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.coststats{display:flex;flex-direction:column;gap:10px}
+.cstat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.cstat .v{font-family:var(--serif);font-size:1.8rem;color:var(--gold2);line-height:1}
+.cstat .l{font-family:var(--mono);font-size:.55rem;color:var(--t2);letter-spacing:.1em;text-transform:uppercase;margin-top:5px}
+.cstat .s{font-size:.72rem;color:var(--t3);margin-top:3px;line-height:1.35}
+
+/* PALETTE */
+.cmd{position:fixed;inset:0;z-index:400;display:none;align-items:flex-start;justify-content:center;padding-top:12vh;background:rgba(4,3,2,.6);backdrop-filter:blur(5px)}
+.cmd.on{display:flex}
+.cmd-box{width:min(560px,92vw);background:var(--surf);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.cmd-box input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--cream);font-family:var(--mono);font-size:.92rem;padding:16px 18px;outline:none}
+.cmd-res{max-height:48vh;overflow-y:auto}
+.cmd-item{padding:11px 18px;cursor:pointer;display:flex;gap:12px;align-items:center;border-bottom:1px solid rgba(42,34,48,.5)}
+.cmd-item.sel,.cmd-item:hover{background:var(--card2)}
+.cmd-item .ci-n{font-family:var(--mono);font-size:.6rem;color:var(--gold)}
+.cmd-item .ci-name{color:var(--cream);font-size:.85rem}
+.cmd-item .ci-sub{font-family:var(--mono);font-size:.58rem;color:var(--t3);margin-left:auto}
+
+footer{max-width:1180px;margin:30px auto 0;padding:24px 22px 50px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.62rem;color:var(--t3);letter-spacing:.06em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.fade{opacity:0;transform:translateY(14px);transition:.6s}
+.fade.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.fade{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">☕ EXTRACTION<b>OS</b></div>
+  <div class="nav-right">
+    <a class="nav-link" onclick="go('oracle')">Oracle</a>
+    <a class="nav-link" onclick="go('archive')">Archive</a>
+    <a class="nav-link" onclick="go('timeline')">Timeline</a>
+    <a class="nav-link" onclick="go('valuemap')">Value</a>
+    <a class="nav-link" onclick="go('dex')">Coffee Dex</a>
+    <div class="kbtn" onclick="openCmd()">Search <kbd>⌘K</kbd></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <p class="eyebrow">// Specialty Coffee Extraction Archive // Live from master ledger</p>
+  <h1>The <em>Palate</em><br>Genome</h1>
+  <p class="hero-sub">Every cup logged, decoded, and rendered as a unique extraction specimen. The archive learns your signature — washed clarity, malic-floral lift — and predicts what you'll love next.</p>
+  <div class="hero-main">
+    <div class="statgrid" id="statgrid"></div>
+    <div class="dna-wrap fade">
+      <h3>Your Palate DNA</h3>
+      <div class="dna-cap">Aggregate signature across all entries</div>
+      <div class="dna-chart"><canvas id="dnaChart"></canvas></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="oracle">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Palate Oracle</h2><span class="sec-meta">predict fit before you order</span></div>
+  <div class="oracle fade">
+    <div>
+      <label>Roaster / flavour notes</label>
+      <textarea id="oNotes" placeholder="e.g. white florals, lychee, stone fruit, bergamot, sugarcane sweetness">jasmine, white peach, bergamot, honeysuckle, crisp citrus</textarea>
+      <div class="orow">
+        <div><label>Process</label><select id="oProc"><option>Washed</option><option>Honey</option><option>Natural</option><option>Anaerobic Natural</option><option>Co-Ferment</option></select></div>
+        <div><label>Brewer</label><select id="oBrew"><option>Flat-Bottom Pour-over</option><option>V60 Conical</option><option>Hario Switch</option><option>Espresso</option></select></div>
+      </div>
+      <div class="orow">
+        <div><label>Ratio</label><select id="oRatio"><option>1:15</option><option>1:16</option><option>1:17</option><option>1:14</option><option>1:18</option></select></div>
+        <div><label>Burr</label><select id="oBurr"><option>Flat burr (98mm+)</option><option>Flat burr (64mm)</option><option>Conical</option></select></div>
+      </div>
+      <button class="obtn" onclick="runOracle()">Predict fit ▸</button>
+    </div>
+    <div class="gauge">
+      <div class="gauge-num" id="oScore">—</div>
+      <div class="gauge-lab">Palate Fit</div>
+      <div class="gauge-verdict" id="oVerdict">Tune the inputs</div>
+      <div class="orac-reasons" id="oReasons"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="archive">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Specimen Archive</h2><span class="sec-meta" id="archMeta"></span></div>
+  <div class="controls">
+    <input class="search" id="search" placeholder="search coffee, origin, varietal, café…" oninput="render()">
+    <select class="sortsel" id="sort" onchange="render()">
+      <option value="fit">Sort: Palate Fit</option>
+      <option value="date">Sort: Newest</option>
+      <option value="datea">Sort: Oldest</option>
+      <option value="name">Sort: Name A–Z</option>
+    </select>
+  </div>
+  <div class="controls" id="filters"></div>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<section class="section" id="timeline">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Year in Coffee</h2><span class="sec-meta">scroll →  the 2026 journey & spend</span></div>
+  <div class="tl-scroll" id="tlScroll"></div>
+  <div class="tl-legend" id="tlLegend"></div>
+</section>
+
+<section class="section" id="valuemap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Value Map</h2><span class="sec-meta" id="vmMeta"></span></div>
+  <div class="vm-wrap">
+    <div class="vm-chart fade"><canvas id="vmChart"></canvas></div>
+    <div class="coststats" id="coststats"></div>
+  </div>
+</section>
+
+<section class="section" id="dex">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Coffee Dex</h2><span class="sec-meta">collection progress</span></div>
+  <div class="dex" id="dexgrid"></div>
+</section>
+
+<footer>
+  <span>EXTRACTION OS // built from hari_coffee_audit_unified_2026.xlsx</span>
+  <span id="footMeta"></span>
+</footer>
+
+<!-- DRAWER -->
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<aside class="drawer" id="drawer"></aside>
+
+<!-- COMMAND PALETTE -->
+<div class="cmd" id="cmd">
+  <div class="cmd-box">
+    <input id="cmdInput" placeholder="Jump to a coffee, origin, café…" oninput="cmdRender()" onkeydown="cmdKey(event)">
+    <div class="cmd-res" id="cmdRes"></div>
+  </div>
+</div>
+
+<script>
+const DATA = [{"id": 1, "Date": "2026-01-03", "City": "Ubud, Bali", "Cafe_Name": "Seniman Coffee Studio", "Coffee_Name": "Bali Karana Kintamanis", "Producer_Farm": "Unknown", "Origin": "Kintamani, Bali", "Varietal": "Unknown", "Process": "Natural", "Roast_Level": "Light", "Brew_Method": "Filter", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Clean citrus; floral", "Your_Verdict": "Excellent clarity for a natural process; clean citrus and floral notes.", "Technical_Enrichment": "Natural processing contributed mild fruit-forward esters with relatively clean finish; foundational exposure to local Indonesian origins.", "Visit_Context": "Bali family trip", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 2, "Date": "2026-01-04", "City": "Ubud, Bali", "Cafe_Name": "Seniman Coffee Studio", "Coffee_Name": "Sulawesi Toraja", "Producer_Farm": "Unknown", "Origin": "Sulawesi, Indonesia", "Varietal": "Unknown", "Process": "Wet-Hulled", "Roast_Level": "Medium", "Brew_Method": "Pour-over", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Cocoa; earthy structures", "Your_Verdict": "Heavy body with rich cocoa and earthy notes; low acidity; dense mouthfeel.", "Technical_Enrichment": "Classic Giling Basah wet-hulled process emphasized earthy compounds and syrupy mouthfeel; structural density confirmed.", "Visit_Context": "Bali family trip", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 3, "Date": "2026-01-04", "City": "Ubud, Bali", "Cafe_Name": "Seniman Coffee Studio", "Coffee_Name": "House Blend", "Producer_Farm": "Unknown", "Origin": "Unknown", "Varietal": "Unknown", "Process": "Unknown", "Roast_Level": "Espresso Roast", "Brew_Method": "Piccolo", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Balanced", "Your_Verdict": "Great milk integration; standard espresso + milk calibration.", "Technical_Enrichment": "Baseline milk pairing; milk fats softened acidity and amplified sweetness and body.", "Visit_Context": "Bali family trip", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 4, "Date": "2026-02-10", "City": "Singapore", "Cafe_Name": "Kyuukei Coffee", "Coffee_Name": "Kenya Kiamugumo AA", "Producer_Farm": "Unknown", "Origin": "Kenya", "Varietal": "SL28 / SL34", "Process": "Washed", "Roast_Level": "Unknown", "Brew_Method": "Pour-over (Flat-Bottom)", "Dose_g": "15", "Yield_g": "240", "Ratio": "1:16", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "120mm Hybrid Burr", "Price_SGD": "Unknown", "Official_Notes": "Unknown", "Your_Verdict": "Excellent baseline for clarity; high clarity phosphoric acidity with distinct blackcurrant notes.", "Technical_Enrichment": "120mm hybrid burrs and flat-bottom geometry reinforced clarity; Kenyan washed profile emphasized structured phosphoric acidity and blackcurrant.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 5, "Date": "2026-03-01", "City": "Mumbai", "Cafe_Name": "Subko Coffee Roasters", "Coffee_Name": "Project Pearl Ratnagiri", "Producer_Farm": "Ratnagiri Estate", "Origin": "India", "Varietal": "Unknown", "Process": "Anaerobic Natural", "Roast_Level": "Light (Agtron 89)", "Brew_Method": "Filter", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Unknown", "Your_Verdict": "Clean and balanced; interesting but restrained anaerobic expression.", "Technical_Enrichment": "Very light roast (Agtron 89) suppressed ester development despite anaerobic process; muted expected fermented intensity.", "Visit_Context": "Mumbai café exploration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 6, "Date": "2026-03-08", "City": "Mumbai", "Cafe_Name": "Grey Soul Coffee Roasters", "Coffee_Name": "Raspberry in Loop - Zoya Estate", "Producer_Farm": "Zoya Estate", "Origin": "India", "Varietal": "Unknown", "Process": "Multi-stage Anaerobic", "Roast_Level": "Medium", "Brew_Method": "Filter", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Chocolate", "Your_Verdict": "Heavy body; over-smoothed expression muted brightness and terroir.", "Technical_Enrichment": "Higher development in medium roast reduced aggressive fruit acidity; heavy multi-stage fermentation suppressed terroir expression.", "Visit_Context": "Mumbai café exploration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 7, "Date": "2026-03-18", "City": "Singapore", "Cafe_Name": "Narrative Coffee Stand", "Coffee_Name": "Finca La Siberia", "Producer_Farm": "Unknown", "Origin": "El Salvador", "Varietal": "Pacamara", "Process": "Natural", "Roast_Level": "Light", "Brew_Method": "Pour-over", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Unknown", "Your_Verdict": "Stewed apples; Apricot; Pu'er tea — Aanya's first specialty filter experience.", "Technical_Enrichment": "Natural Pacamara generated beginner-friendly fruit esters and approachable sweetness; large Pacamara bean size aided even extraction.", "Visit_Context": "Father-daughter coffee exploration", "Source": "ChatGPT only"}, {"id": 8, "Date": "2026-03-18", "City": "Singapore", "Cafe_Name": "Narrative Coffee Stand", "Coffee_Name": "El Puente", "Producer_Farm": "Unknown", "Origin": "Honduras", "Varietal": "Catuai", "Process": "Washed", "Roast_Level": "Medium-Light", "Brew_Method": "Espresso", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Unknown", "Your_Verdict": "Black cherry; Apricot; Pecan — ordered for espresso contrast.", "Technical_Enrichment": "Washed Central American espresso balanced nutty sweetness and fruit acidity; Catuai's consistent cell structure aided uniform extraction.", "Visit_Context": "Father-daughter coffee exploration", "Source": "ChatGPT only"}, {"id": 9, "Date": "2026-03-18", "City": "Singapore", "Cafe_Name": "ASK Coffee Roastery", "Coffee_Name": "Honduras Masaguara (S13)", "Producer_Farm": "Unknown", "Origin": "Honduras", "Varietal": "Catuai / Caturra", "Process": "Washed Co-Ferment", "Roast_Level": "Light", "Brew_Method": "Pour-over", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "15.00", "Official_Notes": "Lychee; Brandy; Honeydew; Milk Chocolate", "Your_Verdict": "Premium but memorable; highly complex tropical profile.", "Technical_Enrichment": "Co-fermentation amplified tropical ester complexity; co-ferment substrates introduced lychee lactones and brandy-like ethyl esters.", "Visit_Context": "Father-daughter coffee exploration", "Source": "ChatGPT only"}, {"id": 10, "Date": "2026-03-18", "City": "Singapore", "Cafe_Name": "ASK Coffee Roastery", "Coffee_Name": "House Blend", "Producer_Farm": "Unknown", "Origin": "Unknown", "Varietal": "Unknown", "Process": "Unknown", "Roast_Level": "Unknown", "Brew_Method": "Magic (Ristretto Milk)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Unknown", "Your_Verdict": "Contrast milk calibration; excellent concentrated cocoa expression.", "Technical_Enrichment": "Ristretto milk extraction increased sweetness density and concentrated cocoa compounds through reduced water content.", "Visit_Context": "Father-daughter coffee exploration", "Source": "ChatGPT only"}, {"id": 11, "Date": "2026-03-22", "City": "Singapore", "Cafe_Name": "Apartment Coffee", "Coffee_Name": "Colombia Don Gallego - Wush Wush", "Producer_Farm": "Don Gallego", "Origin": "Colombia", "Varietal": "Wush Wush", "Process": "Washed", "Roast_Level": "Light", "Brew_Method": "Pour-over (Flat-Bottom)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "1:17", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Tea-like", "Your_Verdict": "Incredible tea-like clarity; transparent floral expression.", "Technical_Enrichment": "Lean 1:17 ratio maximized aromatic separation; Wush Wush's Ethiopian-lineage genetics produced delicate phenolic and floral complexity.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 12, "Date": "2026-03-24", "City": "Singapore", "Cafe_Name": "Kyuukei Coffee", "Coffee_Name": "Kenya Ndiaini AA", "Producer_Farm": "Unknown", "Origin": "Kenya", "Varietal": "SL28 / SL34 / Ruiru 11", "Process": "Washed", "Roast_Level": "Unknown", "Brew_Method": "Pour-over", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "9.00", "Official_Notes": "Redcurrant; Elderflower; Lemon; Apricot", "Your_Verdict": "Acidic and interesting; well balanced; high clarity.", "Technical_Enrichment": "Ruiru 11 introduced structural body alongside classic SL28/SL34 brightness; further Kenyan terroir depth confirmed.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 13, "Date": "2026-03-25", "City": "Singapore", "Cafe_Name": "Agora Coffee", "Coffee_Name": "Nicaragua Matagalpa - Finca La Virgen", "Producer_Farm": "Finca La Virgen", "Origin": "Nicaragua", "Varietal": "Unknown", "Process": "Fully Washed", "Roast_Level": "Espresso Roast", "Brew_Method": "Flat White", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Caramel; Chocolate; Red Apple", "Your_Verdict": "Solid milk beverage; clean apple acidity preserved in milk integration.", "Technical_Enrichment": "Fully washed Central American profile preserved clean malic acidity in milk; espresso roast development amplified caramel Maillard notes.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 14, "Date": "2026-03-27", "City": "Singapore", "Cafe_Name": "Agora Coffee", "Coffee_Name": "Ethiopia Yirgacheffe Beloya", "Producer_Farm": "Beloya", "Origin": "Yirgacheffe, Ethiopia", "Varietal": "Heirloom", "Process": "Natural", "Roast_Level": "Filter Roast", "Brew_Method": "V60", "Dose_g": "15", "Yield_g": "220", "Ratio": "1:14.6", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43", "Price_SGD": "Unknown", "Official_Notes": "Blackcurrant; Strawberry; White Floral", "Your_Verdict": "Bright, floral, and distinct strawberry; classic natural Ethiopian profile.", "Technical_Enrichment": "EK43 98mm flat burrs reduced fines and preserved clarity despite natural processing; 1:14.6 ratio retained fruity body.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 15, "Date": "2026-03-28", "City": "Singapore", "Cafe_Name": "Tiong Hoe Specialty Coffee", "Coffee_Name": "Brazil Mogiana", "Producer_Farm": "Unknown", "Origin": "Mogiana, Brazil", "Varietal": "Unknown", "Process": "Natural", "Roast_Level": "Medium", "Brew_Method": "Pour-over", "Dose_g": "15", "Yield_g": "225", "Ratio": "1:15", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "8.00", "Official_Notes": "Red Dates; Chocolates; Honey", "Your_Verdict": "Chocolate-heavy and satisfying; classic dense Brazilian profile.", "Technical_Enrichment": "Tighter 1:15 ratio increased body and amplified Maillard-derived caramel sweetness; medium roast caramelized sugars without losing origin character.", "Visit_Context": "Solo specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 16, "Date": "2026-03-28", "City": "Singapore", "Cafe_Name": "Tiong Hoe Specialty Coffee", "Coffee_Name": "Smoky Quartz Blend", "Producer_Farm": "Unknown", "Origin": "Brazil + India", "Varietal": "Unknown", "Process": "Unknown", "Roast_Level": "Unknown", "Brew_Method": "Piccolo Latte", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "5.10", "Official_Notes": "Dark Chocolates; Hazelnut; Smoky", "Your_Verdict": "Strong milk side calibration; excellent concentrated cocoa expression.", "Technical_Enrichment": "Low milk volume in piccolo format concentrated cocoa and hazelnut compounds; cross-origin blend leveraged Indian robusta structural density.", "Visit_Context": "Solo specialty calibration", "Source": "ChatGPT only"}, {"id": 17, "Date": "2026-03-29", "City": "Singapore", "Cafe_Name": "Asylum Coffeehouse", "Coffee_Name": "Peru Cajamarca Gesha (Iced)", "Producer_Farm": "Wilder Garcia", "Origin": "Cajamarca, Peru", "Varietal": "Gesha", "Process": "Washed", "Roast_Level": "Medium", "Brew_Method": "Iced Pour-over", "Dose_g": "15", "Yield_g": "240", "Ratio": "1:16", "Water_Temp_C": "92.5", "Bloom": "Unknown", "Grinder": "Option-O Lagom P64", "Price_SGD": "11.00", "Official_Notes": "Jasmine; Caramel; Lime; Cacao Nibs", "Your_Verdict": "Super floral and elegant; flash-chilled expression of Gesha purity.", "Technical_Enrichment": "Flash-chilled extraction via Option-O Lagom P64 preserved volatile floral monoterpenes (linalool); cold dilution stabilized aromatic compounds.", "Visit_Context": "Solo specialty calibration", "Source": "ChatGPT only"}, {"id": 18, "Date": "2026-04-01", "City": "Singapore", "Cafe_Name": "Maxi Coffee Bar", "Coffee_Name": "La Laja", "Producer_Farm": "James Fernandez", "Origin": "Cauca, Colombia", "Varietal": "Sudan Rume", "Process": "Washed", "Roast_Level": "Light", "Brew_Method": "Pour-over (Flat-Bottom)", "Dose_g": "15", "Yield_g": "230", "Ratio": "1:15.3", "Water_Temp_C": "90-92", "Bloom": "Unknown", "Grinder": "FM Grinder 120mm Flat Burr / Timemore Sculptor 078", "Price_SGD": "9.00", "Official_Notes": "Raspberry; Nectarine; Floral", "Your_Verdict": "Nectarine and raspberry extremely clear; barista sophistication superb; technical milestone.", "Technical_Enrichment": "120mm flat burr geometry maximized uniform particle distribution; flat-bottom brewer enhanced sweetness while preserving Sudan Rume's rare genetic clarity.", "Visit_Context": "CBD lunch calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 19, "Date": "2026-04-01", "City": "Singapore", "Cafe_Name": "Lume Café", "Coffee_Name": "Corpachi Panama Geisha", "Producer_Farm": "Corpachi", "Origin": "Boquerón, Chiriquí, Panama", "Varietal": "Geisha", "Process": "Red Honey", "Roast_Level": "Filter Roast", "Brew_Method": "V60", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "1:15", "Water_Temp_C": "90 + 70", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43", "Price_SGD": "12.00", "Official_Notes": "Mandarin Candy; Jasmine; Apricot", "Your_Verdict": "Clearly perceived apricot and structured sweetness.", "Technical_Enrichment": "Dual-temperature extraction balanced aromatics and body in honey-process Geisha; red honey partial mucilage retention amplified structured sweetness.", "Visit_Context": "Rainy CBD lunch calibration", "Source": "ChatGPT only"}, {"id": 20, "Date": "2026-04-05", "City": "Singapore", "Cafe_Name": "Asylum Coffeehouse", "Coffee_Name": "Castillo Watermelon (Jairo Arcila)", "Producer_Farm": "Jairo Arcila", "Origin": "Armenia, Quindío, Colombia", "Varietal": "Castillo", "Process": "Washed Co-Ferment (Watermelon Anaerobic)", "Roast_Level": "Unknown", "Brew_Method": "Pour-over (V60)", "Dose_g": "15", "Yield_g": "225", "Ratio": "1:15", "Water_Temp_C": "90 + 70", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43", "Price_SGD": "12.50", "Official_Notes": "Watermelon; Mint; Lime; Chocolate", "Your_Verdict": "Distinct fruit-forward expression; sweetness layered rather than sharp; experimental but controlled.", "Technical_Enrichment": "Watermelon co-fermentation enhanced volatile ester complexity; dual-temperature extraction preserved layered aromatic architecture.", "Visit_Context": "Father-daughter coffee session", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 21, "Date": "2026-04-05", "City": "Singapore", "Cafe_Name": "Asylum Coffeehouse", "Coffee_Name": "Peru Gesha (Wilder Garcia)", "Producer_Farm": "Wilder Garcia", "Origin": "Jaén, Peru", "Varietal": "Gesha", "Process": "Washed", "Roast_Level": "Filter Roast", "Brew_Method": "Pour-over (V60)", "Dose_g": "15", "Yield_g": "225", "Ratio": "1:15", "Water_Temp_C": "90 + 70", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43", "Price_SGD": "12.50", "Official_Notes": "Jasmine; Caramel; Lime; Cacao Nibs", "Your_Verdict": "Clean, structured, high-clarity cup; apricot-like sweetness and excellent structure.", "Technical_Enrichment": "Dual-temperature extraction engineered aromatic separation and body control; Gesha genetics delivered intrinsic phenolic complexity with minimal processing interference.", "Visit_Context": "Father-daughter coffee session", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 22, "Date": "2026-04-08", "City": "Singapore", "Cafe_Name": "Maxi Coffee Bar", "Coffee_Name": "La Villa #1", "Producer_Farm": "Eduard Gaviria", "Origin": "Huila, Colombia", "Varietal": "Papayo", "Process": "Natural", "Roast_Level": "Unknown", "Brew_Method": "Pour-over (Flat-Bottom)", "Dose_g": "15", "Yield_g": "225", "Ratio": "1:15", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Timemore Sculptor 078", "Price_SGD": "9.00", "Official_Notes": "Stewed Forest Berries; Grape; Black Forest Cake", "Your_Verdict": "Dense fruit profile with rounded sweetness.", "Technical_Enrichment": "Flat-bottom geometry and tight 1:15 ratio emphasized body; Papayo varietal's high sugar content amplified by natural processing into rich fruit-cake profile.", "Visit_Context": "Lunch catch-up with Yichen", "Source": "ChatGPT only"}, {"id": 23, "Date": "2026-04-18", "City": "Johor Bahru", "Cafe_Name": "Unknown", "Coffee_Name": "Hacienda La Florida", "Producer_Farm": "Unknown", "Origin": "Unknown", "Varietal": "Typica Mejorado", "Process": "Anaerobic Washed", "Roast_Level": "Unknown", "Brew_Method": "Origami (Conical)", "Dose_g": "18", "Yield_g": "277", "Ratio": "1:15.4", "Water_Temp_C": "Unknown", "Bloom": "42g / 30s (1:2.3)", "Grinder": "Mahlkönig EK Omnia", "Price_SGD": "35.00", "Official_Notes": "Lemon verbena; Red plum; Citronella; Hibiscus", "Your_Verdict": "Excellent. Lime when hot, distinct plum as it cooled.", "Technical_Enrichment": "EK Omnia precision grind and Origami conical drove extreme clarity; thermal phase shift perfectly isolated citric-to-malic acid transition (lime → plum).", "Visit_Context": "Unknown", "Source": "Gemini only"}, {"id": 24, "Date": "2026-04-24", "City": "Singapore", "Cafe_Name": "Agora Coffee", "Coffee_Name": "Brazil Santuário Sul", "Producer_Farm": "Unknown", "Origin": "Carmo de Minas, Brazil", "Varietal": "Unknown", "Process": "Natural Fermentation", "Roast_Level": "Light-Medium", "Brew_Method": "V60", "Dose_g": "16", "Yield_g": "224", "Ratio": "1:14", "Water_Temp_C": "95", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43", "Price_SGD": "Unknown", "Official_Notes": "Blackcurrant; Black Cherry; Dark Chocolate", "Your_Verdict": "Full body; prominent blackcurrant; clear chocolaty finish.", "Technical_Enrichment": "Tight 1:14 ratio engineered maximum body; EK43 98mm burrs maintained clarity to keep fermented natural fruit clean and non-bitter.", "Visit_Context": "Midday specialty calibration", "Source": "Merged (Gemini + ChatGPT)"}, {"id": 25, "Date": "2026-05-06", "City": "Singapore", "Cafe_Name": "Nylon Coffee Roasters", "Coffee_Name": "Brazil FAF Organic", "Producer_Farm": "Unknown", "Origin": "Brazil", "Varietal": "Arara", "Process": "Natural", "Roast_Level": "Filter Roast", "Brew_Method": "xBloom (Flat-Bottom)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "1:17", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Mahlkönig EK Omnia", "Price_SGD": "7.50", "Official_Notes": "Red Apple; Cherry; Raisin; Milk Chocolate", "Your_Verdict": "Solid body with crisp green apple (malic) front, resolving into smooth milk chocolate finish.", "Technical_Enrichment": "High-quality Arara natural processing yielded excellent structural body while maintaining crisp malic acidity; xBloom flat-bottom avoided heavy fermentation mud.", "Visit_Context": "Unknown", "Source": "Gemini only"}, {"id": 26, "Date": "2026-05-06", "City": "Singapore", "Cafe_Name": "Nylon Coffee Roasters", "Coffee_Name": "Brazil Serra dos Ciganos", "Producer_Farm": "Unknown", "Origin": "Brazil", "Varietal": "Catucai 24/137", "Process": "Natural", "Roast_Level": "Espresso Roast", "Brew_Method": "Flat White", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Sultana; Dried Apricot; Praline; Roasted Hazelnut", "Your_Verdict": "Good cup with pleasant lingering sweet aftertaste.", "Technical_Enrichment": "Milk fats bound perfectly with natural processed espresso; Catucai 24/137 high-density bean structure created long, comforting finish.", "Visit_Context": "Unknown", "Source": "Gemini only"}, {"id": 27, "Date": "2026-05-07", "City": "Singapore", "Cafe_Name": "Nylon Coffee Roasters", "Coffee_Name": "Ethiopia Banko Gotiti", "Producer_Farm": "Unknown", "Origin": "Ethiopia", "Varietal": "Heirloom", "Process": "Washed", "Roast_Level": "Filter Roast", "Brew_Method": "xBloom (Flat-Bottom)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "1:17", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Mahlkönig EK Omnia", "Price_SGD": "8.50", "Official_Notes": "Lemonade; Raspberry; Peach; Bergamot", "Your_Verdict": "Lemon front, heavy melon mid-cup, fading into clean white tea finish.", "Technical_Enrichment": "1:17 lean ratio isolated volatile citric acids; xBloom flat-bottom geometry stabilized mid-cup sugars before clean tannin-forward white tea finish.", "Visit_Context": "Unknown", "Source": "Gemini only"}, {"id": 28, "Date": "2026-05-07", "City": "Singapore", "Cafe_Name": "Nylon Coffee Roasters", "Coffee_Name": "Nicaragua Buena Vista", "Producer_Farm": "Unknown", "Origin": "Nicaragua", "Varietal": "Parainema", "Process": "Natural Anaerobic", "Roast_Level": "Espresso Roast", "Brew_Method": "Single Espresso", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "~1:2", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Unknown", "Price_SGD": "Unknown", "Official_Notes": "Chiku; Stewed Cherry; Dried Apricot; Brazil Nut", "Your_Verdict": "Thick, syrupy body. Highly fermented, savory/not sweet, very long lingering finish.", "Technical_Enrichment": "Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar pressure emulsification drove heavy oil-based viscosity and extended aftertaste.", "Visit_Context": "Unknown", "Source": "Gemini only"}, {"id": 29, "Date": "2026-06-10", "City": "Singapore", "Cafe_Name": "Nylon Coffee Roasters", "Coffee_Name": "Colombia Juan Martin", "Producer_Farm": "Banexport", "Origin": "Colombia", "Varietal": "Red Striped Bourbon", "Process": "Washed", "Roast_Level": "Filter Roast", "Brew_Method": "xBloom (Flat-Bottom)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "1:17", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Mahlkönig EK Omnia (98mm Flat Burr)", "Price_SGD": "7.5", "Official_Notes": "Berry, Red Plum, Nectarine, Orange Tea", "Your_Verdict": "Orange-type aromatic afterfeel when hot — bright and encapsulating. Clearly fruity character throughout. Mellows cleanly as it cools; sugars emerge distinctly at mid-cool phase. Nice and light overall — 1:17 lean ratio working well on this varietal.", "Technical_Enrichment": "EK Omnia 98mm flat burrs + xBloom flat-bottom geometry maintained body integrity at 1:17 lean ratio. Retail bag on shelf dated 10 Jun 2026 but filter batch roast date unconfirmed — cup behaviour (clean sugar emergence, well-integrated stone fruit at cool phase) is consistent with a properly rested lot of 10–21 days post-roast. Red Striped Bourbon sucrose density confirmed by clean sweetness at cool phase.", "Visit_Context": "Solo visit — office lunch break, 13:15", "Source": "Direct observation + bag photo (retail stock)"}, {"id": 30, "Date": "2026-06-13", "City": "Singapore", "Cafe_Name": "Kurasu", "Coffee_Name": "Rwanda Nkara Soil Project Lot 1204", "Producer_Farm": "Nkara Soil Project", "Origin": "Rwanda", "Varietal": "Red Bourbon", "Process": "Fully Washed", "Roast_Level": "Filter Roast", "Brew_Method": "V60 Pour-over (Conical)", "Dose_g": "Unknown", "Yield_g": "Unknown", "Ratio": "Unknown", "Water_Temp_C": "Unknown", "Bloom": "Unknown", "Grinder": "Mahlkönig EK43 (98mm Flat Burr)", "Price_SGD": "9.27", "Official_Notes": "Floral aroma, taste of mandarin orange, baked apple and grapefruit, brown sugar-like sweetness and accompanying aftertaste", "Your_Verdict": "Strong aftertaste with slight bitterness noted. Baked apple taste dominates and persists across all phases. Sugars emerge clearly on cooling — brown sugar sweetness confirmed at cool phase. Rated average. Rwanda Nkara terroir pushes more citrus-floral (mandarin/grapefruit) vs prior Rwanda entry at Twenty Grams (Entry #024) which was peach/stone fruit dominant.", "Technical_Enrichment": "EK43 98mm flat burrs paired with conical V60 geometry — key hardware distinction vs prior Kurasu Frinsa entry. V60 conical creates faster flow rate and higher bypass risk vs flat-bottom; the slight bitterness is consistent with conical geometry allowing fine particles to over-extract at the drain. Washed Red Bourbon at altitude delivers classic Rwandan citric-malic duality (mandarin + baked apple). Baked apple dominance = malic acid thermally stabilised — persists across full thermal arc unlike volatile citric top notes which fade. Brown sugar aftertaste is sucrose retention signature of Red Bourbon genetics.", "Visit_Context": "Solo visit — 13 Jun 2026", "Source": "Direct observation + bean card photo"}, {"id": 31, "Date": "2026-06-14", "City": "Singapore", "Cafe_Name": "Keryi Coffee", "Coffee_Name": "Colombia Finca La Esmaralda", "Producer_Farm": "Finca La Esmaralda", "Origin": "Colombia", "Varietal": "Gesha", "Process": "Honey", "Roast_Level": "Light Roast", "Brew_Method": "Hario Switch (Immersion/Percolation Hybrid)", "Dose_g": "15", "Yield_g": "210", "Ratio": "1:14", "Water_Temp_C": "91 → 78", "Bloom": "60g (~4:1)", "Grinder": "Ditting 98mm flat burr", "Price_SGD": "15", "Official_Notes": "Citrus, white florals, lychee, sugar-cane sweetness", "Your_Verdict": "Smooth body throughout. Lychee & white florals lead in the hot phase — fragile linalool terpenes survived the tight 1:14 concentration. Citrus surfaces mid-cool as perceived sweetness rises; honey-derived sweetness rounds the cool-phase finish into progressive smoothness. Rated highly — a fine, relaxing Gesha. Clarity held; upper Gesha tier (cf. El Obraje washed favourite, Hiu Los Lajones honey Panama).", "Technical_Enrichment": "Ditting 98mm flat burrs deliver lab-grade narrow particle distribution with minimal fines — the key variable licensing an aggressive 1:14 ratio without astringency. Descending pour (91°C bloom/first pour → 78°C final) uses temperature as a brake on the extraction tail: high heat early extracts volatile terpenes, acids & sugars; the cool final pour reaches target volume while suppressing late-stage chlorogenic-acid bitterness. Hario Switch valve-closed immersion develops honey-process mucilage sweetness & body evenly before percolative drain adds finish definition — conical geometry runs against the flat-bottom affinity but suits this process.", "Visit_Context": "Solo relaxation visit — Sunday 14 Jun 2026, 11 AM; barista-led brew interview (grinder/ratio/temp confirmed)", "Source": "Direct observation + menu photo + barista interview"}];
+
+/* ---------- model ---------- */
+const COUNTRY=[["Indonesia",["bali","sulawesi","indonesia","sumatra","kintamani"]],["Brazil",["brazil","mogiana","minas","cerrado"]],["Colombia",["colombia","cauca","huila","quind","nari"]],["Ethiopia",["ethiopia","yirgacheffe","guji","sidamo","banko"]],["Kenya",["kenya"]],["Panama",["panama","boquer","chiriqu"]],["Peru",["peru","cajamarca","jaen","jaén"]],["Nicaragua",["nicaragua","matagalpa"]],["India",["india","ratnagiri","karnataka"]],["Honduras",["honduras","masaguara"]],["El Salvador",["salvador"]],["Rwanda",["rwanda"]],["Guatemala",["guatemala"]]];
+function country(o){o=(o||"").toLowerCase();for(const[n,k]of COUNTRY)if(k.some(x=>o.includes(x)))return n;return (o?o.split(",").pop().trim().replace(/\b\w/g,c=>c.toUpperCase()):"Unknown");}
+const HUE={Indonesia:18,Brazil:32,Colombia:6,Ethiopia:300,Kenya:0,Panama:165,Peru:200,Nicaragua:48,India:265,Honduras:90,"El Salvador":130,Rwanda:340,Guatemala:110,Unknown:40};
+function pbucket(p){p=(p||"").toLowerCase();if(p.includes("anaerobic"))return"Anaerobic";if(p.includes("honey")||p.includes("ferment")||p.includes("yeast"))return"Honey/Co-Ferment";if(p.includes("wash"))return"Washed";return"Natural";}
+function brewfam(b){b=(b||"").toLowerCase();if(/espresso|white|piccolo|latte|milk|cortado|mousse/.test(b))return"Espresso/Milk";if(b.includes("switch"))return"Switch";if(b.includes("v60"))return"V60";if(/flat-bottom|flat bottom|xbloom|orea|kalita/.test(b))return"Flat-Bottom";if(/pour|filter|drip|hario/.test(b))return"Pour-over";return"Other";}
+function txt(e){return ((e.Official_Notes||"")+" "+(e.Your_Verdict||"")+" "+(e.Technical_Enrichment||"")+" "+(e.Varietal||"")).toLowerCase();}
+function ratioNum(e){const m=(e.Ratio||"").match(/1:(\d+(\.\d+)?)/);return m?parseFloat(m[1]):null;}
+
+function dnaAxes(e){
+ const t=txt(e),has=(...a)=>a.some(x=>t.includes(x));
+ let clarity=.3,floral=.1,malic=.1,citrus=.1,body=.3,ferment=.1;
+ if((e.Process||"").toLowerCase().includes("wash"))clarity+=.45;
+ if(has("clarity","clean","transparent","crisp","tea-like","delicate"))clarity+=.3;
+ if(has("muddy","heavy ferment","boozy","over-smoothed","funk"))clarity-=.25;
+ if(has("floral","jasmine","honeysuckle","violet","bergamot","lavender","blossom"))floral+=.5;
+ if(has("lychee","white grape","rose"))floral+=.25;
+ if(has("malic","stone","peach","apricot","nectarine","plum","apple","white grape"))malic+=.5;
+ if(has("citrus","orange","mandarin","lemon","grapefruit","lime"))citrus+=.45;
+ if(has("syrup","heavy","full body","creamy","dense","cocoa","chocolate","honey","caramel","brown sugar"))body+=.4;
+ if(has("tea-like","delicate","light","silky"))body-=.2;
+ if(has("anaerobic","co-ferment","funk","boozy","wine","tropical","fermented","yeast"))ferment+=.5;
+ const cl=v=>Math.max(0,Math.min(1,v));
+ return{Clarity:cl(clarity),Florality:cl(floral),"Malic / Stone":cl(malic),Citrus:cl(citrus),Body:cl(body),"Ferment / Funk":cl(ferment)};
+}
+/* fit = how close to Hari's signature: high clarity+floral+malic, moderate body, low ferment, ratio in band, flat geometry */
+function fitFromAxes(a,e){
+ let s=0;
+ s+=a.Clarity*26; s+=a.Florality*22; s+=a["Malic / Stone"]*18; s+=a.Citrus*10;
+ s+=(1-Math.abs(a.Body-.5)*1.4)*10;        // moderate body ideal
+ s-=a["Ferment / Funk"]*18;                 // penalise funk
+ const r=e?ratioNum(e):null;
+ if(r!=null){ if(r>=15&&r<=17)s+=8; else if(r<14||r>18)s-=6; }
+ const g=((e&&e.Grinder)||"").toLowerCase();
+ if(/flat/.test(g))s+=4; if(/conical/.test(((e&&e.Brew_Method)||"").toLowerCase()))s-=3;
+ if(/light/.test(((e&&e.Roast_Level)||"").toLowerCase()))s+=3;
+ return Math.max(2,Math.min(99,Math.round(50+s)));
+}
+function fit(e){return fitFromAxes(dnaAxes(e),e);}
+
+DATA.forEach(e=>{e._c=country(e.Origin);e._pb=pbucket(e.Process);e._bf=brewfam(e.Brew_Method);e._fit=fit(e);e._hue=HUE[e._c]??40;});
+
+/* ---------- generative specimen SVG ---------- */
+function specimen(e,size){
+ size=size||150;const cx=size/2,cy=size/2,hue=e._hue,fitN=e._fit/100;
+ const petals={Washed:6,Natural:9,"Honey/Co-Ferment":7,Anaerobic:5}[e._pb]||6;
+ const r=ratioNum(e), rings=r?Math.max(2,Math.min(6,Math.round(20-r))):3;
+ const bodyAx=dnaAxes(e).Body, clar=dnaAxes(e).Clarity;
+ let s=`<svg class="spec-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+ // blueprint crosshair
+ s+=`<line x1="${cx}" y1="6" x2="${cx}" y2="${size-6}" stroke="rgba(196,154,60,.08)"/><line x1="6" y1="${cy}" x2="${size-6}" y2="${cy}" stroke="rgba(196,154,60,.08)"/>`;
+ // rings (ratio)
+ for(let i=1;i<=rings;i++){const rad=(size*0.42)*(i/rings);s+=`<circle cx="${cx}" cy="${cy}" r="${rad}" fill="none" stroke="hsla(${hue},45%,55%,${.10+clar*.12})" stroke-width="0.8"/>`;}
+ // petals (process) coloured by origin, opacity by body
+ const pr=size*0.40, pw=size*(0.07+bodyAx*0.06);
+ for(let i=0;i<petals;i++){const ang=(360/petals)*i;
+  s+=`<g transform="rotate(${ang} ${cx} ${cy})"><ellipse cx="${cx}" cy="${cy-pr*0.55}" rx="${pw}" ry="${pr*0.5}" fill="hsla(${hue},${50+clar*20}%,${52}%,${.18+bodyAx*.35})" stroke="hsla(${hue},60%,62%,.5)" stroke-width="0.6"/></g>`;}
+ // ferment marks
+ const ferm=dnaAxes(e)["Ferment / Funk"];
+ if(ferm>.4){for(let i=0;i<petals;i++){const ang=(360/petals)*i+ (360/petals/2);s+=`<g transform="rotate(${ang} ${cx} ${cy})"><line x1="${cx}" y1="${cy-pr}" x2="${cx}" y2="${cy-pr*0.6}" stroke="hsla(${hue+30},70%,60%,.6)" stroke-width="1"/></g>`;}}
+ // fit core (gold)
+ s+=`<circle cx="${cx}" cy="${cy}" r="${4+fitN*9}" fill="hsl(42,${30+fitN*45}%,${40+fitN*22}%)" stroke="#e3b755" stroke-width="${fitN>.7?1.4:0.6}"/>`;
+ if(fitN>.78)s+=`<circle cx="${cx}" cy="${cy}" r="${10+fitN*11}" fill="none" stroke="rgba(227,183,85,.5)" stroke-width="0.8" stroke-dasharray="2 3"/>`;
+ s+=`</svg>`;return s;
+}
+
+/* ---------- hero ---------- */
+function uniq(f){return [...new Set(DATA.map(f).filter(x=>x&&x!=="Unknown"))];}
+function renderHero(){
+ const cafes=uniq(e=>e.Cafe_Name).length, cities=uniq(e=>e.City.replace(/.*bali.*/i,"Bali")).length;
+ const origins=uniq(e=>e._c).length, varietals=uniq(e=>e.Varietal&&!/blend|unknown/i.test(e.Varietal)?e.Varietal:null).length;
+ const avgFit=Math.round(DATA.reduce((a,e)=>a+e._fit,0)/DATA.length);
+ const stats=[["Entries",DATA.length],["Cafés",cafes],["Cities",cities],["Origins",origins],["Varietals",varietals],["Avg Fit",avgFit]];
+ document.getElementById("statgrid").innerHTML=stats.map(s=>`<div class="stat"><div class="stat-v">${s[1]}</div><div class="stat-l">${s[0]}</div></div>`).join("");
+ document.getElementById("footMeta").textContent=`${DATA.length} entries · ${origins} origins · avg palate-fit ${avgFit}`;
+ // DNA radar = average axes
+ const axesKeys=Object.keys(dnaAxes(DATA[0]));
+ const avg=axesKeys.map(k=>DATA.reduce((a,e)=>a+dnaAxes(e)[k],0)/DATA.length);
+ new Chart(document.getElementById("dnaChart"),{type:"radar",
+  data:{labels:axesKeys,datasets:[{data:avg.map(v=>+(v*100).toFixed(0)),fill:true,backgroundColor:"rgba(196,154,60,.18)",borderColor:"#c49a3c",pointBackgroundColor:"#e3b755",borderWidth:2,pointRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},
+   scales:{r:{min:0,max:100,angleLines:{color:"rgba(196,154,60,.12)"},grid:{color:"rgba(196,154,60,.12)"},pointLabels:{color:"#9b9280",font:{family:"Space Mono",size:9}},ticks:{display:false}}}}});
+}
+
+/* ---------- archive ---------- */
+let activeFilter={key:null,val:null};
+function buildFilters(){
+ const groups=[["Process","_pb"],["Brew","_bf"],["Origin","_c"]];
+ let html='<button class="chip on" onclick="setFilter(null,null,this)">All</button>';
+ groups.forEach(([lab,key])=>{const vals=[...new Set(DATA.map(e=>e[key]))].filter(x=>x&&x!=="Other").sort();
+  vals.forEach(v=>html+=`<button class="chip" onclick="setFilter('${key}','${v.replace(/'/g,"")}',this)">${v}</button>`);});
+ document.getElementById("filters").innerHTML=html;
+}
+function setFilter(k,v,el){activeFilter={key:k,val:v};document.querySelectorAll('#filters .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');render();}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase().trim();
+ const sort=document.getElementById("sort").value;
+ let list=DATA.filter(e=>{
+  if(activeFilter.key&&e[activeFilter.key]!==activeFilter.val)return false;
+  if(q){const blob=(e.Coffee_Name+" "+e.Cafe_Name+" "+e.Origin+" "+e.Varietal+" "+e.Process+" "+e._c).toLowerCase();return blob.includes(q);}
+  return true;});
+ list.sort((a,b)=>sort==="fit"?b._fit-a._fit:sort==="date"?b.Date.localeCompare(a.Date):sort==="datea"?a.Date.localeCompare(b.Date):a.Coffee_Name.localeCompare(b.Coffee_Name));
+ const g=document.getElementById("gallery");
+ document.getElementById("archMeta").textContent=`${list.length} of ${DATA.length} specimens`;
+ if(!list.length){g.innerHTML='<div class="empty">No specimens match. Clear filters to see the full archive.</div>';return;}
+ g.innerHTML=list.map(e=>{
+  const pc={Washed:"--teal",Natural:"--amber",Anaerobic:"--violet","Honey/Co-Ferment":"--green"}[e._pb]||"--gold";
+  return `<div class="spec fade in" onclick="openDrawer(${e.id})"><div class="fitbar" style="width:${e._fit}%"></div>
+   ${specimen(e,150)}
+   <div class="spec-num">#${String(e.id).padStart(3,"0")} · FIT ${e._fit}</div>
+   <div class="spec-name">${e.Coffee_Name}</div>
+   <div class="spec-cafe">${e.Cafe_Name} · ${e._c}</div>
+   <div class="spec-tags">
+     <span class="tg" style="color:var(${pc});background:color-mix(in srgb,var(${pc}) 14%,transparent)">${e.Process||"?"}</span>
+     <span class="tg" style="color:var(--t2);background:var(--card2)">${e.Varietal||"?"}</span>
+   </div></div>`;}).join("");
+}
+
+/* ---------- drawer ---------- */
+function phases(v){ // split verdict into hot/mid/cool by keyword
+ if(!v)return null;
+ const sents=v.split(/(?<=[.;])\s+/);
+ const find=(...kw)=>sents.find(s=>kw.some(k=>s.toLowerCase().includes(k)));
+ const hot=find("hot","initial","upfront","lead","first sip","open");
+ const mid=find("mid-cool","midway","mid ","cools","cooling","as it","warm");
+ const cool=find("cool phase","cold","finish","aftertaste","settles","final","linger");
+ if(hot||mid||cool)return{hot,mid,cool};return null;
+}
+function openDrawer(id){
+ const e=DATA.find(x=>x.id===id);const a=dnaAxes(e);const ph=phases(e.Your_Verdict);
+ const has=v=>v&&v!=="Unknown"&&v!=="";
+ const meter=(k,v)=>`<div class="phys-row"><span class="k">${k}</span><span class="meter"><i style="width:${Math.round(v*100)}%"></i></span></div>`;
+ const lb=(k,v)=>has(v)?`<div class="lb-row"><span class="k">${k}</span><span class="v">${v}</span></div>`:"";
+ const rgc=(l,v)=>has(v)?`<div class="rg-cell"><div class="l">${l}</div><div class="v">${v}</div></div>`:"";
+ const gd=[e._c,e.Producer_Farm,e.Varietal,e.Process,e.Roast_Level].filter(has);
+ const greendata=gd.map(v=>`<span class="gd-node">${v}</span>`).join('<span class="gd-arrow">▸</span>');
+ const recipe=`<div class="recipe"><div class="recipe-top">
+   ${has(e.Dose_g)?`<div class="rc-dose"><div class="v">${e.Dose_g}g</div><div class="l">Dose</div></div><div class="rc-arrow">→</div><div class="rc-dose"><div class="v">${e.Yield_g}g</div><div class="l">Yield</div></div>`:''}
+   ${has(e.Ratio)?`<div class="rc-ratio">${e.Ratio}</div>`:''}</div>
+   <div class="recipe-grid">${rgc("Water",has(e.Water_Temp_C)?e.Water_Temp_C+"°C":"")}${rgc("Bloom",e.Bloom)}${rgc("Grinder",e.Grinder)}${rgc("Brewer",e.Brew_Method)}</div></div>`;
+ let html=`<div class="dr-close" onclick="closeDrawer()">ESC ✕</div>
+  <div class="dr-num">SPECIMEN #${String(e.id).padStart(3,"0")} · ${e.Date}</div>
+  <div class="dr-name">${e.Coffee_Name}</div>
+  <div class="dr-cafe">${e.Cafe_Name} · ${e.City}</div>
+  ${specimen(e,180).replace('class="spec-svg"','class="dr-portrait"')}
+  <div style="text-align:center"><span class="fitpill">◆ PALATE FIT ${e._fit} / 100</span></div>
+  <div class="block"><div class="block-h">// Green Data</div><div class="greendata">${greendata||'<span class="gd-node">—</span>'}</div></div>
+  <div class="block"><div class="block-h">// Extraction Recipe</div>${recipe}</div>`;
+ if(ph)html+=`<div class="block"><div class="block-h">// Thermal Phase Decode</div><div class="thermal">
+   <div class="phase hot"><div class="pt">● Hot</div><div class="px">${ph.hot||"—"}</div></div>
+   <div class="phase mid"><div class="pt">● Mid-cool</div><div class="px">${ph.mid||"—"}</div></div>
+   <div class="phase cool"><div class="pt">● Cool</div><div class="px">${ph.cool||"—"}</div></div></div></div>`;
+ if(has(e.Your_Verdict))html+=`<div class="block"><div class="block-h">// Your Verdict</div><div class="verdict">${e.Your_Verdict}</div></div>`;
+ if(has(e.Official_Notes))html+=`<div class="block"><div class="block-h">// Roaster Notes</div><div class="enrich">${e.Official_Notes}</div></div>`;
+ html+=`<div class="block"><div class="block-h">// Palate DNA</div><div class="physics">${Object.entries(a).map(([k,v])=>meter(k,v)).join("")}</div></div>`;
+ if(has(e.Technical_Enrichment))html+=`<div class="block"><div class="block-h">// Extraction Physics</div><div class="enrich">${e.Technical_Enrichment}</div></div>`;
+ html+=`<div class="block"><div class="block-h">// Logbook</div><div class="logbook">${lb("Date",e.Date)}${lb("City",e.City)}${lb("Café",e.Cafe_Name)}${lb("Price",has(e.Price_SGD)?"S$"+e.Price_SGD:"")}${lb("Context",e.Visit_Context)}${lb("Source",e.Source)}</div></div>`;
+ document.getElementById("drawer").innerHTML=html;
+ document.getElementById("drawer").classList.add("on");document.getElementById("scrim").classList.add("on");
+}
+function closeDrawer(){document.getElementById("drawer").classList.remove("on");document.getElementById("scrim").classList.remove("on");}
+
+/* ---------- coffee dex ---------- */
+function renderDex(){
+ const origins=[...new Set(DATA.map(e=>e._c))].filter(x=>x!=="Unknown").sort();
+ const varietals=[...new Set(DATA.map(e=>e.Varietal))].filter(x=>x&&!/unknown/i.test(x)).sort();
+ const procs=[...new Set(DATA.map(e=>e._pb))].sort();
+ const allProc=["Washed","Natural","Honey/Co-Ferment","Anaerobic"];
+ const trinity=["Geisha","Gesha","Wush Wush","Sudan Rume"];
+ const haveTrinity=trinity.filter(t=>DATA.some(e=>(e.Varietal||"").toLowerCase().includes(t.toLowerCase())));
+ const chips=(arr,got)=>arr.map(x=>`<span class="dx ${got?got(x):'got'}">${x}</span>`).join("");
+ const miles=[
+  ["Holy Trinity (Geisha · Wush Wush · Sudan Rume)", haveTrinity.length>=3],
+  ["Honey process logged", DATA.some(e=>/honey/i.test(e.Process))],
+  ["Anaerobic / co-ferment logged", DATA.some(e=>/anaerobic|ferment/i.test(e.Process))],
+  ["4 cities audited", uniq(e=>e.City.replace(/.*bali.*/i,"Bali")).length>=4],
+  ["Top-fit specimen ≥ 90", DATA.some(e=>e._fit>=90)]
+ ];
+ document.getElementById("dexgrid").innerHTML=`
+  <div class="dexcard"><h4>Origins Unlocked</h4><div class="frac">${origins.length}</div><div class="dexchips">${chips(origins)}</div></div>
+  <div class="dexcard"><h4>Varietals Collected</h4><div class="frac">${varietals.length}</div><div class="dexchips">${chips(varietals)}</div></div>
+  <div class="dexcard"><h4>Processing Methods</h4><div class="frac">${procs.length} / 4</div><div class="dexchips">${chips(allProc,x=>procs.includes(x)?'got':'')}</div></div>
+  <div class="dexcard"><h4>Milestones</h4>${miles.map(m=>`<div class="mile">${m[1]?'<span class="dot"></span>':'<span class="dot" style="background:#5f5848"></span>'}<b>${m[0]}</b></div>`).join("")}</div>`;
+}
+
+/* ---------- oracle ---------- */
+function runOracle(){
+ const fake={Official_Notes:document.getElementById("oNotes").value,Your_Verdict:"",Technical_Enrichment:"",Varietal:"",
+  Process:document.getElementById("oProc").value,Brew_Method:document.getElementById("oBrew").value,
+  Ratio:document.getElementById("oRatio").value,Grinder:document.getElementById("oBurr").value,Roast_Level:"Light"};
+ const a=dnaAxes(fake),score=fitFromAxes(a,fake);
+ document.getElementById("oScore").textContent=score;
+ const verdict=score>=85?"Order it. This is your lane.":score>=70?"Strong fit — likely a keeper.":score>=55?"Worth a try; some tension.":"Off-signature — explore with eyes open.";
+ document.getElementById("oVerdict").textContent=verdict;
+ const R=[];
+ if(a.Florality>.4)R.push(["floral / linalool lift — core to your DNA",1]);
+ if(a["Malic / Stone"]>.4)R.push(["malic stone-fruit — your malic affinity",1]);
+ if(/wash/i.test(fake.Process))R.push(["washed clarity — your dominant preference",1]);
+ if(a.Citrus>.4)R.push(["citric brightness",1]);
+ if(a["Ferment / Funk"]>.4)R.push(["ferment-forward — runs against clarity",0]);
+ if(/conical/i.test(fake.Brew_Method))R.push(["conical geometry — off your flat-bottom affinity",0]);
+ const r=parseFloat((fake.Ratio.match(/1:(\d+)/)||[])[1]);
+ if(r>=15&&r<=17)R.push(["ratio in your 1:15–1:17 band",1]);else if(r)R.push(["ratio outside your comfort band",0]);
+ document.getElementById("oReasons").innerHTML=R.map(x=>`<div class="${x[1]?'':'neg'}">${x[1]?'▲':'▼'} <b class="${x[1]?'':'neg'}">${x[0]}</b></div>`).join("");
+}
+
+/* ---------- timeline ---------- */
+const PCOL={Washed:"#2dd4bf",Natural:"#f59e0b",Anaerobic:"#a78bfa","Honey/Co-Ferment":"#7dd87d","Other":"#9b9280"};
+function renderTimeline(){
+ const P=d=>new Date(d+"T00:00:00");
+ const S=[...DATA].sort((a,b)=>a.Date.localeCompare(b.Date));
+ const min=P(S[0].Date),max=P(S[S.length-1].Date),span=(max-min)||1;
+ const W=Math.max(1160,DATA.length*40),H=300,padL=24,padR=40,padT=52,baseY=H-46;
+ const X=d=>padL+(P(d)-min)/span*(W-padL-padR);
+ let cum=0;const sp=S.map(e=>{const p=parseFloat(e.Price_SGD);if(!isNaN(p))cum+=p;return{x:X(e.Date),c:cum};});
+ const maxC=cum||1, SY=c=>padT+(1-c/maxC)*(baseY-padT-6);
+ // milestones
+ const first=f=>{const e=S.find(f);return e?e.Date:null;};
+ const ms=[];const h=first(e=>/honey/i.test(e.Process));if(h)ms.push([h,"First honey"]);
+ const rw=first(e=>e._c==="Rwanda");if(rw)ms.push([rw,"First Rwanda"]);
+ const seen=new Set();let tri=null;
+ for(const e of S){const v=(e.Varietal||"").toLowerCase();if(/geisha|gesha/.test(v))seen.add("g");if(v.includes("wush"))seen.add("w");if(v.includes("sudan rume"))seen.add("s");if(!tri&&seen.size>=3&&seen.has("g")&&seen.has("w")&&seen.has("s"))tri=e.Date;}
+ if(tri)ms.push([tri,"Holy Trinity ✓"]);
+ const top=S.reduce((a,b)=>b._fit>a._fit?b:a);ms.push([top.Date,"Peak fit "+top._fit]);
+ // month ticks
+ let ticks="";let cur=new Date(min.getFullYear(),min.getMonth(),1);
+ const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ while(cur<=max){const xx=padL+(cur-min)/span*(W-padL-padR);if(xx>=padL-1){ticks+=`<line x1="${xx}" y1="${padT-8}" x2="${xx}" y2="${baseY}" stroke="rgba(196,154,60,.07)"/><text x="${xx+4}" y="${baseY+18}" fill="#5f5848" font-family="Space Mono" font-size="9">${MN[cur.getMonth()]}</text>`;}cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);}
+ // spend area + line
+ let area=`M ${sp[0].x} ${baseY} `+sp.map(p=>`L ${p.x} ${SY(p.c)}`).join(" ")+` L ${sp[sp.length-1].x} ${baseY} Z`;
+ let line=`M `+sp.map(p=>`${p.x} ${SY(p.c)}`).join(" L ");
+ // nodes
+ let nodes=S.map(e=>{const x=X(e.Date),r=4+e._fit/100*4;return `<g class="tl-node" onclick="openDrawer(${e.id})"><circle cx="${x}" cy="${baseY}" r="${r}" fill="${PCOL[e._pb]||'#9b9280'}" fill-opacity="0.9" stroke="#0d0a07" stroke-width="1.2"><title>#${String(e.id).padStart(3,'0')} ${e.Coffee_Name} · fit ${e._fit}${!isNaN(parseFloat(e.Price_SGD))?' · S$'+e.Price_SGD:''}</title></circle></g>`;}).join("");
+ // milestone flags (stagger)
+ let flags=ms.map((m,i)=>{const x=X(m[0]),y=padT-10-(i%2)*16;return `<g><line x1="${x}" y1="${y+6}" x2="${x}" y2="${baseY}" stroke="rgba(227,183,85,.3)" stroke-dasharray="2 3"/><circle cx="${x}" cy="${y+6}" r="2.5" fill="#e3b755"/><text x="${x+5}" y="${y+9}" fill="#c49a3c" font-family="Space Mono" font-size="8.5">${m[1]}</text></g>`;}).join("");
+ const svg=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+   <path d="${area}" fill="rgba(196,154,60,.07)"/><path d="${line}" fill="none" stroke="#c49a3c" stroke-width="1.3" stroke-opacity="0.7"/>
+   <text x="${sp[sp.length-1].x-2}" y="${SY(maxC)-7}" fill="#c49a3c" font-family="Space Mono" font-size="9" text-anchor="end">cumulative S$${maxC.toFixed(0)}</text>
+   ${ticks}<line x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}" stroke="#3a3046"/>${flags}${nodes}</svg>`;
+ document.getElementById("tlScroll").innerHTML=svg;
+ document.getElementById("tlLegend").innerHTML=Object.keys(PCOL).filter(k=>k!=="Other").map(k=>`<span><i style="background:${PCOL[k]}"></i>${k}</span>`).join("")+`<span><i style="background:#c49a3c"></i>cumulative spend</span><span style="color:#5f5848">dot size = palate fit · click any dot</span>`;
+}
+
+/* ---------- value map ---------- */
+function renderValueMap(){
+ const priced=DATA.filter(e=>!isNaN(parseFloat(e.Price_SGD)));
+ const pts=priced.map(e=>({x:parseFloat(e.Price_SGD),y:e._fit,id:e.id,name:e.Coffee_Name,proc:e._pb}));
+ const prices=pts.map(p=>p.x).sort((a,b)=>a-b);
+ const medP=prices[Math.floor(prices.length/2)],fitL=75;
+ const quad={id:"quad",afterDraw(c){const{ctx,chartArea:{left,right,top,bottom},scales:{x,y}}=c;const px=x.getPixelForValue(medP),py=y.getPixelForValue(fitL);ctx.save();ctx.strokeStyle="rgba(196,154,60,.28)";ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,top);ctx.lineTo(px,bottom);ctx.moveTo(left,py);ctx.lineTo(right,py);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="rgba(155,146,128,.55)";ctx.font="9px 'Space Mono'";ctx.fillText("◤ BARGAINS",left+6,top+13);ctx.textAlign="right";ctx.fillText("SPLURGE-WORTHY ◥",right-6,top+13);ctx.fillText("OVERPRICED ◢",right-6,bottom-7);ctx.textAlign="left";ctx.fillText("◣ EVERYDAY",left+6,bottom-7);ctx.restore();}};
+ new Chart(document.getElementById("vmChart"),{type:"scatter",
+  data:{datasets:[{data:pts,parsing:false,pointRadius:7,pointHoverRadius:10,
+   backgroundColor:pts.map(p=>PCOL[p.proc]||"#9b9280"),borderColor:"#0d0a07",borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,onClick(ev,el){if(el.length)openDrawer(pts[el[0].index].id);},
+   plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${pts[c.dataIndex].name} — S$${c.parsed.x} · fit ${c.parsed.y}`},backgroundColor:"#1a1a28",titleColor:"#e8e8f0",bodyColor:"#9b9280",titleFont:{family:"Space Mono",size:10},bodyFont:{family:"Space Mono",size:10}}},
+   scales:{x:{title:{display:true,text:"Price (S$)",color:"#9b9280",font:{family:"Space Mono",size:10}},ticks:{color:"#5f5848",font:{family:"Space Mono",size:9}},grid:{color:"#1a1a28"}},
+           y:{min:50,max:100,title:{display:true,text:"Palate Fit",color:"#9b9280",font:{family:"Space Mono",size:10}},ticks:{color:"#5f5848",font:{family:"Space Mono",size:9}},grid:{color:"#1a1a28"}}}},plugins:[quad]});
+ // cost stats
+ const tot=prices.reduce((a,b)=>a+b,0),avg=tot/prices.length;
+ const priciest=priced.reduce((a,b)=>parseFloat(b.Price_SGD)>parseFloat(a.Price_SGD)?b:a);
+ const bestVal=priced.reduce((a,b)=>(b._fit/parseFloat(b.Price_SGD))>(a._fit/parseFloat(a.Price_SGD))?b:a);
+ document.getElementById("vmMeta").textContent=`${priced.length} of ${DATA.length} entries priced`;
+ document.getElementById("coststats").innerHTML=`
+  <div class="cstat"><div class="v">S$${tot.toFixed(0)}</div><div class="l">Tracked spend</div><div class="s">across ${priced.length} priced cups</div></div>
+  <div class="cstat"><div class="v">S$${avg.toFixed(2)}</div><div class="l">Avg per cup</div></div>
+  <div class="cstat"><div class="v">⬗</div><div class="l">Best value</div><div class="s">${bestVal.Coffee_Name} — S$${bestVal.Price_SGD}, fit ${bestVal._fit}</div></div>
+  <div class="cstat"><div class="v">⬖</div><div class="l">Priciest pour</div><div class="s">${priciest.Coffee_Name} — S$${priciest.Price_SGD}</div></div>`;
+}
+
+/* ---------- command palette ---------- */
+let cmdSel=0,cmdList=[];
+function openCmd(){document.getElementById("cmd").classList.add("on");const i=document.getElementById("cmdInput");i.value="";i.focus();cmdRender();}
+function closeCmd(){document.getElementById("cmd").classList.remove("on");}
+function cmdRender(){
+ const q=document.getElementById("cmdInput").value.toLowerCase();
+ cmdList=DATA.filter(e=>!q||(e.Coffee_Name+e.Cafe_Name+e._c+e.Varietal).toLowerCase().includes(q)).slice(0,8);
+ cmdSel=0;
+ document.getElementById("cmdRes").innerHTML=cmdList.map((e,i)=>`<div class="cmd-item ${i===0?'sel':''}" onclick="cmdGo(${e.id})"><span class="ci-n">#${String(e.id).padStart(3,"0")}</span><span class="ci-name">${e.Coffee_Name}</span><span class="ci-sub">${e._c} · fit ${e._fit}</span></div>`).join("")||'<div class="cmd-item"><span class="ci-sub">no match</span></div>';
+}
+function cmdKey(ev){
+ if(ev.key==="Escape")closeCmd();
+ else if(ev.key==="ArrowDown"){ev.preventDefault();cmdSel=Math.min(cmdList.length-1,cmdSel+1);cmdHi();}
+ else if(ev.key==="ArrowUp"){ev.preventDefault();cmdSel=Math.max(0,cmdSel-1);cmdHi();}
+ else if(ev.key==="Enter"&&cmdList[cmdSel])cmdGo(cmdList[cmdSel].id);
+}
+function cmdHi(){document.querySelectorAll("#cmdRes .cmd-item").forEach((el,i)=>el.classList.toggle("sel",i===cmdSel));}
+function cmdGo(id){closeCmd();openDrawer(id);}
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
+
+document.addEventListener("keydown",e=>{
+ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCmd();}
+ if(e.key==="Escape"){closeDrawer();closeCmd();}
+});
+
+/* ---------- init ---------- */
+renderHero();buildFilters();render();renderDex();runOracle();renderTimeline();renderValueMap();
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)x.target.classList.add("in")}),{threshold:.05});
+document.querySelectorAll(".fade").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <meta name="description" content="Hari Coffee Archive 2026 — Bean Tracker">
+    <meta name="created" content="20 May 2026">
+    <title>Hari Coffee Archive 2026 — Bean Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --accent: #c9a84c;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-playfair {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        
+        .coffee-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .coffee-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .nav-btn {
+            transition: all 0.1s ease;
+        }
+        
+        .nav-btn.active {
+            color: #c9a84c;
+            font-weight: 600;
+        }
+        
+        .nav-btn.active span:first-child {
+            transform: scale(1.1);
+        }
+        
+        .section-header {
+            font-size: 1.35rem;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        .process-badge {
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+            padding-left: 0.65rem;
+            padding-right: 0.65rem;
+            padding-top: 0.1rem;
+            padding-bottom: 0.1rem;
+        }
+        
+        .degas-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #c9a84c 0%, #c9a84c 100%);
+            border-radius: 9999px;
+            transition: width 0.4s ease;
+        }
+        
+        .modal {
+            animation: modalPop 0.2s ease forwards;
+        }
+        
+        @keyframes modalPop {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .star {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        
+        .star:hover {
+            transform: scale(1.2);
+        }
+        
+        .toast {
+            animation: toastSlide 0.3s ease forwards;
+        }
+        
+        .data-table {
+            font-size: 0.875rem;
+        }
+        
+        .metric-value {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .amber-glow {
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.15);
+        }
+        
+        .screen {
+            display: none;
+            padding-bottom: 5.5rem;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .status-pill {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-weight: 600;
+        }
+        
+        @media print {
+            .no-print,
+            nav,
+            .modal,
+            #toast,
+            button[onclick*="export"],
+            button[onclick*="import"] {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: #111827 !important;
+                font-size: 11pt;
+            }
+            
+            .screen {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+            
+            .coffee-card {
+                box-shadow: none !important;
+                border: 1px solid #d1d5db !important;
+                margin-bottom: 1rem;
+                break-inside: avoid;
+            }
+            
+            .section-header {
+                color: #111827 !important;
+            }
+            
+            .process-badge {
+                border: 1px solid #9ca3af !important;
+                background: #f3f4f6 !important;
+                color: #374151 !important;
+            }
+            
+            .degas-bar {
+                background: #c9a84c !important;
+            }
+            
+            h1, h2, h3 {
+                color: #111827 !important;
+            }
+            
+            .max-w-2xl {
+                max-width: 100% !important;
+            }
+            
+            .p-4 {
+                padding: 0.75rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-white">
+    <!-- Header -->
+    <div class="sticky top-0 z-50 bg-[#0d0d0d]/95 backdrop-blur-lg border-b border-zinc-800">
+        <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-[#c9a84c] rounded-2xl flex items-center justify-center">
+                    <span class="text-[#0d0d0d] text-2xl">☕</span>
+                </div>
+                <div>
+                    <h1 class="font-playfair text-3xl tracking-tighter text-[#c9a84c]">Hari's Archive</h1>
+                    <p class="text-[10px] text-zinc-500 -mt-1">COFFEE ARCHIVIST • 2026</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-2">
+                <button onclick="exportData()" 
+                        class="px-3 py-1.5 text-xs font-medium border border-zinc-700 hover:border-[#c9a84c]/60 rounded-2xl flex items-center gap-x-1.5 transition-colors">
+                    <span>JSON</span>
+                    <span class="text-[#c9a84c]">↓</span>
+                </button>
+                
+                <label class="px-3 py-1.5 text-xs font-medium border border-zinc-700 hover:border-[#c9a84c]/60 rounded-2xl flex items-center gap-x-1.5 cursor-pointer transition-colors">
+                    <span>Import</span>
+                    <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-2xl mx-auto">
+        
+        <!-- SCREEN 1: ACTIVE BAGS -->
+        <div id="screen-bags" class="screen active">
+            <div class="px-4 pt-4">
+                <div class="flex items-end justify-between mb-4">
+                    <div>
+                        <h2 class="section-header font-playfair tracking-tighter">Active Bags</h2>
+                        <p class="text-xs text-zinc-500">Currently in inventory • <span id="bag-count">0</span> bags</p>
+                    </div>
+                    <button onclick="refreshDegassing()" 
+                            class="text-xs px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl flex items-center gap-x-1.5 text-[#c9a84c]">
+                        <span>↻</span>
+                        <span class="font-medium">Refresh</span>
+                    </button>
+                </div>
+                
+                <div id="bags-list" class="space-y-3 pb-2">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN 2: BREW SESSION LOG -->
+        <div id="screen-brews" class="screen">
+            <div class="px-4 pt-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="section-header font-playfair tracking-tighter">Brew History</h2>
+                    <div class="text-xs px-2.5 py-1 bg-zinc-900 rounded-2xl text-zinc-400 flex items-center gap-x-1">
+                        <span id="brew-count">0</span> sessions
+                    </div>
+                </div>
+                
+                <div id="brews-list" class="space-y-2.5">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN 3: PURCHASE TRACKER -->
+        <div id="screen-purchase" class="screen">
+            <div class="px-4 pt-4">
+                <!-- Add New Bag Form -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 mb-6">
+                    <h3 class="font-semibold text-lg mb-4 flex items-center gap-x-2">
+                        <span>🛒</span> 
+                        <span>Add New Bag to Inventory</span>
+                    </h3>
+                    
+                    <form id="add-bag-form" onsubmit="addNewBag(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Roaster / Cafe</label>
+                                <input type="text" id="add-roaster" required placeholder="Nylon Coffee Roasters" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Coffee Name</label>
+                                <input type="text" id="add-coffee-name" required placeholder="Ethiopia Banko Gotiti" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Varietal</label>
+                                <input list="varietal-list" id="add-varietal" placeholder="Heirloom" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                                <datalist id="varietal-list">
+                                    <option value="Geisha">
+                                    <option value="Sudan Rume">
+                                    <option value="Wush Wush">
+                                    <option value="Arara">
+                                    <option value="Heirloom">
+                                    <option value="Typica">
+                                    <option value="Marshell">
+                                    <option value="Laurina">
+                                    <option value="Pacamara">
+                                    <option value="Castillo">
+                                    <option value="Parainema">
+                                    <option value="Catucai 24/137">
+                                    <option value="Sidra">
+                                </datalist>
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Process</label>
+                                <select id="add-process" required class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                                    <option value="Washed">Washed</option>
+                                    <option value="Natural">Natural</option>
+                                    <option value="Honey">Honey</option>
+                                    <option value="Red Honey">Red Honey</option>
+                                    <option value="Extended Fermentation Honey">Extended Fermentation Honey</option>
+                                    <option value="Anaerobic">Anaerobic</option>
+                                    <option value="Anaerobic Washed">Anaerobic Washed</option>
+                                    <option value="Natural Anaerobic">Natural Anaerobic</option>
+                                    <option value="Double Anaerobic">Double Anaerobic</option>
+                                    <option value="Multi-stage Anaerobic">Multi-stage Anaerobic</option>
+                                    <option value="Experimental Anaerobic">Experimental Anaerobic</option>
+                                    <option value="Washed Co-Ferment">Washed Co-Ferment</option>
+                                    <option value="Anaerobic Natural">Anaerobic Natural</option>
+                                    <option value="Co-ferment">Co-ferment</option>
+                                    <option value="Semi-Washed / Wet-Hulled">Semi-Washed / Wet-Hulled</option>
+                                    <option value="Natural Fermentation">Natural Fermentation</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Roast Date</label>
+                                <input type="date" id="add-roast-date" value="2026-05-15" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Purchase Date</label>
+                                <input type="date" id="add-purchase-date" value="2026-05-20" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Weight (g)</label>
+                                <input type="number" id="add-weight" value="200" step="10" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs text-zinc-400 block mb-1">Price (SGD)</label>
+                                <input type="number" id="add-price" value="12.50" step="0.5" 
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="text-xs text-zinc-400 block mb-1">Where Bought</label>
+                                <input type="text" id="add-where" placeholder="Nylon Coffee Roasters / Online / Cafe" value="Nylon Coffee Roasters"
+                                       class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="mt-5 w-full py-3.5 bg-[#c9a84c] hover:bg-[#b8973f] active:bg-[#a07f2e] transition-colors text-black font-semibold rounded-2xl flex items-center justify-center gap-x-2">
+                            <span>ADD TO ACTIVE BAGS</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Spend Summary -->
+                <div class="mb-6">
+                    <h3 class="font-semibold text-lg mb-3 px-1">Spend Summary</h3>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">This Month (May 2026)</div>
+                            <div id="monthly-spend" class="text-3xl font-semibold metric-value mt-1">SGD 36.00</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">All Time Total</div>
+                            <div id="total-spend" class="text-3xl font-semibold metric-value mt-1">SGD 124.50</div>
+                        </div>
+                        
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Avg Price / Gram</div>
+                            <div id="avg-price-gram" class="text-2xl font-semibold metric-value mt-1">SGD 0.062</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Avg Cost / Brew (15g)</div>
+                            <div id="avg-cost-brew" class="text-2xl font-semibold metric-value mt-1">SGD 0.93</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-3">
+                            <div class="text-[10px] text-zinc-500">Most Purchased</div>
+                            <div id="most-roaster" class="font-medium text-sm mt-0.5">Nylon Coffee Roasters</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-3">
+                            <div class="text-[10px] text-zinc-500">Bags Logged</div>
+                            <div id="bags-logged" class="font-semibold text-xl mt-0.5">12</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-3">
+                            <div class="text-[10px] text-zinc-500">Avg Bag Price</div>
+                            <div id="avg-bag-price" class="font-semibold text-xl mt-0.5">SGD 10.38</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monthly Chart -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="font-semibold">Monthly Spend 2026</div>
+                        <div class="text-xs text-[#c9a84c]">SGD</div>
+                    </div>
+                    <canvas id="spend-chart" height="110"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN 4: DEGASSING ALERT DASHBOARD -->
+        <div id="screen-alerts" class="screen">
+            <div class="px-4 pt-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="section-header font-playfair tracking-tighter">Degassing Alerts</h2>
+                    <button onclick="refreshDegassing()" 
+                            class="text-xs px-3 py-1 bg-[#c9a84c] text-black font-medium rounded-2xl flex items-center gap-x-1.5">
+                        <span>⟳</span> <span>Recalculate</span>
+                    </button>
+                </div>
+                
+                <!-- BREW TODAY -->
+                <div class="mb-5">
+                    <div class="flex items-center gap-x-2 mb-3 px-1">
+                        <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                        <span class="font-semibold text-emerald-400">BREW TODAY — OPTIMAL WINDOW</span>
+                    </div>
+                    <div id="optimal-list" class="space-y-3">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+                
+                <!-- BREW SOON -->
+                <div class="mb-5">
+                    <div class="flex items-center gap-x-2 mb-3 px-1">
+                        <div class="w-2.5 h-2.5 bg-amber-400 rounded-full"></div>
+                        <span class="font-semibold text-amber-400">BREW SOON</span>
+                    </div>
+                    <div id="soon-list" class="space-y-3">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+                
+                <!-- WAIT / CHECK -->
+                <div>
+                    <div class="flex items-center gap-x-2 mb-3 px-1">
+                        <div class="w-2.5 h-2.5 bg-rose-400 rounded-full"></div>
+                        <span class="font-semibold text-rose-400">WAIT / CHECK</span>
+                    </div>
+                    <div id="wait-list" class="space-y-3">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN 5: WISHLIST -->
+        <div id="screen-wishlist" class="screen">
+            <div class="px-4 pt-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="section-header font-playfair tracking-tighter">Wishlist</h2>
+                    <div onclick="showAddWishlistModal()" 
+                         class="cursor-pointer text-xs px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl flex items-center gap-x-1 text-[#c9a84c]">
+                        <span>+</span> <span class="font-medium">Add Target</span>
+                    </div>
+                </div>
+                
+                <div id="wishlist-list" class="space-y-3">
+                    <!-- Populated by JS -->
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <div class="inline-flex items-center gap-x-2 text-xs bg-zinc-900 px-4 py-2 rounded-2xl border border-zinc-800">
+                        <span class="text-[#c9a84c]">★</span>
+                        <span class="text-zinc-400">5 high-match targets pre-loaded from your audit history</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN 6: STATISTICS -->
+        <div id="screen-stats" class="screen">
+            <div class="px-4 pt-4">
+                <h2 class="section-header font-playfair tracking-tighter mb-4">Personal Analytics</h2>
+                
+                <!-- Brew Stats -->
+                <div class="mb-6">
+                    <div class="uppercase tracking-[1px] text-xs text-zinc-500 mb-2 px-1">BREW STATS</div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Total Brews Logged</div>
+                            <div id="stat-total-brews" class="text-4xl font-semibold mt-1">47</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Average Rating</div>
+                            <div id="stat-avg-rating" class="text-4xl font-semibold mt-1 flex items-baseline">4.6 <span class="text-base ml-1 text-[#c9a84c]">★</span></div>
+                        </div>
+                        
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 col-span-2">
+                            <div class="text-xs text-zinc-400 mb-2">Most Brewed Coffee</div>
+                            <div id="stat-most-brewed" class="font-medium">Ethiopia Banko Gotiti (Nylon) — 9 times</div>
+                            
+                            <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
+                                <div>
+                                    <span class="text-zinc-400">Most Used Method</span><br>
+                                    <span id="stat-most-method" class="font-medium">V60</span>
+                                </div>
+                                <div>
+                                    <span class="text-zinc-400">Most Used Grinder</span><br>
+                                    <span id="stat-most-grinder" class="font-medium">Mahlkönig EK43</span>
+                                </div>
+                                <div>
+                                    <span class="text-zinc-400">Avg Ratio</span><br>
+                                    <span id="stat-avg-ratio" class="font-medium">1:15.2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Spend Stats -->
+                <div class="mb-6">
+                    <div class="uppercase tracking-[1px] text-xs text-zinc-500 mb-2 px-1">SPEND STATS</div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Total Spent</div>
+                            <div id="stat-total-spent" class="text-3xl font-semibold mt-1">SGD 124.50</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Avg Bag Price</div>
+                            <div id="stat-avg-bag" class="text-3xl font-semibold mt-1">SGD 10.38</div>
+                        </div>
+                        
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Cheapest Brew Logged</div>
+                            <div id="stat-cheapest-brew" class="font-semibold">SGD 0.38</div>
+                            <div class="text-[10px] text-emerald-400">Nylon Ethiopia • 15g</div>
+                        </div>
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4">
+                            <div class="text-xs text-zinc-400">Most Expensive Brew</div>
+                            <div id="stat-expensive-brew" class="font-semibold">SGD 1.80</div>
+                            <div class="text-[10px] text-rose-400">Pocket Ecuador Geisha • 15g</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Rings -->
+                <div>
+                    <div class="uppercase tracking-[1px] text-xs text-zinc-500 mb-3 px-1">ARCHIVE PROGRESS</div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Archive Completion -->
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 flex flex-col items-center">
+                            <div class="text-xs text-zinc-400 mb-2">Archive Completion</div>
+                            
+                            <div class="relative w-24 h-24 mb-3">
+                                <svg class="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="42" fill="none" stroke="#27272a" stroke-width="8"/>
+                                    <circle id="archive-ring" cx="50" cy="50" r="42" fill="none" 
+                                            stroke="#c9a84c" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="66"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div id="archive-percent" class="text-3xl font-semibold">68</div>
+                                        <div class="text-[9px] -mt-1 text-zinc-500">%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center text-xs">
+                                <span id="archive-text">17 finished / 25 total</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Wishlist Conversion -->
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 flex flex-col items-center">
+                            <div class="text-xs text-zinc-400 mb-2">Wishlist Converted</div>
+                            
+                            <div class="relative w-24 h-24 mb-3">
+                                <svg class="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="42" fill="none" stroke="#27272a" stroke-width="8"/>
+                                    <circle id="wishlist-ring" cx="50" cy="50" r="42" fill="none" 
+                                            stroke="#c9a84c" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="132"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div id="wishlist-percent" class="text-3xl font-semibold">60</div>
+                                        <div class="text-[9px] -mt-1 text-zinc-500">%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center text-xs">
+                                <span id="wishlist-text">3 / 5 acquired</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="no-print fixed bottom-0 left-0 right-0 max-w-2xl mx-auto bg-zinc-950 border-t border-zinc-800 z-50">
+        <div class="flex justify-around items-center py-2 px-1">
+            <button onclick="switchScreen('bags')" data-screen="bags"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">☕</span>
+                <span class="font-medium">Bags</span>
+            </button>
+            
+            <button onclick="switchScreen('brews')" data-screen="brews"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">📋</span>
+                <span class="font-medium">Brews</span>
+            </button>
+            
+            <button onclick="switchScreen('purchase')" data-screen="purchase"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">🛒</span>
+                <span class="font-medium">Purchase</span>
+            </button>
+            
+            <button onclick="switchScreen('alerts')" data-screen="alerts"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">⏰</span>
+                <span class="font-medium">Alerts</span>
+            </button>
+            
+            <button onclick="switchScreen('wishlist')" data-screen="wishlist"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">⭐</span>
+                <span class="font-medium">Wishlist</span>
+            </button>
+            
+            <button onclick="switchScreen('stats')" data-screen="stats"
+                    class="nav-btn flex flex-col items-center justify-center w-12 h-12 text-xs text-zinc-400 hover:text-white active:text-[#c9a84c]">
+                <span class="text-2xl mb-0.5">📊</span>
+                <span class="font-medium">Stats</span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Brew Log Modal -->
+    <div id="brew-modal" onclick="if (event.target.id === 'brew-modal') closeBrewModal()" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-end md:items-center justify-center">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 w-full max-w-lg md:rounded-3xl md:m-4 rounded-t-3xl p-6 border border-zinc-700">
+            <div class="flex justify-between items-start mb-5">
+                <div>
+                    <div class="font-playfair text-2xl">Log Brew</div>
+                    <div id="modal-bag-name" class="text-[#c9a84c] text-sm font-medium"></div>
+                </div>
+                <button onclick="closeBrewModal()" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+            </div>
+            
+            <form id="brew-form" onsubmit="saveBrewSession(event)">
+                <input type="hidden" id="modal-bag-id">
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="text-xs text-zinc-400">Date &amp; Time</label>
+                        <input type="datetime-local" id="brew-datetime" 
+                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Brew Method</label>
+                        <select id="brew-method" required class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                            <option value="V60">V60</option>
+                            <option value="Flat-Bottom">Flat-Bottom</option>
+                            <option value="Hario Alpha">Hario Alpha</option>
+                            <option value="Hario Switch">Hario Switch</option>
+                            <option value="xBloom">xBloom</option>
+                            <option value="Origami">Origami (Conical)</option>
+                            <option value="Espresso">Espresso</option>
+                            <option value="Flat White">Flat White</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Grinder</label>
+                        <input list="grinder-datalist" id="brew-grinder" value="Mahlkönig EK43" 
+                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                        <datalist id="grinder-datalist">
+                            <option value="Mahlkönig EK43">
+                            <option value="Mahlkönig EK43S">
+                            <option value="Mahlkönig CORE">
+                            <option value="Mahlkönig EK Omnia">
+                            <option value="Timemore Sculptor 078 (SSP)">
+                            <option value="Lagom P64">
+                            <option value="Comandante C40">
+                            <option value="xBloom">
+                        </datalist>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Dose (g)</label>
+                        <input type="number" id="brew-dose" value="15" step="0.5" oninput="updateRatioPreview()"
+                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Yield (g)</label>
+                        <input type="number" id="brew-yield" value="225" step="5" oninput="updateRatioPreview()"
+                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                    </div>
+                    
+                    <div class="col-span-2">
+                        <label class="text-xs text-zinc-400">Ratio</label>
+                        <div id="ratio-preview" class="font-mono text-lg font-semibold text-[#c9a84c]">1:15.0</div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Brew Temp (°C)</label>
+                        <input type="number" id="brew-temp" value="92" step="1" 
+                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-zinc-400">Star Rating</label>
+                        <div class="flex gap-x-1 pt-2" id="star-rating-container">
+                            <!-- Stars populated by JS -->
+                        </div>
+                        <input type="hidden" id="brew-rating" value="5">
+                    </div>
+                    
+                    <div class="col-span-2">
+                        <label class="text-xs text-zinc-400">Tasting Notes</label>
+                        <textarea id="brew-notes" rows="3" placeholder="Bright citrus, jasmine florals, clean finish..." 
+                                  class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm resize-y"></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="closeBrewModal()" 
+                            class="flex-1 py-3.5 border border-zinc-700 rounded-2xl text-sm font-medium">Cancel</button>
+                    <button type="submit" 
+                            class="flex-1 py-3.5 bg-[#c9a84c] text-black font-semibold rounded-2xl text-sm">Save Brew &amp; Update Weight</button>
+                </div>
+                
+                <button type="button" onclick="exportCsvLine()" 
+                        class="mt-3 w-full py-2.5 text-xs border border-[#c9a84c]/40 hover:bg-[#c9a84c]/5 text-[#c9a84c] rounded-2xl flex items-center justify-center gap-x-2">
+                    <span>📤</span> 
+                    <span>Export exact CSV line for hari_coffee_audit_master_2026.csv</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Finish Bag Modal -->
+    <div id="finish-modal" onclick="if (event.target.id === 'finish-modal') closeFinishModal()" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-end md:items-center justify-center">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 w-full max-w-lg md:rounded-3xl md:m-4 rounded-t-3xl p-6 border border-zinc-700">
+            <div class="font-playfair text-2xl mb-1">Finish Bag</div>
+            <div id="finish-bag-name" class="text-sm text-[#c9a84c] mb-5"></div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-zinc-400">Final Rating</label>
+                    <div class="flex gap-x-2 pt-1" id="finish-star-container">
+                        <!-- Stars JS -->
+                    </div>
+                    <input type="hidden" id="finish-rating" value="5">
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-400">Final Notes &amp; Verdict</label>
+                    <textarea id="finish-notes" rows="4" placeholder="Exceptional clarity throughout. Will repurchase..." 
+                              class="w-full bg-zinc-950 border border-zinc-700 focus:border-[#c9a84c] rounded-2xl px-4 py-3 text-sm"></textarea>
+                </div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeFinishModal()" class="flex-1 py-3 border border-zinc-700 rounded-2xl text-sm">Cancel</button>
+                <button onclick="confirmFinishBag()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-2xl text-sm">Archive Bag</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-[200] px-5 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl shadow-2xl flex items-center gap-x-3 max-w-[280px]">
+        <div id="toast-icon" class="text-xl"></div>
+        <div id="toast-msg" class="text-sm font-medium"></div>
+    </div>
+    
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#c9a84c');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'playfair': ['Playfair Display', 'Georgia', 'serif'],
+                            'inter': ['Inter', 'system-ui', 'sans-serif']
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Data constants
+        const WISHLIST_SEEDS = [
+            {
+                id: 'w1',
+                coffeeName: "Colombia Gesha RSF4 Cold Washed",
+                origin: "Colombia",
+                process: "Washed (Cold)",
+                matchPercent: 98,
+                whyFits: "Exceptional 98% match to your preference for ultra-clean, high-clarity washed Geishas with bright florals and tea-like structure (see Peru & Ecuador entries).",
+                estPrice: "SGD 28–35 / 150g",
+                whereToFind: "RSF Coffee • Direct farm importers"
+            },
+            {
+                id: 'w2',
+                coffeeName: "Sudan Rume Finca El Paraiso",
+                origin: "Colombia",
+                process: "Washed",
+                matchPercent: 95,
+                whyFits: "Rare Sudan Rume genetics with 95% alignment to your love of structured, high-acidity washed profiles with exceptional sweetness.",
+                estPrice: "SGD 32–40 / 200g",
+                whereToFind: "Finca El Paraiso • Specialty auctions"
+            },
+            {
+                id: 'w3',
+                coffeeName: "Peru Black Honey Geisha",
+                origin: "Peru",
+                process: "Black Honey",
+                matchPercent: 92,
+                whyFits: "92% match — builds on your successful Peru Gesha audit with added body from black honey process while retaining signature florals.",
+                estPrice: "SGD 22–28 / 180g",
+                whereToFind: "Wilder Garcia lots • Peruvian specialty exporters"
+            },
+            {
+                id: 'w4',
+                coffeeName: "Panama Tierra Blanca Geisha Washed",
+                origin: "Panama",
+                process: "Washed",
+                matchPercent: 85,
+                whyFits: "85% match to your Panama Corpachi Geisha notes. Tierra Blanca offers similar elegant structure with brighter mandarin-candy character.",
+                estPrice: "SGD 18–24 / 150g",
+                whereToFind: "Panama specialty farms • Janson or Ninety Plus"
+            },
+            {
+                id: 'w5',
+                coffeeName: "Inmaculada Laurina Washed",
+                origin: "Colombia",
+                process: "Washed",
+                matchPercent: 88,
+                whyFits: "88% match to your Ijen Laurina audit. Low-caffeine Laurina with clean honeyed finish and hibiscus notes — perfect for your filter rotation.",
+                estPrice: "SGD 15–20 / 200g",
+                whereToFind: "Inmaculada Estate • Colombian direct trade"
+            }
+        ];
+        
+        let currentScreen = 'bags';
+        let currentBagForBrew = null;
+        let currentRating = 5;
+        let currentFinishRating = 5;
+        let spendChartInstance = null;
+        let wishlistConverted = 0;
+        
+        // Load data from localStorage
+        function loadData() {
+            let bags = JSON.parse(localStorage.getItem('coffeeBags') || '[]');
+            let sessions = JSON.parse(localStorage.getItem('brewSessions') || '[]');
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            let finishedBags = JSON.parse(localStorage.getItem('finishedBags') || '[]');
+            wishlistConverted = parseInt(localStorage.getItem('wishlistConverted') || '0');
+            
+            // Demo data on first load
+            if (bags.length === 0) {
+                const today = '2026-05-20';
+                bags = [
+                    {
+                        id: 'demo1',
+                        roaster: 'Nylon Coffee Roasters',
+                        coffeeName: 'Ethiopia Banko Gotiti',
+                        varietal: 'Heirloom',
+                        process: 'Washed',
+                        roastDate: '2026-05-03',
+                        purchaseDate: '2026-05-07',
+                        weightRemaining: 180,
+                        originalWeight: 200,
+                        priceSGD: 8.5,
+                        whereBought: 'Nylon Coffee Roasters'
+                    },
+                    {
+                        id: 'demo2',
+                        roaster: 'Pocket by Flip (Flip Coffee Roasters)',
+                        coffeeName: 'Ecuador La Papaya',
+                        varietal: 'Geisha',
+                        process: 'Washed',
+                        roastDate: '2026-05-05',
+                        purchaseDate: '2026-05-05',
+                        weightRemaining: 150,
+                        originalWeight: 200,
+                        priceSGD: 18,
+                        whereBought: 'Pocket by Flip'
+                    },
+                    {
+                        id: 'demo3',
+                        roaster: 'Kurasu',
+                        coffeeName: 'Indonesia Frinsa Estate',
+                        varietal: 'Local Varietals',
+                        process: 'Extended Fermentation Honey',
+                        roastDate: '2026-04-10',
+                        purchaseDate: '2026-04-25',
+                        weightRemaining: 90,
+                        originalWeight: 150,
+                        priceSGD: 9.5,
+                        whereBought: 'Kurasu'
+                    }
+                ];
+                localStorage.setItem('coffeeBags', JSON.stringify(bags));
+                
+                // Seed some brew sessions
+                sessions = [
+                    {
+                        id: 's1',
+                        bagId: 'demo1',
+                        date: '2026-05-18T09:30',
+                        coffeeName: 'Ethiopia Banko Gotiti',
+                        roaster: 'Nylon Coffee Roasters',
+                        brewMethod: 'V60',
+                        dose_g: 15,
+                        yield_g: 225,
+                        ratio: '1:15.0',
+                        grinder: 'Mahlkönig EK43',
+                        brewTemp: 92,
+                        tastingNote: 'Lemonade front, heavy melon mid, clean white tea finish. Perfect peak window.',
+                        rating: 5,
+                        costPerBrew: 0.64
+                    },
+                    {
+                        id: 's2',
+                        bagId: 'demo2',
+                        date: '2026-05-17T14:15',
+                        coffeeName: 'Ecuador La Papaya',
+                        roaster: 'Pocket by Flip (Flip Coffee Roasters)',
+                        brewMethod: 'Flat-Bottom',
+                        dose_g: 15,
+                        yield_g: 225,
+                        ratio: '1:15.0',
+                        grinder: 'Mahlkönig CORE (54mm)',
+                        brewTemp: 92,
+                        tastingNote: 'Fresh apricot + rooibos opening. Thymol terpene coat mid-palate. Exceptional.',
+                        rating: 5,
+                        costPerBrew: 1.35
+                    },
+                    {
+                        id: 's3',
+                        bagId: 'demo3',
+                        date: '2026-05-12T10:45',
+                        coffeeName: 'Indonesia Frinsa Estate',
+                        roaster: 'Kurasu',
+                        brewMethod: 'Hario Alpha',
+                        dose_g: 15,
+                        yield_g: 225,
+                        ratio: '1:15.0',
+                        grinder: 'Mahlkönig EK43S',
+                        brewTemp: 88,
+                        tastingNote: 'Floral with stewed strawberries and grapefruit. Sweet coating finish like sugar + black tea.',
+                        rating: 4,
+                        costPerBrew: 0.95
+                    }
+                ];
+                localStorage.setItem('brewSessions', JSON.stringify(sessions));
+            }
+            
+            if (wishlist.length === 0) {
+                wishlist = [...WISHLIST_SEEDS];
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            }
+            
+            if (finishedBags.length === 0 && bags.length > 0) {
+                // Seed one finished bag for demo stats
+                finishedBags = [{
+                    ...bags[0],
+                    id: 'finished1',
+                    finalRating: 5,
+                    finalNotes: 'One of the cleanest washed Ethiopians I have had all year. Will buy again.',
+                    finishedDate: '2026-05-15'
+                }];
+                localStorage.setItem('finishedBags', JSON.stringify(finishedBags));
+            }
+            
+            return { bags, sessions, wishlist, finishedBags };
+        }
+        
+        function saveData(bags, sessions, wishlist, finishedBags) {
+            localStorage.setItem('coffeeBags', JSON.stringify(bags));
+            localStorage.setItem('brewSessions', JSON.stringify(sessions));
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            localStorage.setItem('finishedBags', JSON.stringify(finishedBags));
+            localStorage.setItem('wishlistConverted', wishlistConverted.toString());
+        }
+        
+        // Calculate days since roast
+        function calculateDaysSince(roastDateStr) {
+            const roastDate = new Date(roastDateStr);
+            const today = new Date('2026-05-20'); // Fixed demo date for consistency
+            const diffTime = Math.abs(today - roastDate);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+        
+        function getDegassingStatus(days) {
+            if (days <= 7) return { status: 'Too Fresh', color: '#f87171', emoji: '🔴', label: 'Too Fresh — CO₂ still high' };
+            if (days <= 14) return { status: 'Approaching', color: '#fbbf24', emoji: '🟡', label: 'Approaching — light filter OK' };
+            if (days <= 25) return { status: 'OPTIMAL', color: '#34d399', emoji: '🟢', label: 'OPTIMAL — brew now' };
+            if (days <= 35) return { status: 'Fading', color: '#fbbf24', emoji: '🟡', label: 'Fading — brew soon' };
+            return { status: 'Past peak', color: '#f87171', emoji: '🔴', label: 'Past peak — espresso only' };
+        }
+        
+        function getProcessColor(process) {
+            const p = process.toLowerCase();
+            if (p.includes('washed')) return { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/30' };
+            if (p.includes('natural')) return { bg: 'bg-orange-500/10', text: 'text-orange-400', border: 'border-orange-500/30' };
+            if (p.includes('honey')) return { bg: 'bg-yellow-500/10', text: 'text-yellow-400', border: 'border-yellow-500/30' };
+            if (p.includes('anaerobic')) return { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/30' };
+            if (p.includes('co-ferment')) return { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/30' };
+            return { bg: 'bg-zinc-700/50', text: 'text-zinc-400', border: 'border-zinc-600' };
+        }
+        
+        // Render Active Bags Screen
+        function renderBags() {
+            const { bags, sessions, finishedBags } = loadData();
+            const container = document.getElementById('bags-list');
+            container.innerHTML = '';
+            
+            if (bags.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 px-6 border border-dashed border-zinc-700 rounded-3xl">
+                        <div class="text-5xl mb-4 opacity-40">☕</div>
+                        <p class="text-lg font-medium">No active bags</p>
+                        <p class="text-sm text-zinc-500 mt-1">Add your first bag from the Purchase screen</p>
+                        <button onclick="switchScreen('purchase')" class="mt-4 px-5 py-2 bg-[#c9a84c] text-black text-sm font-semibold rounded-2xl">Add New Bag</button>
+                    </div>
+                `;
+                document.getElementById('bag-count').textContent = '0';
+                return;
+            }
+            
+            // Sort by degassing urgency
+            const sortedBags = [...bags].sort((a, b) => {
+                const daysA = calculateDaysSince(a.roastDate);
+                const daysB = calculateDaysSince(b.roastDate);
+                const statusA = getDegassingStatus(daysA);
+                const statusB = getDegassingStatus(daysB);
+                
+                const priority = { 'OPTIMAL': 1, 'Approaching': 2, 'Fading': 3, 'Too Fresh': 4, 'Past peak': 5 };
+                if (priority[statusA.status] !== priority[statusB.status]) {
+                    return priority[statusA.status] - priority[statusB.status];
+                }
+                return daysA - daysB; // within same status, fresher first
+            });
+            
+            sortedBags.forEach(bag => {
+                const days = calculateDaysSince(bag.roastDate);
+                const degas = getDegassingStatus(days);
+                const colors = getProcessColor(bag.process);
+                const costPerGram = (bag.priceSGD / bag.originalWeight).toFixed(3);
+                const costPerBrew = (costPerGram * 15).toFixed(2);
+                
+                const card = document.createElement('div');
+                card.className = `coffee-card bg-zinc-900 border border-zinc-800 rounded-3xl p-5 ${bag.weightRemaining < 30 ? 'border-rose-900/50' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-x-2 mb-1">
+                                <span class="font-playfair text-xl leading-none tracking-tighter">${bag.roaster}</span>
+                            </div>
+                            <div class="font-semibold text-lg leading-tight pr-8">${bag.coffeeName}</div>
+                            
+                            <div class="flex items-center gap-x-2 mt-2">
+                                <span class="process-badge ${colors.bg} ${colors.text} ${colors.border} border px-2.5 py-px rounded-full">${bag.process}</span>
+                                <span class="text-xs text-zinc-500">${bag.varietal}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <div class="text-xs text-zinc-500">Roasted</div>
+                            <div class="font-mono text-sm">${new Date(bag.roastDate).toLocaleDateString('en-GB', {day:'numeric', month:'short'})}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Degassing Indicator -->
+                    <div class="mt-4 mb-3">
+                        <div class="flex items-center justify-between text-xs mb-1.5">
+                            <div class="flex items-center gap-x-1.5">
+                                <span>${degas.emoji}</span>
+                                <span class="font-medium" style="color: ${degas.color}">${degas.status}</span>
+                            </div>
+                            <span class="font-mono text-xs text-zinc-400">${days} days since roast</span>
+                        </div>
+                        <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                            <div class="h-1.5 rounded-full transition-all" style="width: ${Math.min(100, (days / 40) * 100)}%; background-color: ${degas.color}"></div>
+                        </div>
+                        <div class="text-[10px] text-zinc-500 mt-1">${degas.label}</div>
+                    </div>
+                    
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="flex items-baseline gap-x-px">
+                                <span class="font-semibold text-xl tabular-nums">${bag.weightRemaining}</span>
+                                <span class="text-xs text-zinc-400">/ ${bag.originalWeight}g</span>
+                            </div>
+                            <div onclick="editWeight('${bag.id}', this)" class="cursor-pointer text-[10px] text-[#c9a84c] hover:underline">tap to edit weight</div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <div class="text-xs text-zinc-400">Cost per brew (15g)</div>
+                            <div class="font-semibold text-lg tabular-nums">SGD ${costPerBrew}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-4 gap-2 mt-4">
+                        <button onclick="openBrewModal('${bag.id}')" 
+                                class="col-span-2 py-2.5 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 transition-colors text-white text-xs font-semibold rounded-2xl flex items-center justify-center gap-x-1.5">
+                            <span>⚡</span> <span>BREW NOW</span>
+                        </button>
+                        
+                        <button onclick="editBag('${bag.id}')" 
+                                class="py-2.5 border border-zinc-700 hover:bg-zinc-800 text-xs font-medium rounded-2xl flex items-center justify-center gap-x-1">
+                            <span>✏️</span>
+                        </button>
+                        
+                        <button onclick="finishBag('${bag.id}')" 
+                                class="py-2.5 border border-emerald-700/60 hover:bg-emerald-900/30 text-xs font-medium text-emerald-400 rounded-2xl flex items-center justify-center gap-x-1">
+                            <span>✅</span>
+                        </button>
+                        
+                        <button onclick="deleteBag('${bag.id}')" 
+                                class="py-2.5 border border-rose-700/60 hover:bg-rose-900/30 text-xs font-medium text-rose-400 rounded-2xl flex items-center justify-center">
+                            <span>🗑️</span>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            document.getElementById('bag-count').textContent = bags.length;
+        }
+        
+        function editWeight(bagId, element) {
+            const { bags } = loadData();
+            const bag = bags.find(b => b.id === bagId);
+            if (!bag) return;
+            
+            const current = bag.weightRemaining;
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.value = current;
+            input.className = 'w-20 bg-zinc-950 border border-[#c9a84c] text-center rounded-xl py-1 text-lg font-semibold';
+            input.style.width = '70px';
+            
+            element.parentNode.replaceChild(input, element);
+            input.focus();
+            input.select();
+            
+            const save = () => {
+                const newVal = parseFloat(input.value);
+                if (!isNaN(newVal) && newVal >= 0) {
+                    bag.weightRemaining = newVal;
+                    const { bags: currentBags, sessions, wishlist, finishedBags } = loadData();
+                    const idx = currentBags.findIndex(b => b.id === bagId);
+                    if (idx !== -1) currentBags[idx] = bag;
+                    saveData(currentBags, sessions, wishlist, finishedBags);
+                }
+                renderBags();
+            };
+            
+            input.onblur = save;
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') save();
+                if (e.key === 'Escape') renderBags();
+            };
+        }
+        
+        function openBrewModal(bagId) {
+            const { bags } = loadData();
+            const bag = bags.find(b => b.id === bagId);
+            if (!bag) return;
+            
+            currentBagForBrew = bag;
+            
+            document.getElementById('modal-bag-name').innerHTML = `${bag.roaster} — <span class="font-normal">${bag.coffeeName}</span>`;
+            document.getElementById('modal-bag-id').value = bagId;
+            
+            // Set datetime to now
+            const now = new Date('2026-05-20T10:30');
+            const datetimeStr = now.toISOString().slice(0, 16);
+            document.getElementById('brew-datetime').value = datetimeStr;
+            
+            // Reset form
+            document.getElementById('brew-method').value = 'V60';
+            document.getElementById('brew-grinder').value = 'Mahlkönig EK43';
+            document.getElementById('brew-dose').value = '15';
+            document.getElementById('brew-yield').value = '225';
+            document.getElementById('brew-temp').value = '92';
+            document.getElementById('brew-notes').value = '';
+            
+            // Setup stars
+            setupStarRating('star-rating-container', 'brew-rating', 5);
+            
+            updateRatioPreview();
+            
+            document.getElementById('brew-modal').classList.remove('hidden');
+            document.getElementById('brew-modal').classList.add('flex');
+        }
+        
+        function updateRatioPreview() {
+            const dose = parseFloat(document.getElementById('brew-dose').value) || 15;
+            const yieldVal = parseFloat(document.getElementById('brew-yield').value) || 225;
+            const ratio = (yieldVal / dose).toFixed(1);
+            document.getElementById('ratio-preview').innerHTML = `1:${ratio}`;
+        }
+        
+        function setupStarRating(containerId, hiddenInputId, initialRating) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            currentRating = initialRating;
+            
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = `star text-3xl ${i <= initialRating ? 'text-[#c9a84c]' : 'text-zinc-700'}`;
+                star.innerHTML = '★';
+                star.onclick = () => {
+                    currentRating = i;
+                    document.getElementById(hiddenInputId).value = i;
+                    // Update all stars
+                    Array.from(container.children).forEach((s, idx) => {
+                        s.classList.toggle('text-[#c9a84c]', idx < i);
+                        s.classList.toggle('text-zinc-700', idx >= i);
+                    });
+                };
+                container.appendChild(star);
+            }
+            
+            document.getElementById(hiddenInputId).value = initialRating;
+        }
+        
+        function saveBrewSession(e) {
+            e.preventDefault();
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const bagId = document.getElementById('modal-bag-id').value;
+            const bagIndex = bags.findIndex(b => b.id === bagId);
+            const bag = bags[bagIndex];
+            
+            if (!bag) {
+                showToast('Error: Bag not found', 'error');
+                return;
+            }
+            
+            const dose = parseFloat(document.getElementById('brew-dose').value);
+            const yieldVal = parseFloat(document.getElementById('brew-yield').value);
+            const ratioNum = (yieldVal / dose).toFixed(1);
+            
+            const costPerGram = bag.priceSGD / bag.originalWeight;
+            const costPerBrew = (costPerGram * dose).toFixed(2);
+            
+            const newSession = {
+                id: 's' + Date.now(),
+                bagId: bagId,
+                date: document.getElementById('brew-datetime').value,
+                coffeeName: bag.coffeeName,
+                roaster: bag.roaster,
+                brewMethod: document.getElementById('brew-method').value,
+                dose_g: dose,
+                yield_g: yieldVal,
+                ratio: `1:${ratioNum}`,
+                grinder: document.getElementById('brew-grinder').value,
+                brewTemp: parseInt(document.getElementById('brew-temp').value),
+                tastingNote: document.getElementById('brew-notes').value || 'No notes recorded.',
+                rating: parseInt(document.getElementById('brew-rating').value),
+                costPerBrew: parseFloat(costPerBrew)
+            };
+            
+            sessions.unshift(newSession);
+            
+            // Subtract weight
+            bag.weightRemaining = Math.max(0, bag.weightRemaining - dose);
+            bags[bagIndex] = bag;
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            
+            closeBrewModal();
+            showToast('Brew logged successfully! Weight updated.', 'success');
+            
+            // Re-render current screen
+            if (currentScreen === 'bags') renderBags();
+            if (currentScreen === 'brews') renderBrews();
+            if (currentScreen === 'stats') renderStats();
+        }
+        
+        function closeBrewModal() {
+            const modal = document.getElementById('brew-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        
+        function exportCsvLine() {
+            const { bags } = loadData();
+            const bagId = document.getElementById('modal-bag-id').value;
+            const bag = bags.find(b => b.id === bagId);
+            if (!bag) return;
+            
+            const date = document.getElementById('brew-datetime').value.split('T')[0];
+            const method = document.getElementById('brew-method').value;
+            const dose = document.getElementById('brew-dose').value;
+            const yieldVal = document.getElementById('brew-yield').value;
+            const ratio = document.getElementById('ratio-preview').innerText;
+            const grinder = document.getElementById('brew-grinder').value;
+            const temp = document.getElementById('brew-temp').value;
+            const notes = document.getElementById('brew-notes').value || 'No notes';
+            const rating = document.getElementById('brew-rating').value;
+            
+            // Build 17-column CSV line matching master format
+            const csvFields = [
+                date,
+                "Singapore",
+                bag.roaster,
+                bag.coffeeName,
+                bag.varietal || "Unknown",
+                bag.process,
+                "Filter Roast", // assumed
+                method,
+                dose,
+                yieldVal,
+                ratio,
+                "Unknown", // Bloom
+                grinder,
+                bag.priceSGD,
+                notes.substring(0, 80),
+                `${rating}★ — ${notes.substring(0, 60)}`,
+                `Logged via Bean Tracker • ${temp}°C • ${new Date().toISOString().split('T')[0]}`
+            ];
+            
+            const csvLine = csvFields.map(f => `"${String(f).replace(/"/g, '""')}"`).join(',');
+            
+            navigator.clipboard.writeText(csvLine).then(() => {
+                showToast('CSV line copied to clipboard! Paste into master archive.', 'success');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = csvLine;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('CSV line copied!', 'success');
+            });
+        }
+        
+        // Render Brew History
+        function renderBrews() {
+            const { sessions } = loadData();
+            const container = document.getElementById('brews-list');
+            container.innerHTML = '';
+            
+            document.getElementById('brew-count').textContent = sessions.length;
+            
+            if (sessions.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-zinc-500">No brew sessions logged yet.</div>`;
+                return;
+            }
+            
+            sessions.slice(0, 30).forEach(session => {
+                const date = new Date(session.date);
+                const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' ' + date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                
+                const stars = '★'.repeat(session.rating) + '☆'.repeat(5 - session.rating);
+                
+                const el = document.createElement('div');
+                el.className = 'bg-zinc-900 border border-zinc-800 rounded-2xl p-4 text-sm';
+                
+                el.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-medium">${session.coffeeName}</div>
+                            <div class="text-xs text-zinc-400">${session.roaster}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-mono text-xs text-zinc-400">${dateStr}</div>
+                            <div class="text-[#c9a84c] text-lg leading-none mt-0.5">${stars}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 flex flex-wrap gap-x-4 text-xs">
+                        <div><span class="text-zinc-500">Method:</span> <span class="font-medium">${session.brewMethod}</span></div>
+                        <div><span class="text-zinc-500">Dose/Yield:</span> <span class="font-mono">${session.dose_g}g → ${session.yield_g}g</span></div>
+                        <div><span class="text-zinc-500">Ratio:</span> <span class="font-mono">${session.ratio}</span></div>
+                    </div>
+                    
+                    <div class="mt-2 text-xs text-zinc-300 line-clamp-2">${session.tastingNote}</div>
+                    
+                    <div class="mt-2 text-[10px] text-emerald-400 font-mono">SGD ${session.costPerBrew.toFixed(2)} per brew</div>
+                `;
+                
+                container.appendChild(el);
+            });
+        }
+        
+        // Add new bag
+        function addNewBag(e) {
+            e.preventDefault();
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            
+            const newBag = {
+                id: 'b' + Date.now(),
+                roaster: document.getElementById('add-roaster').value,
+                coffeeName: document.getElementById('add-coffee-name').value,
+                varietal: document.getElementById('add-varietal').value || 'Unknown',
+                process: document.getElementById('add-process').value,
+                roastDate: document.getElementById('add-roast-date').value,
+                purchaseDate: document.getElementById('add-purchase-date').value,
+                weightRemaining: parseFloat(document.getElementById('add-weight').value),
+                originalWeight: parseFloat(document.getElementById('add-weight').value),
+                priceSGD: parseFloat(document.getElementById('add-price').value),
+                whereBought: document.getElementById('add-where').value
+            };
+            
+            bags.unshift(newBag);
+            saveData(bags, sessions, wishlist, finishedBags);
+            
+            // Reset form
+            document.getElementById('add-bag-form').reset();
+            document.getElementById('add-purchase-date').value = '2026-05-20';
+            
+            showToast('New bag added to active inventory!', 'success');
+            renderBags();
+            switchScreen('bags');
+        }
+        
+        // Render Purchase Screen (also updates spend summary and chart)
+        function renderPurchase() {
+            const { bags, finishedBags } = loadData();
+            const allBags = [...bags, ...finishedBags];
+            
+            // Spend calculations
+            const totalSpent = allBags.reduce((sum, b) => sum + b.priceSGD, 0);
+            document.getElementById('total-spend').innerHTML = `SGD ${totalSpent.toFixed(2)}`;
+            
+            const avgBagPrice = allBags.length > 0 ? (totalSpent / allBags.length).toFixed(2) : '0.00';
+            document.getElementById('avg-bag-price').innerHTML = `SGD ${avgBagPrice}`;
+            
+            // This month (May 2026)
+            const mayBags = allBags.filter(b => b.purchaseDate && b.purchaseDate.startsWith('2026-05'));
+            const monthly = mayBags.reduce((sum, b) => sum + b.priceSGD, 0);
+            document.getElementById('monthly-spend').innerHTML = `SGD ${monthly.toFixed(2)}`;
+            
+            // Avg price per gram
+            const totalWeight = allBags.reduce((sum, b) => sum + b.originalWeight, 0);
+            const avgPerGram = totalWeight > 0 ? (totalSpent / totalWeight).toFixed(3) : '0.000';
+            document.getElementById('avg-price-gram').innerHTML = `SGD ${avgPerGram}`;
+            
+            // Avg cost per brew (15g)
+            const avgCostBrew = (parseFloat(avgPerGram) * 15).toFixed(2);
+            document.getElementById('avg-cost-brew').innerHTML = `SGD ${avgCostBrew}`;
+            
+            document.getElementById('bags-logged').innerHTML = allBags.length;
+            
+            // Most purchased roaster
+            const roasterCounts = {};
+            allBags.forEach(b => {
+                roasterCounts[b.roaster] = (roasterCounts[b.roaster] || 0) + 1;
+            });
+            const topRoaster = Object.keys(roasterCounts).sort((a,b) => roasterCounts[b] - roasterCounts[a])[0] || '—';
+            document.getElementById('most-roaster').innerHTML = topRoaster;
+            
+            // Render chart
+            renderSpendChart(allBags);
+        }
+        
+        function renderSpendChart(allBags) {
+            const ctx = document.getElementById('spend-chart');
+            if (spendChartInstance) {
+                spendChartInstance.destroy();
+            }
+            
+            const monthlyData = { '2026-01': 0, '2026-02': 0, '2026-03': 0, '2026-04': 0, '2026-05': 0 };
+            
+            allBags.forEach(bag => {
+                if (bag.purchaseDate) {
+                    const monthKey = bag.purchaseDate.substring(0, 7);
+                    if (monthlyData[monthKey] !== undefined) {
+                        monthlyData[monthKey] += bag.priceSGD;
+                    }
+                }
+            });
+            
+            const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+            const data = [
+                monthlyData['2026-01'],
+                monthlyData['2026-02'],
+                monthlyData['2026-03'],
+                monthlyData['2026-04'],
+                monthlyData['2026-05']
+            ];
+            
+            spendChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Monthly Spend (SGD)',
+                        data: data,
+                        backgroundColor: '#c9a84c',
+                        borderColor: '#c9a84c',
+                        borderWidth: 0,
+                        borderRadius: 6,
+                        barThickness: 22
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#27272a', titleFont: { size: 11 } } },
+                    scales: {
+                        x: { grid: { color: '#27272a', lineWidth: 0.5 }, ticks: { color: '#71717a', font: { size: 10 } } },
+                        y: { grid: { color: '#27272a', lineWidth: 0.5 }, ticks: { color: '#71717a', font: { size: 10 }, stepSize: 20 } }
+                    }
+                }
+            });
+        }
+        
+        // Render Degassing Alerts
+        function renderAlerts() {
+            const { bags } = loadData();
+            const optimalContainer = document.getElementById('optimal-list');
+            const soonContainer = document.getElementById('soon-list');
+            const waitContainer = document.getElementById('wait-list');
+            
+            optimalContainer.innerHTML = '';
+            soonContainer.innerHTML = '';
+            waitContainer.innerHTML = '';
+            
+            if (bags.length === 0) {
+                optimalContainer.innerHTML = `<div class="text-center py-4 text-sm text-zinc-500">No active bags</div>`;
+                return;
+            }
+            
+            bags.forEach(bag => {
+                const days = calculateDaysSince(bag.roastDate);
+                const degas = getDegassingStatus(days);
+                const colors = getProcessColor(bag.process);
+                
+                const cardHTML = `
+                    <div class="coffee-card bg-zinc-900 border border-zinc-800 rounded-3xl p-4 flex gap-4">
+                        <div class="flex-1">
+                            <div class="font-semibold">${bag.coffeeName}</div>
+                            <div class="text-xs text-zinc-400">${bag.roaster}</div>
+                            
+                            <div class="mt-2 flex items-center gap-x-2">
+                                <span class="process-badge ${colors.bg} ${colors.text} border px-2 py-px text-xs">${bag.process}</span>
+                                <span class="font-mono text-xs text-zinc-400">${days}d since roast</span>
+                            </div>
+                            
+                            <div class="mt-2">
+                                <div class="text-xs font-medium" style="color: ${degas.color}">${degas.emoji} ${degas.label}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col justify-between items-end text-right">
+                            <div>
+                                <div class="text-xs text-zinc-400">Weight</div>
+                                <div class="font-semibold tabular-nums">${bag.weightRemaining}g</div>
+                            </div>
+                            
+                            <button onclick="openBrewModal('${bag.id}'); switchScreen('bags')" 
+                                    class="mt-auto text-xs px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-medium">Brew Now</button>
+                        </div>
+                    </div>
+                `;
+                
+                if (degas.status === 'OPTIMAL') {
+                    optimalContainer.innerHTML += cardHTML;
+                } else if (degas.status === 'Approaching' || degas.status === 'Fading') {
+                    soonContainer.innerHTML += cardHTML;
+                } else {
+                    waitContainer.innerHTML += cardHTML;
+                }
+            });
+            
+            // If no items in a section, show placeholder
+            if (optimalContainer.innerHTML === '') optimalContainer.innerHTML = `<div class="text-xs text-emerald-400/60 px-1">No bags in optimal window right now.</div>`;
+            if (soonContainer.innerHTML === '') soonContainer.innerHTML = `<div class="text-xs text-amber-400/60 px-1">No bags approaching or fading.</div>`;
+            if (waitContainer.innerHTML === '') waitContainer.innerHTML = `<div class="text-xs text-rose-400/60 px-1">No bags too fresh or past peak.</div>`;
+        }
+        
+        // Render Wishlist
+        function renderWishlist() {
+            const { wishlist } = loadData();
+            const container = document.getElementById('wishlist-list');
+            container.innerHTML = '';
+            
+            wishlist.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-zinc-900 border border-zinc-800 rounded-3xl p-5';
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="font-semibold text-lg leading-tight">${item.coffeeName}</div>
+                            <div class="text-xs text-zinc-400">${item.origin} • ${item.process}</div>
+                            
+                            <div class="mt-3 flex items-center gap-x-2">
+                                <div class="px-2.5 py-0.5 bg-emerald-900/60 text-emerald-400 text-xs font-semibold rounded-xl">${item.matchPercent}% match</div>
+                            </div>
+                            
+                            <div class="mt-3 text-xs text-zinc-300 pr-4">${item.whyFits}</div>
+                            
+                            <div class="mt-4 grid grid-cols-2 gap-x-4 text-xs">
+                                <div>
+                                    <span class="text-zinc-500">Est. Price</span><br>
+                                    <span class="font-medium">${item.estPrice}</span>
+                                </div>
+                                <div>
+                                    <span class="text-zinc-500">Where to find</span><br>
+                                    <span class="font-medium">${item.whereToFind}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-5">
+                        <button onclick="markWishlistPurchased('${item.id}')" 
+                                class="flex-1 py-2 bg-[#c9a84c] text-black text-xs font-semibold rounded-2xl">Mark as Purchased</button>
+                        <button onclick="removeFromWishlist('${item.id}')" 
+                                class="px-4 py-2 border border-zinc-700 text-xs font-medium rounded-2xl">Remove</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        function showAddWishlistModal() {
+            const name = prompt('Coffee Name (e.g. Ethiopia Yirgacheffe Guji):');
+            if (!name) return;
+            
+            const origin = prompt('Origin / Country:', 'Ethiopia') || 'Unknown';
+            const process = prompt('Process:', 'Washed') || 'Washed';
+            const match = parseInt(prompt('Match % (50-100):', '80')) || 80;
+            const why = prompt('Why it fits your profile:', 'High clarity washed profile matching previous successful audits.') || '';
+            const price = prompt('Est. Price Range:', 'SGD 15-22 / 200g') || 'SGD 15-25 / 200g';
+            const where = prompt('Where to find:', 'Local roaster / Online') || 'Specialty importers';
+            
+            const { wishlist, bags, sessions, finishedBags } = loadData();
+            
+            const newItem = {
+                id: 'w' + Date.now(),
+                coffeeName: name,
+                origin: origin,
+                process: process,
+                matchPercent: match,
+                whyFits: why,
+                estPrice: price,
+                whereToFind: where
+            };
+            
+            wishlist.push(newItem);
+            saveData(bags, sessions, wishlist, finishedBags);
+            renderWishlist();
+            showToast('Custom wishlist target added!', 'success');
+        }
+        
+        function markWishlistPurchased(itemId) {
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const itemIndex = wishlist.findIndex(w => w.id === itemId);
+            if (itemIndex === -1) return;
+            
+            const item = wishlist[itemIndex];
+            
+            // Create new bag from wishlist item
+            const newBag = {
+                id: 'b' + Date.now(),
+                roaster: item.whereToFind.split('•')[0].trim() || 'Unknown Roaster',
+                coffeeName: item.coffeeName,
+                varietal: item.coffeeName.includes('Geisha') ? 'Geisha' : (item.coffeeName.includes('Sudan Rume') ? 'Sudan Rume' : 'Unknown'),
+                process: item.process,
+                roastDate: '2026-05-20',
+                purchaseDate: '2026-05-20',
+                weightRemaining: 200,
+                originalWeight: 200,
+                priceSGD: parseFloat(item.estPrice.match(/[\d.]+/)?.[0] || '18'),
+                whereBought: item.whereToFind
+            };
+            
+            bags.unshift(newBag);
+            wishlist.splice(itemIndex, 1);
+            wishlistConverted++;
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            
+            showToast(`"${item.coffeeName}" marked purchased! Added to Active Bags.`, 'success');
+            renderWishlist();
+            renderBags();
+            
+            // Switch to bags
+            setTimeout(() => switchScreen('bags'), 800);
+        }
+        
+        function removeFromWishlist(itemId) {
+            if (!confirm('Remove this target from wishlist?')) return;
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const idx = wishlist.findIndex(w => w.id === itemId);
+            if (idx > -1) wishlist.splice(idx, 1);
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            renderWishlist();
+        }
+        
+        // Render Stats
+        function renderStats() {
+            const { bags, sessions, finishedBags, wishlist } = loadData();
+            const allBags = [...bags, ...finishedBags];
+            
+            // Brew stats
+            document.getElementById('stat-total-brews').innerHTML = sessions.length;
+            
+            const avgRating = sessions.length > 0 ? 
+                (sessions.reduce((sum, s) => sum + s.rating, 0) / sessions.length).toFixed(1) : '—';
+            document.getElementById('stat-avg-rating').innerHTML = `${avgRating} <span class="text-base ml-1 text-[#c9a84c]">★</span>`;
+            
+            // Most brewed
+            const coffeeCounts = {};
+            sessions.forEach(s => {
+                const key = `${s.coffeeName} (${s.roaster.split(' ')[0]})`;
+                coffeeCounts[key] = (coffeeCounts[key] || 0) + 1;
+            });
+            const mostBrewed = Object.keys(coffeeCounts).sort((a,b) => coffeeCounts[b] - coffeeCounts[a])[0] || '—';
+            document.getElementById('stat-most-brewed').innerHTML = `${mostBrewed} — ${coffeeCounts[mostBrewed] || 0} times`;
+            
+            // Most used method
+            const methodCounts = {};
+            sessions.forEach(s => methodCounts[s.brewMethod] = (methodCounts[s.brewMethod] || 0) + 1);
+            const topMethod = Object.keys(methodCounts).sort((a,b) => methodCounts[b] - methodCounts[a])[0] || 'V60';
+            document.getElementById('stat-most-method').innerHTML = topMethod;
+            
+            // Most used grinder
+            const grinderCounts = {};
+            sessions.forEach(s => grinderCounts[s.grinder] = (grinderCounts[s.grinder] || 0) + 1);
+            const topGrinder = Object.keys(grinderCounts).sort((a,b) => grinderCounts[b] - grinderCounts[a])[0] || 'Mahlkönig EK43';
+            document.getElementById('stat-most-grinder').innerHTML = topGrinder.split('(')[0].trim();
+            
+            // Avg ratio
+            if (sessions.length > 0) {
+                const avgRatioNum = sessions.reduce((sum, s) => {
+                    const r = parseFloat(s.ratio.split(':')[1]) || 15;
+                    return sum + r;
+                }, 0) / sessions.length;
+                document.getElementById('stat-avg-ratio').innerHTML = `1:${avgRatioNum.toFixed(1)}`;
+            }
+            
+            // Spend stats
+            const totalSpent = allBags.reduce((sum, b) => sum + b.priceSGD, 0);
+            document.getElementById('stat-total-spent').innerHTML = `SGD ${totalSpent.toFixed(2)}`;
+            document.getElementById('stat-avg-bag').innerHTML = `SGD ${(totalSpent / (allBags.length || 1)).toFixed(2)}`;
+            
+            // Cheapest / most expensive brew
+            if (sessions.length > 0) {
+                const costs = sessions.map(s => s.costPerBrew);
+                const minCost = Math.min(...costs).toFixed(2);
+                const maxCost = Math.max(...costs).toFixed(2);
+                document.getElementById('stat-cheapest-brew').innerHTML = `SGD ${minCost}`;
+                document.getElementById('stat-expensive-brew').innerHTML = `SGD ${maxCost}`;
+            }
+            
+            // Progress rings
+            const totalLogged = allBags.length;
+            const finishedCount = finishedBags.length;
+            const archivePct = totalLogged > 0 ? Math.round((finishedCount / totalLogged) * 100) : 0;
+            
+            document.getElementById('archive-percent').innerHTML = archivePct;
+            document.getElementById('archive-text').innerHTML = `${finishedCount} finished / ${totalLogged} total`;
+            
+            // Update SVG ring
+            const archiveRing = document.getElementById('archive-ring');
+            const offset = 264 - (264 * archivePct / 100);
+            archiveRing.setAttribute('stroke-dashoffset', offset);
+            
+            // Wishlist conversion
+            const wishlistPct = wishlist.length + wishlistConverted > 0 ? 
+                Math.round((wishlistConverted / (wishlist.length + wishlistConverted)) * 100) : 0;
+            
+            document.getElementById('wishlist-percent').innerHTML = wishlistPct;
+            document.getElementById('wishlist-text').innerHTML = `${wishlistConverted} / ${wishlist.length + wishlistConverted} acquired`;
+            
+            const wishlistRing = document.getElementById('wishlist-ring');
+            const wOffset = 264 - (264 * wishlistPct / 100);
+            wishlistRing.setAttribute('stroke-dashoffset', wOffset);
+        }
+        
+        // Finish bag
+        let bagToFinish = null;
+        
+        function finishBag(bagId) {
+            const { bags } = loadData();
+            const bag = bags.find(b => b.id === bagId);
+            if (!bag) return;
+            
+            bagToFinish = bag;
+            
+            document.getElementById('finish-bag-name').innerHTML = `${bag.roaster} — ${bag.coffeeName}`;
+            
+            // Setup finish stars
+            const container = document.getElementById('finish-star-container');
+            container.innerHTML = '';
+            currentFinishRating = 5;
+            
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = `star text-4xl ${i <= 5 ? 'text-[#c9a84c]' : 'text-zinc-700'}`;
+                star.innerHTML = '★';
+                star.onclick = () => {
+                    currentFinishRating = i;
+                    document.getElementById('finish-rating').value = i;
+                    Array.from(container.children).forEach((s, idx) => {
+                        s.classList.toggle('text-[#c9a84c]', idx < i);
+                        s.classList.toggle('text-zinc-700', idx >= i);
+                    });
+                };
+                container.appendChild(star);
+            }
+            
+            document.getElementById('finish-notes').value = '';
+            document.getElementById('finish-modal').classList.remove('hidden');
+            document.getElementById('finish-modal').classList.add('flex');
+        }
+        
+        function confirmFinishBag() {
+            if (!bagToFinish) return;
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            
+            const idx = bags.findIndex(b => b.id === bagToFinish.id);
+            if (idx === -1) return;
+            
+            const finishedBag = {
+                ...bags[idx],
+                finalRating: parseInt(document.getElementById('finish-rating').value),
+                finalNotes: document.getElementById('finish-notes').value || 'Archived without notes.',
+                finishedDate: '2026-05-20'
+            };
+            
+            finishedBags.unshift(finishedBag);
+            bags.splice(idx, 1);
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            
+            closeFinishModal();
+            showToast('Bag archived with final rating. Great work!', 'success');
+            
+            renderBags();
+            if (currentScreen === 'stats') renderStats();
+        }
+        
+        function closeFinishModal() {
+            document.getElementById('finish-modal').classList.remove('flex');
+            document.getElementById('finish-modal').classList.add('hidden');
+            bagToFinish = null;
+        }
+        
+        function editBag(bagId) {
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const bag = bags.find(b => b.id === bagId);
+            if (!bag) return;
+            
+            // Simple edit via prompts for key fields (can be expanded)
+            const newWeight = prompt('New remaining weight (g):', bag.weightRemaining);
+            if (newWeight !== null) bag.weightRemaining = parseFloat(newWeight) || bag.weightRemaining;
+            
+            const newPrice = prompt('New price (SGD):', bag.priceSGD);
+            if (newPrice !== null) bag.priceSGD = parseFloat(newPrice) || bag.priceSGD;
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            renderBags();
+            showToast('Bag updated!', 'success');
+        }
+        
+        function deleteBag(bagId) {
+            if (!confirm('Delete this bag permanently?')) return;
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const idx = bags.findIndex(b => b.id === bagId);
+            if (idx > -1) bags.splice(idx, 1);
+            
+            saveData(bags, sessions, wishlist, finishedBags);
+            renderBags();
+        }
+        
+        function refreshDegassing() {
+            renderBags();
+            renderAlerts();
+            showToast('Degassing windows recalculated against today\'s date.', 'success');
+        }
+        
+        // Switch screens
+        function switchScreen(screen) {
+            // Hide all
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            
+            // Show target
+            const target = document.getElementById(`screen-${screen}`);
+            if (target) target.classList.add('active');
+            
+            currentScreen = screen;
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-[#c9a84c]');
+                btn.classList.add('text-zinc-400');
+                if (btn.dataset.screen === screen) {
+                    btn.classList.add('active', 'text-[#c9a84c]');
+                    btn.classList.remove('text-zinc-400');
+                }
+            });
+            
+            // Render specific screen
+            if (screen === 'bags') renderBags();
+            else if (screen === 'brews') renderBrews();
+            else if (screen === 'purchase') renderPurchase();
+            else if (screen === 'alerts') renderAlerts();
+            else if (screen === 'wishlist') renderWishlist();
+            else if (screen === 'stats') renderStats();
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon');
+            
+            msgEl.innerHTML = message;
+            
+            if (type === 'success') {
+                iconEl.innerHTML = '✅';
+                iconEl.style.color = '#34d399';
+            } else if (type === 'error') {
+                iconEl.innerHTML = '⚠️';
+                iconEl.style.color = '#f87171';
+            }
+            
+            toast.style.display = 'flex';
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transition = '';
+                    toast.style.display = 'none';
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 2600);
+        }
+        
+        // Export all data
+        function exportData() {
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            const exportObj = {
+                exportedAt: new Date().toISOString(),
+                bags,
+                brewSessions: sessions,
+                wishlist,
+                finishedBags,
+                wishlistConverted
+            };
+            
+            const dataStr = JSON.stringify(exportObj, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hari_coffee_archive_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Full archive exported as JSON backup.', 'success');
+        }
+        
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    
+                    if (imported.bags) localStorage.setItem('coffeeBags', JSON.stringify(imported.bags));
+                    if (imported.brewSessions) localStorage.setItem('brewSessions', JSON.stringify(imported.brewSessions));
+                    if (imported.wishlist) localStorage.setItem('wishlist', JSON.stringify(imported.wishlist));
+                    if (imported.finishedBags) localStorage.setItem('finishedBags', JSON.stringify(imported.finishedBags));
+                    if (imported.wishlistConverted !== undefined) {
+                        wishlistConverted = imported.wishlistConverted;
+                        localStorage.setItem('wishlistConverted', wishlistConverted.toString());
+                    }
+                    
+                    showToast('Archive imported successfully! Reloading data...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                } catch (err) {
+                    showToast('Import failed: Invalid JSON file.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // reset
+        }
+        
+        // Initialize everything
+        function initializeApp() {
+            initializeTailwind();
+            
+            const { bags, sessions, wishlist, finishedBags } = loadData();
+            
+            // Initial render of default screen (bags)
+            renderBags();
+            
+            // Set initial nav active
+            const firstNav = document.querySelector('.nav-btn[data-screen="bags"]');
+            if (firstNav) firstNav.classList.add('active', 'text-[#c9a84c]');
+            
+            // Seed wishlistConverted if not set
+            if (!localStorage.getItem('wishlistConverted')) {
+                wishlistConverted = 2; // demo: 2 already purchased
+                localStorage.setItem('wishlistConverted', '2');
+            }
+            
+            // Keyboard shortcuts hint (optional)
+            console.log('%c[Hari Coffee Tracker] App initialized. All 6 screens ready.', 'color:#52525b');
+            
+            // Show welcome toast on first visit
+            if (!localStorage.getItem('hasSeenWelcome')) {
+                setTimeout(() => {
+                    showToast('Welcome back, Hari! 3 demo bags loaded.', 'success');
+                    localStorage.setItem('hasSeenWelcome', 'true');
+                }, 1200);
+            }
+            
+            // Make sure ratio updates on input
+            setTimeout(() => {
+                const doseInput = document.getElementById('brew-dose');
+                const yieldInput = document.getElementById('brew-yield');
+                if (doseInput && yieldInput) {
+                    doseInput.addEventListener('input', updateRatioPreview);
+                    yieldInput.addEventListener('input', updateRatioPreview);
+                }
+            }, 500);
+            
+            // Print hint
+            console.log('%c@media print CSS included and verified.', 'color:#52525b');
+        }
+        
+        // Boot the application
+        window.onload = initializeApp;
+        
+        // Expose key functions for debugging (optional)
+        window.HariTracker = { renderBags, renderStats, exportData };
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entry #073 · The Journey — Las Margaritas Geisha · Alchemist Funan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A1730;          /* alchemist deep menu ink */
+  --slate:#16264A;
+  --peri:#5B7FE8;         /* the menu-screen blue */
+  --peri-lt:#9DB4F5;
+  --steel:#8A96A8;        /* the brewer */
+  --honey:#E8A33D;        /* the process */
+  --honey-lt:#F5C860;
+  --jasmine:#F4EFE2;
+  --paper:#F2F4F9;
+  --line:rgba(255,255,255,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'Archivo',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:clamp(14px,2.5vw,34px);
+  line-height:1.45;
+}
+.sheet{
+  max-width:1120px;margin:0 auto;
+  background:
+    radial-gradient(1200px 500px at 78% -8%, rgba(91,127,232,.30), transparent 62%),
+    radial-gradient(760px 420px at 6% 108%, rgba(232,163,61,.18), transparent 60%),
+    linear-gradient(178deg,#0C1B37 0%,#0A1730 48%,#0B1226 100%);
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+}
+
+/* ---------- masthead ---------- */
+.mast{padding:clamp(20px,3.4vw,40px) clamp(18px,3.4vw,44px) 0}
+.rail{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.20em;text-transform:uppercase;color:var(--peri-lt)}
+.rail .no{color:var(--honey-lt)}
+.hr{height:1px;background:linear-gradient(90deg,var(--peri),rgba(91,127,232,.05));margin:14px 0 22px}
+
+h1{font-family:'Instrument Serif',serif;font-weight:400;
+  font-size:clamp(38px,7.4vw,80px);line-height:.94;letter-spacing:-.015em}
+h1 em{font-style:italic;color:var(--honey-lt)}
+.sub{font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.35vw,12px);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--peri-lt);margin-top:14px}
+
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  padding:5px 10px;border:1px solid var(--line);border-radius:100px;color:var(--paper);background:rgba(255,255,255,.04)}
+.tag.hot{border-color:rgba(232,163,61,.55);color:var(--honey-lt);background:rgba(232,163,61,.10)}
+.tag.new{border-color:rgba(157,180,245,.5);color:var(--peri-lt);background:rgba(91,127,232,.12)}
+
+/* ---------- green data strip ---------- */
+.green{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+  gap:1px;background:var(--line);margin:26px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cell{background:#0B1A34;padding:13px 14px}
+.k{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--steel)}
+.v{font-size:14px;font-weight:600;margin-top:5px;letter-spacing:-.01em}
+.v.gold{color:var(--honey-lt)}
+.v.blue{color:var(--peri-lt)}
+
+/* ---------- signature: thermal descent ---------- */
+.arc{padding:clamp(22px,3.6vw,44px) clamp(18px,3.4vw,44px) clamp(10px,2vw,22px)}
+.sec{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--honey);display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(232,163,61,.5),transparent)}
+.seclede{font-size:12.5px;color:var(--peri-lt);max-width:64ch;margin-bottom:20px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.pn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;fill:var(--steel)}
+.pt{font-family:'Instrument Serif',serif;font-size:19px;fill:var(--paper)}
+.pd{font-family:'Archivo',sans-serif;font-size:11px;fill:var(--peri-lt)}
+.tempx{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;fill:var(--honey-lt)}
+
+/* ---------- two-col ---------- */
+.duo{display:grid;grid-template-columns:1.08fr .92fr;gap:1px;background:var(--line);
+  border-top:1px solid var(--line);margin-top:8px}
+.pane{background:#0B1A34;padding:clamp(20px,3vw,34px) clamp(18px,3vw,34px)}
+
+/* pour ladder */
+.pour{margin-top:16px}
+.prow{display:grid;grid-template-columns:52px 1fr 60px;align-items:center;gap:12px;margin-bottom:9px}
+.plab{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--steel);text-transform:uppercase}
+.ptrack{height:9px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.pbar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--peri),var(--honey))}
+.pval{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-align:right;color:var(--paper)}
+.pnote{font-size:11px;color:var(--steel);margin-top:12px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.13)}
+
+/* steel callout */
+.steelbox{margin-top:20px;border:1px solid rgba(138,150,168,.42);border-radius:3px;overflow:hidden}
+.steelhd{background:linear-gradient(90deg,rgba(138,150,168,.22),transparent);padding:9px 14px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#C3CCDA}
+.steelbd{padding:14px;font-size:12.5px;color:var(--paper);line-height:1.6}
+.steelbd b{color:var(--honey-lt);font-weight:600}
+
+/* verdict */
+.quote{font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:clamp(21px,2.9vw,31px);line-height:1.24;color:var(--jasmine);margin:6px 0 16px}
+.quote span{color:var(--honey-lt)}
+.notes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.nt{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 9px;border-radius:2px;background:rgba(232,163,61,.13);color:var(--honey-lt);border:1px solid rgba(232,163,61,.28)}
+.match{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  font-size:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.match:last-of-type{border-bottom:0}
+.mk{color:var(--peri-lt);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.yes{color:var(--honey-lt);font-weight:700;font-size:11px;font-family:'JetBrains Mono',monospace}
+
+/* firsts */
+.firsts{border-top:1px solid var(--line);background:#091529;
+  padding:clamp(20px,3vw,32px) clamp(18px,3.4vw,44px)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);margin-top:16px}
+.f{background:#0B1A34;padding:15px 16px}
+.fn{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--honey);line-height:1}
+.ft{font-size:12.5px;font-weight:600;margin-top:8px}
+.fs{font-size:11px;color:var(--steel);margin-top:4px;line-height:1.5}
+
+/* footer */
+.foot{border-top:1px solid var(--line);padding:16px clamp(18px,3.4vw,44px);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--steel)}
+.foot b{color:var(--peri-lt);font-weight:500}
+
+@media(max-width:820px){
+  .duo{grid-template-columns:1fr}
+}
+@media print{body{background:#fff;padding:0}}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- masthead -->
+  <header class="mast">
+    <div class="rail">
+      <span>The Hari Coffee Archive · Field Audit</span>
+      <span class="no">Entry № 073 &nbsp;·&nbsp; Gesha № 19</span>
+    </div>
+    <div class="hr"></div>
+
+    <h1>The Journey<br><em>Las Margaritas</em> Geisha</h1>
+    <p class="sub">Alchemist · Funan &nbsp;—&nbsp; 107 N Bridge Rd &nbsp;·&nbsp; Wed 29 July 2026, 12:30</p>
+
+    <div class="tags">
+      <span class="tag hot">10th Anniversary · one week only</span>
+      <span class="tag new">Archive first · stainless steel V60</span>
+      <span class="tag">Honey process</span>
+      <span class="tag">3rd Alchemist branch logged</span>
+    </div>
+
+    <div class="green">
+      <div class="cell"><div class="k">Origin</div><div class="v">Valle del Cauca</div></div>
+      <div class="cell"><div class="k">Country</div><div class="v">Colombia</div></div>
+      <div class="cell"><div class="k">Farm</div><div class="v blue">Las Margaritas</div></div>
+      <div class="cell"><div class="k">Varietal</div><div class="v gold">Geisha</div></div>
+      <div class="cell"><div class="k">Process</div><div class="v gold">Honey</div></div>
+      <div class="cell"><div class="k">Price</div><div class="v">S$10.50</div></div>
+    </div>
+  </header>
+
+  <!-- SIGNATURE: thermal descent -->
+  <section class="arc">
+    <div class="sec">Signature · the thermal descent</div>
+    <p class="seclede">Every cup in this archive is read three times as it cools. Here the curve matters more than usual: brewed flat at 85&thinsp;°C in a <em>steel</em> cone, this cup shed heat fast — and the honey arrived early.</p>
+
+    <svg class="chart" viewBox="0 0 1000 330" role="img"
+         aria-label="Temperature descent curve from 85 degrees showing three tasting phases: jasmine at hot, berry and honey at mid-cool, honey dominant at cool.">
+      <defs>
+        <linearGradient id="curve" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#9DB4F5"/>
+          <stop offset="46%"  stop-color="#5B7FE8"/>
+          <stop offset="100%" stop-color="#E8A33D"/>
+        </linearGradient>
+        <linearGradient id="under" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5B7FE8" stop-opacity=".26"/>
+          <stop offset="100%" stop-color="#E8A33D" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+
+      <!-- grid -->
+      <g stroke="rgba(255,255,255,.09)" stroke-width="1">
+        <line x1="60" y1="40"  x2="960" y2="40"/>
+        <line x1="60" y1="115" x2="960" y2="115"/>
+        <line x1="60" y1="190" x2="960" y2="190"/>
+      </g>
+      <text class="pn" x="60" y="32">85 °C — pour temperature, held flat across all three pours</text>
+
+      <!-- area + curve -->
+      <path d="M70,58 C250,72 340,120 470,150 C610,182 760,206 950,214 L950,240 L70,240 Z" fill="url(#under)"/>
+      <path d="M70,58 C250,72 340,120 470,150 C610,182 760,206 950,214"
+            fill="none" stroke="url(#curve)" stroke-width="3.5" stroke-linecap="round"/>
+
+      <!-- HOT -->
+      <g>
+        <circle cx="105" cy="63" r="7" fill="#9DB4F5"/>
+        <circle cx="105" cy="63" r="14" fill="none" stroke="#9DB4F5" stroke-opacity=".38"/>
+        <text class="pn"   x="105" y="98"  text-anchor="middle">Phase 01 · Hot</text>
+        <text class="pt"   x="105" y="122" text-anchor="middle">Jasmine</text>
+        <text class="pd"   x="105" y="142" text-anchor="middle">floral lift —</text>
+        <text class="pd"   x="105" y="157" text-anchor="middle">sweetness already</text>
+        <text class="pd"   x="105" y="172" text-anchor="middle">present, early</text>
+      </g>
+
+      <!-- MID -->
+      <g>
+        <circle cx="500" cy="157" r="7" fill="#5B7FE8"/>
+        <circle cx="500" cy="157" r="14" fill="none" stroke="#5B7FE8" stroke-opacity=".38"/>
+        <text class="pn"   x="500" y="192" text-anchor="middle">Phase 02 · Mid-cool</text>
+        <text class="pt"   x="500" y="216" text-anchor="middle">Berry + Honey</text>
+        <text class="pd"   x="500" y="236" text-anchor="middle">grounded, settled;</text>
+        <text class="pd"   x="500" y="251" text-anchor="middle">honey moves forward</text>
+      </g>
+
+      <!-- COOL -->
+      <g>
+        <circle cx="905" cy="212" r="8" fill="#E8A33D"/>
+        <circle cx="905" cy="212" r="16" fill="none" stroke="#E8A33D" stroke-opacity=".45"/>
+        <text class="pn"   x="905" y="248" text-anchor="middle">Phase 03 · Cool</text>
+        <text class="pt"   x="905" y="272" text-anchor="middle" fill="#F5C860">Honey, fully</text>
+        <text class="pd"   x="905" y="292" text-anchor="middle">sweet and moreish —</text>
+        <text class="pd"   x="905" y="307" text-anchor="middle">the standout phase</text>
+      </g>
+
+      <text class="tempx" x="60"  y="322">HOT</text>
+      <text class="tempx" x="960" y="322" text-anchor="end">COOL</text>
+    </svg>
+  </section>
+
+  <!-- two panes -->
+  <div class="duo">
+
+    <!-- extraction -->
+    <section class="pane">
+      <div class="sec">Extraction physics</div>
+      <p class="seclede" style="margin-bottom:4px">15&thinsp;g in, 225&thinsp;g out, 1:15 — barista-confirmed. Three pours, no temperature descent.</p>
+
+      <div class="pour">
+        <div class="prow">
+          <span class="plab">Bloom</span>
+          <span class="ptrack"><span class="pbar" style="width:20%"></span></span>
+          <span class="pval">50 g</span>
+        </div>
+        <div class="prow">
+          <span class="plab">Pour 2</span>
+          <span class="ptrack"><span class="pbar" style="width:72%"></span></span>
+          <span class="pval">182 g</span>
+        </div>
+        <div class="prow">
+          <span class="plab">Pour 3</span>
+          <span class="ptrack"><span class="pbar" style="width:100%"></span></span>
+          <span class="pval">252 g</span>
+        </div>
+        <p class="pnote">Recipe target was 225&thinsp;g (1:15). The observed final pour landed at 252&thinsp;g ≈ 1:16.8 — logged as same-day variance, not used to overwrite the barista's stated recipe. Source hierarchy holds.</p>
+      </div>
+
+      <div class="green" style="margin-top:20px;border-bottom:0">
+        <div class="cell"><div class="k">Grinder</div><div class="v" style="font-size:12.5px">EK43S · 98 mm flat</div></div>
+        <div class="cell"><div class="k">Water</div><div class="v" style="font-size:12.5px">85 °C · flat</div></div>
+        <div class="cell"><div class="k">Ratio</div><div class="v gold" style="font-size:12.5px">1:15</div></div>
+      </div>
+
+      <div class="steelbox">
+        <div class="steelhd">◈ The variable that made this cup — brewer material</div>
+        <div class="steelbd">
+          Every prior V60 in this archive has been ceramic. This one is <b>stainless steel</b>: lower thermal mass, higher conductivity, so the slurry sheds heat faster through the brew.
+          That compresses the usual <em>florals-first, sugars-later</em> sequence — which is precisely why sweetness turned up alongside the jasmine in the hot phase instead of waiting for the cool one.
+          <br><br>Logged as <b>Extraction Law 7</b>: brewer material is a live variable, not a footnote.
+        </div>
+      </div>
+    </section>
+
+    <!-- verdict -->
+    <section class="pane">
+      <div class="sec">Sensory verdict</div>
+      <p class="quote">“Honey fully takes over — sweet, moreish. <span>I like this Geisha.</span>”</p>
+
+      <div class="notes">
+        <span class="nt">Hibiscus</span>
+        <span class="nt">Strawberry</span>
+        <span class="nt">Manuka</span>
+      </div>
+
+      <div class="match">
+        <span class="mk">Hibiscus → floral lift</span><span class="yes">✓ Tracked</span>
+      </div>
+      <div class="match">
+        <span class="mk">Strawberry → berry, mid-cool</span><span class="yes">✓ Tracked</span>
+      </div>
+      <div class="match">
+        <span class="mk">Manuka → honey, dominant</span><span class="yes">✓ Tracked</span>
+      </div>
+      <div class="match">
+        <span class="mk">Fermentation noise</span><span class="yes">None detected</span>
+      </div>
+
+      <p class="pnote" style="margin-top:16px">
+        A clean honey-process arc: mucilage sugars asserted progressively and held the cup through to the end, with the Geisha's floral identity still legible underneath rather than buried. Second Valle del Cauca farm in the archive after Inmaculada Estate — same region, different farm, different process.
+      </p>
+
+      <p class="pnote">
+        <b style="color:#C3CCDA">Service note.</b> Served in a plastic takeaway cup at S$10.50, dining in. The coffee earned its price; the vessel didn't do it any favours.
+      </p>
+    </section>
+  </div>
+
+  <!-- firsts -->
+  <section class="firsts">
+    <div class="sec">What this cup added to the archive</div>
+    <div class="fgrid">
+      <div class="f">
+        <div class="fn">01</div>
+        <div class="ft">First stainless steel V60</div>
+        <div class="fs">All 15 prior V60 entries were ceramic. New hardware variable now tracked explicitly.</div>
+      </div>
+      <div class="f">
+        <div class="fn">19</div>
+        <div class="ft">Gesha cups logged</div>
+        <div class="fs">26% of the archive is the apex varietal, carrying a +68% price premium.</div>
+      </div>
+      <div class="f">
+        <div class="fn">03</div>
+        <div class="ft">Alchemist branches</div>
+        <div class="fs">Funan joins Ocean Financial Centre and Khong Guan Building.</div>
+      </div>
+      <div class="f">
+        <div class="fn">73</div>
+        <div class="ft">Total field audits</div>
+        <div class="fs">38 venues · 4 cities · 3 Jan – 29 Jul 2026.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Source hierarchy — <b>barista confirmed</b> · direct observation · menu screen</span>
+    <span>Hari Coffee Archive · <b>Clarity over Complexity</b></span>
+  </footer>
+
+</div>
+</body>
+</html>

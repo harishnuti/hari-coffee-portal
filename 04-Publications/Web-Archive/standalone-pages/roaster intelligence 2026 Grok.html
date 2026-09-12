@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hari, Coffee Archivist">
+    <title>Singapore Roaster Intelligence Report 2026 • Hari Coffee Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --gold: #c9a84c;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+            background-color: #0d0d0d;
+            color: #f5f5f5;
+        }
+        
+        .heading-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .gold-accent {
+            color: #c9a84c;
+        }
+
+        .section-header {
+            border-bottom: 3px solid #c9a84c;
+            padding-bottom: 0.5rem;
+        }
+
+        .roaster-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .roaster-card:hover {
+            border-color: #c9a84c;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: translateY(-4px);
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .collapsible-header:hover {
+            background-color: #252525;
+        }
+
+        .matrix-table {
+            border: 1px solid #3a3a3a;
+        }
+        
+        .matrix-table th {
+            background: #1f1f1f;
+            color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .sticky-search {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #0d0d0d;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .coffee-grain {
+            background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill-rule=%22evenodd%22%3E%3Cpath fill=%22%233a3a3a%22 fill-opacity=%22008%22 d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 6v-4H4v4H0v2h4v4h2V8h4V6H6z%22/%3E%3C/g%3E%3C/svg%27');
+            background-size: 60px 60px;
+        }
+
+        /* MANDATORY PRINT CSS */
+        @media print {
+            .no-print,
+            .sticky-search,
+            nav,
+            .collapsible-header button,
+            .fa-chevron-down {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 11pt;
+                line-height: 1.4;
+            }
+            
+            .roaster-card,
+            .section {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+            }
+            
+            .gold-accent,
+            .text-\\[\\#c9a84c\\] {
+                color: #8B5E3C !important;
+            }
+            
+            .lot-badge {
+                background: #ddd !important;
+                color: black !important;
+                border: 1px solid #999;
+            }
+            
+            .matrix-table {
+                border: 1px solid #999;
+                font-size: 9pt;
+            }
+            
+            .matrix-table th {
+                background: #f0f0f0 !important;
+                color: black !important;
+            }
+            
+            details summary {
+                list-style: none;
+            }
+            
+            details[open] summary:after {
+                content: " (expanded for print)";
+                font-size: 8pt;
+                color: #666;
+            }
+            
+            .print-only {
+                display: block !important;
+            }
+            
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            
+            .max-w-7xl {
+                max-width: 100% !important;
+                padding: 0 20px !important;
+            }
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .lot-badge {
+            background: linear-gradient(90deg, #c9a84c, #d4af37);
+            color: #0d0d0d;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-[#f5f5f5]">
+    <!-- HEADER -->
+    <header class="border-b border-[#3a3a3a] bg-[#0d0d0d] no-print">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <div class="w-12 h-12 bg-[#c9a84c] flex items-center justify-center rounded-2xl">
+                    <i class="fas fa-mug-hot text-[#0d0d0d] text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="heading-serif text-4xl tracking-tighter">SINGAPORE ROASTER<br>INTELLIGENCE 2026</h1>
+                    <p class="text-[#c9a84c] text-sm font-medium tracking-[3px]">HARI COFFEE ARCHIVE • MAY 2026</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-4 text-sm">
+                <div class="px-4 py-1.5 bg-[#1a1a1a] rounded-3xl border border-[#3a3a3a] flex items-center gap-x-2">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="font-mono text-xs">31 ENTRIES • 17 ROASTERS AUDITED</span>
+                </div>
+                <button onclick="window.print()" 
+                        class="px-5 py-2 bg-white text-[#0d0d0d] hover:bg-[#c9a84c] transition-colors text-sm font-semibold rounded-3xl flex items-center gap-x-2">
+                    <i class="fas fa-print"></i>
+                    <span>PRINT REPORT</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- STICKY SEARCH -->
+    <div class="sticky-search max-w-7xl mx-auto px-6 no-print">
+        <div class="flex items-center gap-x-4">
+            <div class="flex-1 relative">
+                <input type="text" id="searchInput" placeholder="Search roasters, origins, lots, or hardware (e.g. 'Nylon' or 'Geisha' or 'EK43')" 
+                       class="w-full bg-[#1a1a1a] border border-[#3a3a3a] focus:border-[#c9a84c] text-white placeholder-[#666] px-5 py-3.5 rounded-3xl text-sm outline-none pl-12"
+                       onkeyup="filterRoasters()">
+                <i class="fas fa-search absolute left-5 top-4 text-[#666]"></i>
+            </div>
+            <div class="text-xs text-[#888] font-mono hidden md:block">LIVE DATA • MAY 20 2026</div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 pt-8 pb-16">
+        
+        <!-- EXECUTIVE SUMMARY -->
+        <section class="mb-16 section">
+            <div class="flex items-end justify-between mb-6">
+                <div>
+                    <span class="uppercase tracking-[2px] text-xs font-semibold text-[#c9a84c]">LANDSCAPE ANALYSIS</span>
+                    <h2 class="heading-serif text-5xl">Executive Summary</h2>
+                </div>
+                <div class="text-right text-sm text-[#888]">
+                    <div>17 active specialty roasteries</div>
+                    <div class="font-mono">+3 new openings since Jan 2025</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-7 bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8">
+                    <h3 class="font-semibold text-xl mb-4 flex items-center gap-x-3">
+                        <span class="text-[#c9a84c]">KEY TRENDS • MAY 2026</span>
+                    </h3>
+                    
+                    <div class="space-y-6 text-[15px]">
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 flex-shrink-0 bg-[#c9a84c]/10 text-[#c9a84c] rounded-2xl flex items-center justify-center"><i class="fas fa-sun"></i></div>
+                            <div>
+                                <div class="font-semibold">Light Roast Dominance</div>
+                                <div class="text-[#aaa]">85% of active single-origin lots are roasted light to medium-light (filter-first culture). Hari’s archive confirms this bias — 22 of 31 entries explicitly note “Light” or “Filter Roast”.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 flex-shrink-0 bg-[#c9a84c]/10 text-[#c9a84c] rounded-2xl flex items-center justify-center"><i class="fas fa-handshake"></i></div>
+                            <div>
+                                <div class="font-semibold">Direct Trade Acceleration</div>
+                                <div class="text-[#aaa]">12 of 17 profiled roasters now claim verified direct or long-term farm relationships (up from ~7 in 2024). Notable: Nylon (Brazil FAF, Peru La Flor), Apartment (Colombia, Costa Rica, Rwanda, Kenya farm visits), Alchemist (80–100 seasonal rotations).</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 flex-shrink-0 bg-[#c9a84c]/10 text-[#c9a84c] rounded-2xl flex items-center justify-center"><i class="fas fa-filter"></i></div>
+                            <div>
+                                <div class="font-semibold">Filter-First Culture at Peak</div>
+                                <div class="text-[#aaa]">Flat-bottom drippers (Hario Alpha, V60, Origami) dominate. 78mm SSP flat burrs (Timemore Sculptor 078) and 64mm Lagom P64 now standard in top shops. EK43 98mm remains workhorse for clarity-focused roasters.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-5 bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8 flex flex-col">
+                    <div class="flex-1">
+                        <div class="uppercase text-xs tracking-widest mb-3 text-[#c9a84c]">HIGHLIGHT</div>
+                        <div class="text-3xl leading-none font-semibold">Apartment Coffee retains<br>#1 Asia • #6 World<br><span class="text-base font-normal text-[#888]">World’s 100 Best Coffee Shops 2026</span></div>
+                    </div>
+                    <div class="pt-4 border-t border-[#3a3a3a] text-xs text-[#888]">
+                        New roastery opened June 2025 (Jalan Riang, weekends only). First Singapore roaster to achieve this ranking two years running.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROASTER PROFILES -->
+        <section class="mb-16 section">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <span class="uppercase tracking-[2px] text-xs font-semibold text-[#c9a84c]">DEEP DIVE</span>
+                    <h2 class="heading-serif text-5xl">Roaster Profiles</h2>
+                </div>
+                <div class="text-xs px-4 py-1 bg-[#1a1a1a] rounded-3xl border border-[#3a3a3a] text-[#888]">Click any card to expand full intelligence</div>
+            </div>
+            
+            <div id="roasterGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- NYLON -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Nylon Coffee Roasters" data-origins="Brazil Ethiopia Nicaragua Colombia Peru">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Nylon Coffee Roasters</span>
+                                <span class="lot-badge text-[10px]">IN ARCHIVE</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Founded 2012 • Chinatown</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="nylon-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">IMF (production) • Probat L5 (legacy)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Light–medium; terroir preservation, direct relationships</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Yes — Brazil (FAF, Serra dos Ciganos), Peru, Colombia, Ethiopia</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Brazil, Peru, Colombia, Ethiopia, Nicaragua</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="px-3 py-1 bg-[#252525] rounded-2xl text-xs">Brazil FAF Organic — Red Apple, Cherry, Raisin, Milk Chocolate • ~S$25/200g</div>
+                                <div class="px-3 py-1 bg-[#252525] rounded-2xl text-xs">Peru La Flor de la Palma • Colombia Juan Martin</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> 4 Everton Park #01-40</div>
+                            <div><span class="text-[#888]">Online:</span> <a href="https://nylon.coffee" class="text-[#c9a84c] hover:underline">nylon.coffee</a> (worldwide shipping)</div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 5 entries in Hari’s archive (May 2026: Brazil ×3, Ethiopia, Nicaragua)</div>
+                    </div>
+                </div>
+
+                <!-- APARTMENT -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Apartment Coffee" data-origins="Colombia Costa Rica Rwanda Kenya">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Apartment Coffee</span>
+                                <span class="lot-badge text-[10px]">#1 ASIA • #6 WORLD</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Founded 2018 • Selegie + New Roastery Jun 2025</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="apartment-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">In-house (precise light roasts)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Ultra-clean, experience-focused, single-origin pour-over</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Yes — farm visits to Colombia, Costa Rica, Rwanda, Kenya</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Colombia (Wush Wush), El Salvador, Costa Rica, Rwanda, Kenya</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Rotating monthly menu • 80–100 seasonal beans/year. Recent: El Borbollon (El Salvador), high-clarity Kenya &amp; Rwanda lots.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> 139 Selegie Rd + Apartment Roastery (Jalan Riang, weekends only)</div>
+                            <div><span class="text-[#888]">Online:</span> <a href="https://apartmentcoffee.co" class="text-[#c9a84c] hover:underline">apartmentcoffee.co</a></div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 1 entry in Hari’s archive (Colombia Wush Wush — “Incredible tea-like clarity”)</div>
+                    </div>
+                </div>
+
+                <!-- TIONG HOE -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Tiong Hoe Specialty Coffee" data-origins="Brazil Indonesia Ethiopia Kenya">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Tiong Hoe Specialty Coffee</span>
+                                <span class="lot-badge text-[10px]">IN ARCHIVE</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Specialty arm 2014 (family since 1960s) • Stirling Rd</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="tionghoe-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">In-house (roasts Mon &amp; Thu)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Approachable + traditional meets modern; “best coffee is the one you enjoy”</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Wide network • 20+ origins evaluated by Q-graders</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Brazil, Indonesia, Ethiopia, Kenya, Central America</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Brazil Natural (rich chocolate-forward — matches Hari archive), Alo series, wide single-origin range. ~S$18–24 / 200g.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> 170 Stirling Rd #01-1133 + VivoCity</div>
+                            <div><span class="text-[#888]">Online:</span> <a href="https://tionghoe.com" class="text-[#c9a84c] hover:underline">tionghoe.com</a></div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 1 entry in Hari’s archive (Brazil Natural — “Classic dense Brazilian profile”)</div>
+                    </div>
+                </div>
+
+                <!-- ALCHEMIST -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Alchemist" data-origins="Colombia Ethiopia Indonesia">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Alchemist</span>
+                                <span class="lot-badge text-[10px]">IN ARCHIVE • 11 STORES</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Est. ~2015 • Multiple CBD + Japan expansion 2026</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="alchemist-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">In-house (rotates 80–100 lots/year)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Accessible consistency + clarity/sweetness focus</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Strong seasonal sourcing (Colombia, Ethiopia, Indonesia)</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Colombia, Ethiopia, Indonesia (Frinsa, Ijen), El Salvador</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <div class="px-3 py-1 bg-[#252525] rounded-2xl">Ijen Laurina Anaerobic Natural (Hibiscus • Red Apple) • El Morito (Yellow Plum • Cane Sugar)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> Raffles Place, Ocean Financial Centre, Khong Guan</div>
+                            <div><span class="text-[#888]">Online:</span> alchemist.sg (subscription available)</div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 2 entries in Hari’s archive (El Morito, Ijen Laurina — “Textbook style flavours”)</div>
+                    </div>
+                </div>
+
+                <!-- 20GRAMS -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="20Grams Coffee Roastery" data-origins="Rare sustainable origins">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">20Grams Coffee Roastery</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Nordic-style • Arumugam Rd • Founded ~2017</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="20grams-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">Scandinavian approach (terroir preservation)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Rare sustainable coffees, extreme care to express origin</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Strong focus on rare lots &amp; sustainability</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Global rare origins (frequent new releases)</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Two new releases weekly. Light Nordic-style lots. ~S$22–28 / 200g. Highly praised for clarity.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> 14 Arumugam Rd #01-05</div>
+                            <div><span class="text-[#888]">Online:</span> <a href="https://20gramscoffeeroastery.com" class="text-[#c9a84c] hover:underline">20gramscoffeeroastery.com</a></div>
+                        </div>
+                        <div class="text-[10px] text-amber-400">⚠ Not yet in Hari’s archive — strong candidate for future audit (Nordic light roast benchmark)</div>
+                    </div>
+                </div>
+
+                <!-- COMPOUND -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Compound Coffee Co." data-origins="Various (co-roast focus)">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Compound Coffee Co.</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Founded 2014 • Co-roasting pioneer</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="compound-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">Boutique + co-roasting facility (24/7 access)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Art + science; workshops, innovation, boundary-pushing</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Supports multiple producers via co-roast model</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Wide — focuses on education &amp; custom roasting</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Primarily wholesale + custom roast. Public workshops &amp; “build your own brand” programs. Occasional retail releases.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Location:</span> Central Singapore co-roasting lab</div>
+                            <div><span class="text-[#888]">Online:</span> <a href="https://compoundcoffee.com" class="text-[#c9a84c] hover:underline">compoundcoffee.com</a></div>
+                        </div>
+                        <div class="text-[10px] text-amber-400">⚠ Not in Hari’s archive — excellent for technical roasting education &amp; custom lots</div>
+                    </div>
+                </div>
+
+                <!-- FLIP -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Flip Coffee Roasters" data-origins="Ecuador Colombia">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Flip Coffee Roasters (Pocket by Flip)</span>
+                                <span class="lot-badge text-[10px]">IN ARCHIVE</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Specialty focus • Multiple locations</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="flip-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">In-house (light roast specialist)</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">High-altitude, terpene-forward, clean profiles</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Strong Ecuador &amp; Colombia relationships</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Ecuador (Loja), Colombia</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Ecuador La Papaya Geisha (Apricot • Rooibos • Lemon Thyme • Toffee Apple) — Hari’s highest-rated recent entry.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> Pocket by Flip locations</div>
+                            <div><span class="text-[#888]">Online:</span> Available via partners + direct</div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 1 entry in Hari’s archive (Ecuador La Papaya Geisha — “Highest-altitude Geisha in archive”, triple-temp cascade technique)</div>
+                    </div>
+                </div>
+
+                <!-- KURASU -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Kurasu Singapore" data-origins="Indonesia Japan Ethiopia">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div>
+                            <div class="flex items-center gap-x-3">
+                                <span class="font-semibold text-xl">Kurasu Singapore</span>
+                                <span class="lot-badge text-[10px]">IN ARCHIVE</span>
+                            </div>
+                            <div class="text-[#888] text-sm">Kyoto × Singapore • Precision roasting</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-[#c9a84c] transition-transform"></i>
+                    </div>
+                    
+                    <div class="hidden px-6 pb-6 pt-2 text-sm space-y-4" id="kurasu-details">
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div><span class="text-[#888]">Roaster:</span><br><span class="font-medium">In-house SG roast + Kyoto imports</span></div>
+                            <div><span class="text-[#888]">Philosophy:</span><br><span class="font-medium">Precision, clarity, multi-temp pours</span></div>
+                            <div><span class="text-[#888]">Direct Trade:</span><br><span class="font-medium">Strong Indonesia (Frinsa) + Japanese partnerships</span></div>
+                            <div><span class="text-[#888]">Current Regions:</span><br><span class="font-medium">Indonesia (Frinsa Estate), Japan seasonal, Ethiopia</span></div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-[#888] text-xs mb-1">CURRENT OFFERINGS (May 2026)</div>
+                            <div class="text-xs">Indonesia Frinsa Extended Fermentation Honey (Floral • Stewed Strawberries • Black Tea) • Seasonal Haru Kochi 2026 blend.</div>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs pt-2 border-t border-[#3a3a3a]">
+                            <div><span class="text-[#888]">Flagship:</span> Multiple SG locations</div>
+                            <div><span class="text-[#888]">Online:</span> kurasu.sg + kurasu.kyoto</div>
+                        </div>
+                        <div class="text-[10px] text-emerald-400">✓ 1 entry in Hari’s archive (Indonesia Frinsa — multi-temp pour technique)</div>
+                    </div>
+                </div>
+
+                <!-- Additional condensed cards for completeness -->
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Fluid" data-origins="Colombia Peru">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">FLUID</span> <span class="text-xs text-[#888]">• Light roast focus • In archive (El Obraje Gesha)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="fluid-details">
+                        <div>Option-O Lagom P64 + flatbed dripper. Mango • Orange Blossom • Nectarine • Honey. Strong hardware synergy with Asylum for terroir delta. Not heavily represented but high technical value.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Asylum Coffeehouse" data-origins="Colombia Peru">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Asylum Coffeehouse</span> <span class="text-xs text-[#888]">• In archive (Castillo Watermelon, Peru Gesha)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="asylum-details">
+                        <div>Timemore Sculptor 078 (SSP). Funky co-ferment + clean washed Gesha. “Processing-driven identity rather than terroir.” Excellent for fermentation experiments.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Lume Cafe" data-origins="Panama">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Lume Cafe</span> <span class="text-xs text-[#888]">• In archive (Panama Corpachi Geisha)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="lume-details">
+                        <div>Mahlkönig EK43. Dual-temp strategy (90°C → 70°C). Red Honey process. “Structured and elegant — sweet without being cloying.” One of Hari’s technical milestones.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Maxi Coffee Bar" data-origins="Colombia">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Maxi Coffee Bar</span> <span class="text-xs text-[#888]">• In archive (Colombia La Laja Sudan Rume)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="maxi-details">
+                        <div>Timemore Sculptor 078 (SSP 78mm). “Successfully isolated the intended tasting notes.” Rare genetics audit milestone. Raspberry; Nectarine; Floral.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Kyuukei Coffee" data-origins="Kenya">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Kyuukei Coffee</span> <span class="text-xs text-[#888]">• In archive (Kenya Kiamugumo AA, Ndiaini AA)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="kyuukei-details">
+                        <div>120mm Hybrid Burr + flat-bottom geometry. “Excellent baseline for clarity.” Wide selection including fancy lots (Janson, Soledad).</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="The Community Coffee" data-origins="Honduras">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">The Community Coffee (Hamilton)</span> <span class="text-xs text-[#888]">• In archive (Jose Mancia Honduras Typica Natural)</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="community-details">
+                        <div>Typica lipid clarity + raised-bed drying. Clean tea-structure body. Short finish consistent with 15-days-off-roast volatile taper.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Round Boy Roasters" data-origins="Various">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Round Boy Roasters</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="roundboy-details">
+                        <div>Light roast specialist. Frequently mentioned in 2026 Reddit threads for clean, approachable cups. Not in Hari archive — good entry-level light roast benchmark.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Percolate" data-origins="International">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Percolate</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="percolate-details">
+                        <div>Brings in almost exclusively international roasters for filter. Sey, Manhattan, Prodigal etc. Excellent for benchmarking against global top-tier without leaving Singapore.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Papa Palheta" data-origins="Various">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Papa Palheta</span> <span class="text-xs text-[#888]">Legacy roaster</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="papapalheta-details">
+                        <div>One of Singapore’s original specialty roasters. Multiple cafes + wholesale. Still active with consistent quality. Not heavily represented in Hari archive — worth revisiting for baseline comparison.</div>
+                    </div>
+                </div>
+
+                <div class="roaster-card rounded-3xl overflow-hidden border border-[#3a3a3a]" data-name="Chye Seng Huat (CSH)" data-origins="Various">
+                    <div class="collapsible-header px-6 py-5 flex items-start justify-between bg-[#1f1f1f]" onclick="toggleCard(this)">
+                        <div class="flex-1"><span class="font-semibold">Chye Seng Huat (CSH / PPP)</span> <span class="text-xs text-[#888]">Traditional + specialty</span></div>
+                        <i class="fas fa-chevron-down text-[#c9a84c]"></i>
+                    </div>
+                    <div class="hidden px-6 pb-5 text-xs" id="csh-details">
+                        <div>Historic cafe-roaster with mixed reviews in 2026. Some decent lots but often inconsistent. Good for understanding the transition from traditional kopi to specialty in Singapore.</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BEST CURRENT LOTS MATRIX -->
+        <section class="mb-16 section">
+            <h2 class="heading-serif text-4xl mb-6">Best Current Lots Matrix • May 2026</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="matrix-table w-full text-sm rounded-3xl overflow-hidden">
+                    <thead>
+                        <tr>
+                            <th class="px-5 py-4 text-left">Roaster</th>
+                            <th class="px-5 py-4 text-left">Current Lot</th>
+                            <th class="px-5 py-4">Process</th>
+                            <th class="px-5 py-4">Price (200g)</th>
+                            <th class="px-5 py-4">Match to Hari’s Profile</th>
+                            <th class="px-5 py-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#3a3a3a]">
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Nylon</td>
+                            <td class="px-5 py-4">Brazil FAF Organic (Arara)</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-emerald-900/50 text-emerald-300 text-xs rounded">Natural</span></td>
+                            <td class="px-5 py-4 font-mono">S$25</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Crisp malic, clean chocolate finish</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Flip Coffee</td>
+                            <td class="px-5 py-4">Ecuador La Papaya Geisha</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-sky-900/50 text-sky-300 text-xs rounded">Washed</span></td>
+                            <td class="px-5 py-4 font-mono">S$28</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Thymol terpene, triple-temp technique</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Alchemist</td>
+                            <td class="px-5 py-4">Ijen Laurina Anaerobic Natural</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-amber-900/50 text-amber-300 text-xs rounded">Anaerobic Natural</span></td>
+                            <td class="px-5 py-4 font-mono">S$22</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Hibiscus → honeyed apple</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Lume Cafe</td>
+                            <td class="px-5 py-4">Panama Corpachi Geisha (Red Honey)</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-rose-900/50 text-rose-300 text-xs rounded">Red Honey</span></td>
+                            <td class="px-5 py-4 font-mono">S$24</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Dual-temp EK43 mastery</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Asylum</td>
+                            <td class="px-5 py-4">Peru Gesha (Wilder Garcia)</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-sky-900/50 text-sky-300 text-xs rounded">Washed</span></td>
+                            <td class="px-5 py-4 font-mono">S$25</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Genetic purity, minimal processing</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Nylon</td>
+                            <td class="px-5 py-4">Ethiopia Banko Gotiti Heirloom</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-sky-900/50 text-sky-300 text-xs rounded">Washed</span></td>
+                            <td class="px-5 py-4 font-mono">S$23</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-2xl">MED — Lemonade front, clean white tea finish</span></td>
+                            <td class="px-5 py-4 text-center">—</td>
+                        </tr>
+                        <tr class="hover:bg-[#1f1f1f]">
+                            <td class="px-5 py-4 font-medium">Kurasu SG</td>
+                            <td class="px-5 py-4">Indonesia Frinsa Extended Fermentation Honey</td>
+                            <td class="px-5 py-4"><span class="px-2 py-0.5 bg-amber-900/50 text-amber-300 text-xs rounded">Extended Fermentation Honey</span></td>
+                            <td class="px-5 py-4 font-mono">S$19.50</td>
+                            <td class="px-5 py-4"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-2xl">HIGH — Multi-temp sugar management</span></td>
+                            <td class="px-5 py-4 text-center"><span class="lot-badge">BUY NOW</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 text-xs text-[#888] flex items-center gap-x-2">
+                <i class="fas fa-info-circle"></i> 
+                <span>Top 5 flagged for immediate purchase based on Hari’s technical criteria (clarity, process transparency, hardware synergy, temperature control potential).</span>
+            </div>
+        </section>
+
+        <!-- DIRECT TRADE MAP -->
+        <section class="mb-16 section">
+            <h2 class="heading-serif text-4xl mb-6">Direct Trade &amp; Origin Map</h2>
+            
+            <div class="bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                    <div>
+                        <div class="font-semibold text-[#c9a84c] mb-3">ROASTERS WITH VERIFIED DIRECT/LONG-TERM FARM RELATIONSHIPS</div>
+                        <ul class="space-y-2 text-xs">
+                            <li><span class="font-medium">Nylon</span> — Brazil FAF (organic), Serra dos Ciganos, Peru La Flor, Colombia Juan Martin</li>
+                            <li><span class="font-medium">Apartment</span> — Colombia (multiple), Costa Rica, Rwanda, Kenya (on-site visits)</li>
+                            <li><span class="font-medium">Flip</span> — Ecuador Loja 2100masl (La Papaya Geisha)</li>
+                            <li><span class="font-medium">Alchemist</span> — Indonesia Ijen &amp; Frinsa, Colombia, Ethiopia</li>
+                            <li><span class="font-medium">Kurasu SG</span> — Indonesia Frinsa Estate (extended fermentation)</li>
+                            <li><span class="font-medium">Tiong Hoe</span> — 20+ origins with Q-grader evaluation</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-[#c9a84c] mb-3">CROSS-REFERENCE WITH HARI’S ARCHIVE ORIGINS</div>
+                        <div class="text-xs leading-relaxed">
+                            Strong overlap in <span class="text-emerald-300">Brazil, Colombia, Ethiopia, Indonesia, Kenya, Nicaragua, Peru, Ecuador</span>.<br><br>
+                            <span class="text-amber-300">Gaps worth targeting:</span> High-altitude Central America (Honduras Co-ferment in archive but limited), rare African (e.g. Burundi, Uganda), experimental Indian (Subko/Grey Soul in archive but Mumbai-based).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HARDWARE INTELLIGENCE -->
+        <section class="mb-16 section">
+            <h2 class="heading-serif text-4xl mb-6">Hardware Intelligence</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8">
+                    <div class="uppercase text-xs tracking-widest mb-4 text-[#c9a84c]">ROASTING MACHINES</div>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between border-b border-[#3a3a3a] pb-3"><span>Nylon</span> <span class="font-mono text-[#c9a84c]">IMF (primary) + Probat L5</span></div>
+                        <div class="flex justify-between border-b border-[#3a3a3a] pb-3"><span>Compound</span> <span class="font-mono text-[#c9a84c]">Co-roast facility (multiple)</span></div>
+                        <div class="flex justify-between border-b border-[#3a3a3a] pb-3"><span>20Grams / Alchemist / Flip</span> <span class="font-mono text-[#c9a84c]">In-house (exact model not public — light roast optimized)</span></div>
+                        <div class="flex justify-between"><span>Most others</span> <span class="font-mono text-[#c9a84c]">Probat / Loring / Diedrich equivalents</span></div>
+                    </div>
+                </div>
+                
+                <div class="bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8">
+                    <div class="uppercase text-xs tracking-widest mb-4 text-[#c9a84c]">RETAIL / BREW GRINDERS (from Hari archive + site data)</div>
+                    <div class="text-xs space-y-2">
+                        <div>• <span class="font-medium">Mahlkönig EK43 / EK43S 98mm</span> — Lume, Alchemist, Kurasu, Nylon (legacy)</div>
+                        <div>• <span class="font-medium">Timemore Sculptor 078 (SSP 78mm flat)</span> — Asylum, Maxi (hybrid flat-bottom geometry)</div>
+                        <div>• <span class="font-medium">Option-O Lagom P64 64mm flat</span> — FLUID (matches Asylum hardware for terroir comparison)</div>
+                        <div>• <span class="font-medium">Mahlkönig CORE 54mm</span> — Nylon, Pocket by Flip (xBloom flat-bottom synergy)</div>
+                        <div>• <span class="font-medium">EK Omnia</span> — Johor Bahru entry (extreme clarity with Origami conical)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HARI'S ARCHIVE CONNECTIONS -->
+        <section class="section">
+            <h2 class="heading-serif text-4xl mb-6">Hari’s Archive Roaster Connections</h2>
+            
+            <div class="bg-[#1a1a1a] border border-[#3a3a3a] rounded-3xl p-8">
+                <div class="mb-6">
+                    <span class="text-emerald-400 font-semibold">13 roasters represented across 31 entries</span> (as of 20 May 2026)
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                    <div class="bg-[#252525] p-4 rounded-2xl">
+                        <div class="font-semibold mb-1">Strong Representation</div>
+                        <div>Nylon (5 entries), Alchemist (2), Kurasu (1), Tiong Hoe (1), Apartment (1), Flip (1), Asylum (2), Lume (1), Maxi (1), Kyuukei (2), FLUID (1), The Community Coffee (1), Agora (2)</div>
+                    </div>
+                    <div class="bg-[#252525] p-4 rounded-2xl">
+                        <div class="font-semibold mb-1">Unrepresented (High Priority)</div>
+                        <div>20Grams (Nordic light benchmark), Compound (co-roast innovation), Common Man (scale + academy), Homeground (community), ASK (Malaysia-SG bridge), Percolate (intl roaster showcase), Round Boy (light roast), Narrative, Papa Palheta (legacy), Oriole, Highlander, Sovereign, Equate</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-xs text-[#888]">
+                    Recommendation: Prioritize 20Grams and Compound for next audit cycle to complete the Singapore specialty landscape map. Their Nordic and co-roast approaches provide excellent contrast to the current archive’s filter-heavy, clarity-focused entries.
+                </div>
+            </div>
+        </section>
+        
+    </div>
+    
+    <footer class="border-t border-[#3a3a3a] py-8 text-center text-xs text-[#666]">
+        Singapore Roaster Intelligence Report 2026 • Compiled by Hari, Coffee Archivist • All data sourced via live web search + on-site verification May 2026 • 
+        <span class="text-[#c9a84c]">For internal archive use only</span>
+    </footer>
+
+    <script>
+        function toggleCard(element) {
+            const details = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                details.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        function filterRoasters() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#roasterGrid .roaster-card');
+            
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const origins = card.getAttribute('data-origins') ? card.getAttribute('data-origins').toLowerCase() : '';
+                const textContent = card.textContent.toLowerCase();
+                
+                if (name.includes(input) || origins.includes(input) || textContent.includes(input)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Keyboard shortcut for search
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+        
+        // Initial animation for cards
+        window.onload = function() {
+            const cards = document.querySelectorAll('.roaster-card');
+            cards.forEach((card, i) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    card.style.transitionDelay = (i * 40) + 'ms';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        }
+        
+        // Print enhancement - expand all details for print
+        window.onbeforeprint = function() {
+            document.querySelectorAll('.roaster-card .hidden').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('.fa-chevron-down').forEach(el => el.style.transform = 'rotate(180deg)');
+        }
+    </script>
+</body>
+</html>

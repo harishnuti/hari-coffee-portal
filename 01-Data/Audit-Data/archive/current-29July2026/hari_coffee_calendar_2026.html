@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Coffee Calendar — Hari Archive 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F5EF; --paper2:#FCFBF7; --ink:#16151A; --muted:#7C776C; --rule:#DFD9CB; --rule2:#EDE8DC;
+  --washed:#DFAF3A; --natural:#B5382F; --honey:#DE8127; --anaerobic:#7B5AA6;
+  --experimental:#2F7D6C; --wethulled:#6E5641; --boundary:#7B1526; --unknown:#BDB7A8;
+  --gesha:#C9A227;
+  --disp:'Fraunces',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,.025) 1px, transparent 0);
+  background-size:22px 22px;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px 90px}
+
+/* ---------- MASTHEAD ---------- */
+.mast{padding:52px 0 26px;border-bottom:1.5px solid var(--ink)}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
+h1{
+  font-family:var(--disp); font-variation-settings:'opsz' 144,'SOFT' 0;
+  font-weight:300; font-size:clamp(38px,7.4vw,86px); line-height:.94;
+  letter-spacing:-.025em; margin:0 0 14px;
+}
+h1 em{font-style:italic;font-weight:500}
+.deck{font-size:15.5px;color:var(--muted);max-width:52ch;margin:0 0 26px}
+.vitals{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--rule)}
+.vital{flex:1 1 116px;padding:13px 16px 13px 0;border-right:1px solid var(--rule2)}
+.vital:last-child{border-right:0}
+.vital b{display:block;font-family:var(--disp);font-weight:500;font-size:26px;line-height:1;letter-spacing:-.02em}
+.vital span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- SIGNATURE: YEAR SPINE ---------- */
+.spine-sec{padding:40px 0 30px;border-bottom:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:0 0 6px}
+.sec-title{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);margin:0}
+.sec-note{font-size:12.5px;color:var(--muted);margin:0}
+.spine-box{position:relative;margin-top:20px}
+.spine{width:100%;height:150px;display:block;overflow:visible}
+.spine rect{cursor:pointer;transition:opacity .18s}
+.spine rect.dim{opacity:.13}
+.spine-axis{display:flex;margin-top:7px;border-top:1px solid var(--rule)}
+.spine-axis div{flex:1;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:6px;border-right:1px solid var(--rule2)}
+.spine-axis div:last-child{border-right:0}
+
+/* ---------- FILTERS ---------- */
+.filters{padding:26px 0;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.flabel{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  border:1px solid var(--rule);background:transparent;color:var(--ink);
+  padding:6px 11px 6px 9px;border-radius:999px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:.15s;
+}
+.chip:hover{border-color:var(--ink)}
+.chip .sw{width:9px;height:9px;border-radius:50%;flex:none}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper2);border-color:var(--ink)}
+.chip.ge[aria-pressed="true"]{background:var(--gesha);color:#241d00;border-color:var(--gesha)}
+.chip .ct{opacity:.55;font-size:10px}
+.reset{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;background:none;border:0;border-bottom:1px solid var(--rule);color:var(--muted);cursor:pointer;padding:2px 0}
+.reset:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ---------- MONTHS ---------- */
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:0;margin-top:8px}
+.month{border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);padding:24px 22px 22px}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 14px}
+.mname{font-family:var(--disp);font-weight:500;font-size:23px;letter-spacing:-.01em;margin:0}
+.mcount{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:5px}
+.dow span{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--muted);text-align:center}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:3px;position:relative}
+.cell.pad{visibility:hidden}
+.cell .dnum{font-family:var(--mono);font-size:9.5px;color:#B8B2A4;line-height:1}
+.cell.has{cursor:pointer;background:var(--paper2);box-shadow:inset 0 0 0 1px var(--rule2)}
+.cell.has:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.cell.has .dnum{color:var(--muted);font-weight:500}
+.cell.off{opacity:.16;pointer-events:none}
+.discs{display:flex;gap:2px;align-items:center;justify-content:center;flex-wrap:wrap;max-width:100%}
+.disc{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:inset 0 -2px 3px rgba(0,0,0,.16)}
+.disc.g{box-shadow:inset 0 -2px 3px rgba(0,0,0,.16),0 0 0 1.6px var(--paper2),0 0 0 3px var(--gesha)}
+.cell.has:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+/* ---------- LEGEND ---------- */
+.legend{padding:34px 0 0;border-top:1px solid var(--ink);margin-top:-1px}
+.lgrid{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:14px}
+.litem{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.litem .sw{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 -2px 3px rgba(0,0,0,.16)}
+.litem .sw.g{box-shadow:inset 0 -2px 3px rgba(0,0,0,.16),0 0 0 1.6px var(--paper),0 0 0 3px var(--gesha);background:var(--washed)}
+.litem b{color:var(--ink);font-weight:500}
+
+/* ---------- DRAWER ---------- */
+.scrim{position:fixed;inset:0;background:rgba(22,21,26,.42);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40;backdrop-filter:blur(2px)}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:var(--paper2);
+  border-left:1.5px solid var(--ink);transform:translateX(101%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  z-index:50;overflow-y:auto;padding:26px 26px 60px;
+}
+.drawer.on{transform:none}
+.dclose{position:sticky;top:0;float:right;background:var(--paper2);border:1px solid var(--rule);border-radius:999px;width:30px;height:30px;font-size:17px;line-height:1;cursor:pointer;color:var(--muted);z-index:2}
+.dclose:hover{border-color:var(--ink);color:var(--ink)}
+.ddate{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:4px 0 22px}
+.entry{border-top:1px solid var(--rule);padding:20px 0 4px}
+.entry:first-of-type{border-top:1.5px solid var(--ink)}
+.etop{display:flex;align-items:flex-start;gap:10px;margin-bottom:3px}
+.edot{width:11px;height:11px;border-radius:50%;margin-top:6px;flex:none;box-shadow:inset 0 -2px 3px rgba(0,0,0,.16)}
+.edot.g{box-shadow:inset 0 -2px 3px rgba(0,0,0,.16),0 0 0 1.6px var(--paper2),0 0 0 3px var(--gesha)}
+.ecafe{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.ename{font-family:var(--disp);font-weight:500;font-size:21px;line-height:1.16;letter-spacing:-.012em;margin:0 0 8px}
+.etags{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 15px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.05em;border:1px solid var(--rule);padding:3px 7px;border-radius:3px;color:var(--muted)}
+.tag.gs{border-color:var(--gesha);color:#7a6100;background:rgba(201,162,39,.1)}
+.tag.pr{border-color:var(--ink);color:var(--ink)}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:0;border-top:1px solid var(--rule2);margin-bottom:15px}
+.spec{padding:9px 10px 9px 0;border-right:1px solid var(--rule2)}
+.spec:last-child{border-right:0}
+.spec b{display:block;font-family:var(--mono);font-size:12.5px;font-weight:500;line-height:1.2}
+.spec span{font-family:var(--mono);font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.block{margin-bottom:14px}
+.blabel{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 5px}
+.btext{font-size:13.5px;line-height:1.62;margin:0;color:#2C2A30}
+.btext.notes{font-style:italic;color:var(--muted)}
+.hw{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+
+/* tooltip */
+.tip{position:fixed;z-index:60;background:var(--ink);color:var(--paper2);font-family:var(--mono);font-size:10.5px;padding:6px 9px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .12s;max-width:230px;line-height:1.45}
+.tip.on{opacity:1}
+
+.empty{padding:50px 0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.08em;grid-column:1/-1}
+
+@media (max-width:640px){
+  .wrap{padding:0 16px 70px}
+  .mast{padding:34px 0 20px}
+  .month{padding:20px 16px 18px;border-right:0}
+  .drawer{width:100%;border-left:0}
+  .spine{height:112px}
+  .vital{flex:1 1 45%;border-right:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Hari Coffee Archive · Field-audited extraction log</p>
+    <h1>The Coffee<br><em>Calendar</em></h1>
+    <p class="deck">Every filter, every café, every cup — plotted by the day it was drunk. Colour reads the process; a gold ring marks a Gesha.</p>
+    <div class="vitals" id="vitals"></div>
+  </header>
+
+  <section class="spine-sec">
+    <div class="sec-head">
+      <p class="sec-title">The Year Spine</p>
+      <p class="sec-note">One bar per cup · height = price paid · colour = process</p>
+    </div>
+    <div class="spine-box">
+      <svg class="spine" id="spine" preserveAspectRatio="none"></svg>
+      <div class="spine-axis" id="spineAxis"></div>
+    </div>
+  </section>
+
+  <section class="filters" id="filters">
+    <span class="flabel">Filter</span>
+    <div id="chips" style="display:contents"></div>
+    <button class="reset" id="reset">Clear all</button>
+  </section>
+
+  <section class="months" id="months"></section>
+
+  <section class="legend">
+    <p class="sec-title">Reading the calendar</p>
+    <div class="lgrid" id="legend"></div>
+  </section>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Cup detail"></aside>
+<div class="tip" id="tip"></div>
+
+<script>
+const DATA = [{"d":"2026-01-03","c":"Seniman Coffee Studio","n":"Bali Karana Kintamanis","ci":"Ubud, Bali","o":"Kintamani, Bali","v":"Unknown","p":"Natural","f":"natural","b":"Filter","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Clean citrus; floral","ve":"Excellent clarity for a natural process; clean citrus and floral notes.","ge":false},{"d":"2026-01-04","c":"Seniman Coffee Studio","n":"Sulawesi Toraja","ci":"Ubud, Bali","o":"Sulawesi, Indonesia","v":"Unknown","p":"Wet-Hulled","f":"wethulled","b":"Pour-over","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Cocoa; earthy structures","ve":"Heavy body with rich cocoa and earthy notes; low acidity; dense mouthfeel.","ge":false},{"d":"2026-01-04","c":"Seniman Coffee Studio","n":"House Blend","ci":"Ubud, Bali","o":"Unknown","v":"Unknown","p":"Unknown","f":"unknown","b":"Piccolo","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Balanced","ve":"Great milk integration; standard espresso + milk calibration.","ge":false},{"d":"2026-02-10","c":"Kyuukei Coffee","n":"Kenya Kiamugumo AA","ci":"Singapore","o":"Kiamugumo, Murang'a County, Kenya","v":"SL28 / SL34","p":"Washed","f":"washed","b":"Pour-over (Flat-Bottom)","do":15,"y":240,"r":"1:16","t":"93","g":"120mm Hybrid Burr","pr":8,"no":"Blackcurrant, Lemon, Citrus Zest, Mineral Finish","ve":"Extremely clean and structured — classic Kenyan profile. Bright blackcurrant acidity layered with lemon and light white grape sweetness. Clarity was the standout: no fermentation noise, no muddiness — precise, well-executed extraction. Compelling demonstration of how a well-processed washed coffee performs when roasted and brewed correctly. Phosphoric acid signature fully confirmed across all phases.","ge":false},{"d":"2026-03-01","c":"Subko Coffee Roasters","n":"Project Pearl Ratnagiri","ci":"Mumbai","o":"India","v":"Unknown","p":"Anaerobic Natural","f":"anaerobic","b":"Filter","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Unknown","ve":"Clean and balanced; interesting but restrained anaerobic expression.","ge":false},{"d":"2026-03-08","c":"Grey Soul Coffee Roasters","n":"Raspberry in Loop - Zoya Estate","ci":"Mumbai","o":"India","v":"Unknown","p":"Multi-stage Anaerobic","f":"anaerobic","b":"Filter","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Chocolate","ve":"Heavy body; over-smoothed expression muted brightness and terroir.","ge":false},{"d":"2026-03-18","c":"Narrative Coffee Stand","n":"Finca La Siberia","ci":"Singapore","o":"El Salvador","v":"Pacamara","p":"Natural","f":"natural","b":"Pour-over","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Unknown","ve":"Stewed apples; Apricot; Pu'er tea — Aanya's first specialty filter experience.","ge":false},{"d":"2026-03-18","c":"Narrative Coffee Stand","n":"El Puente","ci":"Singapore","o":"Honduras","v":"Catuai","p":"Washed","f":"washed","b":"Espresso","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Unknown","ve":"Black cherry; Apricot; Pecan — ordered for espresso contrast.","ge":false},{"d":"2026-03-18","c":"ASK Coffee Roastery","n":"Honduras Masaguara (S13)","ci":"Singapore","o":"Honduras","v":"Catuai / Caturra","p":"Washed Co-Ferment","f":"experimental","b":"Pour-over","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":15,"no":"Lychee; Brandy; Honeydew; Milk Chocolate","ve":"Premium but memorable; highly complex tropical profile.","ge":false},{"d":"2026-03-18","c":"ASK Coffee Roastery","n":"House Blend","ci":"Singapore","o":"Unknown","v":"Unknown","p":"Unknown","f":"unknown","b":"Magic (Ristretto Milk)","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Unknown","ve":"Contrast milk calibration; excellent concentrated cocoa expression.","ge":false},{"d":"2026-03-22","c":"Apartment (Selegie Rd)","n":"Colombia Don Gallego - Wush Wush","ci":"Singapore","o":"Colombia","v":"Wush Wush","p":"Washed","f":"washed","b":"Pour-over (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"1:17","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Tea-like","ve":"Incredible tea-like clarity; transparent floral expression.","ge":false},{"d":"2026-03-24","c":"Kyuukei Coffee","n":"Kenya Ndiaini AA","ci":"Singapore","o":"Kenya","v":"SL28 / SL34 / Ruiru 11","p":"Washed","f":"washed","b":"Pour-over","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":9,"no":"Redcurrant; Elderflower; Lemon; Apricot","ve":"Acidic and interesting; well balanced; high clarity.","ge":false},{"d":"2026-03-25","c":"Agora Coffee","n":"Nicaragua Matagalpa - Finca La Virgen","ci":"Singapore","o":"Nicaragua","v":"Unknown","p":"Fully Washed","f":"washed","b":"Flat White","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Caramel; Chocolate; Red Apple","ve":"Solid milk beverage; clean apple acidity preserved in milk integration.","ge":false},{"d":"2026-03-27","c":"Agora Coffee","n":"Ethiopia Yirgacheffe Beloya","ci":"Singapore","o":"Yirgacheffe, Ethiopia","v":"Heirloom","p":"Natural","f":"natural","b":"V60","do":15,"y":220,"r":"1:14.6","t":"Unknown","g":"Mahlkönig EK43","pr":"Unknown","no":"Blackcurrant; Strawberry; White Floral","ve":"Bright, floral, and distinct strawberry; classic natural Ethiopian profile.","ge":false},{"d":"2026-03-28","c":"Tiong Hoe Specialty Coffee","n":"Brazil Mogiana","ci":"Singapore","o":"Mogiana, Brazil","v":"Unknown","p":"Natural","f":"natural","b":"Pour-over","do":15,"y":225,"r":"1:15","t":"Unknown","g":"Unknown","pr":8,"no":"Red Dates; Chocolates; Honey","ve":"Chocolate-heavy and satisfying; classic dense Brazilian profile.","ge":false},{"d":"2026-03-28","c":"Tiong Hoe Specialty Coffee","n":"Smoky Quartz Blend","ci":"Singapore","o":"Brazil + India","v":"Unknown","p":"Unknown","f":"unknown","b":"Piccolo Latte","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":5.1,"no":"Dark Chocolates; Hazelnut; Smoky","ve":"Strong milk side calibration; excellent concentrated cocoa expression.","ge":false},{"d":"2026-03-29","c":"Asylum Coffeehouse","n":"Peru Cajamarca Gesha (Iced)","ci":"Singapore","o":"Cajamarca, Peru","v":"Gesha","p":"Washed","f":"washed","b":"Iced Pour-over","do":15,"y":240,"r":"1:16","t":"92.5","g":"Option-O Lagom P64","pr":11,"no":"Jasmine; Caramel; Lime; Cacao Nibs","ve":"Super floral and elegant; flash-chilled expression of Gesha purity.","ge":true},{"d":"2026-04-01","c":"Maxi Coffee Bar","n":"La Laja","ci":"Singapore","o":"Cauca, Colombia","v":"Sudan Rume","p":"Washed","f":"washed","b":"Pour-over (Flat-Bottom)","do":15,"y":230,"r":"1:15.3","t":"90-92","g":"FM Grinder 120mm Flat Burr / Timemore Sculptor 078","pr":9,"no":"Raspberry; Nectarine; Floral","ve":"Nectarine and raspberry extremely clear; barista sophistication superb; technical milestone.","ge":false},{"d":"2026-04-01","c":"Lume Café","n":"Corpachi Panama Geisha","ci":"Singapore","o":"Boquerón, Chiriquí, Panama","v":"Geisha","p":"Red Honey","f":"honey","b":"V60","do":"Unknown","y":"Unknown","r":"1:15","t":"90 + 70","g":"Mahlkönig EK43","pr":12,"no":"Mandarin Candy; Jasmine; Apricot","ve":"Clearly perceived apricot and structured sweetness.","ge":true},{"d":"2026-04-05","c":"Asylum Coffeehouse","n":"Castillo Watermelon (Jairo Arcila)","ci":"Singapore","o":"Armenia, Quindío, Colombia","v":"Castillo","p":"Washed Co-Ferment (Watermelon Anaerobic)","f":"experimental","b":"Pour-over (V60)","do":15,"y":225,"r":"1:15","t":"90 + 70","g":"Mahlkönig EK43","pr":12.5,"no":"Watermelon; Mint; Lime; Chocolate","ve":"Distinct fruit-forward expression; sweetness layered rather than sharp; experimental but controlled.","ge":false},{"d":"2026-04-05","c":"Asylum Coffeehouse","n":"Peru Gesha (Wilder Garcia)","ci":"Singapore","o":"Jaén, Peru","v":"Gesha","p":"Washed","f":"washed","b":"Pour-over (V60)","do":15,"y":225,"r":"1:15","t":"90 + 70","g":"Mahlkönig EK43","pr":12.5,"no":"Jasmine; Caramel; Lime; Cacao Nibs","ve":"Clean, structured, high-clarity cup; apricot-like sweetness and excellent structure.","ge":true},{"d":"2026-04-08","c":"Maxi Coffee Bar","n":"La Villa #1","ci":"Singapore","o":"Huila, Colombia","v":"Papayo","p":"Natural","f":"natural","b":"Pour-over (Flat-Bottom)","do":15,"y":225,"r":"1:15","t":"Unknown","g":"Timemore Sculptor 078","pr":9,"no":"Stewed Forest Berries; Grape; Black Forest Cake","ve":"Dense fruit profile with rounded sweetness.","ge":false},{"d":"2026-04-18","c":"Clod Coffee Bar & Roasters","n":"Hacienda La Florida","ci":"Johor Bahru","o":"Unknown","v":"Typica Mejorado","p":"Anaerobic Washed","f":"anaerobic","b":"Origami (Conical)","do":18,"y":277,"r":"1:15.4","t":"Unknown","g":"Mahlkönig EK Omnia","pr":11.08,"no":"Lemon verbena; Red plum; Citronella; Hibiscus","ve":"Excellent. Lime when hot, distinct plum as it cooled.","ge":false},{"d":"2026-04-24","c":"Agora Coffee","n":"Brazil Santuário Sul","ci":"Singapore","o":"Carmo de Minas, Brazil","v":"Unknown","p":"Natural Fermentation","f":"natural","b":"V60","do":16,"y":224,"r":"1:14","t":"95","g":"Mahlkönig EK43","pr":"Unknown","no":"Blackcurrant; Black Cherry; Dark Chocolate","ve":"Full body; prominent blackcurrant; clear chocolaty finish.","ge":false},{"d":"2026-05-06","c":"Nylon Coffee Roasters","n":"Brazil FAF Organic","ci":"Singapore","o":"Brazil","v":"Arara","p":"Natural","f":"natural","b":"xBloom (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"1:17","t":"Unknown","g":"Mahlkönig EK Omnia","pr":7.5,"no":"Red Apple; Cherry; Raisin; Milk Chocolate","ve":"Solid body with crisp green apple (malic) front, resolving into smooth milk chocolate finish.","ge":false},{"d":"2026-05-06","c":"Nylon Coffee Roasters","n":"Brazil Serra dos Ciganos","ci":"Singapore","o":"Brazil","v":"Catucai 24/137","p":"Natural","f":"natural","b":"Flat White","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Sultana; Dried Apricot; Praline; Roasted Hazelnut","ve":"Good cup with pleasant lingering sweet aftertaste.","ge":false},{"d":"2026-05-07","c":"Nylon Coffee Roasters","n":"Ethiopia Banko Gotiti","ci":"Singapore","o":"Ethiopia","v":"Heirloom","p":"Washed","f":"washed","b":"xBloom (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"1:17","t":"Unknown","g":"Mahlkönig EK Omnia","pr":8.5,"no":"Lemonade; Raspberry; Peach; Bergamot","ve":"Lemon front, heavy melon mid-cup, fading into clean white tea finish.","ge":false},{"d":"2026-05-07","c":"Nylon Coffee Roasters","n":"Nicaragua Buena Vista","ci":"Singapore","o":"Nicaragua","v":"Parainema","p":"Natural Anaerobic","f":"anaerobic","b":"Single Espresso","do":"Unknown","y":"Unknown","r":"~1:2","t":"Unknown","g":"Unknown","pr":"Unknown","no":"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut","ve":"Thick, syrupy body. Highly fermented, savory/not sweet, very long lingering finish.","ge":false},{"d":"2026-05-08","c":"Alchemist (Ocean Financial Centre)","n":"El Morito","ci":"Singapore","o":"Colombia","v":"Marshell","p":"Washed","f":"washed","b":"V60 Pour-over (Conical)","do":15,"y":240,"r":"1:16","t":"Unknown","g":"Mahlkönig EK43S (98mm Flat Burr)","pr":"Unknown","no":"Yellow Plum; Orange; Cane Sugar","ve":"Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing with excellent mid-palate juiciness. Confirmed: I love this bean.","ge":false},{"d":"2026-05-12","c":"Kurasu","n":"Indonesia Frinsa Estate","ci":"Singapore","o":"West Java, Indonesia","v":"Local Varietals","p":"Extended Fermentation Honey","f":"honey","b":"Pour-over (Hario Alpha — Flat-Bottom)","do":15,"y":225,"r":"1:16","t":"80 → 95 → 80","g":"Mahlkönig EK43S (98mm Flat Burr)","pr":9.5,"no":"Floral aroma; Stewed Strawberries; Grapefruit; Brown Sugar; Black Tea","ve":"Floral taste with a sweet coating on the tongue that gradually sticks and fades off cleanly — sugar and tea aftertaste. Well-executed Indonesian honey with unusual clarity for the origin.","ge":false},{"d":"2026-05-13","c":"The Community Coffee (Hamilton)","n":"Jose Mancia Honduras","ci":"Singapore","o":"Honduras","v":"Typica","p":"Natural","f":"natural","b":"Pour-over (Hario Switch — Immersion/Percolation)","do":15,"y":255,"r":"1:17","t":"Unknown","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":9,"no":"Kiwi; Oolong Tea; Chocolate Truffle","ve":"Pretty good. Kiwi and oolong tea style — full bodied. Short finish with slight hints of chocolate. Clean and approachable natural without heavy fermentation noise.","ge":false},{"d":"2026-05-15","c":"Alchemist (Ocean Financial Centre)","n":"Ijen Laurina","ci":"Singapore","o":"East Java, Indonesia","v":"Hybrid Laurina","p":"Anaerobic Natural","f":"anaerobic","b":"V60 Pour-over (Conical)","do":15,"y":240,"r":"1:16","t":"90","g":"Mahlkönig EK43S (98mm Flat Burr)","pr":8.5,"no":"Hibiscus; Red Apple; Hawthorn","ve":"Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character. Full bodied. Textbook style flavours — definitely a good one. Clean progressive thermal arc.","ge":false},{"d":"2026-05-16","c":"Fluid Collective","n":"El Obraje","ci":"Singapore","o":"Huila, Colombia","v":"Gesha","p":"Washed","f":"washed","b":"Flatbed Dripper (Flat-Bottom)","do":15,"y":230,"r":"1:15.3","t":"92","g":"Option-O Lagom P64 (64mm Flat Burr)","pr":14,"no":"Mango; Orange Blossom; Nectarine; Honey","ve":"Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite. Honey sweetness lingers and taste changes as temperature cools. Best Gesha washed in archive at time of logging.","ge":true},{"d":"2026-05-19","c":"Pocket by Flip (Flip Coffee Roasters)","n":"Ecuador La Papaya","ci":"Singapore","o":"Loja, Ecuador","v":"Geisha","p":"Washed","f":"washed","b":"Filter Hot — Flat-Bottom (Hario Alpha)","do":15,"y":225,"r":"1:15","t":"92 → 75 → 92","g":"Mahlkönig CORE (54mm Flat Burr)","pr":18,"no":"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple","ve":"Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat — lipid-binding, persistent to midway. Cooling: malic apple shift + caramelised sucrose. Clean transparent fade. No linalool/jasmine — terpene-forward character distinct from Peru Geisha entries. Highest-altitude Geisha in archive at 2,100 MASL.","ge":true},{"d":"2026-05-25","c":"20 Grams Coffee Roastery","n":"Rwanda Nyabihu — Red Bourbon","ci":"Singapore","o":"Nyabihu District, Rwanda","v":"Red Bourbon","p":"Washed","f":"washed","b":"Pourover","do":17,"y":270,"r":"1:16","t":"Unknown","g":"Ditting 804 (Flat Burr)","pr":10,"no":"Hibiscus; Raspberry; Tropical Fruit","ve":"Palate confirmed: peach, stone fruit, malic clarity. \"Soft, peach-forward, malic clarity — light and approachable. First Rwanda origin entry. Terroir-pure expression of Nyabihu volcanic terroir.\" 4/5 stars.","ge":false},{"d":"2026-05-25","c":"20 Grams Coffee Roastery","n":"Kenya Nyeri Hill — SL28","ci":"Singapore","o":"Kiambu District, Kenya","v":"SL28","p":"Washed","f":"washed","b":"Cortado (Espresso-based)","do":"Unknown","y":"Unknown","r":"~1:1 (espresso/milk)","t":"Unknown","g":"Ditting Lab Sweet 403","pr":9,"no":"Apple; Grape; Blackcurrant","ve":"Palate confirmed: clean, nice, excellent lingering finish. \"Clean, structured, with an exceptional lingering phosphoric finish — textbook SL28 Kenyan expression perfectly delivered in cortado format.\" 4/5 stars.","ge":false},{"d":"2026-05-26","c":"Zerah Roasters","n":"El Diviso — Caturra Chiroso (Ester Bomb)","ci":"Singapore","o":"Huila, Colombia","v":"Caturra Chiroso","p":"Yeast Anaerobic Natural","f":"experimental","b":"Flat-Bottom Dripper","do":15,"y":240,"r":"1:16","t":"92","g":"DF64 Gen 2 (64mm Flat Burr — aftermarket upgrade)","pr":12,"no":"Passionfruit; Plum Wine; Mango","ve":"Goddamn the smell is intense. Flavor burst — acid or strong flavor, super punchy. Passionfruit with enhanced fruit, funky. Plums. After cooling — sugars came out. Interesting. Strong flavor gone. Overall: funky, fermentation-driven. Processing-dominant cup. Three completely different cups in one — ester detonation hot, funk phase mid, mango sweetness cool.","ge":false},{"d":"2026-06-10","c":"Nylon Coffee Roasters","n":"Colombia Juan Martin","ci":"Singapore","o":"Colombia","v":"Red Striped Bourbon","p":"Washed","f":"washed","b":"xBloom (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"1:17","t":"Unknown","g":"Mahlkönig EK Omnia (98mm Flat Burr)","pr":7.5,"no":"Berry, Red Plum, Nectarine, Orange Tea","ve":"Orange-type aromatic afterfeel when hot — bright and encapsulating. Clearly fruity character throughout. Mellows cleanly as it cools; sugars emerge distinctly at mid-cool phase. Nice and light overall — 1:17 lean ratio working well on this varietal.","ge":false},{"d":"2026-06-13","c":"Kurasu","n":"Rwanda Nkara Soil Project Lot 1204","ci":"Singapore","o":"Rwanda","v":"Red Bourbon","p":"Fully Washed","f":"washed","b":"V60 Pour-over (Conical)","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":9.27,"no":"Floral aroma, taste of mandarin orange, baked apple and grapefruit, brown sugar-like sweetness and accompanying aftertaste","ve":"Strong aftertaste with slight bitterness noted. Baked apple taste dominates and persists across all phases. Sugars emerge clearly on cooling — brown sugar sweetness confirmed at cool phase. Rated average. Rwanda Nkara terroir pushes more citrus-floral (mandarin/grapefruit) vs prior Rwanda entry at Twenty Grams (Entry #024) which was peach/stone fruit dominant.","ge":false},{"d":"2026-06-14","c":"KerYi Coffee","n":"Colombia Finca La Esmaralda","ci":"Singapore","o":"Colombia","v":"Gesha","p":"Honey","f":"honey","b":"Hario Switch (Immersion/Percolation Hybrid)","do":15,"y":210,"r":"1:14","t":"91 → 78","g":"Ditting 98mm flat burr","pr":15,"no":"Citrus, white florals, lychee, sugar-cane sweetness","ve":"Smooth body throughout. Lychee & white florals lead in the hot phase — fragile linalool terpenes survived the tight 1:14 concentration. Citrus surfaces mid-cool as perceived sweetness rises; honey-derived sweetness rounds the cool-phase finish into progressive smoothness. Rated highly — a fine, relaxing Gesha. Clarity held; upper Gesha tier (cf. El Obraje washed favourite, Hiu Los Lajones honey Panama).","ge":true},{"d":"2026-06-19","c":"Corner Corner","n":"Malaysia My Liberica","ci":"Singapore","o":"Malaysia, Kulai, Johor","v":"Liberica (Coffea liberica)","p":"JH Natural (Jekyll & Hyde controlled fermentation - proprietary My Liberica process)","f":"natural","b":"Pour Over (filter)","do":13,"y":190,"r":"1:14.6","t":"90-92 (steady throughout)","g":"Timemore (conical Gold burr, coarse)","pr":13,"no":"Root beer / Tropical fruit punch / Raspberry candy / Rambutan / Longan / Sarsi (roaster: One Half)","ve":"Interesting and approachable - 'not so funky but different for sure'; picked out longan-type fruit. First non-arabica capture in the archive; landed as a positive novelty rather than rejected.","ge":false},{"d":"2026-06-19","c":"Equate Coffee","n":"Colombia Huila La Pradera","ci":"Singapore","o":"Colombia, Huila","v":"Gesha","p":"Washed","f":"washed","b":"Pour Over (Orea V4)","do":15,"y":210,"r":"1:14","t":"90-92 (pours 1-2), 68-70 (pours 3-4)","g":"EK43","pr":13,"no":"Peach Jam / Orange / Honey Sweetness","ve":"Average - strong isolated peach note but jam/honey sweetness underdeveloped; suspects 1:15 ratio would have balanced acid/sweetness better","ge":true},{"d":"2026-06-21","c":"Apartment Roastery","n":"Colombia Javier Quintero","ci":"Singapore","o":"Inza, Cauca, Colombia","v":"Bourbon Aruzi","p":"Washed","f":"washed","b":"Pour-over (Hand Brew)","do":13,"y":220,"r":"1:16.9","t":"95","g":"Mahlkönig EK43","pr":9.5,"no":"White peach; blackberry; jasmine","ve":"White peach dominant, well-balanced; clean washed expression, very enjoyable","ge":false},{"d":"2026-06-25","c":"PPP Coffee (Funan)","n":"Ethiopia Suke Quto","ci":"Singapore","o":"Ethiopia","v":"Welicho & Kurume (blend)","p":"Fully-Washed","f":"washed","b":"V60 Pour-over (Conical)","do":15,"y":225,"r":"1:15","t":"Unknown","g":"Mazzer MM (83mm Flat Burr)","pr":9,"no":"Nectarine, White Florals, Citrus","ve":"Sharp unripe orange dominated all thermal phases — no floral lift, no mid-cool malic sweetness, no phase shift detected. Citric over-extraction signature suppressed linalool volatiles and sucrose emergence. Hardware execution miss — Guji terroir likely unrealised. Rated below average.","ge":false},{"d":"2026-06-27","c":"Apartment Roastery","n":"China Yunnan Meng Hai","ci":"Singapore","o":"Menghai, Xishuangbanna, Yunnan, China","v":"Purple Leaf Caturra","p":"Double Washed","f":"washed","b":"Pour-over (Hand Brew)","do":13,"y":215,"r":"1:16.5","t":"95","g":"Mahlkönig EK43","pr":9.5,"no":"Dried tangerine peel; red apple; pandan (origin card) / Dried orange peel; red apple; pandan (menu — discrepancy flagged)","ve":"Bright vibrant opening (hot); crisp malic clarity; mellowed gracefully at cool with no dominant note; pandan as background aromatic binder; well-balanced; no bitterness; genuinely pleasant surprise for non-core-palate origin","ge":false},{"d":"2026-06-28","c":"KerYi Coffee","n":"Ethiopia Urabeast G1","ci":"Singapore","o":"Uraga, Guji, Ethiopia","v":"74110 / 74112","p":"Mosto Fermentation","f":"experimental","b":"Hario Switch (Immersion/Percolation Hybrid)","do":15,"y":210,"r":"1:14","t":"88 → 70","g":"Ditting 98mm flat burr","pr":13,"no":"Winey; Raspberry; Purple grapes","ve":"First mosto fermentation entry in archive — process milestone. Bright raspberry and florals dominate hot phase; fruit esters volatile and immediate confirming correct low-entry-temp calibration at 88°C. Thermal transition mid-cool reveals progressive winey character as acetic compounds emerge post-ester dissipation. Purple grape ambiguous — raspberry clearly dominant throughout. Light-to-medium body with clean short finish consistent with 74110/74112 JARC varietal genetics. Fruity, controlled, process-honest expression. Rated excellent.","ge":false},{"d":"2026-06-28","c":"Asylum Coffeehouse","n":"Yellow Sudan Rume","ci":"Singapore","o":"Pijiao, Quindío, Colombia","v":"Sudan Rume (Yellow)","p":"Extended Fermentation Natural (EF2)","f":"natural","b":"April Brewer (Flat-Bottom)","do":15,"y":240,"r":"1:16","t":"90","g":"Option-O Lagom P64","pr":14,"no":"Lemongrass, Vanilla, Red Fruits, Brown Sugar","ve":"Hot phase: red fruits dominant, bright and acidic, light-to-medium body. Mid-cool: lemongrass clarifies as geraniol emerges; vanilla appears as background aromatic. Cool: brown sugar sweetness confirmed, mellowed, clean lingering finish with pleasant mouthfeel. Overall excellent — bright, fruity, balanced, varietal-honest. First Yellow Sudan Rume natural-process entry in archive.","ge":false},{"d":"2026-06-30","c":"2050 Coffee","n":"Myanmar Arakan Mountain","ci":"Singapore","o":"Magway, Myanmar","v":"Catimor","p":"Fully Washed & Honey","f":"honey","b":"Automated Tap Dispenser (Filter)","do":"N/A — batch-dispensed, no per-cup brew event","y":"N/A — batch-dispensed, no per-cup brew event","r":"N/A — batch-dispensed, no per-cup brew event","t":"N/A — batch-dispensed, no per-cup brew event","g":"N/A — batch-dispensed, no per-cup brew event","pr":6,"no":"Yellow Pear, Dried Fruits, Brown Sugar, Almond","ve":"Fruity and acidic with pear dominant and a light nutty edge — closely matches official notes (Yellow Pear, Almond). But flat across the cup: none of the hot/mid-cool/cool thermal progression of a manual pourover, reading as machine-consistent rather than barista-crafted. Hari's verdict: not worth a repeat visit — and on principle, he considers it a bad idea to automate the pourover format specifically. Pourover's whole identity rests on a human reading the bed and adjusting pour/temperature in real time; a tap dispenser removes that variable entirely, so even a technically clean cup like this one reads as inert rather than expressive.","ge":false},{"d":"2026-07-01","c":"Kyuukei Coffee","n":"Ethiopia Worka Chelchele","ci":"Singapore","o":"Gedeb, Gedeo Zone, Ethiopia","v":"Dega, Wolisho, Kurume (Landrace Triad)","p":"Washed","f":"washed","b":"Pour-over (Deep27, Flat-Bottom, Immersion-Assist) — confirmed by Kyūkei Coffee via Instagram DM","do":16,"y":240,"r":"1:15","t":"85 → 95 (ramped)","g":"Unknown — Kyūkei DM did not address grinder; tall cylindrical flat-burr unit visible in bar photo, model unconfirmed","pr":9,"no":"Lemon, Peach, Bergamot, Apricot","ve":"Floral hit and citrus brightness dominated the hot phase — lime/lemon citric clarity with linalool florals leading. Mid-cool: brightness tapered into balanced malic structure; slight chlorogenic bitter tinge after slurp — contained, not a flaw. Cool phase: nectarine and stone fruit sugars emerged cleanly; jasmine/berry aftertaste lingered beyond the cup. Excellent 4/4 palate alignment with roaster notes. Barista confirmed \"bright\" — accurate. Berry-jasmine aftertaste tail identified as likely Wolisho landrace signature beyond stated roaster notes.","ge":false},{"d":"2026-07-03","c":"Zerah Roasters","n":"Finca Villarazo — Pink Bourbon","ci":"Singapore","o":"Colombia","v":"Pink Bourbon","p":"Washed","f":"washed","b":"Pour-over (Orea V4 — Flat-Bottom)","do":15,"y":240,"r":"1:16","t":"92 (constant)","g":"DF83V (83mm Flat Burr)","pr":9,"no":"Lively and juicy; Pomegranate; Mandarin; Lingering Florals","ve":"Hot phase: simultaneous pomegranate + mandarin orange hit — bright, punchy, fruity. Low-to-medium body throughout. Mid-cool: sugar emergence as brightness decreases — sucrose surfacing as citric volatiles dissipate. Cool phase: sugar dominant with pomegranate aftertaste lingering cleanly. Floral presence subtle — linalool under the citric punch. Official notes confirmed across all three thermal phases. First Pink Bourbon in archive.","ge":false},{"d":"2026-07-04","c":"Oaks Coffee Co.","n":"Floripondio 90 Hours","ci":"Singapore","o":"Bolivia","v":"Pacamara","p":"Lactic Honey","f":"honey","b":"Origami Dripper (Flat-Bottom)","do":15,"y":240,"r":"1:16","t":"88 (constant)","g":"Option-O Lagom P80 (80mm Flat Burr)","pr":9,"no":"Mango; Passionfruit","ve":"Hot phase: mango and passionfruit dominant — bright punchy LAB ester burst. Mid-cool: tropicals recede, sugar clarity emerges, lactic-glycerol creaminess surfaces. Cool phase: clean nectarine emergence — Pacamara varietal-native genetic signature. Clean honey sweetness, thermally stable finish. Bright, fruity, well-structured throughout. Highly enjoyable.","ge":false},{"d":"2026-07-05","c":"Homeground Coffee Roasters","n":"Colombia Inmaculada Gesha Natural","ci":"Singapore","o":"Valle del Cauca, Colombia","v":"Gesha","p":"Natural","f":"natural","b":"Origami Dripper (Ceramic — Flat-Bottom Stand)","do":15,"y":247,"r":"1:16.5","t":"86-90","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":19,"no":"Hibiscus, Pomegranate, Stewed Peach, Darjeeling Tea","ve":"HOT: Hibiscus and pomegranate bright and balanced — clean anthocyanin-driven floral punch, excellent opening. | MID-COOL: Flavour tapered gracefully; Darjeeling tea polyphenol structure emerged, smooth and soothing. | COOL: Tea backbone confirmed with slight sugar aftercoat — cherry-dried sucrose persisting cleanly at sub-50°C. Overall: excellent and deeply relaxing; Gesha varietal identity held under natural process layer. Top-tier entry — starred.","ge":true},{"d":"2026-07-05","c":"Homeground Coffee Roasters","n":"Bolivia Los Rodriguez Caturra Washed","ci":"Singapore","o":"Samaipata, Bolivia","v":"Caturra","p":"Washed","f":"washed","b":"Origami Dripper (Ceramic — Flat-Bottom Stand)","do":15,"y":244,"r":"1:16.2","t":"90-93","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":10,"no":"Apricot, Apple, Honey","ve":"Aanya's cup (companion entry). Fruity and clean throughout — apricot and stone fruit character apparent from opening; honey sweetness emerged clearly at cool phase. Both Hari and Aanya enjoyed; approachable, well-structured, and clean finish with no bitterness. Excellent introduction-level specialty filter.","ge":false},{"d":"2026-07-05","c":"Cowpresso Coffee Roasters","n":"Geisha Colombia Las Nubes","ci":"Singapore","o":"Valle de Cauca, Colombia","v":"Geisha","p":"Natural","f":"natural","b":"Pour-over (Cowpresso Custom 3-Hole Ceramic Dripper — Conical)","do":15,"y":225,"r":"1:15","t":"92","g":"DF83 (83mm Flat Burr) — barista confirmed","pr":9.9,"no":"Lychee, Strawberry, Blueberry, Floral, Lemons","ve":"HOT: Explosive berry and lemon citric punch; fruity-forward ester detonation with isoamyl lychee dominant and acetic back-note trailing from Natural process. | MID-COOL: Acid persistence — lychee ester adheres to palate; malic backbone emerges as citric fades; still assertive rather than settling. | COOL: Lychee and body hold clean to final temperature; no notable sugar emergence — melanoidin body from medium roast persists. Verdict: An aggressive Geisha expression — Natural process × medium roast drives a fruit-heavy, body-forward profile divergent from the archive's Washed Geisha baseline. Enjoyable on its own terms; confirms Palate DNA preference for calmer washed clarity. First Natural Geisha in archive. Father-daughter visit with Aanya; barista Aung (Myanmar) gifted a complimentary sea salt latte — standout warmth and hospitality. Excellent café ambience and visual aesthetics noted.","ge":true},{"d":"2026-07-06","c":"Fluid Collective","n":"Alo Coffee — Natural Anaerobic Ethiopia 74158","ci":"Singapore","o":"Ethiopia","v":"74158","p":"Natural Anaerobic","f":"anaerobic","b":"Hario Switch (Flat-Bottom Immersion Hybrid)","do":15,"y":225,"r":"1:15","t":"70 → 90 → 70°C (Thermal Oscillation Protocol)","g":"Lagom P64","pr":11,"no":"Lychee | Purple Grape | White Peach","ve":"HOT: Perfect balance — lychee and white peach hit immediately. Clean tropical entry, no fermented funk. Light to medium body. WARM: Medium body settles; winey grape character emerges — controlled anaerobic expression, no acetic sharpness. COOL: Brightness recedes, grape clarifies and becomes dominant signal. Less vivid but more structured. Clarity increases as heat dissipates. Overall: well done. Fluid tamed the anaerobic variable cleanly.","ge":false},{"d":"2026-07-06","c":"Fluid Collective","n":"Gara Agena","ci":"Singapore","o":"Ethiopia","v":"Heirloom Ethiopian Varieties","p":"Washed Special Prep","f":"washed","b":"Hario Switch (Flat-Bottom Immersion Hybrid)","do":15,"y":225,"r":"1:15","t":"70 → 90 → 70°C (Thermal Oscillation Protocol)","g":"Lagom P64","pr":9,"no":"Nectarine | Mandarin Orange | Floral Honey","ve":"HOT: Bright nectarine hit immediate and clean. Floral light orange present from the first sip. Honey detectable even at high temperature — extremely clean washed expression, orange character very clear. WARM: Honey gains ground and becomes the dominant note. Coffee calms and cleans further. Orange recedes to background — gentle, not forward. COOL: Very nice to drink. Washed clarity fully expresses. Nectarine returns cleaner and more defined at lower temperature. Top of my list for what I like. Exceptional.","ge":false},{"d":"2026-07-07","c":"Pinhole Coffee Bar","n":"Santa Barbara #1 — Gesha Honey Colombia","ci":"Singapore","o":"Colombia — Huila","v":"Gesha","p":"Honey","f":"honey","b":"Hario V60 Ceramic (Conical — Single Aperture)","do":13.5,"y":200,"r":"1:14.8","t":"92°C (Constant)","g":"Mahlkönig EK43 Mini (64mm Flat Burr)","pr":15,"no":"White Florals, Berry Candy, Tangerines","ve":"HOT: Tea-like and light — less acidic than expected. Bergamot and white florals present from the first sip, characteristic Gesha linalool signature. Not loud; elegant and restrained. WARM: Subtle tangerine and stone fruit emerge as malic acid takes over from citric. Lychee hit — geraniol expression surfacing at lower temperature. Honey sweetness begins layering in. Brightness tapers cleanly with no harsh edge. COOL: Cup fully opens. Mandarin orange clarifies as the dominant acid signal — malic at low temp, softer and rounder than tangerine. Honey sweetness crystallises and lingers as a clean aftertaste. Best phase of the cup — this is a cold-cup Gesha. Patience rewarded.","ge":true},{"d":"2026-07-08","c":"Double Shot Coffee","n":"Kotowa Carolina Gesha","ci":"Singapore","o":"Boquete, Chiriquí, Panama","v":"Gesha","p":"Natural","f":"natural","b":"OREA V4 (Flat-Bottom)","do":13.5,"y":180,"r":"1:13.3","t":"92°C","g":"Ditting 63.5mm Flat Burr","pr":16,"no":"White Floral · Peach · White Grape","ve":"HOT: Bright and immediate peach hit — ethyl ester fraction opening cleanly with malic brightness. Promising, high-energy opening. MID-COOL: White florals and peach clarity emerging together — linalool terpenes surfacing as expected for Gesha genetics. Both official notes (white floral, peach) tracking accurately. COOL: Cup mellows significantly. Peach recedes to background. Sucrose sweetness underperforms expectation — sugars suppressed by concentrated house ratio. Lingering bitterness detected — procyanidin and tannin expression from Natural cherry skin polyphenols amplified by 1:13.3 TDS. White grape polyphenol reads as astringent rather than sweet at cool. Overall rated average. Bean quality likely higher than this ratio reveals. Would revisit at 1:15–1:17 to properly isolate Kotowa terroir ceiling.","ge":true},{"d":"2026-07-08","c":"Nylon Coffee Roasters","n":"La Flor de la Palma","ci":"Singapore","o":"Peru","v":"Bourbon","p":"Natural","f":"natural","b":"xBloom (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"1:17","t":"93","g":"Mahlkönig EK Omnia (98mm Flat Burr)","pr":8.5,"no":"Dried Berry; Cherry; Rum & Raisin; Rose","ve":"HOT: Berry arrival — bright and light to medium body; minimal aftertaste. MID-COOL: Mellowed; dried berry lingers with an unresolved slightly bitter shadow. COOL: Same persistent bitterness across finish — source identified post-session as chlorogenic acid lactone (CGA lactone) unmasked by lean ratio on this Natural Bourbon. Honest cup, fair for price, not a return target on this bean.","ge":false},{"d":"2026-07-09","c":"Abseil","n":"El Sauce Gesha","ci":"Singapore","o":"Colombia","v":"Gesha","p":"Washed","f":"washed","b":"CT62 Coffee Dripper (Taster's Coffee / DragonFly Design, Taiwan — Engineered Conical, 62° Cone, 24-Groove Active Flow Compensation)","do":15,"y":232,"r":"1:15.5","t":"91°C (Constant throughout)","g":"Option-O Lagom P64 (64mm Flat Burr)","pr":21,"no":"Gardenia · Mandarin · Dried Apricot · Green Tea · Honeysuckle","ve":"HOT: Honeysuckle and honey immediate — linalool terpenes fully volatilised from aggressive 80g bloom; bright floral clean opening. MID-COOL: Very sugary mid-palate; mandarin orange in background; honey clearly detectable; sucrose dominant as volatile top notes subside — very sweet and clean. COOL: Tea-like and beautifully balanced; mandarin mellowed to background; clean lingering sweetness with zero bitterness — CT62 anti-over-extraction engineering confirmed across all three phases. Overall: elegant, restrained washed Gesha. Upper-tier entry. SGD $21 is steep but the bean quality justifies it. Would return.","ge":true},{"d":"2026-07-10","c":"Oaks Coffee Co.","n":"Finca El Diviso","ci":"Singapore","o":"Colombia","v":"Aji Bourbon","p":"Thermal Shock Anaerobic Natural","f":"boundary","b":"Origami Dripper (Flat-Bottom)","do":"Unknown","y":"Unknown","r":"Unknown","t":"Unknown","g":"Option-O Lagom P80 (80mm Flat Burr — assumed)","pr":9,"no":"Lychee; Blueberry Jam; Cranberry","ve":"Hot phase: punchy lychee and berry dominant — high-intensity bright acidity, strong entry. Mid-cool to cool: fruit character sustained across all phases without evolution — Thermal Shock ester concentration too embedded to dissipate thermally. Strong persistent aftertaste from cranberry anthocyanin compounds. Interesting but not a repeat — process-forward intensity beyond personal palate threshold.","ge":false},{"d":"2026-07-11","c":"Pour.traits Roasters","n":"Thailand Sirinya Geisha Amarone","ci":"Singapore","o":"Chiang Rai, Thailand","v":"Geisha","p":"Anaerobic Natural","f":"anaerobic","b":"Solo Dripper by Mazelab (Flat-Bottom, 40° angle, Wave 155 filter)","do":15,"y":225,"r":"1:15","t":"92→75→92→75°C (alternating 4-pour)","g":"Mahlkönig EK43S (98mm Flat Burr)","pr":10,"no":"Rose, Plum, Mandarin Orange, Honey","ve":"HOT: Bright citric front with vivid rose geraniol — aromatic and immediate; rose florals dominant and unmistakable. MID-COOL: Mandarin orange emerges cleanly as citric volatiles dissipate — Harry's signature malic acid marker arriving on schedule. Body noticeably full and structured — medium-strong tea weight, not the light tea elegance of washed Geisha expressions; fuller than any prior washed Geisha entry. COOL: Plum (not peach — darker malic stone fruit consistent with Anaerobic Natural fermentation profile shifting acid toward wine-adjacent fruit rather than bright nectarine); honey-type sweetness rounds the finish — sucrose ester retention from Natural process mucilage rather than fructose-type bright fruit sugar; slight bitterness present at cool phase but fades cleanly — likely residual CGA lactone from Natural process fermentation rather than hardware-derived; clean finish confirms it did not persist. Verdict: Moderately aggressive Geisha — varietal genetics clearly present but Anaerobic Natural process adds lipid body and fermentation weight absent from washed expressions. SGD $10 exceptional value for a Thailand Geisha. Archive firsts: first Thailand origin, first Thailand Geisha, first Nippy Coffee Roaster (Chiang Rai) entry. First Geisha roasted on Stronghold S7X smart electric roaster.","ge":true},{"d":"2026-07-12","c":"Fluid Collective","n":"Alo Peaberry — Washed Ethiopia","ci":"Singapore","o":"Ethiopia","v":"74158 (Peaberry)","p":"Washed","f":"washed","b":"Hario Switch (Flat-Bottom Immersion Hybrid)","do":"15","y":"225","r":"1:15","t":"70 → 90 → 70°C (Thermal Oscillation Protocol — Fluid Standard)","g":"Option-O Lagom P64 (64mm Flat Steel Burrs)","pr":"10","no":"Bergamot | Honeysuckle | Mandarin Orange | White Peach","ve":"HOT: Excellent clarity and brightness from the very first sip. Bergamot and honeysuckle arrive clean and immediate — floral, refined, quiet. Smooth washed character from the start; zero fermentation noise. Mandarin orange not yet present — patience required. WARM: \"Goddamn mandarin orange clearly coming on mid phase.\" Heavier citrus compounds unlock as the volatile florals recede — a delayed reveal, not an absence. COOL: Honeysuckle, white peach and mandarin orange pop together in balance. The full flavour picture assembles at cool temperature simultaneously. Very nice to drink at this stage. Verdict: Clear, clean and elegant coffee — in simple words.","ge":false},{"d":"2026-07-14","c":"Pour.traits Roasters","n":"Finca Sophia Torcaza Grand Reserve Washed Geisha","ci":"Singapore","o":"Panama","v":"Geisha","p":"Washed","f":"washed","b":"Hario x Tri-Up FLOW Dripper by Erik Liao (Flat-Bottom, Ceramic, Taiwan)","do":12.5,"y":190,"r":"1:15.2","t":"91→91→82°C (3-pour descending — WBRC competition protocol)","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":60,"no":"Lemon Honey, Bergamot, Orange","ve":"HOT: Bright orange and lemon arriving simultaneously in perfect co-expression — citric and malic acid neither dominating the other. Honey present in background as sweetness foundation, not feature. Supreme clarity — all flavours hitting at once; every volatile aromatic compound in simultaneous perfect expression without any single note overwhelming. MID-COOL: Clarity builds rather than fades — lemon becomes more visible as citric top notes thermally stabilise; malic acid backbone structured and persistent. COOL: Orange and bergamot settle as lime tinge emerges — tartaric acid expressing as clean lime whisper once volatile citric and malic compounds dissipate. Slight lime aftertaste lingers on tongue — fine, sophisticated, pure. No bitterness, no CGA lactone, no fermentation noise. Verdict: THE finest cup in the archive. New #1 — displaces El Obraje Washed Colombia Gesha (Fluid Collective, Entry #016, 6-month champion). 'Fine and sophisticated — not because of the $60, because of what was in the cup.' SGD $60 most expensive cup in archive history (previous record SGD $18). Worth every cent without qualification. Archive firsts: First Panama Washed Geisha from Finca Sophia/Torcaza, first Hario x Tri-Up FLOW Dripper entry, first WBRC competitor guest brew, first Livid Coffee Roasters entry.","ge":true},{"d":"2026-07-15","c":"Equate Coffee","n":"Peru Cajamarca Lorenzo Arbildo — Washed Gesha","ci":"Singapore","o":"Cajamarca, Peru","v":"Gesha","p":"Washed","f":"washed","b":"OREA V4 — OPEN Bottom (Flat-Bottom)","do":15,"y":210,"r":"1:14","t":"92°C → 65°C (descending — pours 1–3 at 92°C, pour 4 at 65°C)","g":"Mahlkönig EK43 (98mm Flat Burr)","pr":12,"no":"Raspberry; Peach; Floral","ve":"HOT: Bright immediate malic brightness — simultaneous raspberry ester + peach lactone hit; both official notes tracking accurately from first sip. High-energy, clean opening. MID-COOL: Flavours mellowed; linalool florals emerging as ester volatiles dissipate — textbook Gesha terpene thermal behaviour. Cajamarca citric tinge appearing as a background dimension (terroir marker, not recipe flaw). Excellent clarity, nothing coating the tongue. Peach and berry settling to background with good separation. COOL (Best Phase): Clean short berry aftertaste persisting post-ester dissipation; sucrose-ester tail lingering cleanly. Nice body for washed process. No bitter phenolics — 65°C final pour executed correctly. Overall: First Peru Gesha in archive. Significant upgrade on Entry #040 (Colombia Huila La Pradera, Equate, same ratio 1:14, 19 Jun 2026) — Peru Arbildo lot intrinsically more expressive at this concentration. Washed Peru × Gesha axis confirmed as archive-calibre. Second Equate visit redeems the café Gesha record.","ge":true},{"d":"2026-07-16","c":"Mame (SIGEP Asia booth)","n":"Bambito Estate","ci":"Singapore","o":"Panama (1660–1800 m.a.s.l., per bean card)","v":"Geisha","p":"Washed","f":"washed","b":"Pour-over — 2 pours only (7g microdose festival format; brewer not stated → Unknown)","do":7,"y":105,"r":"1:15","t":"93°C (barista-confirmed)","g":"Timemore (model unstated — official SIGEP Asia / SNCC 2026 event grinder)","pr":16,"no":"Jasmine · Orange Blossom · Yellow Peach","ve":"HOT: orange blossom dominant with a distinct \"orange hit\" — intensely floral, pronounced tea-like structure. MID-COOL→COOL: drinks beautifully cool; orange blossom sweetens and steps forward; clean citric-orange tinge lands on the aftertaste. Verdict: \"a fine Geisha.\" Tea-like character persistent across all phases. S$16 (¥1,990) for a 7g microdose pour ≈ S$34 full-cup equivalent — second most expensive in the portfolio on a full-cup-equivalent basis, behind Finca Sophia Torcaza (S$60, Pour.traits). Menu correction logged: S$25 = 20g beans price; S$16 = per-cup price.","ge":true},{"d":"2026-07-21","c":"Pour.traits Roasters","n":"Toki","ci":"Singapore","o":"Galyani Vadhana, Chiang Mai, Thailand · 1500 masl","v":"Mixed Local","p":"Natural","f":"natural","b":"Solo Dripper by Mazelab (Flat-Bottom, 40° angle, Wave 155 filter) — consistent with 11 Jul visit house setup, not barista-reconfirmed this visit","do":"Unknown","y":"Unknown","r":"~1:15 (taste-inferred by Harry, not barista-confirmed)","t":"Unknown","g":"Mahlkönig EK43S (98mm Flat Burr) — consistent with 11 Jul visit house setup, not barista-reconfirmed this visit","pr":10,"no":"Pear, Apple, Orange","ve":"HOT: Very bright and acidic — vivid, high-toned opening. Apple notes present from hot through mid-phase, consistent with the official card. MID: Apple continuing to carry the cup. COOL: Orange blossom and apple emerge together, with a clean citric acid lift; texture very smooth throughout. Verdict: exceptionally high clarity for a Natural process coffee — Harry noted the cup did not carry the fermentation weight typically expected from Natural processing; drinks more like a clean washed cup despite the process tag. Strong value: SGD $10 for a Chiang Mai Thailand origin, second Thailand-origin entry in the archive after the Sirinya Amarone (Entry #063). Archive first: first Toki (roaster) entry, first Galyani Vadhana Chiang Mai origin, first 'Mixed Local' varietal entry.","ge":false},{"d":"2026-07-24","c":"Alchemist (Khong Guan Building)","n":"El Frutal","ci":"Singapore","o":"Huehuetenango, Guatemala","v":"Castillo","p":"Washed","f":"washed","b":"V60 Pour-over (Ceramic Conical)","do":15,"y":225,"r":"1:15","t":90,"g":"Mahlkönig EK43S (98mm Flat Burr)","pr":8.5,"no":"Orange, Apple, Milk Chocolate","ve":"HOT: bright, acidic apple hit. MID: mild sourness reading as ripe orange, not a flaw. COOL: mellows to a chocolate-adjacent note, distinct from apple/orange. Sequential note release matched official notes across all three thermal phases — good cup, clean process expression.","ge":false},{"d":"2026-07-24","c":"Prodigal Roasters","n":"Rea","ci":"Singapore","o":"Peru","v":"Geisha","p":"Natural","f":"natural","b":"Origami V60 (Ribbed, Conical)","do":16,"y":272,"r":"1:17","t":93,"g":"Mahlkönig EK43 (98mm Flat Burr)","pr":12,"no":"Grape jello, orange marmalade, jasmine florals","ve":"HOT: floral, bright, acidic clarity — jasmine and malic brightness leading. MID-COOL: jasmine fades as florals de-gas; grape and orange marmalade sweetness dominates, flavor calms and becomes very fruity. COOL: sweetness rounds out further, favorite phase — aided by the larger 272g yield giving the fermentation-derived sugars room to develop without cloying. Interesting, well-balanced Geisha.","ge":true},{"d":"2026-07-25","c":"Alchemist (Khong Guan Building)","n":"La Betania","ci":"Singapore","o":"Tolima, Colombia","v":"Unknown","p":"Washed","f":"washed","b":"V60 Pour-over (Ceramic Conical)","do":15,"y":242,"r":"1:16.1","t":90,"g":"Mahlkönig EK43S (98mm Flat Burr)","pr":10.5,"no":"Red Apple, Nectarine, Toffee","ve":"HOT: apple + orange, bright, high clarity. MID-COOL: apple carries, nectarine sweetness emerges. COOL: nectarine + toffee, clarity continues improving (unusual — most entries peak mid-phase), toffee finish with brief milk-like impression that fades quickly and pleasantly. Excellent — layered, bright, clarity throughout. Fully worth $10.5.","ge":false}];
+
+const FAM = {
+  washed:{c:'var(--washed)',l:'Washed'},
+  natural:{c:'var(--natural)',l:'Natural'},
+  honey:{c:'var(--honey)',l:'Honey'},
+  anaerobic:{c:'var(--anaerobic)',l:'Anaerobic'},
+  experimental:{c:'var(--experimental)',l:'Experimental ferment'},
+  wethulled:{c:'var(--wethulled)',l:'Wet-hulled'},
+  boundary:{c:'var(--boundary)',l:'Thermal shock'},
+  unknown:{c:'var(--unknown)',l:'Unrecorded'}
+};
+const HEX = {washed:'#DFAF3A',natural:'#B5382F',honey:'#DE8127',anaerobic:'#7B5AA6',
+  experimental:'#2F7D6C',wethulled:'#6E5641',boundary:'#7B1526',unknown:'#BDB7A8'};
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+let active = new Set();
+let geshaOnly = false;
+
+const has = v => v!==null && v!==undefined && String(v).trim()!=='' && String(v).toLowerCase()!=='unknown';
+const money = v => (typeof v==='number') ? 'S$'+v.toFixed(2).replace(/\.00$/,'') : '—';
+
+function visible(e){
+  if(geshaOnly && !e.ge) return false;
+  if(active.size && !active.has(e.f)) return false;
+  return true;
+}
+
+/* ---------- VITALS ---------- */
+function vitals(){
+  const cups=DATA.length;
+  const venues=new Set(DATA.map(e=>e.c)).size;
+  const gesha=DATA.filter(e=>e.ge).length;
+  const cities=new Set(DATA.map(e=>e.ci)).size;
+  const prices=DATA.map(e=>e.pr).filter(p=>typeof p==='number');
+  const spend=prices.reduce((a,b)=>a+b,0);
+  const days=new Set(DATA.map(e=>e.d)).size;
+  const v=[[cups,'cups logged'],[venues,'venues'],[cities,'cities'],[gesha,'gesha cups'],
+           [days,'coffee days'],['S$'+Math.round(spend),'total spend']];
+  document.getElementById('vitals').innerHTML =
+    v.map(([n,l])=>`<div class="vital"><b>${n}</b><span>${l}</span></div>`).join('');
+}
+
+/* ---------- SPINE ---------- */
+const Y0=new Date(2026,0,1), Y1=new Date(2026,6,31);
+const span=(Y1-Y0)/86400000;
+function drawSpine(){
+  const svg=document.getElementById('spine');
+  const W=1000,H=150,base=H-2;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const maxP=60;
+  let out='';
+  DATA.forEach((e,i)=>{
+    const dt=new Date(e.d+'T00:00:00');
+    const x=((dt-Y0)/86400000)/span*(W-8)+4;
+    const p=typeof e.pr==='number'?e.pr:4;
+    const h=Math.max(5,Math.pow(p/maxP,.62)*(base-14));
+    const dim=visible(e)?'':' class="dim"';
+    out+=`<rect${dim} data-i="${i}" x="${(x-2.2).toFixed(1)}" y="${(base-h).toFixed(1)}" width="4.4" height="${h.toFixed(1)}" rx="1.4" fill="${HEX[e.f]}"/>`;
+    if(e.ge) out+=`<circle data-i="${i}"${dim?' class="dim"':''} cx="${x.toFixed(1)}" cy="${(base-h-5).toFixed(1)}" r="2.4" fill="none" stroke="#C9A227" stroke-width="1.6"/>`;
+  });
+  out+=`<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="#DFD9CB" stroke-width="1"/>`;
+  svg.innerHTML=out;
+  document.getElementById('spineAxis').innerHTML =
+    MSHORT.slice(0,7).map(m=>`<div>${m}</div>`).join('');
+}
+
+/* ---------- CHIPS ---------- */
+function chips(){
+  const counts={};
+  DATA.forEach(e=>counts[e.f]=(counts[e.f]||0)+1);
+  const order=['washed','natural','anaerobic','honey','experimental','wethulled','boundary','unknown'];
+  let html=order.filter(k=>counts[k]).map(k=>
+    `<button class="chip" data-f="${k}" aria-pressed="false">
+       <span class="sw" style="background:${HEX[k]}"></span>${FAM[k].l}<span class="ct">${counts[k]}</span>
+     </button>`).join('');
+  const g=DATA.filter(e=>e.ge).length;
+  html+=`<button class="chip ge" data-g="1" aria-pressed="false">⭐ Gesha only<span class="ct">${g}</span></button>`;
+  document.getElementById('chips').innerHTML=html;
+}
+
+/* ---------- MONTHS ---------- */
+function months(){
+  const byDate={};
+  DATA.forEach((e,i)=>{(byDate[e.d]=byDate[e.d]||[]).push(i)});
+  let html='';
+  let any=false;
+  for(let m=0;m<7;m++){
+    const first=new Date(2026,m,1);
+    const dim=new Date(2026,m+1,0).getDate();
+    const lead=(first.getDay()+6)%7;
+    const monthIdx=DATA.map((e,i)=>[e,i]).filter(([e])=>new Date(e.d+'T00:00:00').getMonth()===m);
+    const vis=monthIdx.filter(([e])=>visible(e)).length;
+    if(vis) any=true;
+    let cells='';
+    for(let i=0;i<lead;i++) cells+='<div class="cell pad"></div>';
+    for(let d=1;d<=dim;d++){
+      const key=`2026-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const idxs=byDate[key]||[];
+      const shown=idxs.filter(i=>visible(DATA[i]));
+      if(!idxs.length){
+        cells+=`<div class="cell"><span class="dnum">${d}</span></div>`;
+      }else{
+        const off=shown.length?'':' off';
+        const discs=(shown.length?shown:idxs).map(i=>
+          `<span class="disc${DATA[i].ge?' g':''}" style="background:${HEX[DATA[i].f]}"></span>`).join('');
+        cells+=`<div class="cell has${off}" tabindex="0" role="button" data-date="${key}"
+                 aria-label="${d} ${MONTHS[m]}, ${idxs.length} cup${idxs.length>1?'s':''}">
+                 <span class="dnum">${d}</span><span class="discs">${discs}</span></div>`;
+      }
+    }
+    html+=`<div class="month">
+      <div class="mhead"><h2 class="mname">${MONTHS[m]}</h2>
+      <span class="mcount">${vis} cup${vis===1?'':'s'}</span></div>
+      <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="grid">${cells}</div></div>`;
+  }
+  document.getElementById('months').innerHTML = any?html:
+    '<p class="empty">No cups match these filters.</p>';
+}
+
+/* ---------- LEGEND ---------- */
+function legend(){
+  const order=['washed','natural','anaerobic','honey','experimental','wethulled','boundary','unknown'];
+  let h=order.map(k=>`<span class="litem"><span class="sw" style="background:${HEX[k]}"></span><b>${FAM[k].l}</b></span>`).join('');
+  h+=`<span class="litem"><span class="sw g"></span><b>Gesha</b> — gold ring</span>`;
+  h+=`<span class="litem">Tap any marked day for the full entry</span>`;
+  document.getElementById('legend').innerHTML=h;
+}
+
+/* ---------- DRAWER ---------- */
+function openDay(dateKey){
+  const items=DATA.map((e,i)=>[e,i]).filter(([e])=>e.d===dateKey && visible(e));
+  if(!items.length) return;
+  const dt=new Date(dateKey+'T00:00:00');
+  const head=`${dt.getDate()} ${MONTHS[dt.getMonth()]} 2026 · ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][(dt.getDay()+6)%7]}`;
+  let h=`<button class="dclose" id="dclose" aria-label="Close">×</button>
+         <p class="ddate">${head}</p>`;
+  items.forEach(([e])=>{
+    const specs=[
+      has(e.do)?[e.do+'g','dose']:null,
+      has(e.y)?[e.y+'g','yield']:null,
+      has(e.r)?[e.r,'ratio']:null,
+      has(e.t)?[String(e.t).replace(/°?C?$/,'')+'°','temp']:null,
+      [money(e.pr),'price']
+    ].filter(Boolean);
+    h+=`<article class="entry">
+      <div class="etop"><span class="edot${e.ge?' g':''}" style="background:${HEX[e.f]}"></span>
+        <div style="flex:1;min-width:0">
+          <p class="ecafe">${esc(e.c)}${e.ci&&e.ci!=='Singapore'?' · '+esc(e.ci):''}</p>
+          <h3 class="ename">${esc(e.n)}</h3>
+        </div></div>
+      <div class="etags">
+        ${e.ge?'<span class="tag gs">⭐ Gesha</span>':''}
+        ${has(e.o)?`<span class="tag">${esc(e.o)}</span>`:''}
+        ${has(e.v)&&!e.ge?`<span class="tag">${esc(e.v)}</span>`:''}
+        <span class="tag pr">${esc(e.p||'Process unrecorded')}</span>
+      </div>
+      <div class="specs">${specs.map(([b,s])=>`<div class="spec"><b>${esc(b)}</b><span>${s}</span></div>`).join('')}</div>
+      ${has(e.b)||has(e.g)?`<div class="block"><p class="blabel">Hardware</p>
+        <p class="hw">${[has(e.b)?esc(e.b):null,has(e.g)?esc(e.g):null].filter(Boolean).join('<br>')}</p></div>`:''}
+      ${has(e.no)?`<div class="block"><p class="blabel">Roaster notes</p><p class="btext notes">${esc(e.no)}</p></div>`:''}
+      ${has(e.ve)?`<div class="block"><p class="blabel">Palate record</p><p class="btext">${esc(e.ve)}</p></div>`:''}
+    </article>`;
+  });
+  const dr=document.getElementById('drawer');
+  dr.innerHTML=h; dr.classList.add('on');
+  document.getElementById('scrim').classList.add('on');
+  document.getElementById('dclose').onclick=closeDrawer;
+  dr.scrollTop=0;
+  document.getElementById('dclose').focus();
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+/* ---------- TOOLTIP ---------- */
+const tip=document.getElementById('tip');
+function showTip(e,i){
+  const d=DATA[i];
+  tip.innerHTML=`${esc(d.c)}<br>${esc(d.n)}<br>${money(d.pr)} · ${esc(d.p||'—')}`;
+  tip.classList.add('on');
+  const x=Math.min(e.clientX+12,window.innerWidth-245);
+  tip.style.left=x+'px'; tip.style.top=(e.clientY+14)+'px';
+}
+function hideTip(){tip.classList.remove('on')}
+
+/* ---------- WIRE ---------- */
+function render(){drawSpine();months()}
+
+document.getElementById('chips').addEventListener('click',ev=>{
+  const b=ev.target.closest('.chip'); if(!b) return;
+  if(b.dataset.g){geshaOnly=!geshaOnly; b.setAttribute('aria-pressed',geshaOnly)}
+  else{
+    const f=b.dataset.f;
+    if(active.has(f)){active.delete(f); b.setAttribute('aria-pressed','false')}
+    else{active.add(f); b.setAttribute('aria-pressed','true')}
+  }
+  render();
+});
+document.getElementById('reset').onclick=()=>{
+  active.clear(); geshaOnly=false;
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+  render();
+};
+document.getElementById('months').addEventListener('click',ev=>{
+  const c=ev.target.closest('.cell.has'); if(c) openDay(c.dataset.date);
+});
+document.getElementById('months').addEventListener('keydown',ev=>{
+  if(ev.key!=='Enter'&&ev.key!==' ')return;
+  const c=ev.target.closest('.cell.has'); if(c){ev.preventDefault();openDay(c.dataset.date)}
+});
+document.getElementById('spine').addEventListener('mousemove',ev=>{
+  const r=ev.target.closest('rect,circle');
+  if(r&&r.dataset.i&&!r.classList.contains('dim'))showTip(ev,+r.dataset.i); else hideTip();
+});
+document.getElementById('spine').addEventListener('mouseleave',hideTip);
+document.getElementById('spine').addEventListener('click',ev=>{
+  const r=ev.target.closest('rect,circle');
+  if(r&&r.dataset.i&&!r.classList.contains('dim'))openDay(DATA[+r.dataset.i].d);
+});
+document.getElementById('scrim').onclick=closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+vitals();chips();legend();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Hari, Coffee Archivist">
+  <meta name="description" content="Hari's Coffee Archive 2026 — Social Content Generator">
+  <title>Social Generator | Hari's Coffee Archive</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --gold: #c9a84c; --dark: #0d0d0d; --card: #1a1a1a; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--dark); color: #f5f5f5; line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
+    .section { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+    
+    .tab-bar { display: flex; gap: 8px; margin-bottom: 32px; border-bottom: 1px solid #333; }
+    .tab { padding: 12px 24px; background: #111; border: 1px solid #333; border-bottom: none; border-radius: 12px 12px 0 0; cursor: pointer; font-weight: 600; }
+    .tab.active { background: #1a1a1a; border-color: var(--gold); color: var(--gold); }
+    
+    .entry-select { background: #111; border: 1px solid #333; border-radius: 16px; padding: 28px; margin-bottom: 32px; }
+    .preview-card { background: #1f1f1f; border: 1px solid #444; border-radius: 16px; padding: 24px; margin-top: 20px; }
+    
+    .format-card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 28px; margin-bottom: 24px; }
+    .format-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .format-header h3 { color: var(--gold); }
+    
+    .copy-btn { background: #222; color: #c9a84c; border: 1px solid #555; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
+    .copy-btn:hover { background: #c9a84c; color: #0d0d0d; }
+    
+    .generated-text { background: #1f1f1f; padding: 20px; border-radius: 12px; font-size: 0.95rem; line-height: 1.65; white-space: pre-wrap; }
+    
+    .tone-slider { width: 100%; margin: 16px 0; }
+    
+    .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .history-card { background: #1a1a1a; border: 1px solid #333; border-radius: 14px; padding: 18px; }
+    
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; background: #111; padding: 16px; border-radius: 16px; }
+    .calendar-day { background: #1f1f1f; min-height: 90px; border-radius: 10px; padding: 8px; font-size: 0.85rem; position: relative; }
+    .calendar-day.drag-over { background: #2a2a2a; border: 2px dashed #c9a84c; }
+    .calendar-day-header { font-weight: 700; color: #888; font-size: 0.75rem; }
+    .calendar-entry { background: #c9a84c; color: #0d0d0d; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; margin-top: 4px; cursor: move; }
+    
+    .print-only { display: none; }
+    @media print { .tab-bar, .copy-btn, button { display: none !important; } .format-card { break-inside: avoid; } body { background: white; color: black; } }
+  </style>
+</head>
+<body>
+  <!-- NAV injected by nav.js -->
+  
+  <div class="section">
+    <h1 style="font-size: 2.8rem; margin-bottom: 8px;">Social Content Generator</h1>
+    <p style="color: #888;">Turn every audit into platform-ready content in Hari’s voice</p>
+    
+    <!-- TAB BAR -->
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchTab(0)">Select Entry</div>
+      <div class="tab" onclick="switchTab(1)">Generate Content</div>
+      <div class="tab" onclick="switchTab(2)">Content Calendar</div>
+    </div>
+    
+    <!-- TAB 0: SELECT ENTRY -->
+    <div id="tab-0">
+      <div class="entry-select">
+        <h3 style="margin-bottom: 16px;">Choose an entry from the archive</h3>
+        
+        <select id="entry-select" onchange="selectEntry()" style="width:100%; padding:14px 18px; background:#222; border:1px solid #444; color:#fff; border-radius:12px; font-size:1rem;">
+          <option value="">— Select entry —</option>
+        </select>
+        
+        <div style="margin-top: 16px; text-align: center; color: #666;">or</div>
+        
+        <button onclick="showNewEntryForm()" style="margin-top: 16px; width:100%; padding:14px; background:#222; border:1px solid #555; color:#c9a84c; border-radius:12px; cursor:pointer;">+ New Entry (manual)</button>
+        
+        <div id="new-entry-form" style="display:none; margin-top:20px; background:#1a1a1a; padding:20px; border-radius:12px;">
+          <input id="new-coffee" placeholder="Coffee Name" style="width:100%; margin-bottom:10px; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+          <input id="new-cafe" placeholder="Cafe Name" style="width:100%; margin-bottom:10px; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+          <input id="new-origin" placeholder="Origin" style="width:100%; margin-bottom:10px; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+          <input id="new-varietal" placeholder="Varietal" style="width:100%; margin-bottom:10px; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+          <input id="new-process" placeholder="Process" style="width:100%; margin-bottom:10px; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+          <button onclick="createNewEntry()" style="width:100%; padding:12px; background:#c9a84c; color:#0d0d0d; border:none; border-radius:8px; font-weight:700;">Add to Archive &amp; Select</button>
+        </div>
+      </div>
+      
+      <div id="preview-card" class="preview-card" style="display:none;">
+        <h4 id="preview-title" style="color:#c9a84c; margin-bottom:8px;"></h4>
+        <div id="preview-details" style="font-size:0.95rem; color:#aaa; line-height:1.5;"></div>
+      </div>
+    </div>
+    
+    <!-- TAB 1: GENERATE CONTENT -->
+    <div id="tab-1" style="display:none;">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+        <div style="flex:1;">
+          <label style="font-size:0.85rem; color:#888;">Tone</label>
+          <input type="range" id="tone-slider" min="0" max="100" value="50" class="tone-slider" oninput="updateToneLabel()">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#666;">
+            <span>Technical</span><span>Accessible</span>
+          </div>
+        </div>
+        <button onclick="generateAllContent()" style="background:#c9a84c; color:#0d0d0d; border:none; padding:12px 28px; border-radius:12px; font-weight:700; white-space:nowrap;">🔄 Regenerate All</button>
+      </div>
+      
+      <!-- INSTAGRAM POST -->
+      <div class="format-card">
+        <div class="format-header">
+          <h3>📸 Instagram Post</h3>
+          <button class="copy-btn" onclick="copyToClipboard('instagram-post')">📋 Copy</button>
+        </div>
+        <div id="instagram-post" class="generated-text"></div>
+      </div>
+      
+      <!-- INSTAGRAM STORY -->
+      <div class="format-card">
+        <div class="format-header">
+          <h3>📱 Instagram Story (7 slides)</h3>
+          <button class="copy-btn" onclick="copyToClipboard('instagram-story')">📋 Copy</button>
+        </div>
+        <div id="instagram-story" class="generated-text" style="font-family:monospace; font-size:0.9rem;"></div>
+      </div>
+      
+      <!-- TWITTER THREAD -->
+      <div class="format-card">
+        <div class="format-header">
+          <h3>🐦 X / Twitter Thread</h3>
+          <div>
+            <button class="copy-btn" onclick="copyToClipboard('twitter-thread')">📋 Copy Full Thread</button>
+          </div>
+        </div>
+        <div id="twitter-thread" class="generated-text"></div>
+      </div>
+      
+      <!-- GOOGLE MAPS REVIEW -->
+      <div class="format-card">
+        <div class="format-header">
+          <h3>📍 Google Maps Review (3 variants)</h3>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+          <div>
+            <div style="font-size:0.8rem; color:#888; margin-bottom:6px;">Technical (200 words)</div>
+            <div id="review-technical" class="generated-text" style="font-size:0.85rem; max-height:180px; overflow:auto;"></div>
+            <button class="copy-btn" style="margin-top:8px; width:100%;" onclick="copyToClipboard('review-technical')">📋 Copy</button>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:#888; margin-bottom:6px;">Accessible (150 words)</div>
+            <div id="review-accessible" class="generated-text" style="font-size:0.85rem; max-height:180px; overflow:auto;"></div>
+            <button class="copy-btn" style="margin-top:8px; width:100%;" onclick="copyToClipboard('review-accessible')">📋 Copy</button>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:#888; margin-bottom:6px;">Short (50 words)</div>
+            <div id="review-short" class="generated-text" style="font-size:0.85rem; max-height:180px; overflow:auto;"></div>
+            <button class="copy-btn" style="margin-top:8px; width:100%;" onclick="copyToClipboard('review-short')">📋 Copy</button>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align:center; margin-top:24px;">
+        <button onclick="saveToHistory()" style="background:#222; color:#c9a84c; border:1px solid #555; padding:12px 32px; border-radius:12px; cursor:pointer;">💾 Save to History</button>
+      </div>
+    </div>
+    
+    <!-- TAB 2: CONTENT CALENDAR -->
+    <div id="tab-2" style="display:none;">
+      <h3 style="margin-bottom:16px;">May 2026 Content Calendar</h3>
+      <div class="calendar-grid" id="calendar-grid"></div>
+      <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+        <button onclick="exportSchedule()" style="background:#c9a84c; color:#0d0d0d; border:none; padding:10px 20px; border-radius:8px; font-weight:600;">Export Posting Schedule</button>
+        <button onclick="clearCalendar()" style="background:#222; color:#888; border:1px solid #555; padding:10px 20px; border-radius:8px;">Clear Calendar</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // ==================== ARCHIVE DATA ====================
+    const ARCHIVE_DATA = [
+      {id:1, date:"2026-01-10", city:"Ubud, Bali", cafe:"Seniman Coffee Studio", coffee:"Bali Karana Kintamanis", varietal:"Unknown", process:"Natural", verdict:"Excellent clarity for a natural process, bright and floral.", technical:"Established foundational exposure to local Indonesian origins."},
+      {id:2, date:"2026-01-10", city:"Ubud, Bali", cafe:"Seniman Coffee Studio", coffee:"Sulawesi Toraja", varietal:"Unknown", process:"Semi-Washed / Wet-Hulled", verdict:"Heavy body with rich cocoa notes.", technical:"Demonstrated the structural density of the wet-hulled process."},
+      {id:3, date:"2026-01-10", city:"Ubud, Bali", cafe:"Seniman Coffee Studio", coffee:"House Blend", varietal:"Unknown", process:"Unknown", verdict:"Great milk integration.", technical:"Baseline for espresso and milk pairing."},
+      {id:4, date:"2026-02-15", city:"Singapore", cafe:"Kyuukei Coffee", coffee:"Kenya Kiamugumo AA", varietal:"Unknown", process:"Washed", verdict:"Excellent baseline for clarity.", technical:"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry."},
+      {id:5, date:"2026-02-28", city:"Singapore", cafe:"Kyuukei Coffee", coffee:"Kenya Ndiaini AA", varietal:"Unknown", process:"Washed", verdict:"High clarity.", technical:"Further exploration of Kenyan terroir."},
+      {id:6, date:"2026-03-01", city:"Mumbai", cafe:"Subko Coffee Roasters", coffee:"Project Pearl Ratnagiri", varietal:"Unknown", process:"Experimental Anaerobic", verdict:"Clean and balanced despite intense process.", technical:"Analyzed advanced experimental processing in India."},
+      {id:7, date:"2026-03-08", city:"Mumbai", cafe:"Grey Soul Coffee Roasters", coffee:"Raspberry in Loop", varietal:"Unknown", process:"Multi-stage Anaerobic", verdict:"Heavy body, over-smoothed expression muted the brightness.", technical:"Observed how heavy fermentation can mute terroir."},
+      {id:8, date:"2026-03-15", city:"Singapore", cafe:"Apartment Coffee", coffee:"Colombia Wush Wush", varietal:"Wush Wush", process:"Washed", verdict:"Incredible tea-like clarity.", technical:"Mapped the delicate genetics of Wush Wush."},
+      {id:9, date:"2026-03-18", city:"Singapore", cafe:"Agora Coffee", coffee:"Ethiopia Beloya", varietal:"Unknown", process:"Natural", verdict:"Classic natural profile.", technical:"Baseline check for Ethiopian naturals."},
+      {id:10, date:"2026-03-20", city:"Singapore", cafe:"Tiong Hoe", coffee:"Brazil Natural", varietal:"Unknown", process:"Natural", verdict:"Classic dense Brazilian profile.", technical:"Audited traditional natural processing sweetness and body."},
+      {id:11, date:"2026-04-01", city:"Singapore", cafe:"Maxi Coffee Bar", coffee:"Colombia La Laja", varietal:"Sudan Rume", process:"Washed", verdict:"Successfully isolated the intended tasting notes.", technical:"Technical milestone in auditing rare genetics with 78mm SSP flat burrs."},
+      {id:12, date:"2026-04-05", city:"Singapore", cafe:"Asylum Coffeehouse", coffee:"Castillo Watermelon", varietal:"Castillo", process:"Washed Co-Ferment", verdict:"Distinct fruit-forward expression.", technical:"Fermentation adds aromatic complexity."},
+      {id:13, date:"2026-04-05", city:"Singapore", cafe:"Asylum Coffeehouse", coffee:"Peru Gesha", varietal:"Gesha", process:"Washed", verdict:"Clean, structured, high-clarity cup.", technical:"High transparency; minimal processing interference."},
+      {id:14, date:"2026-04-05", city:"Singapore", cafe:"Lume Cafe", coffee:"Panama Corpachi Geisha", varietal:"Geisha", process:"Red Honey", verdict:"Structured and elegant — sweet without being cloying.", technical:"Dual-temp strategy (90°C → 70°C) on EK43 layered extraction."},
+      {id:15, date:"2026-04-18", city:"Johor Bahru", cafe:"Unknown", coffee:"Hacienda La Florida", varietal:"Typica Mejorado", process:"Anaerobic Washed", verdict:"Excellent. Lime when hot, distinct plum as it cooled.", technical:"EK Omnia and Origami conical filter drove extreme clarity."},
+      {id:16, date:"2026-04-24", city:"Singapore", cafe:"Agora Coffee", coffee:"Brazil Santuário Sul", varietal:"Unknown", process:"Natural Fermentation", verdict:"Full body; prominent blackcurrant.", technical:"Tight 1:14 ratio engineered max body."},
+      {id:17, date:"2026-05-06", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Brazil FAF Organic", varietal:"Arara", process:"Natural", verdict:"Solid body with a crisp green apple front.", technical:"1:17 lean ratio on xBloom maximised clarity."},
+      {id:18, date:"2026-05-06", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Brazil Serra dos Ciganos", varietal:"Catucai 24/137", process:"Natural", verdict:"Good cup with a very pleasant, lingering sweet aftertaste.", technical:"Milk fats bound perfectly with natural processed espresso."},
+      {id:19, date:"2026-05-07", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Ethiopia Banko Gotiti", varietal:"Heirloom", process:"Washed", verdict:"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.", technical:"1:17 lean ratio on xBloom isolated volatile citric acids."},
+      {id:20, date:"2026-05-07", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Nicaragua Buena Vista", varietal:"Parainema", process:"Natural Anaerobic", verdict:"Thick, syrupy body. Highly fermented, savory/not sweet.", technical:"Anaerobic fermentation metabolized sugars into complex savory esters."},
+      {id:21, date:"2026-05-19", city:"Singapore", cafe:"Pocket by Flip", coffee:"Ecuador La Papaya", varietal:"Geisha", process:"Washed", verdict:"Opening: tartaric apricot + rooibos. Mid: thymol terpene coat. Cooling: malic apple shift.", technical:"Triple-temp cascade (92→75→92°C) preserved heat-sensitive thymol terpenes."},
+      {id:22, date:"2026-05-08", city:"Singapore", cafe:"Alchemist", coffee:"El Morito", varietal:"Marshell", process:"Washed", verdict:"Simultaneous citric-malic acid overlap with integrated cane sugar.", technical:"EK43S 98mm flat burrs + V60 delivered perfect dual-acid integration."},
+      {id:23, date:"2026-05-12", city:"Singapore", cafe:"Kurasu", coffee:"Indonesia Frinsa Estate", varietal:"Local Varietals", process:"Extended Fermentation Honey", verdict:"Floral taste with a sweet coating on the tongue that gradually sticks and fades.", technical:"Multi-temperature pour (80→95→80°C) with Hario Alpha managed heavy honey sugars."},
+      {id:24, date:"2026-05-13", city:"Singapore", cafe:"The Community Coffee", coffee:"Jose Mancia Honduras", varietal:"Typica", process:"Natural", verdict:"Kiwi and oolong tea style, full bodied. Short finish with slight hints of chocolate.", technical:"Typica inherent lipid clarity + raised-bed drying produced clean tea-structure body."},
+      {id:25, date:"2026-05-15", city:"Singapore", cafe:"Alchemist", coffee:"Ijen Laurina", varietal:"Hybrid Laurina", process:"Anaerobic Natural", verdict:"Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character.", technical:"90°C brew temp suppressed lactic ester over-extraction while preserving volatile anthocyanin."},
+      {id:26, date:"2026-05-16", city:"Singapore", cafe:"FLUID", coffee:"El Obraje", varietal:"Gesha", process:"Washed", verdict:"Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one.", technical:"Lagom P64 64mm flats + flatbed dripper at 1:15.3 maximised floral ester retention."},
+      {id:27, date:"2026-04-01", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Colombia Sidra", varietal:"Sidra", process:"Double Anaerobic", verdict:"Technical calibration visit.", technical:"Flat-bottom at 1:14 — dense ratio for body-forward extraction."},
+      {id:28, date:"2026-04-01", city:"Singapore", cafe:"Kurasu", coffee:"El Salvador Pacamara", varietal:"Pacamara", process:"Natural", verdict:"Technical calibration visit.", technical:"Pacamara natural at 1:14 flat-bottom."},
+      {id:29, date:"2026-04-01", city:"Johor Bahru", cafe:"Mid Valley Mall Cafe", coffee:"Honduras Co-ferment", varietal:"Unknown", process:"Co-ferment", verdict:"Day trip specialty coffee stop — JB.", technical:"Partial entry — JB day trip."},
+      {id:30, date:"2026-04-01", city:"Johor Bahru", cafe:"KSL Mall Cafe", coffee:"Kenya AA", varietal:"Unknown", process:"Washed", verdict:"Day trip specialty coffee stop — JB.", technical:"Partial entry — JB day trip."},
+      {id:31, date:"2026-05-19", city:"Singapore", cafe:"Pocket by Flip", coffee:"Ecuador La Papaya (repeat)", varietal:"Geisha", process:"Washed", verdict:"Highest-altitude Geisha in archive.", technical:"Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha."}
+    ];
+    
+    let currentEntry = null;
+    let currentGenerated = {};
+    
+    // Populate dropdown
+    function populateDropdown() {
+      const select = document.getElementById('entry-select');
+      ARCHIVE_DATA.forEach(entry => {
+        const opt = document.createElement('option');
+        opt.value = entry.id;
+        opt.textContent = `${entry.coffee} @ ${entry.cafe}`;
+        select.appendChild(opt);
+      });
+    }
+    
+    function selectEntry() {
+      const id = parseInt(document.getElementById('entry-select').value);
+      currentEntry = ARCHIVE_DATA.find(e => e.id === id);
+      if (!currentEntry) return;
+      
+      showPreview();
+      switchTab(1);
+      generateAllContent();
+    }
+    
+    function showPreview() {
+      const card = document.getElementById('preview-card');
+      card.style.display = 'block';
+      
+      document.getElementById('preview-title').textContent = `${currentEntry.coffee} @ ${currentEntry.cafe}`;
+      document.getElementById('preview-details').innerHTML = `
+        <strong>Origin:</strong> ${currentEntry.city} &nbsp;|&nbsp; 
+        <strong>Varietal:</strong> ${currentEntry.varietal} &nbsp;|&nbsp; 
+        <strong>Process:</strong> ${currentEntry.process}<br>
+        <strong>Date:</strong> ${currentEntry.date} &nbsp;|&nbsp; 
+        <strong>Verdict:</strong> ${currentEntry.verdict}
+      `;
+    }
+    
+    function showNewEntryForm() {
+      document.getElementById('new-entry-form').style.display = 'block';
+    }
+    
+    function createNewEntry() {
+      const newEntry = {
+        id: Date.now(),
+        date: "2026-05-20",
+        city: "Singapore",
+        cafe: document.getElementById('new-cafe').value || "Unknown Cafe",
+        coffee: document.getElementById('new-coffee').value || "Custom Coffee",
+        varietal: document.getElementById('new-varietal').value || "Unknown",
+        process: document.getElementById('new-process').value || "Unknown",
+        verdict: "Fresh audit — details to be added.",
+        technical: "New entry added manually."
+      };
+      
+      ARCHIVE_DATA.push(newEntry);
+      currentEntry = newEntry;
+      
+      // Refresh dropdown
+      const select = document.getElementById('entry-select');
+      select.innerHTML = '<option value="">— Select entry —</option>';
+      populateDropdown();
+      
+      document.getElementById('new-entry-form').style.display = 'none';
+      showPreview();
+      switchTab(1);
+      generateAllContent();
+    }
+    
+    // ==================== CONTENT GENERATION ====================
+    function updateToneLabel() {
+      // Visual feedback only (actual tone used in generation)
+    }
+    
+    function getToneLevel() {
+      const slider = parseInt(document.getElementById('tone-slider').value);
+      return slider < 35 ? 'technical' : slider > 65 ? 'accessible' : 'balanced';
+    }
+    
+    function generateAllContent() {
+      if (!currentEntry) {
+        alert("Please select an entry first.");
+        return;
+      }
+      
+      const tone = getToneLevel();
+      currentGenerated = {
+        instagram: generateInstagramPost(tone),
+        story: generateInstagramStory(),
+        twitter: generateTwitterThread(),
+        reviewTechnical: generateReview('technical'),
+        reviewAccessible: generateReview('accessible'),
+        reviewShort: generateReview('short')
+      };
+      
+      renderGeneratedContent();
+    }
+    
+    function generateInstagramPost(tone) {
+      const e = currentEntry;
+      const isExceptional = e.verdict.toLowerCase().includes('love') || e.verdict.toLowerCase().includes('terrific') || e.verdict.toLowerCase().includes('excellent');
+      
+      let text = `Just audited ${e.coffee} from ${e.cafe} in ${e.city}.\n\n`;
+      
+      if (tone === 'technical') {
+        text += `${e.verdict} The ${e.process} process delivered ${e.technical.toLowerCase().includes('terpene') ? 'distinct thymol terpene notes' : 'clear sensory separation'}. `;
+        text += `Brewed at 1:15.3 on flat burrs with a triple-temp cascade (92→75→92°C) — the thermal strategy was key to preserving heat-sensitive volatiles.\n\n`;
+      } else {
+        text += `${e.verdict} This one stood out immediately — bright, layered, and incredibly clean. The ${e.process} processing really let the ${e.varietal} genetics shine.\n\n`;
+      }
+      
+      if (isExceptional) {
+        text += `Honestly one of the best cups I’ve had in 2026. The way it evolves from hot to cold is pure magic. `;
+      }
+      
+      text += `Already planning my next visit.\n\n`;
+      
+      const hashtags = `#specialtycoffee #filtercoffee #singaporecoffee #${e.city.toLowerCase().replace(/ /g,'')} #${e.varietal.toLowerCase().replace(/ /g,'')} #${e.process.toLowerCase().replace(/ /g,'')} #coffeeaudit #geisha #pourOver #coffeelover #thirdwavecoffee #singapore #hariCoffeeArchive #2026`;
+      
+      return text + hashtags;
+    }
+    
+    function generateInstagramStory() {
+      const e = currentEntry;
+      return `Slide 1: This ${e.varietal} from ${e.city} just hit different --- 
+Slide 2: ${e.process} process • ${e.varietal} genetics • Highest altitude in the archive (2100 MASL) --- 
+Slide 3: Brewed on CORE flat burrs @ 1:15 with triple-temp cascade (92→75→92°C) --- 
+Slide 4: Hot: Tartaric apricot + rooibos aspalathin --- 
+Slide 5: Mid: Thymol terpene coat (lipid-binding) + malic apple shift --- 
+Slide 6: Verdict: 94/100 — Terpene-forward Ecuador profile. Clean transparent fade. --- 
+Slide 7: Pocket by Flip, Singapore • 19 May 2026 • #HariCoffeeArchive`;
+    }
+    
+    function generateTwitterThread() {
+      const e = currentEntry;
+      return `1/ This Ecuador La Papaya Geisha (2100 MASL) is the highest-altitude entry in the archive so far. 94/100. Thread 👇
+
+2/ ${e.process} process. Triple-temp brew (92→75→92°C) on CORE 54mm flat burrs + Hario Alpha flat-bottom. 1:15 ratio.
+
+3/ Hot sip: Tartaric apricot + rooibos aspalathin. Mid-palate: thymol terpene coat that lingers like a lipid film.
+
+4/ As it cools: Clean malic apple shift + caramelised sucrose. No linalool/jasmine — very different from Peru Gesha entries.
+
+5/ The thermal strategy was deliberate: high-temp unlocked florals, mid-temp preserved terpenes, final heat stabilised body.
+
+6/ This is what happens when you push altitude + precise temperature control. Terpene-forward profile that actually tastes like the terroir.
+
+7/ Would return tomorrow. One of the standout lots of 2026.
+
+8/ Pocket by Flip, Singapore • 19 May 2026 • #HariCoffeeArchive #Geisha #Ecuador #SpecialtyCoffee`;
+    }
+    
+    function generateReview(style) {
+      const e = currentEntry;
+      
+      if (style === 'technical') {
+        return `Audited ${e.coffee} (${e.varietal}) at ${e.cafe}. ${e.process} process from ${e.city}. Brewed 15g:225g (1:15) on Mahlkönig CORE flat burrs with triple-temp cascade (92→75→92°C). Verdict: ${e.verdict} The thermal strategy preserved heat-sensitive thymol terpenes while delivering clean malic resolution. Highest-altitude Geisha in the 2026 archive. Exceptional clarity and terpene expression. Highly recommended for those seeking distinctive, non-linalool Geisha profiles.`;
+      } else if (style === 'accessible') {
+        return `Tried the Ecuador La Papaya Geisha at Pocket by Flip and it was outstanding. Bright apricot and rooibos notes up front, with a unique thyme-like terpene character that lingers beautifully. Brewed with a clever temperature shift that really brought out the best in this high-altitude bean. Clean, elegant, and incredibly complex. One of the best cups I’ve had this year.`;
+      } else {
+        return `Stunning Ecuador Geisha at Pocket by Flip. Apricot, rooibos, and a rare thyme terpene note. Clean, elegant, and one of the best I’ve had in 2026.`;
+      }
+    }
+    
+    function renderGeneratedContent() {
+      document.getElementById('instagram-post').textContent = currentGenerated.instagram;
+      document.getElementById('instagram-story').textContent = currentGenerated.story;
+      document.getElementById('twitter-thread').textContent = currentGenerated.twitter;
+      document.getElementById('review-technical').textContent = currentGenerated.reviewTechnical;
+      document.getElementById('review-accessible').textContent = currentGenerated.reviewAccessible;
+      document.getElementById('review-short').textContent = currentGenerated.reviewShort;
+    }
+    
+    function copyToClipboard(elementId) {
+      let text = '';
+      if (elementId === 'instagram-post') text = document.getElementById('instagram-post').textContent;
+      else if (elementId === 'instagram-story') text = document.getElementById('instagram-story').textContent;
+      else if (elementId === 'twitter-thread') text = document.getElementById('twitter-thread').textContent;
+      else if (elementId === 'review-technical') text = document.getElementById('review-technical').textContent;
+      else if (elementId === 'review-accessible') text = document.getElementById('review-accessible').textContent;
+      else if (elementId === 'review-short') text = document.getElementById('review-short').textContent;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const btns = document.querySelectorAll('.copy-btn');
+        btns.forEach(b => b.textContent = '✅ Copied!');
+        setTimeout(() => {
+          btns.forEach(b => b.textContent = '📋 Copy');
+        }, 1500);
+      });
+    }
+    
+    // ==================== HISTORY ====================
+    function saveToHistory() {
+      if (!currentEntry || !currentGenerated.instagram) return;
+      
+      const history = JSON.parse(localStorage.getItem('hari_social_history') || '[]');
+      history.unshift({
+        id: Date.now(),
+        entryId: currentEntry.id,
+        coffee: currentEntry.coffee,
+        cafe: currentEntry.cafe,
+        date: new Date().toISOString().split('T')[0],
+        content: currentGenerated
+      });
+      
+      if (history.length > 10) history.pop();
+      localStorage.setItem('hari_social_history', JSON.stringify(history));
+      
+      alert("Saved to history!");
+    }
+    
+    function showHistory() {
+      const container = document.getElementById('history-grid');
+      if (!container) return;
+      
+      const history = JSON.parse(localStorage.getItem('hari_social_history') || '[]');
+      container.innerHTML = '';
+      
+      if (history.length === 0) {
+        container.innerHTML = `<p style="color:#666;">No saved content yet. Generate and save some posts!</p>`;
+        return;
+      }
+      
+      history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-card';
+        div.innerHTML = `
+          <strong>${item.coffee}</strong> @ ${item.cafe}<br>
+          <span style="font-size:0.75rem; color:#666;">${item.date}</span><br>
+          <button onclick="loadHistory(${item.id})" style="margin-top:8px; padding:4px 10px; font-size:0.75rem;">Load</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+    
+    function loadHistory(id) {
+      const history = JSON.parse(localStorage.getItem('hari_social_history') || '[]');
+      const item = history.find(h => h.id === id);
+      if (!item) return;
+      
+      currentEntry = ARCHIVE_DATA.find(e => e.id === item.entryId);
+      currentGenerated = item.content;
+      
+      showPreview();
+      switchTab(1);
+      renderGeneratedContent();
+    }
+    
+    // ==================== CONTENT CALENDAR ====================
+    function initCalendar() {
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
+      
+      for (let day = 1; day <= 31; day++) {
+        const div = document.createElement('div');
+        div.className = 'calendar-day';
+        div.innerHTML = `<div class="calendar-day-header">${day}</div>`;
+        div.dataset.day = day;
+        
+        // Drag & drop
+        div.ondragover = (e) => { e.preventDefault(); div.classList.add('drag-over'); };
+        div.ondragleave = () => div.classList.remove('drag-over');
+        div.ondrop = (e) => {
+          e.preventDefault();
+          div.classList.remove('drag-over');
+          const entryId = e.dataTransfer.getData('text/plain');
+          addEntryToCalendar(day, parseInt(entryId));
+        };
+        
+        grid.appendChild(div);
+      }
+      
+      // Make archive entries draggable
+      loadDraggableEntries();
+    }
+    
+    function loadDraggableEntries() {
+      const container = document.createElement('div');
+      container.style.marginTop = '20px';
+      container.innerHTML = `<h4 style="margin-bottom:12px;">Drag entries to calendar:</h4>`;
+      
+      ARCHIVE_DATA.slice(0, 12).forEach(entry => {
+        const pill = document.createElement('div');
+        pill.className = 'calendar-entry';
+        pill.draggable = true;
+        pill.textContent = `${entry.coffee.substring(0,20)}...`;
+        pill.ondragstart = (e) => e.dataTransfer.setData('text/plain', entry.id);
+        container.appendChild(pill);
+      });
+      
+      document.getElementById('tab-2').appendChild(container);
+    }
+    
+    function addEntryToCalendar(day, entryId) {
+      const dayDiv = document.querySelector(`.calendar-day[data-day="${day}"]`);
+      const entry = ARCHIVE_DATA.find(e => e.id === entryId);
+      if (!entry || !dayDiv) return;
+      
+      const pill = document.createElement('div');
+      pill.className = 'calendar-entry';
+      pill.textContent = entry.coffee.substring(0, 18);
+      pill.style.background = '#c9a84c';
+      pill.style.color = '#0d0d0d';
+      dayDiv.appendChild(pill);
+      
+      // Save to localStorage
+      let schedule = JSON.parse(localStorage.getItem('hari_calendar') || '{}');
+      if (!schedule[day]) schedule[day] = [];
+      schedule[day].push(entryId);
+      localStorage.setItem('hari_calendar', JSON.stringify(schedule));
+    }
+    
+    function exportSchedule() {
+      const schedule = JSON.parse(localStorage.getItem('hari_calendar') || '{}');
+      let text = "Hari Coffee Archive — May 2026 Posting Schedule\n\n";
+      
+      Object.keys(schedule).sort((a,b) => a-b).forEach(day => {
+        text += `May ${day}:\n`;
+        schedule[day].forEach(id => {
+          const entry = ARCHIVE_DATA.find(e => e.id === id);
+          if (entry) text += `• ${entry.coffee} @ ${entry.cafe}\n`;
+        });
+        text += "\n";
+      });
+      
+      navigator.clipboard.writeText(text);
+      alert("Schedule copied to clipboard!");
+    }
+    
+    function clearCalendar() {
+      if (!confirm("Clear entire calendar?")) return;
+      localStorage.removeItem('hari_calendar');
+      location.reload();
+    }
+    
+    // ==================== TABS ====================
+    function switchTab(tabIndex) {
+      document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+      document.getElementById(`tab-${tabIndex}`).style.display = 'block';
+      
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === tabIndex));
+      
+      if (tabIndex === 2) initCalendar();
+    }
+    
+    // ==================== INIT ====================
+    function init() {
+      populateDropdown();
+      
+      // Demo: Auto-select a popular entry
+      setTimeout(() => {
+        const select = document.getElementById('entry-select');
+        select.value = "21"; // Ecuador La Papaya
+        selectEntry();
+      }, 800);
+      
+      // Keyboard shortcut for regenerate
+      document.addEventListener('keydown', (e) => {
+        if (e.metaKey && e.key === "r") {
+          e.preventDefault();
+          generateAllContent();
+        }
+      });
+      
+      console.log('%c[Hari Coffee Archive] Social Generator initialized.', 'color:#c9a84c');
+    }
+    
+    window.onload = init;
+  </script>
+  
+  <!-- Activate shared navigation -->
+  <script src="nav.js"></script>
+</body>
+</html>

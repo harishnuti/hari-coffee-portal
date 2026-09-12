@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seven Grams at the Fair — Hari Coffee Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF8F3;
+    --ink:#1B120C;
+    --liquor:#A85A18;
+    --blossom:#E08A2E;
+    --gesha:#EDE0FF;
+    --gesha-ink:#5B4585;
+    --card:#141210;
+    --card-line:#3A342E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader',serif;
+    font-size:1.125rem;
+    line-height:1.72;
+  }
+  .wrap{max-width:700px;margin:0 auto;padding:0 22px}
+
+  /* ---------- Masthead ---------- */
+  header{padding:64px 0 0}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--liquor);
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:900;
+    font-size:clamp(2.6rem,8vw,4.4rem);
+    line-height:1.02;
+    letter-spacing:-.015em;
+    margin:14px 0 18px;
+  }
+  h1 em{font-style:italic;font-weight:600;color:var(--liquor)}
+  .standfirst{
+    font-size:1.25rem;font-weight:500;line-height:1.5;
+    max-width:36ch;
+  }
+  .dateline{
+    font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+    color:#6d5f52;margin:26px 0 0;
+    border-top:1px solid #e4dccf;border-bottom:1px solid #e4dccf;
+    padding:10px 0;display:flex;gap:1.4em;flex-wrap:wrap;
+  }
+
+  h2{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:clamp(1.5rem,4.4vw,2rem);line-height:1.15;
+    margin:0 0 .7em;
+  }
+  section{padding:52px 0 6px}
+  p{margin:0 0 1.15em}
+  p.big-lede::first-letter{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:3.4em;float:left;line-height:.82;
+    padding:.07em .12em 0 0;color:var(--liquor);
+  }
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--liquor);
+    display:block;margin-bottom:10px;
+  }
+
+  /* ---------- Archive ribbon (past experience) ---------- */
+  .archive-ribbon{
+    background:linear-gradient(180deg,#F4EDFB 0%,var(--gesha) 100%);
+    border-top:1px solid #d9c9f2;border-bottom:1px solid #d9c9f2;
+    margin:44px 0 0;padding:34px 0;
+  }
+  .archive-ribbon .wrap{max-width:760px}
+  .ribbon-title{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gesha-ink);
+    margin-bottom:18px;
+  }
+  .ledger{display:grid;gap:0;border-top:1px dashed #c4b1e4}
+  .ledger-row{
+    display:grid;grid-template-columns:86px 1fr auto;gap:14px;
+    padding:12px 0;border-bottom:1px dashed #c4b1e4;align-items:baseline;
+  }
+  .ledger-date{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--gesha-ink)}
+  .ledger-what{font-size:1rem;line-height:1.45}
+  .ledger-what strong{font-weight:600}
+  .ledger-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+    color:var(--gesha-ink);white-space:nowrap;
+  }
+  @media(max-width:540px){
+    .ledger-row{grid-template-columns:70px 1fr}
+    .ledger-tag{grid-column:2;margin-top:2px}
+  }
+
+  /* ---------- Day-3 taster ribbon ---------- */
+  .taster-ribbon{
+    background:linear-gradient(180deg,#FBF2E2 0%,#F6E7CB 100%);
+    border-top:1px solid #E8D3A8;border-bottom:1px solid #E8D3A8;
+    margin:38px 0 0;padding:32px 0;
+  }
+  .taster-ribbon .wrap{max-width:760px}
+  .taster-ribbon .ribbon-title{color:#8C5A16}
+  .taster-ribbon .ledger{border-top:1px dashed #DCC08C}
+  .taster-ribbon .ledger-row{border-bottom:1px dashed #DCC08C}
+  .taster-ribbon .ledger-date,.taster-ribbon .ledger-tag{color:#8C5A16}
+
+  /* ---------- Bean card (signature panel) ---------- */
+  .bean-card{
+    background:var(--card);color:#F3EEE7;
+    margin:44px 0;padding:40px 30px 34px;
+    border-radius:3px;
+    position:relative;
+    box-shadow:0 22px 44px -18px rgba(27,18,12,.45);
+  }
+  .bean-card::after{ /* MAME corner mark */
+    content:"MA\A ME";white-space:pre;
+    position:absolute;top:26px;right:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;
+    letter-spacing:.34em;line-height:1.5;color:#fff;
+  }
+  .bc-notes{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:600;
+    font-size:clamp(1.5rem,4.6vw,2.1rem);line-height:1.22;
+    max-width:12ch;
+  }
+  .bc-sub{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+    letter-spacing:.14em;text-transform:uppercase;color:#B9AD9E;
+    margin:8px 0 30px;
+  }
+  .bc-meta{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:20px;border-top:1px solid var(--card-line);padding-top:22px;
+  }
+  .bc-meta div span{
+    display:block;font-family:'IBM Plex Mono',monospace;
+    font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:#9A8E80;
+    margin-bottom:4px;
+  }
+  .bc-meta div b{font-family:'Newsreader',serif;font-weight:500;font-size:1rem}
+  .bc-hand{
+    font-family:'Caveat',cursive;font-size:2rem;color:#fff;
+    transform:rotate(-2.5deg);display:inline-block;margin:26px 0 0;
+    border-bottom:2px solid rgba(255,255,255,.35);padding:0 6px 2px;
+  }
+
+  /* ---------- Results stamp ---------- */
+  .results-card{
+    background:var(--card);color:#F3EEE7;
+    margin:40px 0 8px;padding:34px 30px;
+    border-radius:3px;
+    box-shadow:0 22px 44px -18px rgba(27,18,12,.45);
+  }
+  .results-title{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+    letter-spacing:.2em;text-transform:uppercase;color:#B9AD9E;margin-bottom:20px;
+  }
+  .result-row{
+    display:grid;grid-template-columns:110px 1fr;gap:14px;
+    padding:12px 0;border-top:1px solid var(--card-line);align-items:baseline;
+  }
+  .result-medal{font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+    letter-spacing:.12em;text-transform:uppercase;color:#D9A94E}
+  .result-name{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem}
+  .result-name small{font-family:'Newsreader',serif;font-weight:400;font-size:.85rem;color:#B9AD9E;display:block}
+  .result-champ .result-name{color:#fff;font-weight:900;font-size:1.35rem}
+  .result-champ .result-medal{color:#7EE0A3}
+  @media(max-width:540px){.result-row{grid-template-columns:1fr;gap:2px}}
+
+  /* ---------- Brew params readout ---------- */
+  .readout{
+    font-family:'IBM Plex Mono',monospace;
+    display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 28px;
+  }
+  .readout span{
+    border:1px solid #ddd2c0;background:#fff;
+    padding:7px 12px;font-size:.78rem;border-radius:2px;
+  }
+  .readout b{color:var(--liquor);font-weight:500}
+
+  /* ---------- Thermal decode (signature) ---------- */
+  .thermal{margin:10px 0 30px;border-radius:4px;overflow:hidden;
+    box-shadow:0 14px 30px -16px rgba(27,18,12,.35)}
+  .thermal-bar{
+    height:10px;
+    background:linear-gradient(90deg,#8C3B0A 0%,#C1712C 48%,#E8B366 100%);
+  }
+  .phase{display:grid;grid-template-columns:120px 1fr;gap:16px;
+    padding:20px 22px;background:#fff;border-bottom:1px solid #EFE7D8}
+  .phase:last-child{border-bottom:none}
+  .phase-label{font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+    letter-spacing:.12em;text-transform:uppercase;line-height:1.6}
+  .phase-label b{display:block;font-size:.95rem;letter-spacing:.06em}
+  .p-hot .phase-label{color:#8C3B0A}
+  .p-mid .phase-label{color:#C1712C}
+  .p-cool .phase-label{color:#B98A3C}
+  .phase-text{font-size:1.02rem;line-height:1.6}
+  @media(max-width:540px){.phase{grid-template-columns:1fr;gap:6px}}
+
+  /* ---------- Day timeline ---------- */
+  .timeline{border-left:2px solid #E3D8C4;margin:8px 0 20px;padding-left:26px}
+  .stop{position:relative;padding:0 0 30px}
+  .stop::before{
+    content:"";position:absolute;left:-33px;top:8px;
+    width:12px;height:12px;border-radius:50%;
+    background:var(--paper);border:3px solid var(--liquor);
+  }
+  .stop.gesha::before{background:var(--gesha);border-color:var(--gesha-ink)}
+  .stop-time{font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--liquor)}
+  .stop.gesha .stop-time{color:var(--gesha-ink)}
+  .stop h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.28rem;margin:4px 0 6px}
+  .stop p{font-size:1.02rem;margin-bottom:0}
+
+  /* ---------- Pull quote ---------- */
+  .pull{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:600;
+    font-size:clamp(1.45rem,4.6vw,1.9rem);line-height:1.35;
+    color:var(--liquor);
+    border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    padding:26px 4px;margin:38px 0;
+  }
+
+  /* ---------- Diptych companion link ---------- */
+  .companion{
+    display:block;text-decoration:none;
+    border:1.5px solid var(--ink);background:#fff;
+    padding:20px 22px;margin:30px 0 6px;border-radius:3px;
+    transition:background .25s, box-shadow .25s;
+  }
+  .companion:hover{background:var(--gesha);box-shadow:0 10px 24px -14px rgba(27,18,12,.4)}
+  .companion .c-kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--liquor);
+    margin-bottom:6px;
+  }
+  .companion .c-title{
+    font-family:'Fraunces',serif;font-weight:900;font-size:1.35rem;
+    color:var(--ink);line-height:1.25;
+  }
+  .companion .c-sub{font-size:.92rem;color:#6d5f52;margin-top:4px}
+
+  /* ---------- Footer ---------- */
+  footer{
+    margin-top:70px;background:var(--card);color:#CBBFB0;
+    padding:40px 0 48px;font-size:.95rem;
+  }
+  footer .wrap{display:flex;flex-direction:column;gap:8px}
+  .foot-mark{font-family:'Caveat',cursive;font-size:1.9rem;color:#fff}
+  .foot-line{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+  .gesha-chip{
+    display:inline-block;background:var(--gesha);color:var(--gesha-ink);
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+    padding:3px 9px;border-radius:2px;vertical-align:2px;margin-left:6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">Hari Coffee Archive · Field Notes Diptych · Part II</div>
+  <h1>Seven grams<br>at <em>the fair</em></h1>
+  <p class="standfirst">My first coffee festival — and the two-hundred-year-old varietal that keeps finding me wherever I go.</p>
+  <div class="dateline">
+    <span>16–17 JUL 2026</span><span>SIGEP ASIA · SANDS EXPO, SINGAPORE</span><span>DAYS 2–3 OF 3</span><span>ENTRY LOGGED ⭐</span>
+  </div>
+</header>
+
+<section class="wrap">
+  <p class="big-lede">I know how to walk a festival hall. Whiskey taught me that — the pacing, the shortlisting, the discipline of not spending your palate in the first hour. But in six months and sixty-five logged cups across Singapore, Bali, Mumbai and Johor Bahru, I had never once walked a hall built around the drink I actually keep a database for. SIGEP Asia was the first. Work took Day 1 from me; Day 2, I claimed three hours of an afternoon and went in with the archive open.</p>
+  <p>And the archive matters here, because this festival did not happen in a vacuum. It landed in the middle of the hottest fortnight my palate has ever had.</p>
+</section>
+
+<div class="archive-ribbon">
+  <div class="wrap">
+    <div class="ribbon-title">⭐ The road to the fair — from the archive</div>
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="ledger-date">03 JAN</span>
+        <span class="ledger-what"><strong>Entry #001.</strong> Seniman Coffee Studio, Bali. Where the whole audit began — clean citrus, floral, a notebook habit becoming a database.</span>
+        <span class="ledger-tag">ORIGIN STORY</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">16 MAY</span>
+        <span class="ledger-what"><strong>El Obraje</strong>, Fluid Collective. Orange-nectarine into honey. "So far my favourite." It held the throne for the better part of six months.</span>
+        <span class="ledger-tag">LONG-REIGN CHAMPION</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">14 JUL</span>
+        <span class="ledger-what"><strong>Finca Sophia Torcaza</strong>, brewed by TaoTao at Pour.traits. S$60. The coronation — archive #1, El Obraje finally displaced. Two days before the festival.</span>
+        <span class="ledger-tag">ARCHIVE #1 · S$60</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">15 JUL</span>
+        <span class="ledger-what"><strong>Peru Cajamarca Washed Gesha</strong>, Equate. Raspberry ester, peach lactone. Literally the day before the fair — I walked in already tuned.</span>
+        <span class="ledger-tag">EVE OF THE FAIR</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="wrap">
+  <span class="kicker">The stage</span>
+  <h2>Watching the championship explains the archive back to me</h2>
+  <p>The first thing that stopped me wasn't a booth — it was the Singapore National Brewers Cup, live. Competitors presenting filter coffee to a row of judges, and here is what nobody tells you until you stand there: the brew is only half the score. The <em>narrative</em> is judged. The theme. The way a barista frames a producer's story and defends a recipe. It's extraction as argument.</p>
+  <p>And the bean the arguments kept reaching for? Panama Geisha. Competitor after competitor. Watching that, something clicked into place: I've been mock-judged alongside Homeground's team, I've had national champions brew for me — Shen Choy's El Obraje, TaoTao's Torcaza — and every one of those pricey purple-tinted rows in my spreadsheet was never indulgence. It was the same bet the professionals make when a title is on the line.</p>
+  <p>I'll miss tomorrow's 4pm final for a meeting I can't move. It stings less than it should — because two hours later, a World Brewers Cup champion's roastery poured me their competition coffee anyway.</p>
+</section>
+
+<section class="wrap">
+  <span class="kicker">The purchase</span>
+  <h2>MAME: Japanese name, Zurich soul, my name on the card</h2>
+  <p>At the Roaster Village, a black-clad booth with a two-letter wordmark. MAME — I assumed a Japanese chain; the team smiled and said Switzerland. Both true, it turns out: founded in Zurich in 2016 by Emi Fukahori and Mathieu Theis, two baristas who met through championships. Emi is the 2018 World Brewers Cup Champion. <em>Mame</em> means "beans" in Japanese. A roastery bred entirely from competition — at a festival built around one.</p>
+  <p>I ordered the only cup on that board my Palate DNA could ever have chosen: the sole fully-washed Geisha with zero fermentation intervention. They handed it back with the bean card personalised in silver ink.</p>
+
+  <div class="bean-card">
+    <div class="bc-notes">Jasmine<br>Orange Blossom<br>Yellow Peach</div>
+    <div class="bc-sub">Competition Coffee</div>
+    <div class="bc-meta">
+      <div><span>Coffee</span><b>Bambito Estate</b></div>
+      <div><span>Producer</span><b>Priscilla Amar Sitton</b></div>
+      <div><span>Origin</span><b>Panama · 1,660–1,800 masl</b></div>
+      <div><span>Varietal / Process</span><b>Geisha · Washed</b></div>
+    </div>
+    <span class="bc-hand">HARISH.</span>
+  </div>
+
+  <div class="readout">
+    <span>DOSE <b>7g</b></span>
+    <span>YIELD <b>105g</b></span>
+    <span>RATIO <b>1:15</b></span>
+    <span>TEMP <b>93°C</b></span>
+    <span>POURS <b>2</b></span>
+    <span>GRINDER <b>TIMEMORE</b></span>
+    <span>PRICE <b>S$16 / 7g · ¥1,990</b></span>
+  </div>
+
+  <p>Seven grams, S$16 — the menu's ¥1,990 finally decoded (the S$25 next to it was for 20g of beans, not the cup). Scale that microdose up and you're at roughly S$34 for a full serving: on a full-cup-equivalent basis, the second most expensive coffee in my archive, behind only Torcaza's S$60 crown from two days ago. Two pours, a shallow bed, a short high-clarity extraction window: the physics were tuned for aroma over body, and the cup delivered exactly that.</p>
+
+  <div class="thermal">
+    <div class="thermal-bar"></div>
+    <div class="phase p-hot">
+      <div class="phase-label"><b>HOT</b>93°C serve</div>
+      <div class="phase-text">Orange blossom out front with a proper <em>orange hit</em> — intensely floral, structured like fine tea. The linalool signature my whole archive is organised around, fully volatilised from the first sip.</div>
+    </div>
+    <div class="phase p-mid">
+      <div class="phase-label"><b>MID-COOL</b>the turn</div>
+      <div class="phase-text">The tea-like frame holds while the florals begin to sweeten — the cup getting more generous instead of thinner, exactly what washed-process clarity is supposed to do as volatiles settle.</div>
+    </div>
+    <div class="phase p-cool">
+      <div class="phase-label"><b>COOL</b>the reveal</div>
+      <div class="phase-text">Very nice to drink. Orange blossom steps forward sweeter than before, and a clean tinge of citric orange lands on the aftertaste and stays. Yellow peach on the card, orange on my palate — the acids sharpening as sugars come into relief. A fine Geisha.</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="pull">"Every pricey purple row in my spreadsheet was never indulgence. It was the same bet the professionals make when a title is on the line."</div></div>
+
+<section class="wrap">
+  <span class="kicker">The circuit</span>
+  <h2>Three hours, one hall, the whole ecosystem</h2>
+  <div class="timeline">
+    <div class="stop">
+      <span class="stop-time">The stage</span>
+      <h3>SNCC, live</h3>
+      <p>Two full competitor presentations watched from the floor. Narrative, theme, recipe defence — the sport behind the cups I log.</p>
+    </div>
+    <div class="stop">
+      <span class="stop-time">The classroom</span>
+      <h3>SCA booth</h3>
+      <p>The global body behind the standards, the certifications, and events like this one — with courses in Singapore offered through Bettr. Green beans in hand, raw and grassy, the smell of coffee before it becomes coffee.</p>
+    </div>
+    <div class="stop gesha">
+      <span class="stop-time">Free pours</span>
+      <h3>Hario tasters</h3>
+      <p>Two small filter cups at the Hario booth — one of them a Geisha. Even the freebies at this fair speak my varietal.</p>
+    </div>
+    <div class="stop gesha">
+      <span class="stop-time">The purchase</span>
+      <h3>MAME · Bambito Estate</h3>
+      <p>The cup above. Entry logged, card kept, name on it.</p>
+    </div>
+    <div class="stop">
+      <span class="stop-time">The temptation</span>
+      <h3>Timemore</h3>
+      <p>Grinders, kettles, scales, full brew kits — the championship's own official hardware, laid out like a dare. I handled everything and bought nothing. Deliberately. One more year of drinking filters in cafés, asking baristas questions, logging every cup — and the archive itself will tell me exactly which kit deserves my counter. This spreadsheet isn't a diary; it's the research phase of that purchase.</p>
+    </div>
+    <div class="stop">
+      <span class="stop-time">Palate reset</span>
+      <h3>Dutch Colony</h3>
+      <p>A small oat piccolo — off the audit books, as milk drinks always are, but a good full stop.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <span class="kicker">Day three &mdash; the encore</span>
+  <h2>The final I wasn't supposed to see</h2>
+  <p>Yesterday I wrote that I'd miss the final for a meeting I couldn't move. Then I moved myself instead: eleven-thirty, back through the doors of the Sands Expo for one last two-hour lap before the office reclaimed me. And there it was &mdash; finals day running all around me. I stood at the championship stage and watched two Brewers Cup finalists present their cups to the judges, recipe defence and narrative in full flight, exactly the sport I'd decoded the day before. Four winners get announced this evening &mdash; the four who will carry Singapore onto the world stage next year &mdash; and I'll be refreshing for the results from my desk. I even got to speak with one of the finalists: Jonathan, of Kyuukei, mid-campaign and still generous with his time. That's this scene in one image.</p>
+  <p>And here's the punchline my wallet appreciated: after yesterday's S$16 Geisha, today cost <em>nothing</em>. Not one dollar. Day 3 was a free-pour gauntlet, and I ran all of it.</p>
+</section>
+
+<section class="wrap">
+  <span class="kicker">The recognition</span>
+  <h2>Found by KerYi, guided by Instagram</h2>
+  <p>Here is the part of the festival no menu board could have offered. Mel and You Quan &mdash; the couple behind KerYi Coffee, a caf&eacute; with two entries in my archive &mdash; had spotted me at their cupping session earlier in the festival. We never got to talk in the crowd. So they did something that still makes me smile: they messaged me on Instagram afterwards, apologised for missing me, and told me about their pop-up on the final day, ten to noon.</p>
+  <p>Which is why I was rushing through the doors at eleven-thirty. I couldn't find the booth. So the whole thing played out over Instagram in real time &mdash; me texting, them replying with videos of their location like a treasure hunt &mdash; until finally, there was Quan, pressing a cup of Ethiopian filter into my hand, and then Mel too, both of them making time mid-pop-up for someone they knew only as a face from their counter. They remembered me from my visits to the caf&eacute;. In an industry built on regulars, it turns out the archivist gets archived right back.</p>
+</section>
+
+<div class="taster-ribbon">
+  <div class="wrap">
+    <div class="ribbon-title">&#9749; The zero-dollar tally &mdash; day 3, two hours, all tasters</div>
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="ledger-date">HARIO</span>
+        <span class="ledger-what"><strong>The Cherry Picker flight &times;3.</strong> Bodacious Blueberry (Ethiopia heirloom, Mosto yeast anaerobic) &mdash; super punchy, a damn blueberry punch, the knockout of the day. Alo Main Station (Ethiopia 74158, washed &mdash; elderflower, prosecco, Solero split). Yosniyom (Thai, anaerobic natural, chaptalized). Plus a proper conversation with the barista pouring them.</span>
+        <span class="ledger-tag">FILTER &times;3</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">OTTOLINA</span>
+        <span class="ledger-what"><strong>Espresso diplomacy.</strong> Milano, roasting since 1948, B2B across Europe &mdash; a proper Italian heritage shot and a good conversation to go with it. A Nuova Simonelli espresso and a latte rounded out the milk-and-pressure side of the day.</span>
+        <span class="ledger-tag">ESPRESSO &times;2 &middot; LATTE &times;1</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">SCA</span>
+        <span class="ledger-what"><strong>Global Booth, round two.</strong> The Bettr-roasted trio &mdash; El Diamante (Nicaragua, washed), Bali Kala Patra (168-hour anaerobic honey), Mt. Ijen (East Java natural) &mdash; plus a Bali Origins Kintamani pour for old times' sake: the island where Entry #001 was born.</span>
+        <span class="ledger-tag">TASTERS</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">KERYI</span>
+        <span class="ledger-what"><strong>The pop-up treasure hunt.</strong> An Ethiopian filter pressed into my hand by Quan himself, after Mel and he tracked me down via Instagram DMs and location videos. Two archive entries, one cupping-session sighting, and now a friendship with a caf&eacute; that remembers its regulars.</span>
+        <span class="ledger-tag">FILTER &middot; REUNION</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-date">TESORO</span>
+        <span class="ledger-what"><strong>The one that wasn't coffee.</strong> Tesoro Amaz&oacute;nico bean-to-bar dark chocolate from Peru &mdash; the 73% Utcubamba, Amazonas. Amazing taste; the same single-origin, bean-to-bar logic as everything else I chase, just a different bean.</span>
+        <span class="ledger-tag">CACAO DETOUR</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="wrap">
+  <span class="kicker">Field note</span>
+  <h2>The Mosto surprise, and an old friend named 74158</h2>
+  <p>Two findings from the free-pour lane worth committing to the record. First: the day's most electric cup was a <em>wine-yeast fermentation</em> &mdash; Mosto, grape-must yeast driving that explosive blueberry. That sits right at my documented fermentation ceiling, and in a taster format it absolutely thrilled. Which quietly validates the festival doctrine I set on Day 2: spend on washed rarity, let the fermentation experiments come to you for free &mdash; and sometimes they'll punch above their price of zero.</p>
+  <p>Second: the Alo Main Station bag read <em>Ethiopia | 74158 | Washed</em> &mdash; the very varietal behind my white-peach genetic-fingerprint finding, from the same Alo area as Fluid Collective's Alo Peaberry just five days ago. Three sightings in one archive. Some varietals you hunt; this one keeps finding me.</p>
+</section>
+
+<section class="wrap">
+  <span class="kicker">The results</span>
+  <h2>And refresh I did</h2>
+  <p>By 21:30 the results were everywhere &mdash; the Grind &amp; Shine finals livestream, the Singapore Coffee Association feed &mdash; and my phone lit up with three storylines at once.</p>
+  <p><strong>The one I'm proudest of:</strong> Tay Ho Ming of Homeground &mdash; whose championship trials I sat as a mock judge &mdash; took <strong>1st Runner-Up in the Singapore National Barista Championship</strong>, one single step below the national title. I watched those routines take shape in a practice room; tonight the whole country watched them nearly take the crown. Proud doesn't cover it.</p>
+  <a class="companion" href="mock_judge_homeground_v3.html">
+    <div class="c-kicker">&larr; Field Notes Diptych &middot; Part I</div>
+    <div class="c-title">The Night the Counter Turned Around</div>
+    <div class="c-sub">Seven days before this podium: the evening I sat as mock judge for Ho Ming's routine at Homeground &mdash; the score sheet, the El Diviso twice in one day, and the verdict that ends with this result.</div>
+  </a>
+
+  <p><strong>The one my archive called:</strong> the Brewers Cup went to <strong>Elysia Tan</strong>, competing Independent &mdash; a multiple-time national brewing champion adding yet another title, and the brewer who now carries Singapore's filter colours to the World Brewers Cup.</p>
+  <p><strong>And the one my watchlist called:</strong> the new National Barista Champion, Gabriel Lim, brews at <strong>Glyph Supply Co.</strong> &mdash; the Jurong caf&eacute; that's been sitting flagged in my archive as a high-priority visit, whose farm-specific tasting menu a Zerah barista once insisted I try. Glyph also produced the Brewers Cup 1st Runner-Up, Pua Yi Sin. The watchlist just became a pilgrimage.</p>
+
+  <div class="results-card">
+    <div class="results-title">SNCC 2026 Finals &middot; via Grind &amp; Shine livestream &amp; @singaporecoffee</div>
+    <div class="result-row result-champ">
+      <span class="result-medal">&#127942; Champion</span>
+      <span class="result-name">Elysia Tan &mdash; Independent<small>Timemore Singapore National Brewers Cup &rarr; World Brewers Cup</small></span>
+    </div>
+    <div class="result-row">
+      <span class="result-medal">1st Runner-Up</span>
+      <span class="result-name">Pua Yi Sin &mdash; Glyph Supply Co.<small>Brewers Cup</small></span>
+    </div>
+    <div class="result-row">
+      <span class="result-medal">2nd Runner-Up</span>
+      <span class="result-name">Lukas Tan &mdash; Independent<small>Brewers Cup</small></span>
+    </div>
+    <div class="result-row result-champ">
+      <span class="result-medal">&#127942; Champion</span>
+      <span class="result-name">Gabriel Lim &mdash; Glyph Supply Co.<small>Singapore National Barista Championship &rarr; World Barista Championship</small></span>
+    </div>
+    <div class="result-row">
+      <span class="result-medal">1st Runner-Up</span>
+      <span class="result-name">Tay Ho Ming &mdash; Homeground Coffee Roasters<small>Barista Championship &middot; the trials I mock-judged &mdash; one step from the title</small></span>
+    </div>
+    <div class="result-row">
+      <span class="result-medal">2nd Runner-Up</span>
+      <span class="result-name">Lu Meng &mdash; Double Shot Coffee<small>Barista Championship</small></span>
+    </div>
+    <div class="result-row result-champ">
+      <span class="result-medal">&#127942; Champion</span>
+      <span class="result-name">Zheng Yi Lim<small>Singapore National Latte Art Championship</small></span>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <span class="kicker">The verdict</span>
+  <h2>Whiskey taught me to walk a hall. Coffee taught me why I keep a map.</h2>
+  <p>Two days of a three-day championship, one paid Geisha, a dozen-odd free pours, and a chocolate detour. Six months ago the archive was a habit. This week it became a lens: it told me which of ten coffees on a menu board was mine before I tasted a drop, it placed a seven-gram festival pour instantly into a price hierarchy stretching back to January, and it stood me in front of a championship stage already understanding the game being played.</p>
+  <p>Next year I'll walk back into this hall knowing more. Maybe that's the year the Timemore box comes home. And in December, the map points somewhere new entirely — the estates of Coorg, where the archive finally goes bean-to-cup.</p>
+  <p>SIGEP Asia 2026, closed. First coffee festival: complete. A S$16 world-champion's Geisha, a zero-dollar finale, a caf&eacute; couple who found me through a crowd, a friend one step from a national title, and a watchlist caf&eacute; that now employs the champion. See you next year, Sands Expo &mdash; I'll be the one with the spreadsheet.</p>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-mark">HARISH.</span>
+    <span class="foot-line">Hari Coffee Archive · Entry logged 16 Jul 2026 · Bambito Estate, Mame (SIGEP Asia)<span class="gesha-chip">⭐ GESHA</span></span>
+    <span class="foot-line">66 entries · 36 cafés · 16 Gesha rows · 4 cities · Jan–Jul 2026</span>
+    <span class="foot-line">Champions: Elysia Tan (Brewers Cup) · Gabriel Lim (Barista) · Zheng Yi Lim (Latte Art) — to the world stage · Ho Ming 1st RU: we saw it coming</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Hari, Coffee Archivist">
+  <meta name="description" content="Hari's Coffee Archive 2026 — Brew Calculator">
+  <title>Brew Calculator | Hari's Coffee Archive</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --dark: #0d0d0d;
+      --card: #1a1a1a;
+      --text: #f5f5f5;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
+    
+    .section { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+    
+    .nav-active { color: var(--gold); font-weight: 600; }
+    
+    /* INPUT PANEL */
+    .input-panel {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    
+    .step {
+      margin-bottom: 24px;
+    }
+    
+    .step-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #888;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    select, input[type="range"] {
+      width: 100%;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+    
+    select:focus {
+      border-color: var(--gold);
+    }
+    
+    .slider-container {
+      position: relative;
+    }
+    
+    .slider-value {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 1.1rem;
+    }
+    
+    .roast-age-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 6px;
+    }
+    
+    .calculate-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #0d0d0d;
+      border: none;
+      padding: 18px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.2s;
+    }
+    
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201, 168, 76, 0.4);
+    }
+    
+    /* OUTPUT PANEL */
+    .output-panel {
+      display: none;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    
+    .output-panel.active { display: block; }
+    
+    .params-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    
+    .param {
+      background: #1f1f1f;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    .param-label {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    
+    .param-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    
+    .pour-timeline {
+      background: #1f1f1f;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    
+    .pour-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    
+    .pour-time {
+      font-family: monospace;
+      background: #333;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      min-width: 70px;
+      text-align: center;
+    }
+    
+    .archive-matches {
+      margin-top: 32px;
+    }
+    
+    .mini-card {
+      background: #1f1f1f;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    
+    .mini-card:hover {
+      border-color: var(--gold);
+    }
+    
+    .flavour-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    
+    .flavour-item {
+      background: #1f1f1f;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    
+    .thermal-guide {
+      background: linear-gradient(135deg, #1f1f1f, #111);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    
+    .thermal-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .thermal-icon {
+      width: 42px;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+    
+    /* SAVED RECIPES */
+    .saved-section {
+      margin-top: 60px;
+    }
+    
+    .saved-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    
+    .saved-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 22px;
+    }
+    
+    .saved-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    
+    .saved-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-small {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background: transparent;
+      color: #ccc;
+      cursor: pointer;
+    }
+    
+    .btn-small:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    
+    /* PRINT */
+    @media print {
+      .calculate-btn, .saved-section, select, .slider-container { display: none !important; }
+      .output-panel { display: block !important; border: 1px solid #ccc; }
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV injected by nav.js -->
+  
+  <div class="section">
+    <h1 style="font-size: 2.8rem; margin-bottom: 8px;">Brew Calculator</h1>
+    <p style="color: #888; max-width: 620px;">Archive-powered recipe engine • 31 audited entries • Specialty coffee science</p>
+    
+    <!-- INPUT PANEL -->
+    <div class="input-panel">
+      <div class="step">
+        <label class="step-label">1. Origin</label>
+        <select id="origin">
+          <option value="">Select origin...</option>
+          <option value="Colombia">Colombia</option>
+          <option value="Ethiopia">Ethiopia</option>
+          <option value="Panama">Panama</option>
+          <option value="Peru">Peru</option>
+          <option value="Ecuador">Ecuador</option>
+          <option value="Brazil">Brazil</option>
+          <option value="Kenya">Kenya</option>
+          <option value="Indonesia">Indonesia</option>
+          <option value="India">India</option>
+          <option value="Honduras">Honduras</option>
+          <option value="El Salvador">El Salvador</option>
+          <option value="Nicaragua">Nicaragua</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      
+      <div class="step">
+        <label class="step-label">2. Varietal</label>
+        <select id="varietal">
+          <option value="">Select varietal...</option>
+          <option value="Geisha">Geisha</option>
+          <option value="Wush Wush">Wush Wush</option>
+          <option value="Sudan Rume">Sudan Rume</option>
+          <option value="Heirloom">Heirloom</option>
+          <option value="Typica">Typica</option>
+          <option value="Arara">Arara</option>
+          <option value="Marshell">Marshell</option>
+          <option value="Laurina">Laurina</option>
+          <option value="Parainema">Parainema</option>
+          <option value="Sidra">Sidra</option>
+          <option value="Pacamara">Pacamara</option>
+          <option value="Catucai">Catucai</option>
+          <option value="Castillo">Castillo</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      
+      <div class="step">
+        <label class="step-label">3. Process</label>
+        <select id="process">
+          <option value="">Select process...</option>
+          <option value="Washed">Washed</option>
+          <option value="Natural">Natural</option>
+          <option value="Honey">Honey</option>
+          <option value="Red Honey">Red Honey</option>
+          <option value="Anaerobic">Anaerobic</option>
+          <option value="Double Anaerobic">Double Anaerobic</option>
+          <option value="Anaerobic Washed">Anaerobic Washed</option>
+          <option value="Anaerobic Natural">Anaerobic Natural</option>
+          <option value="Washed Co-Ferment">Washed Co-Ferment</option>
+          <option value="Multi-stage Anaerobic">Multi-stage Anaerobic</option>
+          <option value="Experimental Anaerobic">Experimental Anaerobic</option>
+          <option value="Extended Fermentation Honey">Extended Fermentation Honey</option>
+          <option value="Semi-Washed / Wet-Hulled">Semi-Washed / Wet-Hulled</option>
+          <option value="Co-ferment">Co-ferment</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+      </div>
+      
+      <div class="step">
+        <label class="step-label">4. Brew Method</label>
+        <select id="brew-method">
+          <option value="">Select method...</option>
+          <option value="V60">V60</option>
+          <option value="Flat-Bottom">Flat-Bottom</option>
+          <option value="Hario Alpha">Hario Alpha</option>
+          <option value="Hario Switch">Hario Switch</option>
+          <option value="xBloom">xBloom (Flat-Bottom)</option>
+          <option value="Origami">Origami (Conical)</option>
+          <option value="Pour-over">Pour-over</option>
+          <option value="Flat White">Flat White</option>
+          <option value="Espresso">Espresso</option>
+        </select>
+      </div>
+      
+      <div class="step">
+        <label class="step-label">5. Days Since Roast <span id="roast-value" style="color:#c9a84c; font-weight:700;">14</span></label>
+        <div class="slider-container">
+          <input type="range" id="roast-age" min="0" max="60" value="14" step="1">
+        </div>
+        <div class="roast-age-labels">
+          <span style="color:#e74c3c;">Fresh (0-7)</span>
+          <span style="color:#f1c40f;">Peak (8-25)</span>
+          <span style="color:#e74c3c;">Mature (36+)</span>
+        </div>
+      </div>
+      
+      <button class="calculate-btn" onclick="calculateRecipe()">CALCULATE RECIPE</button>
+    </div>
+    
+    <!-- OUTPUT PANEL -->
+    <div id="output-panel" class="output-panel">
+      <h2 style="margin-bottom: 20px; color: var(--gold);">Recommended Recipe</h2>
+      
+      <div class="params-grid" id="params-grid"></div>
+      
+      <div class="pour-timeline">
+        <h4 style="margin-bottom: 16px; color: #ccc;">Pour Structure</h4>
+        <div id="pour-structure"></div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
+        <!-- Temperature Logic -->
+        <div>
+          <h4 style="margin-bottom: 12px; color: #ccc;">Temperature Logic</h4>
+          <div id="temp-logic" style="background:#1f1f1f; padding:18px; border-radius:12px; font-size:0.95rem; line-height:1.5;"></div>
+        </div>
+        
+        <!-- Ratio Logic -->
+        <div>
+          <h4 style="margin-bottom: 12px; color: #ccc;">Ratio Logic</h4>
+          <div id="ratio-logic" style="background:#1f1f1f; padding:18px; border-radius:12px; font-size:0.95rem; line-height:1.5;"></div>
+        </div>
+      </div>
+      
+      <!-- Archive Cross-Reference -->
+      <div class="archive-matches">
+        <h4 style="margin-bottom: 12px; color: #ccc;">Archive Cross-Reference</h4>
+        <div id="archive-matches"></div>
+      </div>
+      
+      <!-- Flavour Profile -->
+      <div style="margin-top: 32px;">
+        <h4 style="margin-bottom: 12px; color: #ccc;">Expected Flavour Profile</h4>
+        <div class="flavour-grid" id="flavour-profile"></div>
+      </div>
+      
+      <!-- Thermal Phase Guide -->
+      <div class="thermal-guide">
+        <h4 style="margin-bottom: 16px; color: #ccc;">Thermal Phase Guide</h4>
+        <div id="thermal-guide"></div>
+      </div>
+      
+      <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <button onclick="saveRecipe()" style="background: var(--gold); color: #0d0d0d; border: none; padding: 14px 28px; border-radius: 12px; font-weight: 700; cursor: pointer;">💾 Save This Recipe</button>
+        <button onclick="document.getElementById('output-panel').classList.remove('active');" style="background: transparent; color: #888; border: 1px solid #555; padding: 14px 28px; border-radius: 12px; cursor: pointer;">Close</button>
+      </div>
+    </div>
+    
+    <!-- SAVED RECIPES -->
+    <div class="saved-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Saved Recipes</h2>
+        <button onclick="showSavedRecipes()" class="btn-small">Refresh List</button>
+      </div>
+      <div id="saved-grid" class="saved-grid"></div>
+    </div>
+  </div>
+  
+  <script>
+    // ==================== ARCHIVE DATA (from CSV) ====================
+    const archive = [
+      {date:"2026-01-10", city:"Ubud, Bali", cafe:"Seniman Coffee Studio", coffee:"Bali Karana Kintamanis", varietal:"Unknown", process:"Natural", brew_method:"Pour-over", ratio:"Unknown", verdict:"Excellent clarity for a natural process, bright and floral."},
+      {date:"2026-01-10", city:"Ubud, Bali", cafe:"Seniman Coffee Studio", coffee:"Sulawesi Toraja", varietal:"Unknown", process:"Semi-Washed / Wet-Hulled", brew_method:"Pour-over", ratio:"Unknown", verdict:"Heavy body with rich cocoa notes."},
+      {date:"2026-02-15", city:"Singapore", cafe:"Kyuukei Coffee", coffee:"Kenya Kiamugumo AA", varietal:"Unknown", process:"Washed", brew_method:"Pour-over (Flat-Bottom)", ratio:"Unknown", verdict:"Excellent baseline for clarity."},
+      {date:"2026-02-28", city:"Singapore", cafe:"Kyuukei Coffee", coffee:"Kenya Ndiaini AA", varietal:"Unknown", process:"Washed", brew_method:"Pour-over", ratio:"Unknown", verdict:"High clarity."},
+      {date:"2026-03-01", city:"Mumbai", cafe:"Subko Coffee Roasters", coffee:"Project Pearl Ratnagiri", varietal:"Unknown", process:"Experimental Anaerobic", brew_method:"Pour-over", ratio:"Unknown", verdict:"Clean and balanced despite intense process."},
+      {date:"2026-03-08", city:"Mumbai", cafe:"Grey Soul Coffee Roasters", coffee:"Raspberry in Loop", varietal:"Unknown", process:"Multi-stage Anaerobic", brew_method:"Pour-over", ratio:"Unknown", verdict:"Heavy body, over-smoothed expression muted the brightness."},
+      {date:"2026-03-15", city:"Singapore", cafe:"Apartment Coffee", coffee:"Colombia Wush Wush", varietal:"Wush Wush", process:"Washed", brew_method:"Pour-over", ratio:"Unknown", verdict:"Incredible tea-like clarity."},
+      {date:"2026-03-18", city:"Singapore", cafe:"Agora Coffee", coffee:"Ethiopia Beloya", varietal:"Unknown", process:"Natural", brew_method:"V60", ratio:"Unknown", verdict:"Classic natural profile."},
+      {date:"2026-03-20", city:"Singapore", cafe:"Tiong Hoe", coffee:"Brazil Natural", varietal:"Unknown", process:"Natural", brew_method:"Pour-over", ratio:"Unknown", verdict:"Classic dense Brazilian profile."},
+      {date:"2026-04-01", city:"Singapore", cafe:"Maxi Coffee Bar", coffee:"Colombia La Laja", varietal:"Sudan Rume", process:"Washed", brew_method:"Pour-over (Flat-Bottom)", ratio:"1:15", verdict:"Successfully isolated the intended tasting notes."},
+      {date:"2026-04-05", city:"Singapore", cafe:"Asylum Coffeehouse", coffee:"Castillo Watermelon", varietal:"Castillo", process:"Washed Co-Ferment", brew_method:"Pour-over", ratio:"1:15", verdict:"Distinct fruit-forward expression."},
+      {date:"2026-04-05", city:"Singapore", cafe:"Asylum Coffeehouse", coffee:"Peru Gesha", varietal:"Gesha", process:"Washed", brew_method:"Pour-over", ratio:"1:15", verdict:"Clean, structured, high-clarity cup."},
+      {date:"2026-04-05", city:"Singapore", cafe:"Lume Cafe", coffee:"Panama Corpachi Geisha", varietal:"Geisha", process:"Red Honey", brew_method:"V60 Manual Pour-over", ratio:"1:15", verdict:"Structured and elegant."},
+      {date:"2026-04-18", city:"Johor Bahru", cafe:"Unknown", coffee:"Hacienda La Florida", varietal:"Typica Mejorado", process:"Anaerobic Washed", brew_method:"Origami (Conical)", ratio:"1:15.4", verdict:"Excellent. Lime when hot, distinct plum as it cooled."},
+      {date:"2026-04-24", city:"Singapore", cafe:"Agora Coffee", coffee:"Brazil Santuário Sul", varietal:"Unknown", process:"Natural Fermentation", brew_method:"V60", ratio:"1:14", verdict:"Full body; prominent blackcurrant."},
+      {date:"2026-05-06", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Brazil FAF Organic", varietal:"Arara", process:"Natural", brew_method:"xBloom (Flat-Bottom)", ratio:"1:17", verdict:"Solid body with a crisp green apple front."},
+      {date:"2026-05-06", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Brazil Serra dos Ciganos", varietal:"Catucai 24/137", process:"Natural", brew_method:"Flat White", ratio:"Unknown", verdict:"Good cup with a very pleasant, lingering sweet aftertaste."},
+      {date:"2026-05-07", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Ethiopia Banko Gotiti", varietal:"Heirloom", process:"Washed", brew_method:"xBloom (Flat-Bottom)", ratio:"1:17", verdict:"Lemon front, heavy melon mid-cup."},
+      {date:"2026-05-07", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Nicaragua Buena Vista", varietal:"Parainema", process:"Natural Anaerobic", brew_method:"Single Espresso", ratio:"~1:2", verdict:"Thick, syrupy body. Highly fermented."},
+      {date:"2026-05-19", city:"Singapore", cafe:"Pocket by Flip", coffee:"Ecuador La Papaya", varietal:"Geisha", process:"Washed", brew_method:"Hario Alpha", ratio:"1:15", verdict:"Opening: tartaric apricot + rooibos. Mid: thymol terpene coat."},
+      {date:"2026-05-08", city:"Singapore", cafe:"Alchemist", coffee:"El Morito", varietal:"Marshell", process:"Washed", brew_method:"V60 Pour-over", ratio:"1:16", verdict:"Simultaneous citric-malic acid overlap with integrated cane sugar."},
+      {date:"2026-05-12", city:"Singapore", cafe:"Kurasu", coffee:"Indonesia Frinsa Estate", varietal:"Local Varietals", process:"Extended Fermentation Honey", brew_method:"Hario Alpha", ratio:"1:16", verdict:"Floral taste with a sweet coating on the tongue."},
+      {date:"2026-05-13", city:"Singapore", cafe:"The Community Coffee", coffee:"Jose Mancia Honduras", varietal:"Typica", process:"Natural", brew_method:"Hario Switch", ratio:"1:17", verdict:"Kiwi and oolong tea style, full bodied."},
+      {date:"2026-05-15", city:"Singapore", cafe:"Alchemist", coffee:"Ijen Laurina", varietal:"Hybrid Laurina", process:"Anaerobic Natural", brew_method:"V60 Pour-over", ratio:"1:16", verdict:"Felt hibiscus hot. Mid temp showed apple paste."},
+      {date:"2026-05-16", city:"Singapore", cafe:"FLUID", coffee:"El Obraje", varietal:"Gesha", process:"Washed", brew_method:"Flatbed Dripper", ratio:"1:15.3", verdict:"Damn the taste so nice — the orange nectarine finishing with that honey is terrific."},
+      {date:"2026-04-01", city:"Singapore", cafe:"Nylon Coffee Roasters", coffee:"Colombia Sidra", varietal:"Sidra", process:"Double Anaerobic", brew_method:"Flat-bottom Pour-over", ratio:"1:14", verdict:"Technical calibration visit."},
+      {date:"2026-04-01", city:"Singapore", cafe:"Kurasu", coffee:"El Salvador Pacamara", varietal:"Pacamara", process:"Natural", brew_method:"Flat-bottom Pour-over", ratio:"1:14", verdict:"Technical calibration visit."},
+      {date:"2026-04-01", city:"Johor Bahru", cafe:"Mid Valley Mall Cafe", coffee:"Honduras Co-ferment", varietal:"Unknown", process:"Co-ferment", brew_method:"Flat-bottom Pour-over", ratio:"1:14", verdict:"Day trip specialty coffee stop — JB."},
+      {date:"2026-04-01", city:"Johor Bahru", cafe:"KSL Mall Cafe", coffee:"Kenya AA", varietal:"Unknown", process:"Washed", brew_method:"Flat-bottom Pour-over", ratio:"1:14", verdict:"Day trip specialty coffee stop — JB."}
+    ];
+    
+    // ==================== CALCULATE RECIPE ====================
+    function calculateRecipe() {
+      const origin = document.getElementById('origin').value;
+      const varietal = document.getElementById('varietal').value;
+      const process = document.getElementById('process').value;
+      const brewMethod = document.getElementById('brew-method').value;
+      const roastAge = parseInt(document.getElementById('roast-age').value);
+      
+      if (!origin || !varietal || !process || !brewMethod) {
+        alert("Please fill in Origin, Varietal, Process, and Brew Method.");
+        return;
+      }
+      
+      // === RULE-BASED RECOMMENDATIONS ===
+      let dose = 15;
+      let yieldG = 225;
+      let ratio = "1:15";
+      let temp = "92°C";
+      let bloom = "30g / 30 sec";
+      let totalTime = "~3:00";
+      let pourSteps = [];
+      let tempLogic = "";
+      let ratioLogic = "";
+      let flavour = {};
+      let thermal = [];
+      
+      // Ratio Logic (from archive patterns)
+      if (varietal.includes("Geisha") || varietal.includes("Heirloom") || varietal.includes("Wush Wush")) {
+        ratio = "1:16.5";
+        yieldG = 248;
+        ratioLogic = "Clarity-focused lean ratio for delicate florals and high-clarity genetics (Geisha/Wush Wush). Archive shows 1:16–1:17 optimal.";
+      } else if (process.includes("Natural") || process.includes("Anaerobic Natural")) {
+        ratio = "1:14.5";
+        yieldG = 218;
+        ratioLogic = "Denser ratio for body-forward naturals. Archive shows 1:14 used successfully for Brazil naturals and dense profiles.";
+      } else if (process.includes("Honey")) {
+        ratio = "1:15.5";
+        yieldG = 233;
+        ratioLogic = "Balanced ratio for honey processes. Allows sweetness to shine without over-extraction.";
+      } else {
+        ratio = "1:15";
+        yieldG = 225;
+        ratioLogic = "Standard 1:15 ratio used across most washed entries in the archive for balanced clarity and body.";
+      }
+      
+      // Temperature Logic (from archive)
+      if (process.includes("Honey") || process.includes("Extended Fermentation Honey")) {
+        temp = "80→95→80°C cascade";
+        tempLogic = "Multi-temperature pour manages heavy honey sugars: lower temp for floral extraction, peak heat to dissolve mucilage, cool finish for clean aftertaste (see Kurasu Frinsa entry).";
+      } else if (process.includes("Anaerobic Natural") || process.includes("Multi-stage Anaerobic")) {
+        temp = "90°C";
+        tempLogic = "Lower temp suppresses lactic esters from heavy fermentation while preserving complex savory notes (Nicaragua Buena Vista).";
+      } else if (varietal.includes("Geisha") && origin === "Ecuador") {
+        temp = "92→75→92°C triple cascade";
+        tempLogic = "Triple-temp strategy preserves heat-sensitive thymol terpenes from high-altitude Ecuador terroir (Ecuador La Papaya entry).";
+      } else if (varietal.includes("Geisha") || varietal.includes("Wush Wush")) {
+        temp = "92°C";
+        tempLogic = "Standard high temperature for volatile retention in delicate Geisha/Wush Wush genetics (FLUID El Obraje, Apartment Wush Wush).";
+      } else {
+        temp = "92°C";
+        tempLogic = "Classic 92°C starting temperature used across the majority of washed entries for optimal extraction balance.";
+      }
+      
+      // Brew Method specific adjustments
+      if (brewMethod.includes("xBloom") || brewMethod.includes("Flat-Bottom")) {
+        totalTime = "~2:45";
+        bloom = "35g / 35 sec";
+        pourSteps = [
+          {time: "00:00", text: "Bloom — 35g, 35 seconds, gentle swirl"},
+          {time: "00:35", text: "Pour 1 — 100g, centre spiral (fast)"},
+          {time: "01:35", text: "Pour 2 — 113g, slow steady to edges"},
+          {time: "02:45", text: "Drawdown complete"}
+        ];
+      } else if (brewMethod.includes("Origami") || brewMethod.includes("Conical")) {
+        totalTime = "~3:10";
+        bloom = "40g / 40 sec";
+        pourSteps = [
+          {time: "00:00", text: "Bloom — 40g, 40 seconds"},
+          {time: "00:40", text: "Pour 1 — 110g, centre"},
+          {time: "01:40", text: "Pour 2 — 127g, slow spiral"},
+          {time: "03:10", text: "Drawdown begins"}
+        ];
+      } else if (brewMethod.includes("Hario Alpha") || brewMethod.includes("Flatbed")) {
+        totalTime = "~3:05";
+        bloom = "30g / 30 sec";
+        pourSteps = [
+          {time: "00:00", text: "Bloom — 30g, 30 seconds"},
+          {time: "00:30", text: "Pour 1 — 95g, centre spiral"},
+          {time: "01:30", text: "Pour 2 — 100g, slow steady"},
+          {time: "03:05", text: "Target complete"}
+        ];
+      } else {
+        // Default V60 style
+        totalTime = "~3:00";
+        bloom = "30g / 30 sec";
+        pourSteps = [
+          {time: "00:00", text: "Bloom — 30g, 30 seconds, gentle swirl"},
+          {time: "00:30", text: "Pour 1 — 90g, centre spiral"},
+          {time: "01:30", text: "Pour 2 — 105g, slow steady to edges"},
+          {time: "03:00", text: "Drawdown complete"}
+        ];
+      }
+      
+      // Flavour Profile Prediction
+      if (origin === "Colombia" && varietal.includes("Gesha")) {
+        flavour = {acid: "Citric + Malic", body: "Medium-Light", finish: "Sweet & Lingering", watch: "Orange blossom + nectarine honey transition"};
+      } else if (origin === "Ethiopia" && process.includes("Natural")) {
+        flavour = {acid: "Phosphoric", body: "Light", finish: "Clean", watch: "Berry + floral dominance"};
+      } else if (process.includes("Anaerobic")) {
+        flavour = {acid: "Malic dominant", body: "Full", finish: "Lingering", watch: "Savory esters + fruit layering"};
+      } else if (varietal.includes("Wush Wush")) {
+        flavour = {acid: "Citric", body: "Light", finish: "Tea-like", watch: "Delicate floral clarity"};
+      } else {
+        flavour = {acid: "Balanced Malic/Citric", body: "Medium", finish: "Clean", watch: "Classic origin expression"};
+      }
+      
+      // Thermal Phase Guide
+      thermal = [
+        {icon: "🔥", phase: "Hot (0–30s)", note: "Brightest acids + top notes (jasmine, citrus zest)"},
+        {icon: "🌡️", phase: "Mid (30–90s)", note: "Body develops, sweetness emerges, mid-palate fruit"},
+        {icon: "❄️", phase: "Cool (90s+)", note: "Finish resolves — honey, chocolate, or tea-like aftertaste"}
+      ];
+      
+      // Render Output
+      renderOutput(dose, yieldG, ratio, temp, bloom, totalTime, pourSteps, tempLogic, ratioLogic, flavour, thermal, origin, varietal, process, brewMethod, roastAge);
+      
+      // Find similar entries
+      findSimilarEntries(origin, varietal, process, brewMethod);
+      
+      document.getElementById('output-panel').classList.add('active');
+      document.getElementById('output-panel').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function renderOutput(dose, yieldG, ratio, temp, bloom, totalTime, pourSteps, tempLogic, ratioLogic, flavour, thermal, origin, varietal, process, brewMethod, roastAge) {
+      // Parameters
+      const paramsHTML = `
+        <div class="param"><div class="param-label">DOSE</div><div class="param-value">${dose}g</div></div>
+        <div class="param"><div class="param-label">YIELD</div><div class="param-value">${yieldG}g</div></div>
+        <div class="param"><div class="param-label">RATIO</div><div class="param-value">${ratio}</div></div>
+        <div class="param"><div class="param-label">TEMP</div><div class="param-value">${temp}</div></div>
+        <div class="param"><div class="param-label">BLOOM</div><div class="param-value">${bloom}</div></div>
+        <div class="param"><div class="param-label">TIME</div><div class="param-value">${totalTime}</div></div>
+      `;
+      document.getElementById('params-grid').innerHTML = paramsHTML;
+      
+      // Pour Structure
+      let pourHTML = '';
+      pourSteps.forEach(step => {
+        pourHTML += `<div class="pour-step"><div class="pour-time">${step.time}</div><div>${step.text}</div></div>`;
+      });
+      document.getElementById('pour-structure').innerHTML = pourHTML;
+      
+      // Logic
+      document.getElementById('temp-logic').innerHTML = tempLogic;
+      document.getElementById('ratio-logic').innerHTML = ratioLogic;
+      
+      // Flavour
+      const flavourHTML = `
+        <div class="flavour-item"><strong>Acid Type</strong><br>${flavour.acid}</div>
+        <div class="flavour-item"><strong>Body</strong><br>${flavour.body}</div>
+        <div class="flavour-item"><strong>Finish</strong><br>${flavour.finish}</div>
+        <div class="flavour-item"><strong>Watch For</strong><br>${flavour.watch}</div>
+      `;
+      document.getElementById('flavour-profile').innerHTML = flavourHTML;
+      
+      // Thermal Guide
+      let thermalHTML = '';
+      thermal.forEach(t => {
+        thermalHTML += `<div class="thermal-row"><div class="thermal-icon">${t.icon}</div><div><strong>${t.phase}</strong><br><span style="color:#aaa;">${t.note}</span></div></div>`;
+      });
+      document.getElementById('thermal-guide').innerHTML = thermalHTML;
+    }
+    
+    // ==================== ARCHIVE MATCHING ====================
+    function findSimilarEntries(origin, varietal, process, brewMethod) {
+      let matches = [];
+      
+      archive.forEach(entry => {
+        let score = 0;
+        if (entry.varietal === varietal && varietal !== "Unknown") score += 40;
+        if (entry.process === process) score += 30;
+        if (entry.brew_method.includes(brewMethod.split(' ')[0])) score += 20;
+        if (entry.date.includes("2026-05") || entry.date.includes("2026-04")) score += 10; // recent bias
+        
+        if (score > 30) {
+          matches.push({...entry, score});
+        }
+      });
+      
+      matches.sort((a, b) => b.score - a.score);
+      matches = matches.slice(0, 3);
+      
+      let html = `<p style="color:#888; margin-bottom:12px;">${matches.length} similar entries found in archive</p>`;
+      
+      matches.forEach(m => {
+        html += `
+          <div class="mini-card">
+            <strong>${m.coffee}</strong> — ${m.cafe}<br>
+            <span style="color:#888; font-size:0.85rem;">${m.date} • ${m.process} • ${m.ratio}</span><br>
+            <em style="color:#c9a84c;">"${m.verdict.substring(0, 90)}..."</em>
+          </div>
+        `;
+      });
+      
+      if (matches.length === 0) {
+        html = `<p style="color:#666;">No exact matches found. Your combination is unique in the current archive.</p>`;
+      }
+      
+      document.getElementById('archive-matches').innerHTML = html;
+    }
+    
+    // ==================== SAVE / LOAD RECIPES ====================
+    function saveRecipe() {
+      const name = prompt("Name this recipe (e.g. 'FLUID El Obraje 1:15.3'):");
+      if (!name) return;
+      
+      const recipe = {
+        id: Date.now(),
+        name: name,
+        date: new Date().toISOString().split('T')[0],
+        origin: document.getElementById('origin').value,
+        varietal: document.getElementById('varietal').value,
+        process: document.getElementById('process').value,
+        brewMethod: document.getElementById('brew-method').value,
+        roastAge: document.getElementById('roast-age').value,
+        dose: document.querySelector('#params-grid .param-value').textContent || "15g",
+        ratio: document.querySelectorAll('#params-grid .param-value')[2]?.textContent || "1:15"
+      };
+      
+      let saved = JSON.parse(localStorage.getItem('hari_brew_recipes') || '[]');
+      saved.unshift(recipe);
+      localStorage.setItem('hari_brew_recipes', JSON.stringify(saved));
+      
+      alert("Recipe saved successfully!");
+      showSavedRecipes();
+    }
+    
+    function showSavedRecipes() {
+      const container = document.getElementById('saved-grid');
+      container.innerHTML = '';
+      
+      let saved = JSON.parse(localStorage.getItem('hari_brew_recipes') || '[]');
+      
+      if (saved.length === 0) {
+        container.innerHTML = `<p style="color:#666; grid-column: 1 / -1;">No saved recipes yet. Calculate and save one above!</p>`;
+        return;
+      }
+      
+      saved.forEach(recipe => {
+        const card = document.createElement('div');
+        card.className = 'saved-card';
+        card.innerHTML = `
+          <div class="saved-header">
+            <div>
+              <strong>${recipe.name}</strong><br>
+              <span style="font-size:0.8rem; color:#888;">${recipe.date}</span>
+            </div>
+            <div class="saved-actions">
+              <button class="btn-small" onclick="loadRecipe(${recipe.id})">Load</button>
+              <button class="btn-small" onclick="deleteRecipe(${recipe.id}, this)">Delete</button>
+            </div>
+          </div>
+          <div style="font-size:0.85rem; color:#aaa;">
+            ${recipe.origin} • ${recipe.varietal} • ${recipe.process}<br>
+            ${recipe.brewMethod} • ${recipe.roastAge} days old
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+    
+    function loadRecipe(id) {
+      let saved = JSON.parse(localStorage.getItem('hari_brew_recipes') || '[]');
+      const recipe = saved.find(r => r.id === id);
+      if (!recipe) return;
+      
+      document.getElementById('origin').value = recipe.origin;
+      document.getElementById('varietal').value = recipe.varietal;
+      document.getElementById('process').value = recipe.process;
+      document.getElementById('brew-method').value = recipe.brewMethod;
+      document.getElementById('roast-age').value = recipe.roastAge;
+      
+      // Trigger calculation
+      calculateRecipe();
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function deleteRecipe(id, btn) {
+      if (!confirm("Delete this saved recipe?")) return;
+      
+      let saved = JSON.parse(localStorage.getItem('hari_brew_recipes') || '[]');
+      saved = saved.filter(r => r.id !== id);
+      localStorage.setItem('hari_brew_recipes', JSON.stringify(saved));
+      
+      btn.closest('.saved-card').remove();
+    }
+    
+    // ==================== SLIDER & INIT ====================
+    function initSlider() {
+      const slider = document.getElementById('roast-age');
+      const valueDisplay = document.getElementById('roast-value');
+      
+      slider.addEventListener('input', () => {
+        valueDisplay.textContent = slider.value;
+        
+        // Dynamic color feedback
+        const val = parseInt(slider.value);
+        if (val <= 7) {
+          valueDisplay.style.color = '#e74c3c';
+        } else if (val <= 25) {
+          valueDisplay.style.color = '#f1c40f';
+        } else {
+          valueDisplay.style.color = '#e74c3c';
+        }
+      });
+      
+      // Initial value
+      valueDisplay.textContent = slider.value;
+    }
+    
+    function init() {
+      initSlider();
+      showSavedRecipes();
+      
+      // Demo: Auto-fill a popular entry on load (optional)
+      console.log('%c[Hari Coffee Archive] Brew Calculator initialized with 31-entry archive.', 'color:#c9a84c');
+    }
+    
+    window.onload = init;
+  </script>
+  
+  <!-- Activate shared navigation -->
+  <script src="nav.js"></script>
+</body>
+</html>

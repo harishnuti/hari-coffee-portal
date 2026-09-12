@@ -1,0 +1,245 @@
+# Gatekeeper V8 — Blueprint
+## "The archive is the engine"
+
+V1–V7 treated your 63-entry audit archive as *content to display*. V8's core idea:
+the archive is a **trained instrument** — it knows what a real pour-over café looks
+like, what you like, what roasters over-promise, and what a complete field entry
+contains. Every tab should draw its power from it.
+
+One architecture decision gates the biggest win — it's listed first. Everything
+else is client-only and incremental.
+
+---
+
+# 0. THE DECISION: one serverless function, or strictly client-only?
+
+The single biggest accuracy ceiling is Google's 5-review-snippet limit. The only
+way to break it: **scan the café's own website/menu**. `websiteUri` is already in
+your FIELD_MASK — but browsers block cross-origin fetches, so the app can't read
+those sites directly.
+
+**Recommendation: add ONE Netlify Function** (you already deploy to Netlify — zero
+new infrastructure, free tier covers it):
+
+```
+netlify/functions/scan.ts  (~40 lines)
+- GET /.netlify/functions/scan?url=<cafe website>
+- fetches the page server-side, strips HTML tags, returns first ~15KB of text
+- allowlist: only fetch URLs that came from Google Places websiteUri
+- 5s timeout, no cookies, User-Agent identifying the app
+```
+
+Client side: for the top ~10 verified candidates, fetch their site text and scan for
+**menu-grade evidence**: `v60|kalita|origami|orea|april|chemex|pour ?over|hand ?brew|
+filter (coffee|menu)|single origin|gesha|geisha|anaerobic|washed|natural|roast(ed)?
+(date|in.house)|brew bar|manual brew|slow bar`. A café whose own menu says "V60 /
+Origami, single origin rotation" is confirmed at a level 5 review snippets can never
+reach. Cache results in IndexedDB per placeId with 30-day TTL (sites rarely change).
+
+If you refuse serverless on principle, skip §1-A and V8 still proceeds — but accuracy
+gains cap at roughly "V7.2 + Gem Lexicon" level.
+
+---
+
+# 1. RADAR — from keyword matcher to gem detector
+
+## 1-A. Website evidence tier (requires §0)
+New evidence hierarchy, replacing the flat 0–0.50 evidenceScore:
+
+| Tier | Source | Score | Badge |
+|---|---|---|---|
+| T0 | Your Master Audit log | 0.45 + review stack to 0.55 | ⭐ Personally Audited |
+| T1 | Café's own website/menu mentions brew methods | 0.50 | 📜 Menu-Verified |
+| T2 | Google review keywords | 0.20–0.40 | ✔ Review-Verified |
+| T3 | Roastery category/name (gated on coffeeMention ≥ 0.4) | 0.25 | 🔥 Roaster (inferred) |
+| — | Nothing | 0 / −0.20 | Unverified |
+
+Show the tier name in the result card instead of only a % — honest epistemics
+("Menu-Verified" tells you *why* to trust it).
+
+## 1-B. The Gem Lexicon — your archive as a classifier
+This is the creative leap. Your 63 audits know what gem-café reviews sound like.
+
+Build offline (extend `scripts/`): take the Google reviews of cafés in your archive
+(one Places call per café, run once, bundled as data) and compute which tokens are
+**overrepresented** vs a background corpus of generic-café reviews:
+
+```
+gem lexicon (expected): brew bar, roast date, single origin, tasting notes,
+pourover, barista recommended, beans for sale, rotating, seasonal, acidity,
+fruity, funky, filter, aeropress, gesha, ethiopia, anaerobic, competition,
+brewers cup, kalita, slow bar, omakase, flight ...
+generic lexicon: instagrammable, brunch, pasta, aircon, wifi, portion, queue ...
+```
+
+At search time, score each candidate's 5 snippets against both lexicons →
+`gemSimilarity ∈ [−0.15 … +0.20]`. Kopi & Spells reads generic/nightlife; Apartment
+Coffee's reviews read *exactly* like your archive's cafés. No ML infra — a ~150-token
+weighted list computed once, shipped as `src/data/gem-lexicon.ts`, unit-testable.
+
+## 1-C. Calibration fixes (the V7.2 set, folded in)
+- Bayesian rating shrinkage: `adj = (rating·n + 4.2·25)/(n+25)` — kills the
+  5.0★-from-1-review problem (Three Penguins) and rewards Oaks-type places fairly.
+- Audit + review evidence stacking (Homeground shouldn't skip the review scan).
+- Roastery fallback gated on coffeeMention ≥ 0.4 (kills Huat Soon Heng false positive).
+- "Specialty coffee" in name → T3 evidence 0.25, same gate (rescues Craftsmen, Upshot).
+
+## 1-D. Search UX
+- **Palate DNA panel**: before searching, show the DNA tokens extracted from your
+  archive ("searching with your profile: ethiopia · washed · ek43 · gesha · huila…")
+  with toggles. Today DNA is invisible; making it visible builds trust and lets you
+  steer.
+- Result card: tier badge + one-line *reason* ("menu lists V60 & seasonal single
+  origins") instead of raw keyword dumps. Debug drawer stays for full transparency.
+- Map view (optional, no API needed): plot results on a static SVG scatter by
+  lat/lng relative to center — cheap, offline, surprisingly useful.
+
+---
+
+# 2. CODEX — education generated from YOUR data
+
+Today: 4 static markdown blobs. V8: every chapter is anchored in your archive.
+
+Structure (`src/data/codex/` generated by a new script + hand-curated prose):
+
+1. **Varietal Codex** — one entry per varietal you've logged (Gesha, 74158, Pink
+   Bourbon, SL28…): reference knowledge (lineage, origin story, cup profile) + your
+   data ("you've logged 74158 four times: 2 washed, 2 anaerobic — your verdicts:
+   …") + links into Folio entries.
+2. **Process Codex** — washed/natural/anaerobic/thermal shock/koji…, each with the
+   chemistry AND your comparative verdicts. Your #56 vs #63 (same producer Tamiru
+   Tadesse, same 74158, washed vs anaerobic) is a **ready-made controlled experiment**
+   — feature it as a case study. That's content no coffee blog on earth has.
+3. **Origin Atlas** — countries/regions you've tasted, MASL, harvest calendars,
+   flavor tendencies + your per-origin hit rate from the archive.
+4. **Hardware Codex** — grinder geometry (98mm flat vs conical…), brewer geometry
+   (your `geom` field already classifies flat/conical/immersion!), extraction physics,
+   with your own cups as evidence of what each rig produces.
+5. **The Three-Phase Doctrine** — your HOT/MID-COOL/COOL methodology, written up
+   properly with examples from your own phased verdicts.
+
+Generation loop: a script emits a skeleton per varietal/process/origin from
+master.ts; you (or a Claude session) fill the reference prose once; new audits
+auto-update the "your data" sections at build time. Codex grows as you drink.
+
+---
+
+# 3. INTEL — from dashboard to intelligence briefing
+
+Keep zero dependencies: hand-rolled SVG components (you already do bars — add
+`<Sparkline>`, `<Donut>`, `<Heatmap>`, `<RadarChart>` — each ~40 lines of Preact SVG).
+
+New sections, all computable from your 24 columns today:
+
+- **The Journey** — timeline sparkline: cups/month Jan–Jul 2026, annotated (Bali
+  origin story → SG deep-dive), cumulative café count, cities.
+- **Palate DNA card** — the definitive fingerprint: dominant origin, process, ratio
+  band, grinder class, roast level, with %s. This is also exactly what Radar uses —
+  same computation, shared module (`src/services/dna.ts`).
+- **Roaster-vs-Reality radar chart** — per flavor cluster (citrus, floral, choc…):
+  promised vs detected rate. "Floral promises deliver 44% — the industry's most
+  over-claimed note in your data." Split exact vs partial honestly.
+- **Price Intelligence** — price by origin/process/city; price-per-cup trend;
+  Gesha premium (your Gesha cups vs non-Gesha average); "most expensive miss"
+  and "best value gem" callouts (price × verdict sentiment).
+- **Process × Roast heatmap** — where your cups cluster, where your best verdicts
+  cluster (verdict sentiment via the existing flavor-cluster matcher — reuse
+  `flavor.ts`, no new NLP).
+- **Hardware correlation** — verdict-positivity by grinder class (98mm flat vs
+  conical vs hand). You likely already believe EK43 cafés cup better — prove it.
+- **Benchmark cafés** — repeat-visit leaderboard (Fluid ×4…), with per-visit trend.
+- **Auto-narrative** — 3–5 template-generated sentences at top, computed live:
+  "63 cups, 34 cafés, 5 cities. Your sweet spot: washed Ethiopia at 1:16 on
+  98mm flat burrs. You paid a 38% Gesha premium and it delivered 2 of your 5
+  starred cups." Templates + slots, fully client-side, changes as data grows.
+
+---
+
+# 4. FOLIO — every cup as a bean card
+
+Replace the plain expandable rows with a **bean-card visual language**:
+
+- **Card face**: coffee name · café · date · origin chip (color-coded by country —
+  define an origin palette in theme.css) · process badge (washed=blue, natural=red,
+  anaerobic=purple, honey=amber…) · varietal chip · price tag · ⭐/🧬 Gesha marks.
+- **Brew telemetry block** (monospace, bean-card aesthetic):
+  `18g → 270g · 1:15 · 92°C · bloom 45g/30s · EK43 · Orea V4 (flat)`
+  — dashes for Unknowns rather than the word "Unknown" (visual noise in your Bali rows).
+- **Three-phase verdict timeline**: HOT / MID-COOL / COOL rendered as three
+  temperature-colored segments (you already capture them with `|` separators —
+  parse and display, don't concatenate).
+- **Roaster notes vs your verdict side-by-side**, with flavor-cluster matches
+  highlighted (reuse `flavor.ts` — show WHICH promises landed, per cup).
+- **Facet filter bar** replacing text-only search: chips for origin / process /
+  varietal / roast / brew geometry / city / price band / starred / Gesha — powered
+  by the same uniq() extraction, combinable, with live counts. Keep omni-search too.
+- **Sort**: date | price | café | origin. **View toggle**: café-grouped (current) vs
+  chronological timeline.
+- Technical_Enrichment renders as a footnote ("Lab Notes"), Visit_Context as a
+  human line with the date/time — your #63 entry (Brewers Cup champion barista,
+  fourth visit) deserves to read like a story, not a CSV row.
+
+---
+
+# 5. GATE + AUDIT — 30-second field entry
+
+Your ask: fill a new café fast, everything known appears in dropdowns, type only
+what's new. Concretely:
+
+- **Smart combobox component** (one reusable `<Combo>`): type-ahead over
+  `unifiedData` values + DL constants, ranked by your usage frequency (you use
+  EK43 most → it's first). Free text always allowed. Replaces bare datalists
+  (mobile Safari datalist UX is poor — a custom dropdown fixes the field
+  experience where you actually use this app).
+- **Cascading suggestions**: pick Origin "Ethiopia, Gedeb" → Varietal list floats
+  74158/Heirloom/Kurume to top → Process floats Washed/Natural. Pick a known café →
+  City, Address, and its historical Grinder auto-fill.
+- **"Same again" button**: prefill the whole form from your last entry at this café
+  (repeat visits are your norm — Fluid ×4).
+- **Radar → Audit handoff**: arriving from a Radar result carries name, address,
+  city AND auto-ticks Gate criteria the evidence already proved (menu-verified
+  pour-over ⇒ "Dedicated filter menu" pre-toggled, roastery ⇒ "in-house roast").
+  Gate becomes a 10-second confirmation, not a form.
+- **Bean-card OCR-lite**: a photo attachment field per audit (stored in IndexedDB
+  as blob) so the bean card itself is captured even when you can't type — fields
+  can be transcribed later. (True OCR is a v9 idea; storage is trivial today.)
+
+---
+
+# 6. VISUAL SYSTEM
+
+- **Origin color palette** + **process color palette** as CSS custom properties —
+  used consistently across Folio chips, Intel charts, Codex headers. One glance =
+  one meaning, everywhere.
+- Typography-led "field instrument" aesthetic: monospace for telemetry, serif-ish
+  display for verdicts/narratives, current UI font for chrome. Dark theme stays
+  primary; light theme inherits the palettes.
+- Micro-interactions: tab cross-fade, card expand animation, count-up on Intel
+  stats. All CSS, no libraries.
+- Print/share: a `@media print` stylesheet so a Folio card or the Intel briefing
+  exports as a clean PDF via the browser — your archive becomes a shareable
+  portfolio artifact.
+
+---
+
+# 7. PHASING & GUARDRAILS
+
+**V8.0 — Accuracy** (the "one last time" answer): §0 function, website evidence
+tier, gem lexicon, calibration fixes, tier badges. Tests: lexicon scoring, tier
+assignment, shrinkage, scan-text evidence extraction (fixture HTML files).
+**V8.1 — Intel + Folio**: SVG chart components, DNA module extraction, bean cards,
+facet filters. Tests: dna.ts, narrative templates, sentiment clustering.
+**V8.2 — Codex + Gate/Audit + visual system**: codex generator script, Combo
+component, cascading suggestions, palettes, print styles.
+
+Guardrails learned from V5→V7.1 (write these into DECISIONS.md):
+1. Every release: `npm test` green BEFORE build; new features ship with tests.
+2. Deploy via a `deploy.ps1` with ABSOLUTE paths (three dist incidents is enough).
+3. Verify the deployed bundle by grepping for a string unique to the new release.
+4. No evidence score without data behind it (the Three-Penguins rule).
+5. Client-only stays the default; §0's function is the single sanctioned exception,
+   and it must degrade gracefully (scan fails ⇒ T2 scoring still works).
+
+**Honest limits**: Google will still hide some gems (5 snippets, no website, new
+café). The Gem Lexicon and menu scan shrink that blind spot; your Gate/wishlist
+workflow covers the rest — that's by design, the human stays the final gatekeeper.

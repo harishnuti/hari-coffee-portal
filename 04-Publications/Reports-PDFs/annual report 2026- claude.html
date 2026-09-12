@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 2026 Coffee Audit Report • Hari, Coffee Archivist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-dark: #a67c3d;
+            --ink: #1a1a1a;
+            --paper: #ffffff;
+            --gray: #6b7280;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            font-size: 15px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        
+        .gold { color: var(--gold); }
+        .gold-accent { color: var(--gold); }
+        
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        /* Cover */
+        .cover {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f5f0 100%);
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+        }
+        
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+        }
+        
+        .cover h1 {
+            font-size: 72px;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+        
+        .cover .subtitle {
+            font-size: 22px;
+            color: var(--gray);
+            margin-bottom: 48px;
+            font-weight: 500;
+        }
+        
+        .cover .meta {
+            font-size: 18px;
+            color: var(--ink);
+            margin-bottom: 64px;
+        }
+        
+        .cover .meta .author {
+            font-weight: 600;
+            color: var(--gold);
+        }
+        
+        .bean-motif {
+            width: 280px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        
+        .bean {
+            fill: var(--gold);
+            stroke: var(--gold-dark);
+            stroke-width: 1.5;
+        }
+        
+        /* Navigation / Print Button */
+        .top-nav {
+            position: fixed;
+            top: 24px;
+            right: 40px;
+            z-index: 100;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .print-btn {
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .print-btn:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 168, 76, 0.35);
+        }
+        
+        @media print {
+            .top-nav { display: none; }
+            .cover { min-height: auto; page-break-after: always; }
+        }
+        
+        /* Sections */
+        section {
+            padding: 80px 0;
+            page-break-inside: avoid;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        
+        .section-header h2 {
+            font-size: 42px;
+            margin-bottom: 12px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 3px;
+        }
+        
+        .section-header .eyebrow {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        /* Infographic Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 32px 24px;
+            background: #f8f5f0;
+            border-radius: 16px;
+            border: 1px solid #f0e6d2;
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .stat-number {
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 8px;
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        
+        .stat-label {
+            font-size: 15px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .stat-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        /* Narrative */
+        .narrative {
+            max-width: 760px;
+            margin: 0 auto;
+            font-size: 17px;
+            line-height: 1.85;
+        }
+        
+        .narrative p {
+            margin-bottom: 24px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(201, 168, 76, 0.12) 0%, transparent 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* Top 5 Cards */
+        .top5-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+        }
+        
+        .entry-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #f0e6d2;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            page-break-inside: avoid;
+        }
+        
+        .entry-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.09);
+            transform: translateY(-6px);
+        }
+        
+        .entry-header {
+            padding: 24px 28px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            position: relative;
+        }
+        
+        .entry-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gold);
+        }
+        
+        .entry-rank {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            font-size: 13px;
+            font-weight: 700;
+            background: var(--gold);
+            color: #1a1a1a;
+            padding: 2px 14px;
+            border-radius: 9999px;
+            letter-spacing: 0.5px;
+        }
+        
+        .entry-title {
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .entry-subtitle {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+        
+        .entry-body {
+            padding: 28px;
+        }
+        
+        .entry-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        
+        .badge-washed { background: #e0f0ff; color: #1e40af; }
+        .badge-natural { background: #fef3c7; color: #92400e; }
+        .badge-anaerobic { background: #fce7f3; color: #9d174d; }
+        .badge-honey { background: #fef9c3; color: #854d0e; }
+        
+        .pull-quote {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 17px;
+            line-height: 1.5;
+            color: var(--gold-dark);
+            font-style: italic;
+            border-left: 4px solid var(--gold);
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+        
+        .technical {
+            font-size: 13px;
+            color: var(--gray);
+            background: #f8f5f0;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+        
+        .stars {
+            color: var(--gold);
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        
+        /* Origin Atlas */
+        .atlas-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .world-map {
+            width: 100%;
+            max-width: 920px;
+            height: auto;
+            margin: 0 auto 48px;
+            display: block;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.06));
+        }
+        
+        .origin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        
+        .origin-card {
+            background: #f8f5f0;
+            border-radius: 16px;
+            padding: 22px 24px;
+            border: 1px solid #f0e6d2;
+            transition: all 0.2s ease;
+        }
+        
+        .origin-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+        
+        .origin-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        
+        .origin-bean {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .origin-name {
+            font-size: 19px;
+            font-weight: 700;
+        }
+        
+        .origin-count {
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        
+        .origin-top {
+            font-size: 13.5px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        /* Hardware Table */
+        .hardware-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+        
+        .hardware-table th {
+            background: #1a1a1a;
+            color: white;
+            padding: 18px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        
+        .hardware-table td {
+            padding: 18px 24px;
+            border-bottom: 1px solid #f0e6d2;
+            vertical-align: top;
+        }
+        
+        .hardware-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .hardware-table .rank {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 15px;
+        }
+        
+        /* Thermal Cards */
+        .thermal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+        
+        .thermal-card {
+            background: white;
+            border: 1px solid #f0e6d2;
+            border-radius: 18px;
+            padding: 28px;
+            page-break-inside: avoid;
+        }
+        
+        .thermal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+        
+        .thermal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .thermal-process {
+            font-size: 12px;
+            padding: 3px 10px;
+            background: #fef3c7;
+            color: #854d0e;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        
+        .thermal-notes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .thermal-note {
+            display: flex;
+            gap: 12px;
+            font-size: 14px;
+        }
+        
+        .thermal-note .temp {
+            font-weight: 700;
+            color: var(--gold);
+            min-width: 52px;
+        }
+        
+        .thermal-chemistry {
+            font-size: 13px;
+            color: #4b5563;
+            background: #f8f5f0;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+        
+        /* City Reports */
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .city-card {
+            padding: 32px 28px;
+            background: #f8f5f0;
+            border-radius: 16px;
+        }
+        
+        .city-name {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+        
+        .city-stats {
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        
+        /* Archive Table */
+        .archive-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .archive-table th {
+            background: #1a1a1a;
+            color: white;
+            padding: 16px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .archive-table td {
+            padding: 14px;
+            border-bottom: 1px solid #f0e6d2;
+            vertical-align: middle;
+        }
+        
+        .archive-table tr:hover {
+            background: #f8f5f0;
+        }
+        
+        .archive-table .date {
+            font-family: 'Inter', monospace;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .archive-table .verdict {
+            font-size: 12.5px;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+        
+        /* Back Cover */
+        .back-cover {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 120px 40px 80px;
+            page-break-before: always;
+        }
+        
+        .back-cover .logo {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 28px;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        
+        .back-cover p {
+            opacity: 0.75;
+            max-width: 420px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+        
+        .footer-line {
+            height: 1px;
+            background: rgba(201, 168, 76, 0.3);
+            max-width: 200px;
+            margin: 40px auto 24px;
+        }
+        
+        .print-only {
+            display: none;
+        }
+        
+        @media print {
+            body { font-size: 13.5px; }
+            section { padding: 48px 0; }
+            .section-header h2 { font-size: 32px; }
+            .stat-number { font-size: 52px; }
+            .entry-card, .thermal-card, .city-card { box-shadow: none; border: 1px solid #e5d9b8; }
+            .top-nav, .print-btn { display: none; }
+            .archive-table { font-size: 11px; }
+            .archive-table th, .archive-table td { padding: 10px 8px; }
+            .world-map { max-height: 320px; }
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <button onclick="window.print()" class="print-btn">
+            <span>📄</span> 
+            <span>Print / Save as PDF</span>
+        </button>
+    </div>
+
+    <!-- COVER PAGE -->
+    <header class="cover">
+        <div class="cover-content container">
+            <div style="margin-bottom: 32px;">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 16px; display: block;">
+                    <path d="M32 8C24 8 18 14 18 22C18 30 24 36 32 36C40 36 46 30 46 22C46 14 40 8 32 8Z" fill="#c9a84c"/>
+                    <path d="M32 8C28 12 26 17 26 22C26 27 28 32 32 36" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <circle cx="32" cy="22" r="4" fill="#a67c3d"/>
+                </svg>
+            </div>
+            
+            <h1>The 2026<br>Coffee Audit Report</h1>
+            
+            <p class="subtitle">31 Entries · 4 Cities · 17 Cafes</p>
+            
+            <div class="meta">
+                <div><span class="author">Hari, Coffee Archivist</span></div>
+                <div style="margin-top: 8px; opacity: 0.7;">May 2026</div>
+            </div>
+            
+            <!-- Geometric Coffee Bean Motif -->
+            <svg class="bean-motif" viewBox="0 0 280 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Row of stylized beans -->
+                <g>
+                    <!-- Bean 1 -->
+                    <ellipse cx="30" cy="60" rx="18" ry="26" fill="#c9a84c" transform="rotate(-12 30 60)"/>
+                    <path d="M22 42 Q30 52 38 42" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <!-- Bean 2 -->
+                    <ellipse cx="80" cy="55" rx="18" ry="26" fill="#c9a84c" transform="rotate(8 80 55)"/>
+                    <path d="M72 37 Q80 47 88 37" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <!-- Bean 3 -->
+                    <ellipse cx="130" cy="62" rx="18" ry="26" fill="#c9a84c" transform="rotate(-5 130 62)"/>
+                    <path d="M122 44 Q130 54 138 44" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <!-- Bean 4 -->
+                    <ellipse cx="180" cy="54" rx="18" ry="26" fill="#c9a84c" transform="rotate(15 180 54)"/>
+                    <path d="M172 36 Q180 46 188 36" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <!-- Bean 5 -->
+                    <ellipse cx="230" cy="61" rx="18" ry="26" fill="#c9a84c" transform="rotate(-8 230 61)"/>
+                    <path d="M222 43 Q230 53 238 43" fill="none" stroke="#a67c3d" stroke-width="2.5"/>
+                    <!-- Center line accent -->
+                    <line x1="40" y1="60" x2="240" y2="60" stroke="#a67c3d" stroke-width="1.5" stroke-opacity="0.4"/>
+                </g>
+            </svg>
+        </div>
+    </header>
+
+    <!-- SECTION 1: THE YEAR IN NUMBERS -->
+    <section id="numbers">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Archive Summary</div>
+                <h2>The Year in Numbers</h2>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">31</div>
+                    <div class="stat-label">Audits Completed</div>
+                    <div class="stat-sub">Across 5 months</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Cities Visited</div>
+                    <div class="stat-sub">Singapore 23 • Bali 3 • JB 3 • Mumbai 2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Unique Cafes</div>
+                    <div class="stat-sub">From Ubud studios to Singapore flagships</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">11</div>
+                    <div class="stat-label">Processes Documented</div>
+                    <div class="stat-sub">Washed to multi-stage anaerobic</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">16</div>
+                    <div class="stat-label">Unique Varietals</div>
+                    <div class="stat-sub">Geisha, Wush Wush, Sudan Rume &amp; more</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,100</div>
+                    <div class="stat-label">Highest Altitude (MASL)</div>
+                    <div class="stat-sub">Ecuador La Papaya • Loja terroir</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">SGD 7–35</div>
+                    <div class="stat-label">Price Range</div>
+                    <div class="stat-sub">Nylon FAF Organic → Hacienda La Florida</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1:15</div>
+                    <div class="stat-label">Top Brew Ratio</div>
+                    <div class="stat-sub">Most frequent • Flat-bottom preference</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: THE PALATE FINGERPRINT -->
+    <section id="palate" style="background: #f8f5f0; padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Taster Profile</div>
+                <h2>The Palate Fingerprint</h2>
+            </div>
+            
+            <div class="narrative">
+                <p>Across 31 rigorous audits spanning four cities and 17 cafes, a distinct palate signature has crystallized. <span class="highlight">Washed processes dominate the archive</span>, reflecting a deep appreciation for transparency and the unadulterated expression of terroir. Hari consistently gravitates toward flat-burr grinders—whether the Lagom P64, CORE 54mm, or EK43S 98mm flats—prioritizing exceptional clarity and the precise separation of flavor layers over heavy body or muddiness.</p>
+                
+                <p>High-altitude origins exert a magnetic pull. The 2,100 MASL Ecuador La Papaya entry stands as the pinnacle of the year, its terpene-forward profile (thymol, rooibos, apricot) revealing the aromatic intensity only extreme elevation can deliver. Colombia emerges as the strongest origin in the collection, with Wush Wush, Sudan Rume, and Sidra entries showcasing vibrant acidity, clean florals, and remarkable structural integrity. <span class="highlight">Geisha varietals consistently receive the highest praise</span>, their genetic purity shining brightest when processing interference is minimized.</p>
+                
+                <p>Thermal-shift awareness is perhaps the most sophisticated dimension of this fingerprint. Multiple entries document deliberate temperature cascades—92→75→92°C on the CORE, dual-temp on the EK43, multi-pour on Hario Alpha—that unlock evolving flavor arcs impossible to perceive at static temperatures. This is not mere technique; it is a philosophy of extraction that treats coffee as a dynamic, temperature-responsive system.</p>
+                
+                <p>The data reveals a taster who values <strong>intellectual rigor alongside sensory pleasure</strong>: technical milestones (Sudan Rume isolation with 78mm SSP flats), processing experiments (anaerobic naturals, honey processes), and origin comparisons (Peru vs Ecuador Geisha differentiation) sit alongside pure emotional responses (“Damn the taste so nice… so far my favourite”). The archive is both laboratory and love letter to specialty coffee.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: TOP 5 ENTRIES -->
+    <section id="top5">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Highest Rated</div>
+                <h2>Top 5 Entries of 2026</h2>
+            </div>
+            
+            <div class="top5-grid">
+                <!-- Card 1: FLUID El Obraje -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div class="entry-rank">#1</div>
+                        <div>
+                            <div class="entry-title">FLUID • El Obraje</div>
+                            <div class="entry-subtitle">Gesha • Washed • Singapore</div>
+                        </div>
+                    </div>
+                    <div class="entry-body">
+                        <div class="entry-meta">
+                            <span class="badge badge-washed">Washed</span>
+                            <span class="badge" style="background:#fef3c7;color:#854d0e;">Light</span>
+                            <span style="font-size:12px;color:#6b7280;margin-left:auto;">16 May 2026</span>
+                        </div>
+                        
+                        <div class="pull-quote">
+                            “Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite.”
+                        </div>
+                        
+                        <div style="display:flex;gap:16px;align-items:center;margin:16px 0;">
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Ratio</div>
+                                <div style="font-weight:700;">1:15.3</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Grinder</div>
+                                <div style="font-weight:700;">Lagom P64 64mm Flat</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Price</div>
+                                <div style="font-weight:700;">SGD 14.00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="technical">
+                            <strong>Technical Enrichment:</strong> Lagom P64 64mm flats + flatbed dripper enabled pure terroir delta between Colombia and Peru Geshas. 92°C at 1:15.3 maximised floral ester retention and stabilised malic acids. Matches Asylum hardware for direct comparison.
+                        </div>
+                        
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                            <div class="stars">★★★★★</div>
+                            <div style="font-size:11px;color:#c9a84c;font-weight:700;">THE FAVOURITE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Alchemist El Morito -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div class="entry-rank">#2</div>
+                        <div>
+                            <div class="entry-title">Alchemist • El Morito</div>
+                            <div class="entry-subtitle">Marshell • Washed • Singapore</div>
+                        </div>
+                    </div>
+                    <div class="entry-body">
+                        <div class="entry-meta">
+                            <span class="badge badge-washed">Washed</span>
+                            <span class="badge" style="background:#fef3c7;color:#854d0e;">Filter Roast</span>
+                            <span style="font-size:12px;color:#6b7280;margin-left:auto;">8 May 2026</span>
+                        </div>
+                        
+                        <div class="pull-quote">
+                            “Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing with excellent mid-palate juiciness. Confirmed: I love this bean.”
+                        </div>
+                        
+                        <div style="display:flex;gap:16px;align-items:center;margin:16px 0;">
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Ratio</div>
+                                <div style="font-weight:700;">1:16</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Grinder</div>
+                                <div style="font-weight:700;">EK43S 98mm Flat</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Brewer</div>
+                                <div style="font-weight:700;">V60</div>
+                            </div>
+                        </div>
+                        
+                        <div class="technical">
+                            <strong>Technical Enrichment:</strong> EK43S 98mm flat burrs + V60 conical at 1:16 delivered perfect dual-acid integration (citric orange + malic plum) without single-note dominance. Sucrose extraction bridged acid structure into clean cane sugar finish.
+                        </div>
+                        
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                            <div class="stars">★★★★★</div>
+                            <div style="font-size:11px;color:#c9a84c;font-weight:700;">THE LOVE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3: Pocket Ecuador La Papaya -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div class="entry-rank">#3</div>
+                        <div>
+                            <div class="entry-title">Pocket by Flip • Ecuador La Papaya</div>
+                            <div class="entry-subtitle">Geisha • Washed • 2,100 MASL</div>
+                        </div>
+                    </div>
+                    <div class="entry-body">
+                        <div class="entry-meta">
+                            <span class="badge badge-washed">Washed</span>
+                            <span class="badge" style="background:#fef3c7;color:#854d0e;">Light</span>
+                            <span style="font-size:12px;color:#6b7280;margin-left:auto;">19 May 2026</span>
+                        </div>
+                        
+                        <div class="pull-quote">
+                            “Highest-altitude Geisha in archive. Terpene-forward Ecuador profile clearly differentiated from linalool-forward Peru Geisha. No jasmine — distinct thymol character.”
+                        </div>
+                        
+                        <div style="display:flex;gap:16px;align-items:center;margin:16px 0;">
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Ratio</div>
+                                <div style="font-weight:700;">1:15</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Grinder</div>
+                                <div style="font-weight:700;">CORE 54mm Flat</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Price</div>
+                                <div style="font-weight:700;">SGD 18.00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="technical">
+                            <strong>Technical Enrichment:</strong> Triple-temp cascade (92→75→92°C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Clean transparent fade with caramelised sucrose.
+                        </div>
+                        
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                            <div class="stars">★★★★★</div>
+                            <div style="font-size:11px;color:#c9a84c;font-weight:700;">THE TERPENE LANDMARK</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 4: Maxi Sudan Rume -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div class="entry-rank">#4</div>
+                        <div>
+                            <div class="entry-title">Maxi Coffee Bar • Colombia La Laja</div>
+                            <div class="entry-subtitle">Sudan Rume • Washed • Singapore</div>
+                        </div>
+                    </div>
+                    <div class="entry-body">
+                        <div class="entry-meta">
+                            <span class="badge badge-washed">Washed</span>
+                            <span class="badge" style="background:#fef3c7;color:#854d0e;">Filter Roast</span>
+                            <span style="font-size:12px;color:#6b7280;margin-left:auto;">1 Apr 2026</span>
+                        </div>
+                        
+                        <div class="pull-quote">
+                            “Successfully isolated the intended tasting notes. Raspberry; Nectarine; Floral. Technical milestone in auditing rare genetics.”
+                        </div>
+                        
+                        <div style="display:flex;gap:16px;align-items:center;margin:16px 0;">
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Ratio</div>
+                                <div style="font-weight:700;">1:15</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Grinder</div>
+                                <div style="font-weight:700;">Timemore Sculptor 078 (SSP)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="technical">
+                            <strong>Technical Enrichment:</strong> Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry. Successfully isolated raspberry, nectarine, and floral notes with exceptional clarity.
+                        </div>
+                        
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                            <div class="stars">★★★★★</div>
+                            <div style="font-size:11px;color:#c9a84c;font-weight:700;">THE GENETICS MILESTONE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 5: Apartment Wush Wush -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div class="entry-rank">#5</div>
+                        <div>
+                            <div class="entry-title">Apartment Coffee • Colombia Wush Wush</div>
+                            <div class="entry-subtitle">Wush Wush • Washed • Singapore</div>
+                        </div>
+                    </div>
+                    <div class="entry-body">
+                        <div class="entry-meta">
+                            <span class="badge badge-washed">Washed</span>
+                            <span class="badge" style="background:#fef3c7;color:#854d0e;">Filter Roast</span>
+                            <span style="font-size:12px;color:#6b7280;margin-left:auto;">15 Mar 2026</span>
+                        </div>
+                        
+                        <div class="pull-quote">
+                            “Incredible tea-like clarity. Mapped the delicate genetics of Wush Wush.”
+                        </div>
+                        
+                        <div style="display:flex;gap:16px;align-items:center;margin:16px 0;">
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Brew Method</div>
+                                <div style="font-weight:700;">Pour-over</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#6b7280;">Key Note</div>
+                                <div style="font-weight:700;">Tea-like</div>
+                            </div>
+                        </div>
+                        
+                        <div class="technical">
+                            <strong>Technical Enrichment:</strong> Incredible tea-like clarity achieved through precise extraction of this rare Colombian varietal. Demonstrated the delicate, almost fragile aromatic structure unique to Wush Wush genetics.
+                        </div>
+                        
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                            <div class="stars">★★★★★</div>
+                            <div style="font-size:11px;color:#c9a84c;font-weight:700;">THE TEA CLARITY</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: ORIGIN ATLAS -->
+    <section id="atlas" style="background: #f8f5f0; padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Global Terroir</div>
+                <h2>Origin Atlas</h2>
+            </div>
+            
+            <!-- SVG World Map -->
+            <svg class="world-map" width="920" height="380" viewBox="0 0 920 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ocean -->
+                <rect width="920" height="380" fill="#e8f4f8"/>
+                
+                <!-- Simplified Continents -->
+                <!-- Americas -->
+                <path d="M80 80 Q110 60 140 90 Q160 140 130 200 Q100 260 70 220 Q60 140 80 80" fill="#d1e7dd" stroke="#a3c4b8" stroke-width="2"/>
+                <path d="M160 100 Q190 80 220 110 Q240 170 200 230 Q170 280 150 230 Q145 160 160 100" fill="#d1e7dd" stroke="#a3c4b8" stroke-width="1.5"/>
+                
+                <!-- Africa -->
+                <path d="M420 90 Q460 70 490 110 Q510 180 470 260 Q430 300 400 240 Q395 160 420 90" fill="#f0d9c2" stroke="#c9a84c" stroke-width="2"/>
+                
+                <!-- Europe / Asia -->
+                <path d="M480 70 Q560 50 620 90 Q680 130 720 100 Q760 150 740 220 Q680 260 600 230 Q520 200 480 70" fill="#e8d9c0" stroke="#c9a84c" stroke-width="1.5"/>
+                <path d="M720 90 Q780 70 840 110 Q860 170 820 230 Q780 280 740 220" fill="#e8d9c0" stroke="#c9a84c" stroke-width="1.5"/>
+                
+                <!-- Indonesia / SE Asia -->
+                <path d="M680 200 Q720 185 760 210 Q780 250 740 270 Q700 260 680 200" fill="#d4c4a8" stroke="#a67c3d" stroke-width="2"/>
+                
+                <!-- Australia -->
+                <path d="M720 280 Q780 260 830 300 Q820 340 760 330 Q730 310 720 280" fill="#d1e7dd" stroke="#a3c4b8" stroke-width="1.5"/>
+                
+                <!-- Coffee Bean Markers with Labels -->
+                <!-- Colombia -->
+                <g transform="translate(145,145)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-15)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="22" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Colombia • 4</text>
+                    <text x="22" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Wush Wush / Sudan Rume</text>
+                </g>
+                
+                <!-- Ecuador -->
+                <g transform="translate(170,175)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(8)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Ecuador • 1</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">La Papaya Geisha (2,100m)</text>
+                </g>
+                
+                <!-- Peru -->
+                <g transform="translate(195,195)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-10)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Peru • 1</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Gesha (Wilder Garcia)</text>
+                </g>
+                
+                <!-- Brazil -->
+                <g transform="translate(235,230)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(20)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Brazil • 5</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Arara, Catucai, Natural</text>
+                </g>
+                
+                <!-- Panama -->
+                <g transform="translate(165,165)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-25)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Panama • 1</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Corpachi Geisha (Red Honey)</text>
+                </g>
+                
+                <!-- Nicaragua -->
+                <g transform="translate(195,145)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(5)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Nicaragua • 2</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Matagalpa / Buena Vista</text>
+                </g>
+                
+                <!-- Honduras -->
+                <g transform="translate(210,130)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-18)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Honduras • 2</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Typica / Co-ferment</text>
+                </g>
+                
+                <!-- El Salvador -->
+                <g transform="translate(225,120)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(12)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">El Salvador • 1</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Pacamara Natural</text>
+                </g>
+                
+                <!-- Kenya -->
+                <g transform="translate(470,160)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-8)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Kenya • 3</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Kiamugumo / Ndiaini AA</text>
+                </g>
+                
+                <!-- Ethiopia -->
+                <g transform="translate(455,120)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(25)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Ethiopia • 3</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Banko Gotiti / Beloya</text>
+                </g>
+                
+                <!-- Indonesia -->
+                <g transform="translate(710,225)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(-20)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Indonesia • 4</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Frinsa / Bali Karana / Sulawesi</text>
+                </g>
+                
+                <!-- India -->
+                <g transform="translate(580,155)">
+                    <ellipse cx="0" cy="0" rx="11" ry="15" fill="#c9a84c" transform="rotate(18)"/>
+                    <path d="M-6 -8 Q0 0 6 -8" fill="none" stroke="#a67c3d" stroke-width="1.8"/>
+                    <text x="18" y="5" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">India • 2</text>
+                    <text x="18" y="18" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Ratnagiri / Raspberry in Loop</text>
+                </g>
+                
+                <!-- Legend -->
+                <g transform="translate(40,330)">
+                    <rect x="0" y="0" width="180" height="38" rx="6" fill="white" fill-opacity="0.9"/>
+                    <text x="12" y="15" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#1a1a1a">● Coffee Origin</text>
+                    <text x="12" y="29" font-family="Inter, sans-serif" font-size="9" fill="#6b7280">Marker size = entry count</text>
+                </g>
+            </svg>
+            
+            <div class="origin-grid">
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(-12 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Colombia</div>
+                            <div class="origin-count">4 entries • Top: Wush Wush</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">Vibrant, clean, and structurally precise. The strongest origin in the archive with exceptional varietal expression across multiple farms.</div>
+                </div>
+                
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(8 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Brazil</div>
+                            <div class="origin-count">5 entries • Top: Arara Natural</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">Dense, chocolate-forward naturals with excellent body. Arara and Catucai delivered consistent sweetness and structural integrity at lean ratios.</div>
+                </div>
+                
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(-20 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Ethiopia</div>
+                            <div class="origin-count">3 entries • Top: Banko Gotiti</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">Classic washed heirloom brightness with layered melon and white tea finishes. Peak degas window critical for volatile citric expression.</div>
+                </div>
+                
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(25 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Indonesia</div>
+                            <div class="origin-count">4 entries • Top: Frinsa Estate</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">Foundational exposure to local naturals and wet-hulled. Extended fermentation honey at Frinsa showed masterful sugar management with multi-temp pours.</div>
+                </div>
+                
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(-8 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Kenya</div>
+                            <div class="origin-count">3 entries • Top: Kiamugumo AA</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">High-clarity washed baseline established early in the year. Bright, structured, and terroir-transparent — the benchmark for East African washed profiles.</div>
+                </div>
+                
+                <div class="origin-card">
+                    <div class="origin-header">
+                        <svg class="origin-bean" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c9a84c" transform="rotate(12 16 16)"/><path d="M10 8 Q16 14 22 8" fill="none" stroke="#a67c3d" stroke-width="2.5"/></svg>
+                        <div>
+                            <div class="origin-name">Central America</div>
+                            <div class="origin-count">6 entries • Top: El Morito (Honduras)</div>
+                        </div>
+                    </div>
+                    <div class="origin-top">Panama, Nicaragua, Honduras, and El Salvador delivered elegant washed and anaerobic profiles. Marshell and Typica Mejorado stood out for acid integration and thermal clarity.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: HARDWARE AUDIT -->
+    <section id="hardware">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Equipment Performance</div>
+                <h2>The Hardware Audit</h2>
+            </div>
+            
+            <p style="max-width: 680px; margin: 0 auto 40px; text-align: center; color: #4b5563;">
+                Which grinders and brewers produced the most consistent, expressive results across 31 entries? 
+                Performance ranked by clarity, thermal control, and verdict alignment.
+            </p>
+            
+            <table class="hardware-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">Rank</th>
+                        <th>Grinder</th>
+                        <th>Brewer / Method</th>
+                        <th>Best Entry</th>
+                        <th style="width: 280px;">Performance Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rank">1</td>
+                        <td><strong>Option-O Lagom P64</strong><br><span style="font-size:12px;color:#6b7280;">64mm Flat Burr</span></td>
+                        <td>Flatbed Dripper</td>
+                        <td>FLUID El Obraje<br><span style="font-size:12px;">Gesha Washed</span></td>
+                        <td>Exceptional terpene retention and malic acid stability. Perfect hardware synergy with flatbed geometry for high-clarity, evolving profiles. Clear winner for Geisha expression.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">2</td>
+                        <td><strong>Mahlkönig CORE</strong><br><span style="font-size:12px;color:#6b7280;">54mm Flat Burr</span></td>
+                        <td>Hario Alpha Flat-Bottom</td>
+                        <td>Pocket Ecuador La Papaya<br><span style="font-size:12px;">Geisha Washed 2100m</span></td>
+                        <td>Triple-temp cascade (92→75→92°C) executed flawlessly. Outstanding volatile preservation at extreme altitude. Runner-up for precision thermal work.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">3</td>
+                        <td><strong>Mahlkönig EK43S</strong><br><span style="font-size:12px;color:#6b7280;">98mm Flat Burr</span></td>
+                        <td>V60 Conical</td>
+                        <td>Alchemist El Morito<br><span style="font-size:12px;">Marshell Washed</span></td>
+                        <td>Perfect dual-acid integration at 1:16. 98mm flats delivered simultaneous citric-malic overlap with zero dominance. Excellent sucrose bridging.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">4</td>
+                        <td><strong>Timemore Sculptor 078</strong><br><span style="font-size:12px;color:#6b7280;">SSP 78mm Flat</span></td>
+                        <td>Flat-Bottom Pour-over</td>
+                        <td>Maxi Colombia La Laja<br><span style="font-size:12px;">Sudan Rume</span></td>
+                        <td>Technical milestone in rare genetics isolation. 78mm SSP flats + hybrid flat-bottom geometry produced textbook raspberry-nectarine-floral separation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">5</td>
+                        <td><strong>Mahlkönig EK Omnia</strong><br><span style="font-size:12px;color:#6b7280;">Flat Burr</span></td>
+                        <td>Origami Conical</td>
+                        <td>Hacienda La Florida<br><span style="font-size:12px;">Typica Mejorado Anaerobic</span></td>
+                        <td>Extreme clarity at 1:15.4. Temperature shift perfectly isolated citric-to-malic transition. Best conical + flat burr pairing for anaerobic washed profiles.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="text-align:center; margin-top: 32px; font-size:13px; color:#6b7280;">
+                <strong>Key Finding:</strong> Flat-burr geometry + flat-bottom brewers dominate the top ranks. 
+                Thermal control capability (multi-temp pours, cascades) is the strongest predictor of high-verdict entries.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION 6: THERMAL SHIFT HALL OF FAME -->
+    <section id="thermal" style="background: #f8f5f0; padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Extraction Science</div>
+                <h2>Thermal Shift Hall of Fame</h2>
+            </div>
+            
+            <p style="max-width: 720px; margin: 0 auto 48px; text-align: center; color: #4b5563;">
+                Five confirmed cases where deliberate temperature modulation revealed layered flavor arcs impossible at static brew temperatures. 
+                Chemistry: Different compounds extract and volatilize at different temperatures — citric acids early, malic mid-cup, heavier esters and sugars as the cup cools.
+            </p>
+            
+            <div class="thermal-grid">
+                <!-- Thermal 1: Hacienda -->
+                <div class="thermal-card">
+                    <div class="thermal-header">
+                        <div>
+                            <div class="thermal-title">Hacienda La Florida</div>
+                            <div style="font-size:13px;color:#6b7280;">Typica Mejorado • Anaerobic Washed • Johor Bahru</div>
+                        </div>
+                        <span class="thermal-process">Anaerobic Washed</span>
+                    </div>
+                    
+                    <div class="thermal-notes">
+                        <div class="thermal-note"><span class="temp">Hot:</span> <span>Lemon verbena • Citronella • Hibiscus</span></div>
+                        <div class="thermal-note"><span class="temp">Mid:</span> <span>Red plum emerges</span></div>
+                        <div class="thermal-note"><span class="temp">Cool:</span> <span>Distinct plum • Clean fade</span></div>
+                    </div>
+                    
+                    <div class="thermal-chemistry">
+                        <strong>Chemistry:</strong> EK Omnia + Origami conical drove extreme clarity. High-temp extraction unlocked volatile citric esters (lime/verbena); cooling allowed malic acids to dominate perception as lighter volatiles dissipated. Perfect citric → malic transition documented.
+                    </div>
+                </div>
+                
+                <!-- Thermal 2: Ecuador -->
+                <div class="thermal-card">
+                    <div class="thermal-header">
+                        <div>
+                            <div class="thermal-title">Ecuador La Papaya</div>
+                            <div style="font-size:13px;color:#6b7280;">Geisha • Washed • 2,100 MASL • Singapore</div>
+                        </div>
+                        <span class="thermal-process">Washed</span>
+                    </div>
+                    
+                    <div class="thermal-notes">
+                        <div class="thermal-note"><span class="temp">Hot (92°C):</span> <span>Tartaric apricot + rooibos aspalathin</span></div>
+                        <div class="thermal-note"><span class="temp">Mid (75°C):</span> <span>Thymol terpene coat (lipid-binding)</span></div>
+                        <div class="thermal-note"><span class="temp">Cool (92°C):</span> <span>Malic apple + caramelised sucrose</span></div>
+                    </div>
+                    
+                    <div class="thermal-chemistry">
+                        <strong>Chemistry:</strong> Triple-temp cascade on CORE 54mm + Hario Alpha preserved heat-sensitive thymol terpenes from extreme altitude. Cooling phase allowed malic acids to integrate with caramelised sugars. No linalool/jasmine — distinct Ecuador signature vs Peru entries.
+                    </div>
+                </div>
+                
+                <!-- Thermal 3: Banko Gotiti -->
+                <div class="thermal-card">
+                    <div class="thermal-header">
+                        <div>
+                            <div class="thermal-title">Ethiopia Banko Gotiti</div>
+                            <div style="font-size:13px;color:#6b7280;">Heirloom • Washed • Singapore</div>
+                        </div>
+                        <span class="thermal-process">Washed</span>
+                    </div>
+                    
+                    <div class="thermal-notes">
+                        <div class="thermal-note"><span class="temp">Hot:</span> <span>Lemonade • Raspberry front</span></div>
+                        <div class="thermal-note"><span class="temp">Mid:</span> <span>Heavy melon mid-cup</span></div>
+                        <div class="thermal-note"><span class="temp">Cool:</span> <span>Clean white tea finish</span></div>
+                    </div>
+                    
+                    <div class="thermal-chemistry">
+                        <strong>Chemistry:</strong> 1:17 lean ratio on xBloom isolated volatile citric acids at peak degas window. Heavier melon compounds (less volatile) expressed mid-cup as temperature dropped. White tea finish reflects clean heirloom transparency after volatile taper.
+                    </div>
+                </div>
+                
+                <!-- Thermal 4: Ijen Laurina -->
+                <div class="thermal-card">
+                    <div class="thermal-header">
+                        <div>
+                            <div class="thermal-title">Ijen Laurina</div>
+                            <div style="font-size:13px;color:#6b7280;">Hybrid Laurina • Anaerobic Natural • Singapore</div>
+                        </div>
+                        <span class="thermal-process">Anaerobic Natural</span>
+                    </div>
+                    
+                    <div class="thermal-notes">
+                        <div class="thermal-note"><span class="temp">Hot (90°C):</span> <span>Hibiscus • Volatile anthocyanins</span></div>
+                        <div class="thermal-note"><span class="temp">Mid:</span> <span>Apple paste (malic transformed)</span></div>
+                        <div class="thermal-note"><span class="temp">Cool:</span> <span>Honeyed character • Full bodied</span></div>
+                    </div>
+                    
+                    <div class="thermal-chemistry">
+                        <strong>Chemistry:</strong> 90°C brew suppressed lactic ester over-extraction while preserving volatile anthocyanin hibiscus esters. Anaerobic Natural metabolized malic into jammy apple paste. Low-caffeine Laurina allowed intrinsic sucrose to express as clean honeyed finish.
+                    </div>
+                </div>
+                
+                <!-- Thermal 5: FLUID El Obraje -->
+                <div class="thermal-card">
+                    <div class="thermal-header">
+                        <div>
+                            <div class="thermal-title">FLUID El Obraje</div>
+                            <div style="font-size:13px;color:#6b7280;">Gesha • Washed • Singapore</div>
+                        </div>
+                        <span class="thermal-process">Washed</span>
+                    </div>
+                    
+                    <div class="thermal-notes">
+                        <div class="thermal-note"><span class="temp">Opening:</span> <span>Tartaric apricot + rooibos</span></div>
+                        <div class="thermal-note"><span class="temp">Midway:</span> <span>Thymol terpene coat (persistent)</span></div>
+                        <div class="thermal-note"><span class="temp">Cooling:</span> <span>Malic apple shift + caramelised sucrose</span></div>
+                    </div>
+                    
+                    <div class="thermal-chemistry">
+                        <strong>Chemistry:</strong> 92°C at 1:15.3 on P64 + flatbed maximised floral ester retention. Lipid-binding thymol persisted to midway. Cooling revealed clean malic transition. Highest-rated entry of the year — thermal awareness elevated an already exceptional bean.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: CITY FIELD REPORTS -->
+    <section id="cities">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Field Notes</div>
+                <h2>City Field Reports</h2>
+            </div>
+            
+            <div class="city-grid">
+                <div class="city-card">
+                    <div class="city-name">Singapore — The Epicentre</div>
+                    <div class="city-stats">23 entries • 13 cafes • May 2026 peak</div>
+                    <p>The undisputed capital of this audit. From Nylon’s automated xBloom precision to Alchemist’s 98mm EK43S mastery, Singapore’s scene delivered unmatched diversity and technical excellence. 13 unique cafes audited across Raffles Place, Ocean Financial, Hamilton, and neighborhood gems. The city’s roasters and baristas consistently demonstrated world-class execution of both classic and experimental profiles.</p>
+                </div>
+                
+                <div class="city-card">
+                    <div class="city-name">Bali — The Foundation</div>
+                    <div class="city-stats">3 entries • Seniman Coffee Studio • Jan 2026</div>
+                    <p>The origin story. Three foundational entries at Seniman established baseline understanding of Indonesian naturals (Bali Karana Kintamanis) and wet-hulled structural density (Sulawesi Toraja). House Blend provided the espresso/milk pairing benchmark. Clean citrus-floral clarity in naturals proved Indonesian origins can compete with washed East Africans when processed with intention.</p>
+                </div>
+                
+                <div class="city-card">
+                    <div class="city-name">Johor Bahru — The Day Trip</div>
+                    <div class="city-stats">3 entries • Quick cross-border forays</div>
+                    <p>Three efficient day-trip stops (Hacienda La Florida at Mid Valley, Kenya AA at KSL, plus one co-ferment) revealed accessible specialty coffee culture just across the causeway. The standout — Hacienda La Florida Typica Mejorado — delivered one of the year’s most dramatic thermal shifts, proving JB cafes can punch above their weight with the right lots.</p>
+                </div>
+                
+                <div class="city-card">
+                    <div class="city-name">Mumbai — The Experiment</div>
+                    <div class="city-stats">2 entries • Subko &amp; Grey Soul • Mar 2026</div>
+                    <p>India’s emerging scene delivered bold experimentation. Subko’s Project Pearl Ratnagiri showed clean balance despite intense anaerobic processing. Grey Soul’s Raspberry in Loop demonstrated how heavy multi-stage fermentation can mute brightness — a valuable cautionary lesson in processing-driven identity versus terroir expression.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: WHAT'S NEXT -->
+    <section id="next">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">2026 H2 &amp; Beyond</div>
+                <h2>What’s Next</h2>
+            </div>
+            
+            <div style="max-width: 820px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    <div style="background: white; padding: 28px; border-radius: 16px; border: 1px solid #f0e6d2;">
+                        <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--gold);">Priority Cafes (Singapore)</h3>
+                        <ul style="font-size: 14.5px; line-height: 1.8; color: #374151; padding-left: 18px;">
+                            <li>Common Man Coffee Roasters</li>
+                            <li>Chye Seng Huat Hardware</li>
+                            <li>Toast Box (heritage contrast)</li>
+                            <li>Additional Nylon &amp; Kurasu lots</li>
+                            <li>Pop-up &amp; festival exclusives</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 28px; border-radius: 16px; border: 1px solid #f0e6d2;">
+                        <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--gold);">Target Lots &amp; Varietals</h3>
+                        <ul style="font-size: 14.5px; line-height: 1.8; color: #374151; padding-left: 18px;">
+                            <li>Panama Geisha (multiple farms)</li>
+                            <li>Ethiopian SL28 / SL34 heirlooms</li>
+                            <li>Colombian Pink Bourbon</li>
+                            <li>More Laurina &amp; Pacamara full captures</li>
+                            <li>Anaerobic experiments from Brazil &amp; Colombia</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 28px; border-radius: 16px; border: 1px solid #f0e6d2;">
+                        <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--gold);">New Cities &amp; Regions</h3>
+                        <ul style="font-size: 14.5px; line-height: 1.8; color: #374151; padding-left: 18px;">
+                            <li>Kuala Lumpur &amp; Penang (Malaysia)</li>
+                            <li>Bangkok &amp; Chiang Mai (Thailand)</li>
+                            <li>Tokyo / Kyoto (Japan) — for filter culture</li>
+                            <li>Melbourne (Australia) — long-term goal</li>
+                            <li>Further Indonesian islands (Sumatra, Java)</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 28px; border-radius: 16px; border: 1px solid #f0e6d2;">
+                        <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--gold);">Technical Deep Dives</h3>
+                        <ul style="font-size: 14.5px; line-height: 1.8; color: #374151; padding-left: 18px;">
+                            <li>Water chemistry impact (TDS, pH, minerals)</li>
+                            <li>Burr comparison: 64mm vs 78mm vs 98mm flats</li>
+                            <li>Degassing curves &amp; peak windows</li>
+                            <li>Immersion vs percolation thermal dynamics</li>
+                            <li>Co-ferment vs anaerobic vs natural controlled experiments</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; margin-top: 40px; font-style: italic; color: #6b7280;">
+                    “The archive is never complete. Every cup is a new data point in an endless pursuit of clarity, complexity, and connection.”
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 9: COMPLETE ARCHIVE TABLE -->
+    <section id="archive" style="padding-bottom: 120px;">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Full Record</div>
+                <h2>Complete Archive Table</h2>
+            </div>
+            
+            <div style="overflow-x: auto; max-width: 100%;">
+                <table class="archive-table" id="archiveTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>City</th>
+                            <th>Cafe</th>
+                            <th>Coffee</th>
+                            <th>Varietal</th>
+                            <th>Process</th>
+                            <th>Ratio</th>
+                            <th style="min-width: 220px;">Key Note / Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archiveBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <p style="text-align:center; margin-top:24px; font-size:12px; color:#9ca3af;">
+                All 31 entries • Scroll horizontally on mobile • Print-optimized table
+            </p>
+        </div>
+    </section>
+
+    <!-- BACK COVER -->
+    <footer class="back-cover">
+        <div class="container">
+            <div class="logo">Hari • Coffee Archivist</div>
+            
+            <p style="max-width: 420px; margin: 0 auto 40px; opacity: 0.8;">
+                This document is a living record of sensory exploration, technical rigor, and deep affection for the craft of coffee. 
+                Every entry represents a moment of attention, a conversation with a barista, and a step toward greater understanding.
+            </p>
+            
+            <div class="footer-line"></div>
+            
+            <div style="font-size: 13px; opacity: 0.6; letter-spacing: 1px;">
+                AUDITED BY HARI, COFFEE ARCHIVIST • MAY 2026<br>
+                SINGAPORE • BALI • JOHOR BAHRU • MUMBAI
+            </div>
+            
+            <div style="margin-top: 48px; font-size: 11px; opacity: 0.5;">
+                Optimized for Chrome → Print → Save as PDF (A4)<br>
+                Share freely with roasters, baristas, and fellow enthusiasts.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Embedded 31-entry data
+        const audits = [
+            {"date":"2026-01-10","city":"Ubud, Bali","cafe":"Seniman Coffee Studio","coffee":"Bali Karana Kintamanis","varietal":"Unknown","process":"Natural","roast":"Light","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Clean citrus; floral","verdict":"Excellent clarity for a natural process, bright and floral.","tech":"Established foundational exposure to local Indonesian origins."},
+            {"date":"2026-01-10","city":"Ubud, Bali","cafe":"Seniman Coffee Studio","coffee":"Sulawesi Toraja","varietal":"Unknown","process":"Semi-Washed / Wet-Hulled","roast":"Medium","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Cocoa; earthy structures","verdict":"Heavy body with rich cocoa notes.","tech":"Demonstrated the structural density of the wet-hulled process."},
+            {"date":"2026-01-10","city":"Ubud, Bali","cafe":"Seniman Coffee Studio","coffee":"House Blend","varietal":"Unknown","process":"Unknown","roast":"Espresso Roast","method":"Piccolo","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Balanced","verdict":"Great milk integration.","tech":"Baseline for espresso and milk pairing."},
+            {"date":"2026-02-15","city":"Singapore","cafe":"Kyuukei Coffee","coffee":"Kenya Kiamugumo AA","varietal":"Unknown","process":"Washed","roast":"Unknown","method":"Pour-over (Flat-Bottom)","ratio":"Unknown","grinder":"120mm Hybrid Burr","price":"Unknown","note":"Excellent baseline for clarity.","verdict":"Established a high-clarity washed baseline using 120mm hybrid burrs and flat-bottom geometry.","tech":""},
+            {"date":"2026-02-28","city":"Singapore","cafe":"Kyuukei Coffee","coffee":"Kenya Ndiaini AA","varietal":"Unknown","process":"Washed","roast":"Unknown","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"High clarity.","verdict":"Further exploration of Kenyan terroir.","tech":""},
+            {"date":"2026-03-01","city":"Mumbai","cafe":"Subko Coffee Roasters","coffee":"Project Pearl Ratnagiri","varietal":"Unknown","process":"Experimental Anaerobic","roast":"Unknown","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Clean and balanced despite intense process.","verdict":"Analyzed advanced experimental processing in India.","tech":""},
+            {"date":"2026-03-08","city":"Mumbai","cafe":"Grey Soul Coffee Roasters","coffee":"Raspberry in Loop","varietal":"Unknown","process":"Multi-stage Anaerobic","roast":"Unknown","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Chocolate","verdict":"Heavy body, over-smoothed expression muted the brightness.","tech":"Observed how heavy fermentation can mute terroir."},
+            {"date":"2026-03-15","city":"Singapore","cafe":"Apartment Coffee","coffee":"Colombia Wush Wush","varietal":"Wush Wush","process":"Washed","roast":"Unknown","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Tea-like","verdict":"Incredible tea-like clarity.","tech":"Mapped the delicate genetics of Wush Wush."},
+            {"date":"2026-03-18","city":"Singapore","cafe":"Agora Coffee","coffee":"Nicaragua Matagalpa","varietal":"Unknown","process":"Washed","roast":"Espresso Roast","method":"Flat White","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Solid milk beverage.","verdict":"Audited Central American washed profile in milk.","tech":""},
+            {"date":"2026-03-18","city":"Singapore","cafe":"Agora Coffee","coffee":"Ethiopia Beloya","varietal":"Unknown","process":"Natural","roast":"Unknown","method":"V60","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Classic natural profile.","verdict":"Baseline check for Ethiopian naturals.","tech":""},
+            {"date":"2026-03-20","city":"Singapore","cafe":"Tiong Hoe","coffee":"Brazil Natural","varietal":"Unknown","process":"Natural","roast":"Unknown","method":"Pour-over","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Rich, chocolate-forward","verdict":"Classic dense Brazilian profile.","tech":"Audited traditional natural processing sweetness and body."},
+            {"date":"2026-04-01","city":"Singapore","cafe":"Maxi Coffee Bar","coffee":"Colombia La Laja","varietal":"Sudan Rume","process":"Washed","roast":"Unknown","method":"Pour-over (Flat-Bottom)","ratio":"1:15","grinder":"Timemore Sculptor 078 (SSP 78mm)","price":"Unknown","note":"Raspberry; Nectarine; Floral","verdict":"Successfully isolated the intended tasting notes.","tech":"Technical milestone in auditing rare genetics with 78mm SSP flat burrs and hybrid flat-bottom geometry."},
+            {"date":"2026-04-05","city":"Singapore","cafe":"Asylum Coffeehouse","coffee":"Castillo Watermelon (Jairo Arcila)","varietal":"Castillo","process":"Washed Co-Ferment","roast":"Unknown","method":"Pour-over","ratio":"1:15","grinder":"Timemore Sculptor 078 (SSP)","price":"12.50","note":"Watermelon; Mint; Lime; Chocolate","verdict":"Distinct fruit-forward expression; sweetness layered rather than sharp","tech":"Fermentation adds aromatic complexity; processing-driven identity rather than terroir."},
+            {"date":"2026-04-05","city":"Singapore","cafe":"Asylum Coffeehouse","coffee":"Peru Gesha (Wilder Garcia)","varietal":"Gesha","process":"Washed","roast":"Unknown","method":"Pour-over","ratio":"1:15","grinder":"Timemore Sculptor 078 (SSP)","price":"12.50","note":"Jasmine; Caramel; Lime; Cacao Nibs","verdict":"Clean, structured, high-clarity cup","tech":"High transparency; minimal processing interference highlighting intrinsic genetic purity."},
+            {"date":"2026-04-05","city":"Singapore","cafe":"Lume Cafe","coffee":"Panama Corpachi Geisha","varietal":"Geisha","process":"Red Honey","roast":"Light","method":"V60 Manual Pour-over","ratio":"1:15","grinder":"Mahlkönig EK43","price":"12.00","note":"Mandarin Candy; Jasmine; Apricot","verdict":"Apricot detected clearly. Structured and elegant — sweet without being cloying.","tech":"Dual-temp strategy (90°C → 70°C) on EK43 layered extraction — high-temp unlocked jasmine florals and bright acids; low-temp stabilised body and extended the clean apricot finish."},
+            {"date":"2026-04-18","city":"Johor Bahru","cafe":"Unknown (Hacienda La Florida)","coffee":"Hacienda La Florida","varietal":"Typica Mejorado","process":"Anaerobic Washed","roast":"Unknown","method":"Origami (Conical)","ratio":"1:15.4","grinder":"Mahlkönig EK Omnia","price":"35.00","note":"Lemon verbena; red plum; citronella; hibiscus","verdict":"Excellent. Lime when hot, distinct plum as it cooled.","tech":"EK Omnia and Origami conical filter drove extreme clarity; temperature shift perfectly isolated the citric (lime) to malic (plum) transition."},
+            {"date":"2026-04-24","city":"Singapore","cafe":"Agora Coffee","coffee":"Brazil Santuário Sul","varietal":"Unknown","process":"Natural Fermentation","roast":"Light-Medium","method":"V60","ratio":"1:14","grinder":"Mahlkönig EK43","price":"Unknown","note":"Blackcurrant; black cherry; dark chocolate","verdict":"Full body; prominent blackcurrant; clear chocolaty finish.","tech":"Tight 1:14 ratio engineered max body; EK43 98mm burrs provided necessary clarity to keep fermented natural fruit clean and finish non-bitter."},
+            {"date":"2026-05-06","city":"Singapore","cafe":"Nylon Coffee Roasters","coffee":"Brazil FAF Organic","varietal":"Arara","process":"Natural","roast":"Filter Roast","method":"xBloom (Flat-Bottom)","ratio":"1:17","grinder":"Mahlkönig CORE","price":"7.50","note":"Red Apple; Cherry; Raisin; Milk Chocolate","verdict":"Solid body with a crisp green apple (malic) front, resolving into a smooth milk chocolate finish.","tech":"1:17 lean ratio on xBloom automated flat-bottom maximised clarity; Arara natural processing yielded excellent structural body while maintaining crisp malic acidity."},
+            {"date":"2026-05-06","city":"Singapore","cafe":"Nylon Coffee Roasters","coffee":"Brazil Serra dos Ciganos","varietal":"Catucai 24/137","process":"Natural","roast":"Espresso Roast","method":"Flat White","ratio":"Unknown","grinder":"Unknown","price":"Unknown","note":"Sultana; Dried Apricot; Praline; Roasted Hazelnut","verdict":"Good cup with a very pleasant, lingering sweet aftertaste.","tech":"Milk fats bound perfectly with the natural processed espresso, creating a long, comforting finish."},
+            {"date":"2026-05-07","city":"Singapore","cafe":"Nylon Coffee Roasters","coffee":"Ethiopia Banko Gotiti","varietal":"Heirloom","process":"Washed","roast":"Filter Roast","method":"xBloom (Flat-Bottom)","ratio":"1:17","grinder":"Mahlkönig CORE","price":"8.50","note":"Lemonade; Raspberry; Peach; Bergamot","verdict":"Lemon front, heavy melon mid-cup, fading into a clean white tea finish.","tech":"1:17 lean ratio on xBloom isolated volatile citric acids; IMF-roasted heirloom Washed Ethiopian at peak degas window."},
+            {"date":"2026-05-07","city":"Singapore","cafe":"Nylon Coffee Roasters","coffee":"Nicaragua Buena Vista","varietal":"Parainema","process":"Natural Anaerobic","roast":"Espresso Roast","method":"Single Espresso","ratio":"~1:2","grinder":"Unknown","price":"Unknown","note":"Chiku; Stewed Cherry; Dried Apricot; Brazil Nut","verdict":"Thick, syrupy body. Highly fermented, savory/not sweet, with a very long lingering finish.","tech":"Anaerobic fermentation metabolized sugars into complex savory esters; 9-bar espresso emulsification drove heavy, lingering oil-based viscosity."},
+            {"date":"2026-05-19","city":"Singapore","cafe":"Pocket by Flip (Flip Coffee Roasters)","coffee":"Ecuador La Papaya","varietal":"Geisha","process":"Washed","roast":"Light","method":"Filter Hot - Flat Bottom (Hario Alpha)","ratio":"1:15","grinder":"Mahlkönig CORE (54mm Flat Burr)","price":"18.00","note":"Fresh Apricot; Rooibos; Lemon Thyme; Toffee Apple","verdict":"Opening: tartaric apricot + rooibos aspalathin. Mid: thymol terpene coat — lipid-binding persistent to midway. Cooling: malic apple shift + caramelised sucrose.","tech":"Triple-temp cascade (92→75→92°C) on CORE flat burr + Hario Alpha flat-bottom preserved heat-sensitive thymol terpenes from 2100 MASL Loja terroir. Highest-altitude Geisha in archive."},
+            {"date":"2026-05-08","city":"Singapore","cafe":"Alchemist (Raffles Place)","coffee":"El Morito","varietal":"Marshell","process":"Washed","roast":"Filter Roast","method":"V60 Pour-over","ratio":"1:16","grinder":"Mahlkönig EK43S (98mm Flat Burr)","price":"Unknown","note":"Yellow Plum; Orange; Cane Sugar","verdict":"Simultaneous citric-malic acid overlap with integrated cane sugar — smooth and refreshing with excellent mid-palate juiciness. Confirmed: I love this bean.","tech":"EK43S 98mm flat burrs + V60 conical at 1:16 delivered perfect dual-acid integration (citric orange + malic plum) without single-note dominance."},
+            {"date":"2026-05-12","city":"Singapore","cafe":"Kurasu","coffee":"Indonesia Frinsa Estate","varietal":"Local Varietals","process":"Extended Fermentation Honey","roast":"Light","method":"Pour-over (Hario Alpha)","ratio":"1:16","grinder":"Mahlkönig EK43S","price":"9.50","note":"Floral aroma; Stewed Strawberries; Grapefruit; Brown Sugar; Black Tea","verdict":"Floral taste with a sweet coating on the tongue that gradually sticks and fades off cleanly like sugar and tea aftertaste.","tech":"Multi-temperature pour (80→95→80°C) with Hario Alpha flat-bottom perfectly managed heavy honey process sugars — clear floral extraction at lower temps, dissolving jammy mucilage at peak heat, finishing cleanly."},
+            {"date":"2026-05-13","city":"Singapore","cafe":"The Community Coffee (Hamilton)","coffee":"Jose Mancia Honduras","varietal":"Typica","process":"Natural","roast":"Filter Roast","method":"Pour-over (Hario Switch)","ratio":"1:17","grinder":"Mahlkönig EK43","price":"9.00","note":"Kiwi; Oolong Tea; Chocolate Truffle","verdict":"Pretty good. Kiwi and oolong tea style, full bodied. Short finish with slight hints of chocolate.","tech":"Typica inherent lipid clarity + raised-bed drying produced clean tea-structure body. EK43 + Hario Switch immersion phase stabilised full mouthfeel at 1:17."},
+            {"date":"2026-05-15","city":"Singapore","cafe":"Alchemist (Ocean Financial Centre)","coffee":"Ijen Laurina","varietal":"Hybrid Laurina","process":"Anaerobic Natural","roast":"Light","method":"V60 Pour-over","ratio":"1:16","grinder":"Mahlkönig EK43S","price":"8.50","note":"Hibiscus; Red Apple; Hawthorn","verdict":"Felt hibiscus hot. Mid temp showed apple paste. Cooled to a honeyed character. Full bodied. Textbook style flavours — definitely a good one.","tech":"90°C brew temp suppressed lactic ester over-extraction while preserving volatile anthocyanin hibiscus esters. Laurina low-caffeine allowed intrinsic sucrose to express as clean honeyed finish."},
+            {"date":"2026-05-16","city":"Singapore","cafe":"FLUID","coffee":"El Obraje","varietal":"Gesha","process":"Washed","roast":"Light","method":"Flatbed Dripper","ratio":"1:15.3","grinder":"Option-O Lagom P64 (64mm Flat Burr)","price":"14.00","note":"Mango; Orange Blossom; Nectarine; Honey","verdict":"Damn the taste so nice — the orange nectarine finishing with that honey is terrific. Love this one. So far my favourite. The honey sweetness lingers and taste changes as temperature cools.","tech":"Lagom P64 64mm flats + flatbed dripper matches Asylum Entry #013/#014 hardware — enables pure terroir delta between Colombia and Peru Geshas. 92°C at 1:15.3 maximised floral ester retention and stabilised malic acids."},
+            {"date":"2026-04-01","city":"Singapore","cafe":"Nylon Coffee Roasters","coffee":"Colombia Sidra","varietal":"Sidra","process":"Double Anaerobic","roast":"Unknown","method":"Flat-bottom Pour-over","ratio":"1:14","grinder":"Unknown","price":"Unknown","note":"Technical calibration visit.","verdict":"Flat-bottom at 1:14 — dense ratio for body-forward extraction of double anaerobic Sidra.","tech":"Partial entry — full sensory data not captured."},
+            {"date":"2026-04-01","city":"Singapore","cafe":"Kurasu","coffee":"El Salvador Pacamara","varietal":"Pacamara","process":"Natural","roast":"Unknown","method":"Flat-bottom Pour-over","ratio":"1:14","grinder":"Unknown","price":"Unknown","note":"Technical calibration visit.","verdict":"Pacamara natural at 1:14 flat-bottom — dense ratio to capture full body of large-bean natural.","tech":"Partial entry — full sensory data not captured."},
+            {"date":"2026-04-01","city":"Johor Bahru","cafe":"Mid Valley Mall Cafe","coffee":"Honduras Co-ferment","varietal":"Unknown","process":"Co-ferment","roast":"Unknown","method":"Flat-bottom Pour-over","ratio":"1:14","grinder":"Unknown","price":"Unknown","note":"Day trip specialty coffee stop — JB.","verdict":"Partial entry — JB day trip. Co-ferment Honduras at 1:14 flat-bottom.","tech":"Full data not captured."},
+            {"date":"2026-04-01","city":"Johor Bahru","cafe":"KSL Mall Cafe","coffee":"Kenya AA","varietal":"Unknown","process":"Washed","roast":"Unknown","method":"Flat-bottom Pour-over","ratio":"1:14","grinder":"Unknown","price":"Unknown","note":"Day trip specialty coffee stop — JB.","verdict":"Partial entry — JB day trip. Kenya AA washed at 1:14 flat-bottom.","tech":"Full data not captured."}
+        ];
+        
+        // Populate archive table
+        function populateArchiveTable() {
+            const tbody = document.getElementById('archiveBody');
+            tbody.innerHTML = '';
+            
+            audits.forEach(entry => {
+                const row = document.createElement('tr');
+                
+                const shortVerdict = entry.verdict.length > 95 ? 
+                    entry.verdict.substring(0, 92) + '...' : entry.verdict;
+                
+                row.innerHTML = `
+                    <td class="date">${entry.date}</td>
+                    <td>${entry.city}</td>
+                    <td><strong>${entry.cafe}</strong></td>
+                    <td>${entry.coffee}</td>
+                    <td><em>${entry.varietal}</em></td>
+                    <td><span style="font-size:11px;padding:2px 7px;border-radius:4px;background:#f0e6d2;color:#5c4630;">${entry.process}</span></td>
+                    <td style="font-family:monospace;font-size:12px;">${entry.ratio}</td>
+                    <td class="verdict">${shortVerdict}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Initialize
+        function init() {
+            populateArchiveTable();
+            
+            // Optional: Add simple table search/filter (non-print)
+            const table = document.getElementById('archiveTable');
+            if (table) {
+                // Could add filter input here if desired, but keeping clean for print
+            }
+            
+            // Keyboard support for print
+            document.addEventListener('keydown', function(e) {
+                if (e.metaKey && e.key === 'p') {
+                    // Allow default print
+                }
+            });
+            
+            // Smooth scroll for any internal links (future-proof)
+            console.log('%c[Report] 2026 Coffee Audit Report initialized successfully', 'color:#c9a84c');
+        }
+        
+        // Boot
+        window.onload = init;
+        
+        // Expose data for console inspection if needed
+        window.HARI_AUDITS_2026 = audits;
+    </script>
+</body>
+</html>
