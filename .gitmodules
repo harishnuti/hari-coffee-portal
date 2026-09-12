@@ -1,0 +1,4 @@
+[submodule "03-Projects/Web-App-Gatekeeper/Newrelease/gatekeeper-v8-source/gatekeeper-v8"]
+	path = 03-Projects/Web-App-Gatekeeper/Newrelease/gatekeeper-v8-source/gatekeeper-v8
+	url = https://github.com/harishnuti/harryscafe.git
+	branch = main
